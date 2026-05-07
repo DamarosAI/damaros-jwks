@@ -1651,7 +1651,7 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
 </head>
 <body>
 <div class="damaros-site">
-<nav class="damaros-tab-bar"><div class="damaros-tab-links"><button class="damaros-tab-btn active" data-panel="home">Home</button><button class="damaros-tab-btn" data-panel="engineering">Engineering</button><button class="damaros-tab-btn" data-panel="docs">Documentation</button></div></nav>
+<nav class="damaros-tab-bar"><div class="damaros-tab-links"><button class="damaros-tab-btn active" data-panel="home">Home</button><button class="damaros-tab-btn" data-panel="engineering">Engineering</button><button class="damaros-tab-btn" data-panel="docs">Documentation</button><button class="damaros-tab-btn" data-panel="trust">Trust</button></div></nav>
 
 <div id="damaros-panel-home" class="damaros-panel active">
 <div class="damaros-ignition">
@@ -2040,6 +2040,153 @@ spec:
 </table><div class="damaros-callout"><strong>Versioning policy:</strong> this note describes pinned engine semantics. Substantive changes to the determinism guarantee, run-id construction, replay scope, or criterion-level provenance will be published as a new versioned note rather than overwritten in place. Older versions remain reachable for citation.</div></section>
 
 <section class="damaros-docs-section" id="engineering-08"><div class="damaros-docs-section-label">08_CONTACT</div><h2 class="damaros-docs-section-heading">Contact</h2><div class="damaros-contact-block"><div>Engineering &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div><div>Integration docs &nbsp;<a href="#docs">damaros.ai/#docs</a></div><div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://damaros.ai">damaros.ai</a></div></div></section>
+
+</div></div>
+
+<div id="damaros-panel-trust" class="damaros-panel"><div class="damaros-docs-wrap">
+<div class="damaros-docs-eyebrow">Trust &amp; Security</div><h1 class="damaros-docs-title">Trust Center</h1>
+<p class="damaros-docs-subtitle">Damaros runs deterministic, replayable clinical-trial eligibility on Epic-native cohorts. The substrate below — audit chain, tenant isolation, RBAC, encryption, backup, supply-chain integrity, and joint incident response — is <strong>implemented and tested today</strong>. Third-party attestations (SOC 2, HITRUST, App Orchard) layer on top of that substrate; the active programs below are tracked separately so prospective partners can see what's verifiable now versus what's in flight.</p>
+
+<section class="damaros-docs-section" id="trust-00"><div class="damaros-docs-section-label">00_OPERATIONAL_POSTURE</div><h2 class="damaros-docs-section-heading">Operational posture</h2><table class="damaros-kv-table">
+<tr><td>READ_ACCESS</td><td>Read-only against institutional sources (Epic FHIR, SMART Backend Services). No EHR write scopes requested at initial deployment (see <a class="damaros-kv-link" href="#docs-03c">Documentation §03C</a>).</td></tr>
+<tr><td>WRITES</td><td>Confined to the Damaros application database inside the hospital-approved deployment boundary. No outbound mutation of source-of-truth systems.</td></tr>
+<tr><td>AUDIT_CHAIN</td><td>Hash-chained SHA-256 audit on every domain event. Chain heads signed by KMS, externally published to S3 object-lock + RFC 3161 timestamp authority.</td></tr>
+<tr><td>TENANCY</td><td>Tenant-isolated by <code>(org, study, trial)</code>. Postgres RLS enforced on 20+ tables; cross-tenant access denied at the database layer, not just the application layer.</td></tr>
+<tr><td>DETERMINISM</td><td>No stochastic AI on the screening hot path. Identical inputs → identical PASS/REVIEW/FAIL with criterion-level provenance (see <a class="damaros-kv-link" href="#engineering-01">Engineering Note 01 §01</a>).</td></tr>
+<tr><td>EGRESS_DEFAULT</td><td>Deny-by-default API egress NetworkPolicy with explicit CIDR allowlists for Epic FHIR, OIDC, in-cluster Postgres/Redis, and DNS only.</td></tr>
+</table></section>
+
+<section class="damaros-docs-section" id="trust-01"><div class="damaros-docs-section-label">01_PUBLIC_ENDPOINTS</div><h2 class="damaros-docs-section-heading">Public verification endpoints</h2><div class="damaros-docs-body"><p>The Damaros product repository and container registry are private. The JWKS endpoints below are the public artifacts you can verify without an NDA — they back Epic SMART Backend Services and rotate alongside the incumbent key so there is no authentication gap. Supply-chain artifacts (SBOM, Cosign signatures, build provenance per §07) and operator CLIs (audit chain verify per §02) are available under NDA for review packets and pilot deployments.</p></div>
+
+<div class="damaros-docs-pre-caption">JWKS endpoints (public keys; private keys never leave deployment)</div>
+<pre class="damaros-docs-pre">curl -s https://www.damaros.ai/.well-known/jwks-prod.json    | jq .
+curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
+<p class="damaros-docs-pre-note">Production and non-production keypairs are independent. Rotation publishes the next public key in JWKS alongside the incumbent so Epic always has overlapping validity (see <a class="damaros-kv-link" href="#docs-02a">Documentation §02A</a>).</p>
+</section>
+
+<section class="damaros-docs-section" id="trust-02"><div class="damaros-docs-section-label">02_AUDIT_AND_REPLAY</div><h2 class="damaros-docs-section-heading">Audit &amp; replay</h2><ul class="damaros-bullet-list">
+<li><strong>Hash-chained audit log:</strong> every domain event (cohort sync, screening run, override, export) records a SHA-256 hash linked to the prior event's hash. Tamper detection is structural; a single missing or altered event breaks the chain.</li>
+<li><strong>KMS-signed chain heads:</strong> chain heads are signed by a KMS key under deployment control, then externally published to S3 object-lock and RFC 3161 timestamp authority. Three independent witnesses to "this state existed at this time."</li>
+<li><strong>Operator-facing CLI:</strong> <code>damaros chain verify</code> produces a deterministic transcript that any auditor (internal or external) can reproduce against the same chain. Not "trust us"; "run it yourself."</li>
+<li><strong>Replayable screening:</strong> any criterion outcome can be re-executed against the original protocol version, cohort snapshot, evidence snapshot, and <code>evaluation_as_of</code>. Same inputs → bit-identical decision (see <a class="damaros-kv-link" href="#engineering-03">Engineering Note 01 §03</a>).</li>
+<li><strong>Sample transcript available on request</strong> for review packets.</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-03"><div class="damaros-docs-section-label">03_TENANT_ISOLATION</div><h2 class="damaros-docs-section-heading">Tenant isolation</h2><ul class="damaros-bullet-list">
+<li><strong>Postgres Row-Level Security</strong> applied on 20+ trial-scoped tables (cohorts, screening rows, audit events, exports, overrides, evidence references).</li>
+<li><strong>Tenancy keyed on <code>(org, study, trial)</code>;</strong> every authenticated principal carries scoped claims, and queries filter at the database layer before returning rows to the application.</li>
+<li><strong>Property-based fuzz tests</strong> in CI assert that generated principals from one tenant cannot read or write rows belonging to another, across full table coverage.</li>
+<li><strong>No cross-tenant joins</strong> in application code; cohort and screening artifacts cannot be aggregated outside the deployment-approved tenancy boundary.</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-04"><div class="damaros-docs-section-label">04_IDENTITY_AND_ACCESS</div><h2 class="damaros-docs-section-heading">Identity &amp; access control</h2><ul class="damaros-bullet-list">
+<li><strong>16 named roles</strong> with explicit permission matrices: coordinator, investigator, monitor, auditor, security, operator, integrations service identity, and others. RBAC enforced at every API entry point with <code>principal_from_request</code> resolving subject + organization + trial scope.</li>
+<li><strong>Fail-closed:</strong> ambiguous or missing principals return 401/403, never a degraded read. No "default to public" path.</li>
+<li><strong>JWT + JWKS</strong> for OIDC-backed user sessions; signed bearer tokens with rotation and revocation. Web sessions TTL-bound.</li>
+<li><strong>Service-to-service automation</strong> uses dedicated org-scoped tokens stored in a secret manager, with rotation on demand and per-call audit logging — no human session impersonation.</li>
+<li><strong>Epic Backend Services</strong> uses <code>private_key_jwt</code> (RFC 7523) with RS384-signed assertions; private signing keys never appear in JWKS, source, or browser bundles.</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-05"><div class="damaros-docs-section-label">05_DATA_PROTECTION</div><h2 class="damaros-docs-section-heading">Data protection</h2><ul class="damaros-bullet-list">
+<li><strong>Encryption in transit:</strong> TLS for all FHIR, browser, and inter-service traffic.</li>
+<li><strong>Encryption at rest:</strong> Postgres + S3 storage encryption per deployment architecture and customer BAA/DPA terms.</li>
+<li><strong>PHI scrubber</strong> on application logs: structured field-level exclusion lists strip free-text clinical narrative from default log templates. High-sensitivity routes use reduced payloads.</li>
+<li><strong>Secret management:</strong> Epic signing keys, KMS material, automation tokens, and DB credentials live in a secret manager or secure mount. Never in git, never in client bundles, never in browser-visible config.</li>
+<li><strong>No silent egress:</strong> protocol assistance paths (where enabled at all) operate only on non-patient protocol/synopsis text behind deployment flags and pattern guards (see <a class="damaros-kv-link" href="#docs-04">Documentation §04</a>). Default hospital deployments keep external assistance off.</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-06"><div class="damaros-docs-section-label">06_BACKUP_AND_RECOVERY</div><h2 class="damaros-docs-section-heading">Backup &amp; disaster recovery</h2><ul class="damaros-bullet-list">
+<li><strong>WAL-G continuous archiving</strong> with point-in-time recovery (PITR) for the Damaros application database. Recovery to any committed second within the retention window.</li>
+<li><strong>DR drill CLI</strong> (<code>damaros dr_drill</code>) executes restore-to-isolated-environment on a documented cadence. Drills are recorded with chain-attested timestamps; the exercise itself is auditable.</li>
+<li><strong>Documented RTO/RPO targets</strong> per deployment contract; drill outputs publish actuals against targets so customers see drift before it becomes an incident.</li>
+<li><strong>Tested restore, not theoretical:</strong> every drill performs a full schema + data restore and validates application boot + health-check, not just "the backup file exists."</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-07"><div class="damaros-docs-section-label">07_SUPPLY_CHAIN</div><h2 class="damaros-docs-section-heading">Supply-chain integrity</h2><ul class="damaros-bullet-list">
+<li><strong>SBOM published per release</strong> in CycloneDX format, attached to the container image and downloadable via <code>cosign download sbom</code>.</li>
+<li><strong>Cosign signatures</strong> on every release artifact, tied to the GitHub Actions workflow identity (keyless OIDC). Verifiable with <code>cosign verify</code>; tampered images fail signature check.</li>
+<li><strong>Trivy</strong> in CI for container image vulnerability scanning; high/critical CVEs gate the build.</li>
+<li><strong>pip-audit</strong> in CI for Python dependency vulnerabilities; advisories surface on the PR before merge.</li>
+<li><strong>Build provenance:</strong> every release ties to a specific commit, workflow run, and signer identity. Reproducible from source.</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-08"><div class="damaros-docs-section-label">08_INCIDENT_RESPONSE</div><h2 class="damaros-docs-section-heading">Incident response</h2><ul class="damaros-bullet-list">
+<li><strong>Joint IR model:</strong> Damaros and the customer security team operate a shared runbook. Damaros publishes initial triage; customer drives institutional notification and clinical response per their policy.</li>
+<li><strong>HIPAA breach notification clocks</strong> wired into the playbook: 60-day individual + HHS notification (≥500 affected) with documented decision tree for risk-of-harm assessment.</li>
+<li><strong>Audit-chain forensics:</strong> incident scoping uses the hash-chained event log. "What was accessed, by whom, when" is a query, not a reconstruction project.</li>
+<li><strong>Post-incident:</strong> root cause + corrective action documented and communicated to affected customers within contractual timelines.</li>
+</ul></section>
+
+<section class="damaros-docs-section" id="trust-09"><div class="damaros-docs-section-label">09_HIPAA_SECURITY_RULE</div><h2 class="damaros-docs-section-heading">HIPAA Security Rule mapping</h2><div class="damaros-docs-body"><p>Internal Security Risk Assessment complete against §§164.308 (Administrative), 164.310 (Physical), 164.312 (Technical), 164.314 (Organizational), and 164.316 (Policies &amp; documentation). 61 standards/specifications mapped to current implementation with codebase evidence.</p></div><table class="damaros-kv-table">
+<tr><td>HIGH_RISK_ITEMS</td><td>0</td></tr>
+<tr><td>INADEQUATE_MITIGATIONS</td><td>0</td></tr>
+<tr><td>FORMAL_GAPS</td><td>Sanction Policy and Security Awareness Training are not formalized at single-founder headcount; both scale with hire #2. Disclosed honestly rather than backdated.</td></tr>
+<tr><td>AVAILABLE_ON_REQUEST</td><td>Damaros HIPAA SRA report (control mapping spreadsheet + executive summary)</td></tr>
+</table></section>
+
+<section class="damaros-docs-section" id="trust-10"><div class="damaros-docs-section-label">10_NIST_CSF_2_0</div><h2 class="damaros-docs-section-heading">NIST Cybersecurity Framework 2.0</h2><div class="damaros-docs-body"><p>Self-assessment complete against all 6 Functions (Govern, Identify, Protect, Detect, Respond, Recover) and 106 subcategories.</p></div><table class="damaros-kv-table">
+<tr><td>OVERALL_TIER</td><td>Tier 3 — Repeatable</td></tr>
+<tr><td>TIER_4_FUNCTIONS</td><td>Audit chain integrity, deterministic replay (Adaptive)</td></tr>
+<tr><td>HEADCOUNT_GAPS</td><td>GV.RM-01/02/06 (formal risk register), PR.AT-01/02 (security awareness training program). Both are headcount-dependent and disclosed.</td></tr>
+<tr><td>AVAILABLE_ON_REQUEST</td><td>NIST CSF 2.0 control mapping spreadsheet + tier rationale</td></tr>
+</table></section>
+
+<section class="damaros-docs-section" id="trust-11"><div class="damaros-docs-section-label">11_DATA_CLASSIFICATION</div><h2 class="damaros-docs-section-heading">Three-class data classification</h2><table class="damaros-kv-table">
+<tr><td>CLASS_A_PHI</td><td>Identifiable patient data from institutional sources. Stays inside the hospital-approved deployment boundary. Not transmitted to third-party assistance endpoints under any deployment configuration on the screening hot path.</td></tr>
+<tr><td>CLASS_B_LIMITED_DATASET</td><td>De-identified or limited dataset per HIPAA §164.514(e). Permitted under DUA for retrospective Pre-Validation; tagged at ingest and prevented from re-identification at export.</td></tr>
+<tr><td>CLASS_C_NON_PATIENT</td><td>Protocol text, synopsis, configuration, and operational telemetry. May pass deployment-flagged assistance paths where explicitly enabled by the site. No patient identifiers, no cohort-linked fields.</td></tr>
+</table></section>
+
+<section class="damaros-docs-section" id="trust-12"><div class="damaros-docs-section-label">12_PROGRESSION_GATES</div><h2 class="damaros-docs-section-heading">Four-stage progression with gates</h2><ul class="damaros-bullet-list">
+<li><strong>Stage 1 — Pre-Validation:</strong> retrospective, de-identified or limited-dataset cohort. CSV via SFTP. No Epic dependency. Gates: DUA, HIPAA SRA on file, NIST CSF self-assessment, cyber liability bound.</li>
+<li><strong>Stage 2 — Prospective Pilot:</strong> live FHIR cohort sync, read-only Epic Backend Services. Gates: BAA, App Orchard registration, SOC 2 Type I report, institutional security review.</li>
+<li><strong>Stage 3 — Multi-trial production:</strong> multiple concurrent trials per institution. Gates: SOC 2 Type II, HITRUST e1 (or r2 if institution requires), independent penetration test.</li>
+<li><strong>Stage 4 — Multi-institution:</strong> cross-AMC operations. Gates: full third-party attestation portfolio + signed sub-processor agreements with each downstream vendor.</li>
+</ul><div class="damaros-callout">The gate model is intentional: posture required for Stage 4 is not required to start Stage 1. Pre-Validation runs on a defensible-but-light security floor; institutional certifications layer in as the data scope and clinical risk widen.</div></section>
+
+<section class="damaros-docs-section" id="trust-13"><div class="damaros-docs-section-label">13_SUBPROCESSORS</div><h2 class="damaros-docs-section-heading">Subprocessors</h2><div class="damaros-docs-body"><p>Default deployment posture: <strong>zero subprocessors with PHI access</strong>. Infrastructure subprocessors (cloud, KMS, object storage, timestamp authority, identity provider) operate on encrypted blobs or non-PHI metadata. Updated on change.</p></div><table class="damaros-kv-table">
+<tr><td>CLOUD_PROVIDER</td><td>Customer-selected (AWS / GCP / Azure / on-prem). Damaros operates customer-owned infrastructure or runs in a Damaros-operated tenant per contract.</td></tr>
+<tr><td>KMS</td><td>Cloud-native KMS (AWS KMS / GCP KMS / Azure Key Vault). Holds chain-signing keys; never sees plaintext PHI.</td></tr>
+<tr><td>OBJECT_STORAGE</td><td>S3 (or equivalent) with object-lock for chain-head witnesses. Encrypted at rest.</td></tr>
+<tr><td>TIMESTAMP_AUTHORITY</td><td>RFC 3161 TSA for chain-head timestamps. Receives hash digests only, no PHI.</td></tr>
+<tr><td>IDENTITY_PROVIDER</td><td>Customer-selected OIDC IdP (Okta, Azure AD, Auth0, etc.). Damaros does not operate user identity directly.</td></tr>
+<tr><td>FULL_LIST_ON_REQUEST</td><td>Detailed subprocessor inventory with terms available under NDA.</td></tr>
+</table></section>
+
+<section class="damaros-docs-section" id="trust-14"><div class="damaros-docs-section-label">14_DOCUMENTS_ON_REQUEST</div><h2 class="damaros-docs-section-heading">Documents available on request</h2><ul class="damaros-bullet-list">
+<li>HIPAA Security Risk Assessment (executive summary + control mapping)</li>
+<li>NIST CSF 2.0 self-assessment (tier rationale + 106-subcategory mapping)</li>
+<li>NIST 800-53 Moderate baseline mapping (on CISO request)</li>
+<li>Data flow diagram (retrospective Pre-Validation; prospective FHIR cohort sync)</li>
+<li>Data Use Agreement template (HIPAA limited-dataset)</li>
+<li>Business Associate Agreement template</li>
+<li>Network policy / egress allowlist template (deploy-time NetworkPolicy)</li>
+<li>Subprocessor inventory with terms</li>
+<li>Sample <code>damaros chain verify</code> transcript</li>
+<li>SOC 2 Type I / HITRUST e1 program plan (timelines + scope)</li>
+</ul><div class="damaros-callout">Most are NDA-gated; standard turnaround is 2 business days from request.</div></section>
+
+<div class="damaros-docs-divider"></div>
+
+<section class="damaros-docs-section" id="trust-15"><div class="damaros-docs-section-label">15_ACTIVE_PROGRAMS</div><h2 class="damaros-docs-section-heading">Active programs (in progress)</h2><div class="damaros-docs-body"><p>The substrate above is implemented and tested today. Third-party attestations layer on top of that substrate; the programs below are active and tracked. Status reflects program state, not aspirational marketing.</p></div><table class="damaros-kv-table">
+<tr><td>SOC_2_TYPE_I</td><td><em>In progress.</em> Vanta evidence collection on; auditor engagement letter signed at verbal pilot intent. Type I report target 8–16 weeks from auditor kickoff.</td></tr>
+<tr><td>SOC_2_TYPE_II</td><td><em>Planned.</em> Begins after Type I observation period; sequenced to Stage 2 multi-trial production gates.</td></tr>
+<tr><td>HITRUST_e1</td><td><em>Readiness mapping in progress.</em> Vanta-paired or AEA-specialist (CORL Technologies / Coalfire / A-LIGN) decision pending pilot intent.</td></tr>
+<tr><td>EPIC_APP_ORCHARD</td><td><em>Submission package complete.</em> JWKS hosted; integration documentation public (see <a class="damaros-kv-link" href="#docs">Documentation</a>). Registration sequenced to Stage 2.</td></tr>
+<tr><td>VANTA_PLATFORM</td><td><em>Active.</em> Automated Compliance, Trust Center, Vendor Risk Management, Questionnaire Automation. Continuous evidence collection.</td></tr>
+<tr><td>CYBER_LIABILITY_E_O</td><td><em>In procurement.</em> Cyber liability + professional E&amp;O coverage; bound before pilot start. Carrier and limits to be published here once bound.</td></tr>
+<tr><td>21_CFR_PART_11</td><td><em>Tracked.</em> Electronic records / electronic signatures program plan exists; activation scoped to trials with FDA-regulated clinical decision-making.</td></tr>
+<tr><td>FORMAL_RISK_REGISTER</td><td><em>Headcount-gated.</em> Qualitative tier-based risk scoring used today; formal register stands up with security hire.</td></tr>
+<tr><td>SECURITY_AWARENESS_TRAINING</td><td><em>Headcount-gated.</em> Single-founder org today; formal program activates with hire #2.</td></tr>
+<tr><td>PUBLISHED_VDP</td><td><em>In progress.</em> security@damaros.ai is monitored today; formal Vulnerability Disclosure Policy (scope, safe harbor, response SLAs) publishing alongside this Trust page update.</td></tr>
+</table></section>
+
+<section class="damaros-docs-section" id="trust-16"><div class="damaros-docs-section-label">16_VULNERABILITY_DISCLOSURE</div><h2 class="damaros-docs-section-heading">Vulnerability disclosure</h2><div class="damaros-docs-body">
+<p>Security researchers are welcome. Report findings to <a class="damaros-kv-link" href="mailto:security@damaros.ai">security@damaros.ai</a>. We respond within 2 business days, triage within 5, and publish remediation in subsequent release notes.</p>
+<p>Please do not test against production hospital deployments. A non-production environment is available on request for coordinated testing.</p>
+</div><div class="damaros-callout"><strong>Safe harbor (in spirit, formalizing):</strong> good-faith research that follows responsible disclosure, avoids PHI access, and does not degrade availability will not be pursued legally. The formal policy publishes alongside the public VDP (see §15).</div></section>
+
+<section class="damaros-docs-section" id="trust-17"><div class="damaros-docs-section-label">17_CONTACT</div><h2 class="damaros-docs-section-heading">Contact</h2><div class="damaros-contact-block"><div>Security &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:security@damaros.ai">security@damaros.ai</a></div><div>General &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div><div>Documentation &nbsp;<a href="#docs">damaros.ai/#docs</a></div><div>Engineering &nbsp;&nbsp;&nbsp;<a href="#engineering">damaros.ai/#engineering</a></div><div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://damaros.ai">damaros.ai</a></div></div></section>
 
 </div></div></div>
 
@@ -2475,7 +2622,7 @@ spec:
       return;
     }
     var panel = h.split("-")[0];
-    if (panel === "docs" || panel === "engineering") {
+    if (panel === "docs" || panel === "engineering" || panel === "trust") {
       setPanel(panel, h.indexOf("-") > -1 ? h : null);
     } else {
       setPanel("home");
