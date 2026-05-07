@@ -678,6 +678,11 @@ body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-
   display: grid;
   place-items: center;
 }
+body.damaros-ignition-home-active:not(.ig-workspace):not(.ig-return) #damaros-panel-home.active .damaros-ignition .home {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
 #damaros-panel-home.active .damaros-ignition .hero {
   position: absolute;
   inset: calc(var(--tab) + 1rem) 1rem 2.2rem;
@@ -686,9 +691,6 @@ body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-
   text-align: center;
   transition: opacity 0.72s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.72s ease;
   touch-action: manipulation;
-}
-body.damaros-ignition-home-active:not(.ig-workspace):not(.ig-return) #damaros-panel-home.active .damaros-ignition .hero {
-  cursor: pointer;
 }
 body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .hero {
   opacity: 0;
@@ -853,46 +855,36 @@ body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damar
 #damaros-panel-home.active .damaros-ignition .ignition-dot:focus-visible {
   box-shadow: 0 0 14px rgba(169, 192, 214, 0.72), 0 0 38px rgba(123, 150, 178, 0.32), 0 0 80px rgba(123, 150, 178, 0.13);
 }
-#damaros-panel-home.active .damaros-ignition .command-line {
+#damaros-panel-home.active .damaros-ignition .command-line.hero-action-cue {
   margin-top: 1.15rem;
   min-height: 2.2em;
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--blue);
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
-  letter-spacing: 0.045em;
-  text-transform: lowercase;
+  text-align: center;
+  max-width: 22rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: clamp(0.86rem, 1.35vw, 1.06rem);
+  line-height: 1.45;
+  letter-spacing: 0.055em;
+  text-transform: none;
+  color: rgba(169, 192, 214, 0.92);
+  text-shadow: 0 0 28px rgba(123, 150, 178, 0.22);
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .command-line,
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .command-line {
+body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .command-line.hero-action-cue,
+body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .command-line.hero-action-cue {
   opacity: 0;
   transform: translateY(-4px);
 }
-#damaros-panel-home.active .damaros-ignition .cursor {
-  width: 2px;
-  height: 1.1em;
-  margin-left: 6px;
-  background: var(--blue);
-  animation: blink 1.25s step-end infinite;
-  box-shadow: 0 0 12px rgba(123, 150, 178, 0.45);
-}
-#damaros-panel-home.active .damaros-ignition .hint {
-  margin-top: 0.6rem;
-  color: rgba(232, 232, 232, 0.46);
-  opacity: 0.88;
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: opacity 0.35s ease;
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .hint,
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .hint {
-  opacity: 0;
-}
 #damaros-panel-home.active .damaros-ignition .cta-row {
-  margin-top: 1.65rem;
+  margin-top: 1.35rem;
   display: flex;
   justify-content: center;
 }
@@ -1375,6 +1367,46 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
   pointer-events: none;
 }
 @media (max-width: 920px) {
+  #damaros-panel-home.active .damaros-ignition .monogram-bg {
+    opacity: 0.52;
+  }
+  #damaros-panel-home.active .damaros-ignition .monogram-grid {
+    opacity: 0.38;
+  }
+  #damaros-panel-home.active .damaros-ignition .monogram-grid img {
+    opacity: 0.24;
+    filter: grayscale(1) brightness(0.95) contrast(1.1);
+  }
+  body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .monogram-bg {
+    opacity: 0.58;
+  }
+  body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .monogram-bg {
+    opacity: 0.5;
+  }
+  body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .monogram-bg {
+    opacity: 0.56;
+  }
+  @media (prefers-color-scheme: dark) {
+    #damaros-panel-home.active .damaros-ignition .monogram-bg {
+      opacity: 0.6;
+    }
+    #damaros-panel-home.active .damaros-ignition .monogram-grid {
+      opacity: 0.46;
+    }
+    #damaros-panel-home.active .damaros-ignition .monogram-grid img {
+      opacity: 0.3;
+      filter: grayscale(1) brightness(1.08) contrast(1.08);
+    }
+    body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .monogram-bg {
+      opacity: 0.66;
+    }
+    body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .monogram-bg {
+      opacity: 0.58;
+    }
+    body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .monogram-bg {
+      opacity: 0.62;
+    }
+  }
   #damaros-panel-home.active:not(.damaros-ig-scroll) {
     overflow: hidden !important;
   }
@@ -1403,8 +1435,14 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
     position: relative;
     inset: auto;
     width: 100%;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    align-self: stretch;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
   }
   #damaros-panel-home.active.damaros-ig-scroll .damaros-ignition .home {
     display: grid;
@@ -1620,13 +1658,12 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
 <div class="scan-ring one" aria-hidden="true"></div>
 <div class="scan-ring two" aria-hidden="true"></div>
 <div class="scan-ring three" aria-hidden="true"></div>
-<main class="home">
+<main class="home" id="ignitionHomeMain">
 <section class="hero" id="ignitionHero" aria-label="Damaros hero">
 <div class="hero-inner">
 <div class="logo">Damaros<button type="button" class="ignition-dot" id="ignitionDot" aria-label="Initialize Damaros trial execution workspace"></button></div>
-<div class="command-line" aria-live="polite"><span id="typed"></span><span class="cursor"></span></div>
-<div class="hint" id="hint">click or tap anywhere to initialize</div>
-<div class="cta-row"><a class="cta" href="mailto:anirudh@damaros.ai">Request a Demo <span>→</span></a></div>
+<p class="command-line hero-action-cue" id="heroActionCue" aria-live="polite">click anywhere to initialize</p>
+<div class="cta-row"><a class="cta" href="mailto:anirudh@damaros.ai">Request a Demo</a></div>
 </div>
 </section>
 <section class="workspace" id="workspace" aria-label="Damaros workflow workspace">
@@ -2101,29 +2138,33 @@ spec:
     },
   };
 
-  const idlePhrases = [
-    "control trial execution",
-    "secure protocol logic",
-    "validate population data",
-    "monitor screening decisions",
-    "prepare forms intelligence",
-    "ensure replayability",
-  ];
-
   const dot = document.getElementById("ignitionDot");
   const workspaceLogo = document.getElementById("workspaceLogo");
   const workspaceLogoDot = document.getElementById("workspaceLogoDot");
-  const typed = document.getElementById("typed");
-  const hint = document.getElementById("hint");
+  const heroActionCue = document.getElementById("heroActionCue");
   const grid = document.getElementById("monogramGrid");
+  const mqPointerCoarse = window.matchMedia("(pointer: coarse)");
 
   let state = "idle";
-  let idlePhraseIndex = 0;
-  let idleCharIndex = 0;
-  let idleDeleting = false;
-  let idleTimer = null;
   let parallaxX = 0;
   let parallaxY = 0;
+
+  function updateHeroActionCue() {
+    if (!heroActionCue) return;
+    heroActionCue.textContent = mqPointerCoarse.matches ? "tap anywhere to initialize" : "click anywhere to initialize";
+  }
+
+  function bindHeroActionCueMedia() {
+    function onPointerTypeChange() {
+      updateHeroActionCue();
+      flushDotAnchors();
+    }
+    if (typeof mqPointerCoarse.addEventListener === "function") {
+      mqPointerCoarse.addEventListener("change", onPointerTypeChange);
+    } else if (typeof mqPointerCoarse.addListener === "function") {
+      mqPointerCoarse.addListener(onPointerTypeChange);
+    }
+  }
 
   function renderList(items) {
     return "<ul>" + items.map((item) => "<li>" + item + "</li>").join("") + "</ul>";
@@ -2216,32 +2257,6 @@ spec:
     });
   }
 
-  function runIdleTypewriter() {
-    if (state !== "idle" || !typed) return;
-    const phrase = idlePhrases[idlePhraseIndex];
-    if (!idleDeleting) {
-      typed.textContent = phrase.slice(0, idleCharIndex + 1);
-      idleCharIndex++;
-      if (idleCharIndex === phrase.length) {
-        idleTimer = setTimeout(() => {
-          idleDeleting = true;
-          runIdleTypewriter();
-        }, 1700);
-        return;
-      }
-    } else {
-      typed.textContent = phrase.slice(0, idleCharIndex - 1);
-      idleCharIndex--;
-      if (idleCharIndex === 0) {
-        idleDeleting = false;
-        idlePhraseIndex = (idlePhraseIndex + 1) % idlePhrases.length;
-        idleTimer = setTimeout(runIdleTypewriter, 260);
-        return;
-      }
-    }
-    idleTimer = setTimeout(runIdleTypewriter, idleDeleting ? 24 : 58);
-  }
-
   function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
@@ -2262,8 +2277,7 @@ spec:
   async function initialize() {
     if (state !== "idle") return;
     state = "initializing";
-    clearTimeout(idleTimer);
-    if (typed) typed.textContent = "";
+    if (heroActionCue) heroActionCue.textContent = "";
     var phPre = homePanel();
     if (phPre) phPre.scrollTop = 0;
     window.scrollTo(0, 0);
@@ -2298,32 +2312,16 @@ spec:
     const ph = homePanel();
     if (ph) ph.classList.remove("damaros-ig-scroll");
     state = "idle";
-    idlePhraseIndex = 0;
-    idleCharIndex = 0;
-    idleDeleting = false;
-    if (typed) typed.textContent = "";
-    updateHint();
+    updateHeroActionCue();
     flushDotAnchors();
-    requestAnimationFrame(() => {
-      runIdleTypewriter();
-    });
-  }
-
-  function updateHint() {
-    if (!hint) return;
-    hint.textContent = "click or tap anywhere to initialize";
   }
 
   window.__damarosIgnitionReset = function () {
-    clearTimeout(idleTimer);
     state = "idle";
-    idlePhraseIndex = 0;
-    idleCharIndex = 0;
-    idleDeleting = false;
     document.body.classList.remove("ig-init", "ig-workspace", "ig-return");
     const ph = homePanel();
     if (ph) ph.classList.remove("damaros-ig-scroll");
-    if (typed) typed.textContent = "";
+    updateHeroActionCue();
   };
 
   function setPanel(target, anchorId) {
@@ -2338,10 +2336,8 @@ spec:
     } else {
       document.body.classList.add("damaros-ignition-home-active");
       window.__damarosIgnitionReset();
-      updateHint();
       requestAnimationFrame(() => {
         flushDotAnchors();
-        runIdleTypewriter();
       });
     }
     if (isHome) {
@@ -2361,16 +2357,28 @@ spec:
     }, 0);
   }
 
-  const ignitionHero = document.getElementById("ignitionHero");
-  function heroActivatesIgnition(event) {
+  const ignitionHomeMain = document.getElementById("ignitionHomeMain");
+  function homeSurfaceActivatesIgnition(event) {
     if (state !== "idle") return;
-    var t = event.target;
-    var el = t && t.nodeType === 1 ? t : t && t.parentElement;
-    if (el && typeof el.closest === "function" && el.closest("a[href]")) return;
+    var el = null;
+    if (event.type === "touchend" && event.changedTouches && event.changedTouches.length && typeof document.elementFromPoint === "function") {
+      var touch = event.changedTouches[0];
+      el = document.elementFromPoint(touch.clientX, touch.clientY);
+    }
+    if (!el) {
+      var t = event.target;
+      el = t && t.nodeType === 1 ? t : t && t.parentElement;
+    }
+    if (!el || !ignitionHomeMain || !ignitionHomeMain.contains(el)) return;
+    if (typeof el.closest === "function") {
+      if (el.closest("a[href]")) return;
+      if (el.closest("nav")) return;
+    }
     initialize();
   }
-  if (ignitionHero) {
-    ignitionHero.addEventListener("click", heroActivatesIgnition);
+  if (ignitionHomeMain) {
+    ignitionHomeMain.addEventListener("click", homeSurfaceActivatesIgnition);
+    ignitionHomeMain.addEventListener("touchend", homeSurfaceActivatesIgnition, { passive: true });
   }
   if (dot) {
     dot.addEventListener("click", initialize);
@@ -2403,7 +2411,7 @@ spec:
     btn.addEventListener("click", () => setWorkflow(btn.dataset.step));
   });
   window.addEventListener("resize", () => {
-    updateHint();
+    updateHeroActionCue();
     flushDotAnchors();
   });
 
@@ -2425,6 +2433,8 @@ spec:
 
   initMonogramGrid();
   initParallax();
+  bindHeroActionCueMedia();
+  updateHeroActionCue();
   window.addEventListener("load", updateHeroDotAnchor);
   routeFromHash();
   setWorkflow("protocol");
