@@ -2133,18 +2133,11 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
 
 <section class="damaros-docs-section" id="trust-11"><div class="damaros-docs-section-label">11_DATA_CLASSIFICATION</div><h2 class="damaros-docs-section-heading">Three-class data classification</h2><table class="damaros-kv-table">
 <tr><td>CLASS_A_PHI</td><td>Identifiable patient data from institutional sources. Stays inside the hospital-approved deployment boundary. Not transmitted to third-party assistance endpoints under any deployment configuration on the screening hot path.</td></tr>
-<tr><td>CLASS_B_LIMITED_DATASET</td><td>De-identified or limited dataset per HIPAA §164.514(e). Permitted under DUA for retrospective Pre-Validation; tagged at ingest and prevented from re-identification at export.</td></tr>
+<tr><td>CLASS_B_LIMITED_DATASET</td><td>De-identified or limited dataset per HIPAA §164.514(e). Permitted under Data Use Agreement; tagged at ingest and prevented from re-identification at export.</td></tr>
 <tr><td>CLASS_C_NON_PATIENT</td><td>Protocol text, synopsis, configuration, and operational telemetry. May pass deployment-flagged assistance paths where explicitly enabled by the site. No patient identifiers, no cohort-linked fields.</td></tr>
 </table></section>
 
-<section class="damaros-docs-section" id="trust-12"><div class="damaros-docs-section-label">12_PROGRESSION_GATES</div><h2 class="damaros-docs-section-heading">Four-stage progression with gates</h2><ul class="damaros-bullet-list">
-<li><strong>Stage 1 — Pre-Validation:</strong> retrospective, de-identified or limited-dataset cohort. CSV via SFTP. No Epic dependency. Gates: DUA, HIPAA SRA on file, NIST CSF self-assessment, cyber liability bound.</li>
-<li><strong>Stage 2 — Prospective Pilot:</strong> live FHIR cohort sync, read-only Epic Backend Services. Gates: BAA, App Orchard registration, SOC 2 Type I report, institutional security review.</li>
-<li><strong>Stage 3 — Multi-trial production:</strong> multiple concurrent trials per institution. Gates: SOC 2 Type II, HITRUST e1 (or r2 if institution requires), independent penetration test.</li>
-<li><strong>Stage 4 — Multi-institution:</strong> cross-AMC operations. Gates: full third-party attestation portfolio + signed sub-processor agreements with each downstream vendor.</li>
-</ul><div class="damaros-callout">The gate model is intentional: posture required for Stage 4 is not required to start Stage 1. Pre-Validation runs on a defensible-but-light security floor; institutional certifications layer in as the data scope and clinical risk widen.</div></section>
-
-<section class="damaros-docs-section" id="trust-13"><div class="damaros-docs-section-label">13_SUBPROCESSORS</div><h2 class="damaros-docs-section-heading">Subprocessors</h2><div class="damaros-docs-body"><p>Default deployment posture: <strong>zero subprocessors with PHI access</strong>. Infrastructure subprocessors (cloud, KMS, object storage, timestamp authority, identity provider) operate on encrypted blobs or non-PHI metadata. Updated on change.</p></div><table class="damaros-kv-table">
+<section class="damaros-docs-section" id="trust-12"><div class="damaros-docs-section-label">12_SUBPROCESSORS</div><h2 class="damaros-docs-section-heading">Subprocessors</h2><div class="damaros-docs-body"><p>Default deployment posture: <strong>zero subprocessors with PHI access</strong>. Infrastructure subprocessors (cloud, KMS, object storage, timestamp authority, identity provider) operate on encrypted blobs or non-PHI metadata. Updated on change.</p></div><table class="damaros-kv-table">
 <tr><td>CLOUD_PROVIDER</td><td>Customer-selected (AWS / GCP / Azure / on-prem). Damaros operates customer-owned infrastructure or runs in a Damaros-operated tenant per contract.</td></tr>
 <tr><td>KMS</td><td>Cloud-native KMS (AWS KMS / GCP KMS / Azure Key Vault). Holds chain-signing keys; never sees plaintext PHI.</td></tr>
 <tr><td>OBJECT_STORAGE</td><td>S3 (or equivalent) with object-lock for chain-head witnesses. Encrypted at rest.</td></tr>
@@ -2153,11 +2146,11 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
 <tr><td>FULL_LIST_ON_REQUEST</td><td>Detailed subprocessor inventory with terms available under NDA.</td></tr>
 </table></section>
 
-<section class="damaros-docs-section" id="trust-14"><div class="damaros-docs-section-label">14_DOCUMENTS_ON_REQUEST</div><h2 class="damaros-docs-section-heading">Documents available on request</h2><ul class="damaros-bullet-list">
+<section class="damaros-docs-section" id="trust-13"><div class="damaros-docs-section-label">13_DOCUMENTS_ON_REQUEST</div><h2 class="damaros-docs-section-heading">Documents available on request</h2><ul class="damaros-bullet-list">
 <li>HIPAA Security Risk Assessment (executive summary + control mapping)</li>
 <li>NIST CSF 2.0 self-assessment (tier rationale + 106-subcategory mapping)</li>
 <li>NIST 800-53 Moderate baseline mapping (on CISO request)</li>
-<li>Data flow diagram (retrospective Pre-Validation; prospective FHIR cohort sync)</li>
+<li>Data flow diagram</li>
 <li>Data Use Agreement template (HIPAA limited-dataset)</li>
 <li>Business Associate Agreement template</li>
 <li>Network policy / egress allowlist template (deploy-time NetworkPolicy)</li>
@@ -2168,25 +2161,25 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
 
 <div class="damaros-docs-divider"></div>
 
-<section class="damaros-docs-section" id="trust-15"><div class="damaros-docs-section-label">15_ACTIVE_PROGRAMS</div><h2 class="damaros-docs-section-heading">Active programs (in progress)</h2><div class="damaros-docs-body"><p>The substrate above is implemented and tested today. Third-party attestations layer on top of that substrate; the programs below are active and tracked. Status reflects program state, not aspirational marketing.</p></div><table class="damaros-kv-table">
-<tr><td>SOC_2_TYPE_I</td><td><em>In progress.</em> Vanta evidence collection on; auditor engagement letter signed at verbal pilot intent. Type I report target 8–16 weeks from auditor kickoff.</td></tr>
-<tr><td>SOC_2_TYPE_II</td><td><em>Planned.</em> Begins after Type I observation period; sequenced to Stage 2 multi-trial production gates.</td></tr>
-<tr><td>HITRUST_e1</td><td><em>Readiness mapping in progress.</em> Vanta-paired or AEA-specialist (CORL Technologies / Coalfire / A-LIGN) decision pending pilot intent.</td></tr>
-<tr><td>EPIC_APP_ORCHARD</td><td><em>Submission package complete.</em> JWKS hosted; integration documentation public (see <a class="damaros-kv-link" href="#docs">Documentation</a>). Registration sequenced to Stage 2.</td></tr>
+<section class="damaros-docs-section" id="trust-14"><div class="damaros-docs-section-label">14_ACTIVE_PROGRAMS</div><h2 class="damaros-docs-section-heading">Active programs (in progress)</h2><div class="damaros-docs-body"><p>The substrate above is implemented and tested today. Third-party attestations layer on top of that substrate; the programs below are active and tracked. Status reflects program state, not aspirational marketing.</p></div><table class="damaros-kv-table">
+<tr><td>SOC_2_TYPE_I</td><td><em>In progress.</em> Vanta evidence collection active; auditor engagement underway. Type I report target 8–16 weeks from kickoff.</td></tr>
+<tr><td>SOC_2_TYPE_II</td><td><em>Planned.</em> Begins after Type I observation period.</td></tr>
+<tr><td>HITRUST_e1</td><td><em>Readiness mapping in progress.</em> AEA selection in flight (Vanta-paired or specialist firm — CORL Technologies / Coalfire / A-LIGN).</td></tr>
+<tr><td>EPIC_APP_ORCHARD</td><td><em>Submission package complete.</em> JWKS hosted; integration documentation public (see <a class="damaros-kv-link" href="#docs">Documentation</a>). Registration in flight.</td></tr>
 <tr><td>VANTA_PLATFORM</td><td><em>Active.</em> Automated Compliance, Trust Center, Vendor Risk Management, Questionnaire Automation. Continuous evidence collection.</td></tr>
-<tr><td>CYBER_LIABILITY_E_O</td><td><em>In procurement.</em> Cyber liability + professional E&amp;O coverage; bound before pilot start. Carrier and limits to be published here once bound.</td></tr>
+<tr><td>CYBER_LIABILITY_E_O</td><td><em>In procurement.</em> Cyber liability + professional E&amp;O coverage. Carrier and limits to be published here once bound.</td></tr>
 <tr><td>21_CFR_PART_11</td><td><em>Tracked.</em> Electronic records / electronic signatures program plan exists; activation scoped to trials with FDA-regulated clinical decision-making.</td></tr>
 <tr><td>FORMAL_RISK_REGISTER</td><td><em>Headcount-gated.</em> Qualitative tier-based risk scoring used today; formal register stands up with security hire.</td></tr>
 <tr><td>SECURITY_AWARENESS_TRAINING</td><td><em>Headcount-gated.</em> Single-founder org today; formal program activates with hire #2.</td></tr>
 <tr><td>PUBLISHED_VDP</td><td><em>In progress.</em> security@damaros.ai is monitored today; formal Vulnerability Disclosure Policy (scope, safe harbor, response SLAs) publishing alongside this Trust page update.</td></tr>
 </table></section>
 
-<section class="damaros-docs-section" id="trust-16"><div class="damaros-docs-section-label">16_VULNERABILITY_DISCLOSURE</div><h2 class="damaros-docs-section-heading">Vulnerability disclosure</h2><div class="damaros-docs-body">
+<section class="damaros-docs-section" id="trust-15"><div class="damaros-docs-section-label">15_VULNERABILITY_DISCLOSURE</div><h2 class="damaros-docs-section-heading">Vulnerability disclosure</h2><div class="damaros-docs-body">
 <p>Security researchers are welcome. Report findings to <a class="damaros-kv-link" href="mailto:security@damaros.ai">security@damaros.ai</a>. We respond within 2 business days, triage within 5, and publish remediation in subsequent release notes.</p>
 <p>Please do not test against production hospital deployments. A non-production environment is available on request for coordinated testing.</p>
-</div><div class="damaros-callout"><strong>Safe harbor (in spirit, formalizing):</strong> good-faith research that follows responsible disclosure, avoids PHI access, and does not degrade availability will not be pursued legally. The formal policy publishes alongside the public VDP (see §15).</div></section>
+</div><div class="damaros-callout"><strong>Safe harbor (in spirit, formalizing):</strong> good-faith research that follows responsible disclosure, avoids PHI access, and does not degrade availability will not be pursued legally. The formal policy publishes alongside the public VDP (see §14).</div></section>
 
-<section class="damaros-docs-section" id="trust-17"><div class="damaros-docs-section-label">17_CONTACT</div><h2 class="damaros-docs-section-heading">Contact</h2><div class="damaros-contact-block"><div>Security &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:security@damaros.ai">security@damaros.ai</a></div><div>General &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div><div>Documentation &nbsp;<a href="#docs">damaros.ai/#docs</a></div><div>Engineering &nbsp;&nbsp;&nbsp;<a href="#engineering">damaros.ai/#engineering</a></div><div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://damaros.ai">damaros.ai</a></div></div></section>
+<section class="damaros-docs-section" id="trust-16"><div class="damaros-docs-section-label">16_CONTACT</div><h2 class="damaros-docs-section-heading">Contact</h2><div class="damaros-contact-block"><div>Security &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:security@damaros.ai">security@damaros.ai</a></div><div>General &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div><div>Documentation &nbsp;<a href="#docs">damaros.ai/#docs</a></div><div>Engineering &nbsp;&nbsp;&nbsp;<a href="#engineering">damaros.ai/#engineering</a></div><div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://damaros.ai">damaros.ai</a></div></div></section>
 
 </div></div></div>
 
