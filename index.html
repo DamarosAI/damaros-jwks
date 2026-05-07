@@ -685,6 +685,10 @@ body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-
   place-items: center;
   text-align: center;
   transition: opacity 0.72s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.72s ease;
+  touch-action: manipulation;
+}
+body.damaros-ignition-home-active:not(.ig-workspace):not(.ig-return) #damaros-panel-home.active .damaros-ignition .hero {
+  cursor: pointer;
 }
 body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .hero {
   opacity: 0;
@@ -725,7 +729,14 @@ body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-
   border: 0;
   background: transparent;
   color: var(--tp);
-  padding: 0;
+  padding: 0.32rem 0.45rem;
+  margin: -0.32rem -0.45rem;
+  border-radius: 0.4rem;
+  -webkit-tap-highlight-color: transparent;
+}
+#damaros-panel-home.active .damaros-ignition .workspace-logo-wordmark {
+  pointer-events: none;
+  user-select: none;
 }
 body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .workspace-logo {
   opacity: 0.96;
@@ -809,6 +820,7 @@ body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damar
   flex: 0 0 7px;
   transform: translateY(0.05em);
   position: relative;
+  pointer-events: none;
 }
 #damaros-panel-home.active .damaros-ignition .ignition-dot::before {
   content: '';
@@ -1609,17 +1621,17 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
 <div class="scan-ring two" aria-hidden="true"></div>
 <div class="scan-ring three" aria-hidden="true"></div>
 <main class="home">
-<section class="hero" aria-label="Damaros hero">
+<section class="hero" id="ignitionHero" aria-label="Damaros hero">
 <div class="hero-inner">
 <div class="logo">Damaros<button type="button" class="ignition-dot" id="ignitionDot" aria-label="Initialize Damaros trial execution workspace"></button></div>
 <div class="command-line" aria-live="polite"><span id="typed"></span><span class="cursor"></span></div>
-<div class="hint" id="hint">click the dot to initialize</div>
+<div class="hint" id="hint">click or tap anywhere to initialize</div>
 <div class="cta-row"><a class="cta" href="mailto:anirudh@damaros.ai">Request a Demo <span>→</span></a></div>
 </div>
 </section>
 <section class="workspace" id="workspace" aria-label="Damaros workflow workspace">
 <header class="workspace-head">
-<button type="button" class="workspace-logo" id="workspaceLogo" aria-label="Return to Damaros homepage">Damaros<span class="workspace-logo-dot" id="workspaceLogoDot" aria-hidden="true"></span></button>
+<button type="button" class="workspace-logo" id="workspaceLogo" aria-label="Return to Damaros homepage"><span class="workspace-logo-wordmark">Damaros</span><span class="workspace-logo-dot" id="workspaceLogoDot" aria-hidden="true"></span></button>
 </header>
 <div class="cockpit">
 <div class="workflow-map" aria-label="Workflow stages">
@@ -2299,7 +2311,7 @@ spec:
 
   function updateHint() {
     if (!hint) return;
-    hint.textContent = window.matchMedia("(max-width: 640px)").matches ? "tap the dot to initialize" : "click the dot to initialize";
+    hint.textContent = "click or tap anywhere to initialize";
   }
 
   window.__damarosIgnitionReset = function () {
@@ -2349,6 +2361,17 @@ spec:
     }, 0);
   }
 
+  const ignitionHero = document.getElementById("ignitionHero");
+  function heroActivatesIgnition(event) {
+    if (state !== "idle") return;
+    var t = event.target;
+    var el = t && t.nodeType === 1 ? t : t && t.parentElement;
+    if (el && typeof el.closest === "function" && el.closest("a[href]")) return;
+    initialize();
+  }
+  if (ignitionHero) {
+    ignitionHero.addEventListener("click", heroActivatesIgnition);
+  }
   if (dot) {
     dot.addEventListener("click", initialize);
     dot.addEventListener("keydown", (event) => {
@@ -2358,8 +2381,16 @@ spec:
       }
     });
   }
+  function workspaceLogoActivatesReturn(event) {
+    if (state !== "workspace") return;
+    if (!workspaceLogo || !workspaceLogo.contains(event.target)) return;
+    returnHome();
+  }
+  const workspaceHead = document.querySelector("#damaros-panel-home .workspace-head");
+  if (workspaceHead) {
+    workspaceHead.addEventListener("click", workspaceLogoActivatesReturn);
+  }
   if (workspaceLogo) {
-    workspaceLogo.addEventListener("click", returnHome);
     workspaceLogo.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
