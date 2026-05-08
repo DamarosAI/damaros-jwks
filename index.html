@@ -2190,16 +2190,16 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
     const workflow = {
     protocol: {
       label: "01 / PROTOCOL OPS",
-      title: "The protocol becomes executable, not just readable",
-      text: "Protocol Ops compiles the study into versioned, auditable logic so every downstream decision runs against one anchored truth. Amendments stop silently invalidating prior screens.",
+      title: "The protocol, encoded as versioned execution logic",
+      text: "Protocol Ops compiles the study into a versioned, auditable execution substrate: criteria, amendments, and decision rules. Every downstream screen runs against one anchored protocol state, not a PDF or coordinator memory.",
       does: [
         "Turns inclusion and exclusion criteria into structured, version-pinned rules.",
         "Tracks amendments back to the patients and decisions they change.",
         "Eliminates protocol drift between the PDF, REDCap, and coordinator memory.",
       ],
       why: [
-        "Amendments stop cascading into re-screen rework.",
-        "One source of execution logic. The foundation for replay and cross-site scale.",
+        "Amendments propagate as first-class artifacts, not as silent invalidation of prior screens.",
+        "One source of execution logic underpins replay, audit, and cross-site scale.",
       ],
       badges: [
         ["gold", "LOCKED LOGIC"],
@@ -2208,16 +2208,16 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
     },
     population: {
       label: "02 / POPULATION",
-      title: "Surface cohort gaps before they reach screening",
-      text: "Population promotes a frozen, validated patient snapshot from labs, biomarkers, registries, and EHR ingest — quarantining data integrity issues upstream so every screening decision stands up to IRB and sponsor scrutiny.",
+      title: "A cohort substrate: validated, frozen, defensible",
+      text: "Population promotes a frozen, validated patient snapshot from labs, biomarkers, registries, and EHR ingest into a defensible cohort substrate. Data integrity issues quarantine upstream; every screening decision withstands IRB and sponsor scrutiny.",
       does: [
         "Locks a defensible snapshot of patients, labs, biomarkers, files, and registry data.",
         "Flags broken imports, missing values, and conflicting records before a single screen runs.",
         "Reproducibility from the same upstream evidence, every time.",
       ],
       why: [
-        "Most screen failures originate as data-quality failures, not protocol gaps.",
-        "Defensible cohorts unlock retrospective recovery of patients other workflows miss.",
+        "Most screen failures originate in the data, not in the protocol.",
+        "Defensible cohorts retain candidates routine extracts drop, each row backed by source-level evidence.",
       ],
       badges: [
         ["blue", "VALIDATED"],
@@ -2226,16 +2226,16 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
     },
     screening: {
       label: "03 / SCREENING",
-      title: "Triage eligibility faster, with criterion-level precision",
-      text: "Screening runs the locked protocol against the validated cohort and returns PASS, REVIEW, or FAIL at the criterion level — with exact evidence, source attribution, and a delta trace showing what changed since the last run.",
+      title: "Deterministic eligibility, decided at the criterion level",
+      text: "Screening runs the locked protocol against the validated cohort and returns PASS, REVIEW, or FAIL at the criterion level. Each verdict ships with exact evidence, source attribution, and a delta trace showing what changed since the last run.",
       does: [
         "Deterministic eligibility. Same protocol plus same data equals the same decision, every time.",
         "Criterion-level PASS, REVIEW, or FAIL with full evidence. Never a black-box verdict.",
-        "Delta Mode surfaces what flipped — and why — when labs refresh or amendments land.",
+        "Delta Mode marks what flipped, and why, when labs refresh or amendments land.",
       ],
       why: [
-        "Physicians sign off on decisions they can see, audit, and explain, not on AI hunches.",
-        "Sites recover patients other workflows miss, with a defensible record of every screen.",
+        "Every decision is criterion-resolved and evidence-anchored. No black-box verdicts to defend.",
+        "Each PASS, REVIEW, and FAIL ships with source attribution and a delta trace, not just an outcome.",
       ],
       badges: [
         ["pass", "PASS"],
@@ -2246,16 +2246,16 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
     },
     forms: {
       label: "04 / FORMS",
-      title: "A forms intelligence surface. Coordinators create, not re-key.",
-      text: "Forms is a protocol-grounded intelligence layer that extracts, structures, and pre-populates the facts coordinators need — registry rows, screening logs, IRB exhibits — so the team spends time on clinical judgment, not document assembly.",
+      title: "Forms as a protocol-grounded intelligence layer",
+      text: "Forms is a protocol-grounded intelligence layer that extracts, structures, and pre-populates the facts site documents need: registry rows, screening logs, IRB exhibits. Ambiguous fields surface for human review; nothing exports without explicit sign-off.",
       does: [
-        "Ingests protocol and screening facts and surfaces them directly into coordinator-reviewable templates.",
-        "Flags ambiguous or unresolved fields for human review before export. Never silent autocomplete.",
+        "Ingests protocol and screening facts; pre-populates them directly into reviewable templates.",
+        "Surfaces ambiguous or unresolved fields for human review before export. Never silent autocomplete.",
         "Compresses study startup overhead so the team reaches activation sooner.",
       ],
       why: [
-        "Faster study activation means more open trials and more sponsor revenue per site.",
-        "Coordinators move from data entry into clinical judgment.",
+        "Reduces time from protocol approval to first screening verdict.",
+        "Document assembly stops gating activation. Effort redirects into clinical judgment.",
       ],
       badges: [
         ["amber", "REVIEW FLAGS"],
@@ -2264,8 +2264,8 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
     },
     audit: {
       label: "05 / EVIDENCE & AUDIT",
-      title: "Every decision, replayable on demand",
-      text: "Evidence and Audit captures the protocol version, cohort snapshot, evidence, and reviewer trail behind each decision, so any screen, any patient, any amendment can be reconstructed cold for IRB, sponsor, or FDA review.",
+      title: "A replay engine for every screening decision",
+      text: "Evidence & Audit captures the protocol version, cohort snapshot, evidence, and reviewer trail behind every decision. Any screen, any patient, any amendment reconstructs cold for IRB, sponsor, or FDA review.",
       does: [
         "Preserves lineage behind every screening decision and correction.",
         "Replays decisions against historical protocol and cohort state.",
@@ -2273,7 +2273,7 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
       ],
       why: [
         "Trial defensibility today is replay, not just retention.",
-        "Audit-ready by construction means cheaper inspections and faster sponsor onboarding.",
+        "Audit-ready by construction. Inspection prep stops being a separate program of work.",
       ],
       badges: [
         ["violet", "REPLAYABLE"],
