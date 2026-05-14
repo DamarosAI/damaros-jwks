@@ -2074,396 +2074,305 @@ spec:
 <div id="damaros-panel-trust" class="damaros-panel">
   <div class="damaros-docs-wrap">
 
-    <div class="damaros-docs-eyebrow">Trust &amp; Security</div>
-    <h1 class="damaros-docs-title">Trust Boundary</h1>
+    <div class="damaros-docs-eyebrow">Trust &amp; Validation</div>
+    <h1 class="damaros-docs-title">Built to be inspected before it is trusted.</h1>
     <p class="damaros-docs-subtitle">
-      Damaros is hospital-side execution infrastructure for clinical trials. The trust model is built around three boundaries:
-      <strong>source-system access</strong>, <strong>trial-scoped execution</strong>, and <strong>replayable evidence</strong>.
-      The product does not require EHR write-back for initial deployment, does not put generative AI on the patient-screening hot path,
-      and does not represent third-party attestations as complete before they are issued. This page separates what is enforced by
-      architecture, what is controlled by the hospital deployment, and what remains in external readiness programs.
+      Damaros is hospital-side execution infrastructure for clinical trials. Trust does not come from a demo screen or a claim of artificial intelligence.
+      It comes from bounded validation, explicit data boundaries, evidence-linked screening outputs, and security controls a hospital can inspect.
+      The current diligence package is organized around four artifacts: a full-matrix synthetic validation package, a retrospective validation package,
+      a NIST CSF 2.0 self-assessment, and a HIPAA Security Risk Assessment.
     </p>
 
     <section class="damaros-docs-section" id="trust-00">
-      <div class="damaros-docs-section-label">00_BOUNDARY_SUMMARY</div>
-      <h2 class="damaros-docs-section-heading">What Damaros does, and what it does not do.</h2>
+      <div class="damaros-docs-section-label">00_PROOF_PACKET</div>
+      <h2 class="damaros-docs-section-heading">Four packets define the current trust posture.</h2>
       <table class="damaros-kv-table">
         <tr>
-          <td>EXECUTION_MODEL</td>
-          <td>Damaros runs <strong>protocol</strong> → <strong>population</strong> → <strong>screening</strong> → <strong>forms</strong> → <strong>replay</strong> inside a hospital-approved deployment boundary.</td>
+          <td>SYNTHETIC_VALIDATION</td>
+          <td>
+            Engineering validation of the protocol-to-decision substrate across synthetic patients, NCT-anchored protocol locks, ingestion modalities,
+            replay artifacts, manifests, hashes, and no-LLM patient-path gates. This proves engineering reproducibility, not clinical accuracy.
+          </td>
         </tr>
         <tr>
-          <td>EHR_POSTURE</td>
-          <td>Read-only for initial Epic integration. No EHR write scopes are requested for first deployment; write helpers remain disabled unless separately contracted, configured, and attested.</td>
+          <td>RETROSPECTIVE_VALIDATION</td>
+          <td>
+            Site-agnostic validation package for one or two closed oncology protocols, using de-identified or limited-dataset extracts,
+            coordinator or PI adjudication as comparator, and criterion-level agreement as the primary validation unit.
+          </td>
         </tr>
         <tr>
-          <td>AI_BOUNDARY</td>
-          <td>No stochastic AI decides eligibility on patient-identifiable clinical data. Screening is deterministic; optional AI assistance is limited to non-patient protocol or sponsor-document materials.</td>
+          <td>NIST_CSF_2_0</td>
+          <td>
+            Codebase-grounded self-assessment across Govern, Identify, Protect, Detect, Respond, and Recover. Overall posture is assessed as Tier 3,
+            Repeatable, with explicit gaps and delegated controls.
+          </td>
         </tr>
         <tr>
-          <td>DATA_BOUNDARY</td>
-          <td>Patient data is normalized into trial-scoped evidence structures, not replicated into a general-purpose shadow EHR.</td>
-        </tr>
-        <tr>
-          <td>OUTPUT_BOUNDARY</td>
-          <td>Outbound artifacts are screening classifications, criterion-level rationale, evidence references, operational telemetry, and replay packets. Raw FHIR payload exfiltration is not the product posture.</td>
-        </tr>
-        <tr>
-          <td>ATTESTATION_BOUNDARY</td>
-          <td>SOC 2, HITRUST, App Orchard, cyber liability, and VDP are readiness programs until issued or accepted. They are not implied by implemented controls.</td>
+          <td>HIPAA_SRA</td>
+          <td>
+            HIPAA Security Rule assessment for business-associate scope. Maps administrative, physical, technical, organizational,
+            and documentation safeguards to Damaros controls and explicitly separates Damaros responsibility from covered-entity responsibility.
+          </td>
         </tr>
       </table>
     </section>
 
     <section class="damaros-docs-section" id="trust-01">
-      <div class="damaros-docs-section-label">01_VERIFIABLE_NOW</div>
-      <h2 class="damaros-docs-section-heading">Implemented controls available for diligence review.</h2>
+      <div class="damaros-docs-section-label">01_VALIDATION_READINESS</div>
+      <h2 class="damaros-docs-section-heading">Validation begins before patient data enters the system.</h2>
       <div class="damaros-docs-body">
         <p>
-          Damaros distinguishes implemented product controls from institutional approvals. The controls below are architectural
-          primitives or deployment controls that can be inspected in a review packet, pilot environment, or code-level diligence session.
+          Damaros separates engineering validation from clinical validation. The synthetic matrix package exercises the execution substrate before any
+          real patient data is requested. The retrospective package defines the next step: testing against closed oncology protocols with prior human
+          adjudication, under a site-approved de-identified, limited-dataset, or site-hosted pathway.
         </p>
       </div>
       <table class="damaros-kv-table">
         <tr>
-          <td>READ_ONLY_SOURCE_ACCESS</td>
-          <td>Epic FHIR / SMART Backend Services integration is read-only for population ingest and screening. Production access remains subject to hospital approval, Epic registration, and granted scopes.</td>
+          <td>ENGINEERING_VALIDATION</td>
+          <td>
+            Full-matrix synthetic validation is bounded to engineering scope. It exercises protocol locks, ingestion modalities,
+            deterministic evaluation slots, manifesting, replay bundles, equivalence reporting, and no-LLM patient-path controls.
+          </td>
         </tr>
         <tr>
-          <td>TRIAL_SCOPED_NORMALIZATION</td>
-          <td>FHIR, Bulk FHIR, and tabular inputs normalize into protocol-scoped evidence contracts. Unsupported resources do not become hidden eligibility inputs.</td>
+          <td>RETROSPECTIVE_NEXT_STEP</td>
+          <td>
+            The retrospective package is ready for one or two closed oncology protocols with prior adjudication records. It does not require live Epic,
+            Cerner / Oracle Health, or production EHR integration.
+          </td>
         </tr>
         <tr>
-          <td>DETERMINISTIC_SCREENING</td>
-          <td>Fixed protocol version + fixed population snapshot + fixed evidence snapshot + fixed evaluation timestamp produce the same PASS / REVIEW / FAIL outcomes.</td>
+          <td>PRIMARY_VALIDATION_UNIT</td>
+          <td>
+            Patient × criterion agreement. Damaros reports patient-level summaries, but validation is designed around the criterion-level decision
+            because that is where screening disagreement actually occurs.
+          </td>
         </tr>
         <tr>
-          <td>FAIL_CLOSED_REVIEW</td>
-          <td>Missing, stale, conflicting, or unmapped evidence resolves to REVIEW where required by the criterion, not silent PASS.</td>
+          <td>SAFETY_BEHAVIOR</td>
+          <td>
+            Missing, stale, conflicting, ambiguous, or unmapped evidence routes to REVIEW rather than being coerced into PASS or FAIL.
+          </td>
         </tr>
         <tr>
-          <td>RBAC_AND_TENANCY</td>
-          <td>Organization, study, and trial boundaries are enforced through application authorization and database-level tenant scoping.</td>
-        </tr>
-        <tr>
-          <td>AUDIT_AND_REPLAY</td>
-          <td>Screening decisions retain protocol version, population snapshot, evidence snapshot, criterion state, rationale, and operator activity for reconstruction.</td>
-        </tr>
-        <tr>
-          <td>EGRESS_CONTROL</td>
-          <td>Deployment baseline supports deny-by-default API egress with explicit allowlists for Epic FHIR, OIDC, DNS, Postgres, Redis, and approved service endpoints.</td>
-        </tr>
-        <tr>
-          <td>SECRET_HANDLING</td>
-          <td>Epic signing keys and access tokens are server-side secrets. Private signing material is not committed to source, exposed in browsers, or published through JWKS.</td>
+          <td>CLAIM_BOUNDARY</td>
+          <td>
+            Synthetic validation is not clinical validation. Retrospective validation is not FDA validation. Damaros does not claim autonomous enrollment,
+            sponsor endorsement, or production EHR deployment from these packets.
+          </td>
         </tr>
       </table>
     </section>
 
     <section class="damaros-docs-section" id="trust-02">
-      <div class="damaros-docs-section-label">02_SITE_GATED</div>
-      <h2 class="damaros-docs-section-heading">Controls that require hospital participation.</h2>
+      <div class="damaros-docs-section-label">02_RETROSPECTIVE_PATHWAY</div>
+      <h2 class="damaros-docs-section-heading">The first hospital engagement does not require live EHR integration.</h2>
       <div class="damaros-docs-body">
         <p>
-          A production deployment is not a button-click SaaS install. The critical boundary is the hospital environment:
-          identity, source-system access, network policy, cohort definition, contracting, and validation. Damaros narrows this lift,
-          but does not pretend it disappears.
+          Damaros can begin with retrospective validation against closed oncology protocols. The site nominates one or two protocols,
+          identifies prior adjudication records, selects the data-classification pathway, and provides a file-based extract through its own governance process.
+          Damaros produces criterion-level outputs, agreement analysis, REVIEW drivers, evidence lineage, and replay packets.
         </p>
       </div>
       <table class="damaros-kv-table">
         <tr>
-          <td>EPIC_REGISTRATION</td>
-          <td>Hospital and Epic approval are required for production client credentials, token URL, FHIR base URL, JWKS registration, and granted scopes.</td>
+          <td>SITE_INPUT</td>
+          <td>Closed protocol, prior screening or adjudication record, extract format, data dictionary where available, and site-approved data pathway.</td>
         </tr>
         <tr>
-          <td>FHIR_SCOPE_GRANTS</td>
-          <td>Patient, Group, Observation, Condition, MedicationRequest, Procedure, AllergyIntolerance, and DocumentReference access must match the contracted use case and site policy.</td>
+          <td>SUPPORTED_EXTRACTS</td>
+          <td>CSV, Excel, REDCap export, JSON / NDJSON, FHIR Bundle, Bulk FHIR export, or warehouse flat export.</td>
         </tr>
         <tr>
-          <td>BULK_FHIR</td>
-          <td>Bulk FHIR is optional and site-gated. It is used only for scheduled, bounded cohort refresh when approved by the institution.</td>
+          <td>DATA_PATHWAY</td>
+          <td>De-identified extract, limited dataset under DUA, site-hosted full PHI, or hybrid model depending on institutional policy.</td>
         </tr>
         <tr>
-          <td>IDENTITY_PROVIDER</td>
-          <td>OIDC / SSO configuration is customer-specific. The hospital retains authority over identity, user provisioning, and access termination.</td>
+          <td>DAMAROS_OUTPUT</td>
+          <td>Protocol criterion tree, extract field map, patient-level summary, criterion-level decision record, agreement matrix, REVIEW driver report, evidence lineage, and replay packet.</td>
         </tr>
         <tr>
-          <td>NETWORK_ALLOWLISTS</td>
-          <td>Hospital IT validates egress, ingress, private networking, DNS, firewall rules, VPN / peering, and SIEM integration per deployment model.</td>
-        </tr>
-        <tr>
-          <td>CONTRACTING</td>
-          <td>BAA, DUA, pilot SOW, retention terms, subprocessor terms, incident contacts, and support obligations are executed before production use.</td>
-        </tr>
-        <tr>
-          <td>VALIDATION_COHORT</td>
-          <td>Retrospective validation requires a site-approved cohort, coordinator adjudication comparator, and agreed metrics for false-PASS, false-FAIL, REVIEW burden, and criterion-level agreement.</td>
+          <td>WHY_IT_MATTERS</td>
+          <td>A cancer center can evaluate Damaros against its real historical screening work before approving any live EHR integration.</td>
         </tr>
       </table>
     </section>
 
     <section class="damaros-docs-section" id="trust-03">
-      <div class="damaros-docs-section-label">03_NOT_CLAIMED</div>
-      <h2 class="damaros-docs-section-heading">Explicit non-claims.</h2>
+      <div class="damaros-docs-section-label">03_SECURITY_MATURITY</div>
+      <h2 class="damaros-docs-section-heading">Security maturity is mapped, not implied.</h2>
       <div class="damaros-docs-body">
         <p>
-          Trust pages fail when they make the reader infer what is not being claimed. Damaros states those boundaries directly.
+          Damaros maintains a codebase-grounded NIST CSF 2.0 self-assessment. The assessment maps implementation evidence across Govern,
+          Identify, Protect, Detect, Respond, and Recover, and distinguishes implemented controls from partial, delegated, and not-implemented controls.
         </p>
       </div>
       <table class="damaros-kv-table">
         <tr>
-          <td>NO_SOC_2_REPORT_YET</td>
-          <td>SOC 2 is in progress. No SOC 2 Type I or Type II report should be inferred until issued by the auditor.</td>
+          <td>FRAMEWORK</td>
+          <td>NIST Cybersecurity Framework 2.0.</td>
         </tr>
         <tr>
-          <td>NO_HITRUST_CERTIFICATION_YET</td>
-          <td>HITRUST e1 readiness mapping is in progress. HITRUST certification is not claimed.</td>
+          <td>OVERALL_POSTURE</td>
+          <td>Tier 3, Repeatable, based on the current self-assessment.</td>
         </tr>
         <tr>
-          <td>NO_APP_ORCHARD_PRODUCTION_APPROVAL_YET</td>
-          <td>Epic documentation and JWKS posture may be prepared, but production registration remains subject to Epic and hospital approval.</td>
+          <td>CONTROL_DISTRIBUTION</td>
+          <td>77 implemented, 24 partial, 4 delegated, 1 not implemented.</td>
         </tr>
         <tr>
-          <td>NO_ZERO_TOUCH_IMPLEMENTATION</td>
-          <td>Implementation requires hospital data access, mapping review, identity configuration, network review, contracting, and validation.</td>
+          <td>STRONGEST_AREAS</td>
+          <td>Audit integrity, backup protection, restoration verification, incident evidence preservation, recovery, and resilience controls.</td>
         </tr>
         <tr>
-          <td>NO_GENERAL_PURPOSE_EHR_COPY</td>
-          <td>Damaros is not a longitudinal clinical data warehouse and does not expose a general-purpose patient chart outside trial execution structures.</td>
-        </tr>
-        <tr>
-          <td>NO_AUTONOMOUS_CLINICAL_ADJUDICATION</td>
-          <td>Damaros triages evidence. Coordinators and investigators remain responsible for clinical review, enrollment decisions, and site procedures.</td>
+          <td>KNOWN_GAPS</td>
+          <td>Governance cadence, workforce training, formal risk-register maturity, and security-awareness processes scale with company headcount.</td>
         </tr>
       </table>
       <div class="damaros-callout">
-        These non-claims are intentional design constraints. They keep the product inside a narrower, reviewable, hospital-compatible execution boundary.
+        NIST CSF 2.0 is a framework, not a certification. This self-assessment supports diligence review and does not substitute for SOC 2 Type I,
+        HITRUST e1, or any third-party attestation.
       </div>
     </section>
 
     <section class="damaros-docs-section" id="trust-04">
-      <div class="damaros-docs-section-label">04_DATA_FLOW</div>
-      <h2 class="damaros-docs-section-heading">Data flow and PHI boundary.</h2>
-      <table class="damaros-kv-table">
-        <tr>
-          <td>INGRESS</td>
-          <td>Epic FHIR REST, optional Bulk FHIR, and approved tabular extracts enter through authenticated, site-approved ingest paths.</td>
-        </tr>
-        <tr>
-          <td>NORMALIZATION</td>
-          <td>Inputs are mapped into a trial-scoped evidence contract. Unmapped resources are excluded from deterministic screening and surfaced as implementation review items.</td>
-        </tr>
-        <tr>
-          <td>SCREENING</td>
-          <td>The deterministic engine evaluates normalized evidence against pinned protocol logic and produces PASS / REVIEW / FAIL at criterion level.</td>
-        </tr>
-        <tr>
-          <td>REPLAY</td>
-          <td>Replay reconstructs the decision from protocol version, population snapshot, evidence snapshot, evaluation timestamp, criterion result, and audit events.</td>
-        </tr>
-        <tr>
-          <td>EGRESS</td>
-          <td>Approved outputs are operational artifacts: screening classifications, evidence references, discrepancy reports, validation packets, and audit/replay material.</td>
-        </tr>
-        <tr>
-          <td>AI_EGRESS</td>
-          <td>Patient-identifiable clinical data is not sent to third-party LLMs for screening. Optional AI assistance is restricted to non-patient protocol or sponsor-document text when enabled.</td>
-        </tr>
-      </table>
-    </section>
-
-    <section class="damaros-docs-section" id="trust-05">
-      <div class="damaros-docs-section-label">05_MESSY_SITE_DATA</div>
-      <h2 class="damaros-docs-section-heading">Messy site data is handled as a first-class risk.</h2>
+      <div class="damaros-docs-section-label">04_HIPAA_BOUNDARY</div>
+      <h2 class="damaros-docs-section-heading">HIPAA posture is treated as shared deployment responsibility.</h2>
       <div class="damaros-docs-body">
         <p>
-          Clinical trial execution fails when software assumes a cleaner record than the site actually has. Damaros treats missing ECOG,
-          prior-line ambiguity, delayed biomarkers, staging conflicts, unit inconsistencies, duplicate identifiers, stale labs, and unmapped
-          source fields as execution states. The system does not hide those gaps behind a generated rationale.
+          Damaros operates as a Business Associate when handling PHI. Its HIPAA Security Risk Assessment maps controls across the HIPAA Security Rule
+          and explicitly identifies which safeguards are implemented by Damaros, which are partial, and which remain delegated to the covered entity.
         </p>
       </div>
       <table class="damaros-kv-table">
         <tr>
-          <td>MISSING_REQUIRED_FACT</td>
-          <td>Criterion moves to REVIEW when a required fact is absent from the normalized evidence contract.</td>
+          <td>SCOPE</td>
+          <td>HIPAA Security Rule, 45 CFR Part 164 Subpart C: administrative, physical, technical, organizational, and documentation safeguards.</td>
         </tr>
         <tr>
-          <td>CONFLICTING_FACTS</td>
-          <td>Conflict is preserved for operator review unless site-approved precedence rules define deterministic resolution.</td>
+          <td>RISK_DISTRIBUTION</td>
+          <td>59 low-risk findings, 2 medium-risk findings, 0 high-risk findings in the current self-administered assessment.</td>
         </tr>
         <tr>
-          <td>STALE_EVIDENCE</td>
-          <td>Time-window failures are evaluated against protocol logic and <code>evaluation_as_of</code>; stale evidence does not become implied eligibility.</td>
+          <td>MITIGATION_STATUS</td>
+          <td>47 adequate, 3 partial, 0 inadequate, 11 delegated to covered entity.</td>
         </tr>
         <tr>
-          <td>UNMAPPED_FIELD</td>
-          <td>Unmapped data becomes a mapping work item, not an invisible input to the engine.</td>
+          <td>TECHNICAL_SAFEGUARDS</td>
+          <td>Access control, audit controls, integrity controls, authentication, transmission security, and encryption are mapped as adequate.</td>
         </tr>
         <tr>
-          <td>VALIDATION_OUTPUT</td>
-          <td>Disagreements with coordinator adjudication are analyzed by criterion, source fact, timestamp, and mapping rule.</td>
+          <td>HIGH_PRIORITY_REMEDIATION</td>
+          <td>Security management process formalization, sanction policy formalization, and security-awareness training as the organization scales.</td>
+        </tr>
+      </table>
+      <div class="damaros-callout">
+        HIPAA compliance remains a property of the deployment, the covered entity environment, and the governing BAA. This assessment is an inspectable input,
+        not a substitute for the covered entity's own HIPAA Security Rule program.
+      </div>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-05">
+      <div class="damaros-docs-section-label">05_IN_PROGRESS</div>
+      <h2 class="damaros-docs-section-heading">External attestations are tracked separately.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          The packets above are internal, codebase-grounded, and diligence-ready. They are not a substitute for third-party reports,
+          certifications, production EHR approval, or insurance instruments. Those programs are tracked separately so a reviewer can distinguish
+          implemented controls from external attestations.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>SOC_2_TYPE_I</td>
+          <td>In progress. No SOC 2 report is claimed until issued by the auditor.</td>
+        </tr>
+        <tr>
+          <td>HITRUST_e1</td>
+          <td>Readiness mapping in progress. HITRUST certification is not claimed.</td>
+        </tr>
+        <tr>
+          <td>EPIC_APP_ORCHARD</td>
+          <td>Registration in flight. Production connectivity remains subject to Epic registration, hospital approval, client credentials, and scope grants.</td>
+        </tr>
+        <tr>
+          <td>CYBER_LIABILITY_E_O</td>
+          <td>In procurement. Carrier, limits, exclusions, and certificate availability disclosed when bound.</td>
+        </tr>
+        <tr>
+          <td>FORMAL_VDP</td>
+          <td>In progress. Coordinated reports route through the listed security contact until the formal policy publishes.</td>
         </tr>
       </table>
     </section>
 
     <section class="damaros-docs-section" id="trust-06">
-      <div class="damaros-docs-section-label">06_VALIDATION</div>
-      <h2 class="damaros-docs-section-heading">Validation is criterion-level.</h2>
+      <div class="damaros-docs-section-label">06_NDA_PACKET</div>
+      <h2 class="damaros-docs-section-heading">Diligence packet available under NDA.</h2>
       <div class="damaros-docs-body">
         <p>
-          Patient-level eligibility agreement is not enough. A site needs to know whether disagreement came from protocol interpretation,
-          missing evidence, source-system mapping, stale data, coordinator judgment, or engine behavior. Damaros validation is structured
-          around the patient × criterion unit because that is where trial screening actually breaks.
+          The public website states the boundary. The NDA packet provides the artifacts: validation packages, control assessments,
+          deployment templates, and contracting documents for hospital review.
         </p>
       </div>
       <table class="damaros-kv-table">
         <tr>
-          <td>PRIMARY_COMPARATOR</td>
-          <td>Coordinator or investigator adjudication on a site-approved retrospective cohort.</td>
+          <td>VALIDATION</td>
+          <td>Full-matrix synthetic validation package; retrospective validation package; validation plan template; sample replay packet when generated for a scoped run.</td>
         </tr>
         <tr>
-          <td>PRIMARY_UNIT</td>
-          <td>Patient × criterion decision, with patient-level summaries derived from criterion outcomes.</td>
+          <td>SECURITY</td>
+          <td>NIST CSF 2.0 self-assessment; HIPAA Security Risk Assessment; security architecture brief; data flow diagram; network policy and egress allowlist template.</td>
         </tr>
         <tr>
-          <td>CORE_METRICS</td>
-          <td>Criterion-level agreement, false-PASS, false-FAIL, REVIEW rate, evidence completeness, mapping coverage, and replay reproducibility.</td>
+          <td>EPIC_AND_DATA</td>
+          <td>Epic integration packet; FHIR scope worksheet; de-identified / limited-dataset extract spec; DUA / limited data set template.</td>
         </tr>
         <tr>
-          <td>DISCREPANCY_ANALYSIS</td>
-          <td>Every disagreement is linked to protocol version, source evidence, normalized fact, mapping rule, and replay packet.</td>
+          <td>CONTRACTING</td>
+          <td>BAA template; pilot SOW template; subprocessor inventory with terms.</td>
         </tr>
         <tr>
-          <td>FIRST_GO_LIVE_BAR</td>
-          <td>Defined jointly with the site. Damaros should not be treated as production-ready for a trial class until retrospective validation supports that use case.</td>
+          <td>READINESS</td>
+          <td>SOC 2 / HITRUST readiness plan; audit-chain verification transcript; NIST 800-53 Moderate mapping on CISO request.</td>
         </tr>
       </table>
     </section>
 
     <section class="damaros-docs-section" id="trust-07">
-      <div class="damaros-docs-section-label">07_DEPLOYMENT_MODELS</div>
-      <h2 class="damaros-docs-section-heading">Deployment model determines operational responsibility.</h2>
-      <table class="damaros-kv-table">
-        <tr>
-          <td>CUSTOMER_CLOUD</td>
-          <td>Runs in customer-approved AWS, GCP, Azure, or equivalent environment. Customer controls cloud account, network, identity, logs, and production secrets.</td>
-        </tr>
-        <tr>
-          <td>DAMAROS_OPERATED_TENANT</td>
-          <td>Damaros operates the tenant under contract, BAA / DPA terms, incident process, subprocessor inventory, and agreed retention policy.</td>
-        </tr>
-        <tr>
-          <td>ON_PREM_OR_PRIVATE_NETWORK</td>
-          <td>Supported when required by hospital policy, subject to infrastructure review and scoped implementation plan.</td>
-        </tr>
-        <tr>
-          <td>SHARED_RESPONSIBILITY</td>
-          <td>Damaros owns product controls and implementation support. The hospital owns source-system authorization, identity policy, network approval, clinical validation, and production sign-off.</td>
-        </tr>
-      </table>
+      <div class="damaros-docs-section-label">07_POSITION</div>
+      <h2 class="damaros-docs-section-heading">The purpose of the trust packet is to shorten the path to a real validation.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          Damaros is not asking a hospital to approve production EHR integration on first contact. The practical next step is narrower:
+          select one or two closed oncology protocols, choose a site-approved data pathway, compare Damaros against prior adjudication,
+          and inspect the replay evidence. The trust packet exists to make that first validation reviewable by clinical operations,
+          informatics, privacy, security, and leadership at the same time.
+        </p>
+      </div>
     </section>
 
     <section class="damaros-docs-section" id="trust-08">
-      <div class="damaros-docs-section-label">08_PUBLIC_VERIFICATION</div>
+      <div class="damaros-docs-section-label">08_PUBLIC_JWKS</div>
       <h2 class="damaros-docs-section-heading">Public verification endpoints.</h2>
       <div class="damaros-docs-body">
         <p>
-          The public surface is intentionally small. JWKS endpoints expose public keys for Epic SMART Backend Services registration.
-          Private keys, production configuration, SBOMs, signatures, audit transcripts, and security packets are available only through
-          controlled diligence channels.
+          The public surface stays small. JWKS endpoints expose public keys for Epic SMART Backend Services registration only.
+          Private keys, production configuration, and diligence packets are shared through controlled channels.
         </p>
       </div>
-
       <div class="damaros-docs-pre-caption">JWKS endpoints: public keys only</div>
       <pre class="damaros-docs-pre">curl -s https://www.damaros.ai/.well-known/jwks-prod.json    | jq .
 curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
-
       <p class="damaros-docs-pre-note">
         Production and non-production keypairs are independent. Private signing material is never published through JWKS.
       </p>
     </section>
 
     <section class="damaros-docs-section" id="trust-09">
-      <div class="damaros-docs-section-label">09_READINESS_PROGRAMS</div>
-      <h2 class="damaros-docs-section-heading">External readiness programs.</h2>
-      <div class="damaros-docs-body">
-        <p>
-          The rows below are status disclosures, not substitutes for reports, certificates, registrations, policies, or insurance instruments.
-        </p>
-      </div>
-      <table class="damaros-kv-table">
-        <tr>
-          <td>SOC_2_TYPE_I</td>
-          <td><em>In progress.</em> Evidence collection and control mapping underway. No SOC 2 report is claimed until issued by the auditor.</td>
-        </tr>
-        <tr>
-          <td>SOC_2_TYPE_II</td>
-          <td><em>Planned.</em> Observation period begins after Type I scope and control design are finalized.</td>
-        </tr>
-        <tr>
-          <td>HITRUST_e1</td>
-          <td><em>Readiness mapping in progress.</em> External assessment preparation underway. HITRUST certification is not claimed.</td>
-        </tr>
-        <tr>
-          <td>EPIC_APP_ORCHARD</td>
-          <td><em>Registration in flight.</em> JWKS and integration documentation are prepared. Production connectivity remains subject to Epic registration, hospital approval, client credentials, and scope grants.</td>
-        </tr>
-        <tr>
-          <td>VANTA_PLATFORM</td>
-          <td><em>Active.</em> Used for evidence collection, vendor-risk workflow, questionnaire support, and Trust Center operations. Vanta use is not itself an attestation.</td>
-        </tr>
-        <tr>
-          <td>CYBER_LIABILITY_E_O</td>
-          <td><em>In procurement.</em> Carrier, limits, exclusions, and certificate availability will be disclosed when bound.</td>
-        </tr>
-        <tr>
-          <td>21_CFR_PART_11</td>
-          <td><em>Tracked.</em> Electronic records and electronic signature controls are scoped to regulated workflows when contracted. Not claimed as universally active across all deployments.</td>
-        </tr>
-        <tr>
-          <td>FORMAL_RISK_REGISTER</td>
-          <td><em>Operating lightweight today; formalization pending.</em> Qualitative risk tracking is active. Formal owner-based register, review cadence, and sign-off mature with the security program.</td>
-        </tr>
-        <tr>
-          <td>SECURITY_AWARENESS_TRAINING</td>
-          <td><em>Headcount-gated.</em> Formal employee program activates with additional personnel. Contractor and vendor access remains governed by least privilege and contractual controls.</td>
-        </tr>
-        <tr>
-          <td>PUBLISHED_VDP</td>
-          <td><em>In progress.</em> Coordinated reports route through Contact until the dedicated Vulnerability Disclosure Policy publishes with scope, safe harbor, and response SLAs.</td>
-        </tr>
-      </table>
-    </section>
-
-    <section class="damaros-docs-section" id="trust-10">
-      <div class="damaros-docs-section-label">10_DILIGENCE_PACKET</div>
-      <h2 class="damaros-docs-section-heading">Documents available under NDA.</h2>
-      <ul class="damaros-bullet-list">
-        <li>Security architecture brief</li>
-        <li>Data flow diagram</li>
-        <li>Epic integration packet</li>
-        <li>FHIR scope worksheet</li>
-        <li>Network policy and egress allowlist template</li>
-        <li>HIPAA Security Risk Assessment summary</li>
-        <li>NIST CSF 2.0 self-assessment</li>
-        <li>NIST 800-53 Moderate mapping on CISO request</li>
-        <li>Subprocessor inventory with terms</li>
-        <li>BAA template</li>
-        <li>DUA / limited data set template</li>
-        <li>Pilot SOW template</li>
-        <li>Validation plan template</li>
-        <li>Sample replay packet</li>
-        <li>Sample audit-chain verification transcript</li>
-        <li>SOC 2 / HITRUST readiness plan</li>
-      </ul>
-      <div class="damaros-callout">
-        Diligence materials are shared through controlled review channels. Production configuration, security evidence, tenant diagrams,
-        and customer-specific artifacts are not published on the public website.
-      </div>
-    </section>
-
-    <section class="damaros-docs-section" id="trust-11">
-      <div class="damaros-docs-section-label">11_CONTACT</div>
+      <div class="damaros-docs-section-label">09_CONTACT</div>
       <h2 class="damaros-docs-section-heading">Contact</h2>
       <div class="damaros-contact-block">
         <div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://damaros.ai">damaros.ai</a></div>
@@ -2473,10 +2382,9 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
     </section>
 
     <div class="damaros-callout">
-      © 2026 Damaros, LLC. The information on this page is provided for technical and diligence review and does not create a warranty,
-      certification, regulatory determination, or guarantee of site-specific performance. Production use is governed by the applicable
-      agreement, deployment scope, institutional approvals, and validation plan. Any sample data, endpoint, configuration, or workflow
-      shown is notional unless explicitly identified as production tenant material.
+      © 2026 Damaros, LLC. This page is provided for technical and diligence review. It does not create a warranty, certification,
+      regulatory determination, or guarantee of site-specific performance. Production use is governed by the applicable agreement,
+      deployment scope, institutional approvals, and validation plan.
     </div>
 
   </div>
