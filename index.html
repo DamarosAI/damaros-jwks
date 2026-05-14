@@ -24,9 +24,9 @@
 </script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-  :root{--fh:'Chakra Petch',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'Space Grotesk',sans-serif;--blue:#7B96B2;--blue2:#A9C0D6;--bd:rgba(123,150,178,.25);--bg:#000;--panel:#07090b;--panel2:#0b1016;--tp:#E8E8E8;--ts:rgba(232,232,232,.72);--td:rgba(232,232,232,.38);--muted:rgba(232,232,232,.52);--tab:52px;--green:#4ADE80;--amber:#FACC15;--red:#FB7185}
+  :root{--fh:'Chakra Petch',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'Space Grotesk',sans-serif;--blue:#7B96B2;--blue2:#A9C0D6;--bd:rgba(123,150,178,.25);--bg:#000;--panel:#07090b;--panel2:#0b1016;--tp:#E8E8E8;--ts:rgba(232,232,232,.72);--td:rgba(232,232,232,.38);--muted:rgba(232,232,232,.52);--tab:56px;--green:#4ADE80;--amber:#FACC15;--red:#FB7185}
   *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#000!important;color:var(--tp);font-family:var(--fb)}body.damaros-home-lock{overflow:hidden}body.damaros-docs-active{overflow-y:auto;overflow-x:hidden}.damaros-site{min-height:100vh;background:#000!important;color:var(--tp);position:relative;overflow:hidden}.damaros-site:before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(123,150,178,.007) 2px,rgba(123,150,178,.007) 4px),linear-gradient(90deg,rgba(123,150,178,.025),transparent 18%,transparent 82%,rgba(123,150,178,.025));pointer-events:none;z-index:100}.damaros-site:after{content:'';position:fixed;inset:-12%;background:radial-gradient(circle at 44% 36%,rgba(123,150,178,.13),transparent 25%),radial-gradient(circle at 85% 72%,rgba(123,150,178,.055),transparent 18%);pointer-events:none;z-index:0}
-  .damaros-tab-bar{position:fixed;top:0;left:0;right:0;height:var(--tab);display:flex;align-items:center;justify-content:space-between!important;padding:0 1.15rem!important;z-index:200;background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(123,150,178,.11);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.damaros-tab-links{display:flex;align-items:center;margin:0!important;padding:0!important;gap:.05rem}.damaros-tab-btn{height:var(--tab);padding:0 .9rem;border:0;background:transparent;color:var(--td);cursor:pointer;font-family:var(--fm);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;position:relative}.damaros-tab-btn:after{content:'';position:absolute;left:.9rem;right:.9rem;bottom:0;height:1px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s}.damaros-tab-btn.active,.damaros-tab-btn:hover{color:var(--tp)}.damaros-tab-btn.active:after{transform:scaleX(1)}.damaros-top-status{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--td)}.damaros-env{border:1px solid rgba(123,150,178,.28);border-radius:999px;padding:.32rem .65rem;color:var(--blue2);background:rgba(123,150,178,.08)}.damaros-health{display:inline-flex;align-items:center;gap:.35rem}.damaros-health:before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(74,222,128,.45)}
+  .damaros-tab-bar{position:fixed;top:0;left:0;right:0;height:var(--tab);display:flex;align-items:center;justify-content:space-between!important;padding:0 1.15rem!important;z-index:200;background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(123,150,178,.11);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.damaros-tab-links{display:flex;align-items:center;margin:0!important;padding:0!important;gap:.05rem}.damaros-tab-btn{height:var(--tab);padding:0 1rem;border:0;background:transparent;color:rgba(232,232,232,.52);cursor:pointer;font-family:var(--fm);font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;position:relative}.damaros-tab-btn:after{content:'';position:absolute;left:1rem;right:1rem;bottom:0;height:1px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s}.damaros-tab-btn.active,.damaros-tab-btn:hover{color:#f0f4f8}.damaros-tab-btn.active:after{transform:scaleX(1)}.damaros-top-status{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--td)}.damaros-env{border:1px solid rgba(123,150,178,.28);border-radius:999px;padding:.32rem .65rem;color:var(--blue2);background:rgba(123,150,178,.08)}.damaros-health{display:inline-flex;align-items:center;gap:.35rem}.damaros-health:before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(74,222,128,.45)}
   .damaros-blink-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 16px rgba(123,150,178,.55);animation:pulse 2.2s ease-in-out infinite}.damaros-panel{display:none}.damaros-panel.active{display:block}#damaros-panel-home.active{min-height:100vh;position:relative;padding:0!important;overflow:hidden;background:#000!important}.damaros-monogram-bg{position:fixed;top:9%;left:-4%;right:-4%;height:84%;z-index:0;pointer-events:none;overflow:hidden;background:#000!important;-webkit-mask-image:radial-gradient(ellipse at center,#000 0%,#000 42%,rgba(0,0,0,.35) 70%,transparent 88%);mask-image:radial-gradient(ellipse at center,#000 0%,#000 42%,rgba(0,0,0,.35) 70%,transparent 88%)}.damaros-monogram-grid{position:absolute;top:-24%;left:-14%;width:128%;height:148%;display:grid;grid-template-columns:repeat(auto-fill,104px);grid-auto-rows:104px;gap:34px;opacity:.10;transform:rotate(-8deg) translate3d(0,0,0);animation:drift 12s linear infinite;will-change:transform}.damaros-monogram-grid img{width:104px;height:104px;object-fit:contain;display:block;opacity:.055;filter:grayscale(1) brightness(.63) contrast(1.25);mix-blend-mode:screen}.damaros-monogram-grid.error{display:flex;align-items:center;justify-content:center;transform:none!important;animation:none;opacity:1}.damaros-monogram-error{font-family:var(--fm);font-size:.7rem;letter-spacing:.08em;color:var(--blue);border:1px solid var(--bd);padding:.8rem 1rem;background:#000}
   @keyframes drift{0%{transform:rotate(-8deg) translate3d(0,0,0)}50%{transform:rotate(-8deg) translate3d(38px,-6px,0)}100%{transform:rotate(-8deg) translate3d(0,0,0)}}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}@keyframes scan{0%{transform:translateY(-100%);opacity:0}10%,70%{opacity:.45}100%{transform:translateY(100%);opacity:0}}
   .damaros-home-stage{position:relative;z-index:10;min-height:calc(100vh - var(--tab) - 6rem);display:grid;grid-template-columns:minmax(0,.92fr) minmax(540px,.88fr);gap:2.5rem;align-items:center;max-width:1480px;margin:0 auto}.damaros-hero{opacity:0;animation:fade .75s ease .1s both;display:flex;flex-direction:column;align-items:center;text-align:center}.damaros-hero-logo{display:flex;align-items:center;justify-content:center;gap:.7rem;font-family:var(--fh);font-size:clamp(3.4rem,8vw,7.2rem);font-weight:700;letter-spacing:normal;line-height:1;text-shadow:0 0 42px rgba(123,150,178,.14)}.damaros-hero-logo .damaros-blink-dot{width:11px;height:11px}.damaros-command-line{margin-top:1.3rem;min-height:2.25em;display:flex;align-items:center;justify-content:center;white-space:nowrap;font-family:var(--fm);font-size:clamp(.78rem,1.45vw,1.05rem);line-height:1.5;color:var(--blue2);letter-spacing:.035em}.damaros-command-prefix{display:none}.damaros-command-line{font-size:clamp(.82rem,1.35vw,1rem);color:rgba(169,192,214,.92)}.damaros-cursor{display:inline-block;width:2px;height:1.1em;background:var(--blue);margin-left:5px;animation:blink 1.5s step-end infinite;box-shadow:0 0 12px rgba(123,150,178,.45)}.damaros-hero-chips{margin-top:1.35rem;display:flex;justify-content:center;gap:.55rem;flex-wrap:wrap}.damaros-chip{font-family:var(--fm);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--td);border:1px solid rgba(123,150,178,.14);border-radius:999px;padding:.42rem .7rem;background:rgba(0,0,0,.28)}.damaros-chip.live{color:var(--blue2);border-color:rgba(123,150,178,.22);background:rgba(123,150,178,.045)}.damaros-cta-row{margin-top:2rem;display:flex;gap:.9rem;align-items:center;justify-content:center;flex-wrap:wrap}.damaros-cta-btn{display:inline-flex;align-items:center;gap:.65rem;color:var(--tp);border:1px solid var(--bd);padding:.9rem 1.45rem;text-decoration:none;text-transform:uppercase;font-family:var(--fh);font-size:.72rem;font-weight:500;letter-spacing:.12em;position:relative;overflow:hidden;background:rgba(0,0,0,.36);transition:all .4s cubic-bezier(.16,1,.3,1)}.damaros-cta-btn:before{content:'';position:absolute;inset:0;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:-1}.damaros-cta-btn:hover{color:#000;border-color:var(--blue);box-shadow:0 0 30px rgba(123,150,178,.14)}.damaros-cta-btn:hover:before{transform:scaleX(1)}.damaros-mini-proof{font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--td)}
@@ -55,7 +55,7 @@
   .damaros-bottom-bar{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
   #damarosVisitorLocation{flex:1;min-width:0;margin-right:1rem;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-  @media(max-width:980px){body.damaros-home-lock{overflow-y:auto}.damaros-home-stage{grid-template-columns:1fr;align-items:start;padding-top:2rem}.damaros-hero{text-align:center}.damaros-workflow-panel{max-width:760px;width:100%;margin:0 auto}.damaros-bottom-bar{position:relative;margin-top:2rem;padding:1rem 0;background:transparent}.damaros-bottom-center{display:none}}@media(max-width:700px){.damaros-tab-bar{padding:0 .8rem!important}.damaros-top-status{display:none}.damaros-tab-btn{padding:0 .62rem;font-size:.54rem}.damaros-tab-btn:after{left:.62rem;right:.62rem}#damaros-panel-home.active{padding:0!important}.damaros-monogram-grid{grid-template-columns:repeat(auto-fill,72px);grid-auto-rows:72px;gap:22px;opacity:.11}.damaros-monogram-grid img{width:72px;height:72px;opacity:.055;filter:grayscale(1) brightness(.48) contrast(1.25);mix-blend-mode:screen}.damaros-command-line{white-space:normal}.damaros-workflow-grid{grid-template-columns:1fr}.damaros-detail-matrix{grid-template-columns:1fr}.damaros-docs-wrap{padding:calc(var(--tab) + 2.5rem) 1.4rem 4rem}.damaros-kv-table td:first-child{width:145px;font-size:.62rem}}
+  @media(max-width:980px){body.damaros-home-lock{overflow-y:auto}.damaros-home-stage{grid-template-columns:1fr;align-items:start;padding-top:2rem}.damaros-hero{text-align:center}.damaros-workflow-panel{max-width:760px;width:100%;margin:0 auto}.damaros-bottom-bar{position:relative;margin-top:2rem;padding:1rem 0;background:transparent}.damaros-bottom-center{display:none}}@media(max-width:700px){.damaros-tab-bar{padding:0 .8rem!important}.damaros-top-status{display:none}.damaros-tab-btn{padding:0 .62rem;font-size:.6rem}.damaros-tab-btn:after{left:.62rem;right:.62rem}#damaros-panel-home.active{padding:0!important}.damaros-monogram-grid{grid-template-columns:repeat(auto-fill,72px);grid-auto-rows:72px;gap:22px;opacity:.11}.damaros-monogram-grid img{width:72px;height:72px;opacity:.055;filter:grayscale(1) brightness(.48) contrast(1.25);mix-blend-mode:screen}.damaros-command-line{white-space:normal}.damaros-workflow-grid{grid-template-columns:1fr}.damaros-detail-matrix{grid-template-columns:1fr}.damaros-docs-wrap{padding:calc(var(--tab) + 2.5rem) 1.4rem 4rem}.damaros-kv-table td:first-child{width:145px;font-size:.62rem}}
 
   .damaros-api-groups{display:flex;flex-direction:column;gap:1.8rem}.damaros-api-group-label{font-family:var(--fm);text-transform:uppercase;color:var(--blue);font-size:.58rem;letter-spacing:.14em;opacity:.58;margin:1.4rem 0 .5rem}.damaros-api-group-label:before{content:'> '}.damaros-api-list{list-style:none;display:flex;flex-direction:column;padding-left:0;margin:0;background:#000!important}.damaros-api-item{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:baseline;padding:.38rem 0;border-bottom:1px solid rgba(123,150,178,.05);font-family:var(--fm);font-size:.68rem;background:#000!important}.damaros-api-name{color:rgba(232,232,232,.82)}.damaros-api-note{color:var(--td);font-size:.62rem;text-align:right;white-space:nowrap}.damaros-optional-tag{display:inline-block;margin-left:.5rem;padding:.1rem .4rem;border:1px solid rgba(123,150,178,.24);color:var(--blue);font-size:.55rem;letter-spacing:.1em;background:#000}.damaros-docs-pre-caption{font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;color:var(--blue);opacity:.85;margin:1.35rem 0 .4rem;text-transform:uppercase}.damaros-docs-pre{margin:.35rem 0 0;padding:1rem 1.15rem;border:1px solid rgba(123,150,178,.2);background:#0a0a0a;font-family:var(--fm);font-size:.62rem;line-height:1.55;color:rgba(232,232,232,.78);overflow-x:auto;white-space:pre-wrap;word-break:break-word}.damaros-docs-pre-note{margin:.5rem 0 0;font-family:var(--fm);font-size:.6rem;color:var(--td);line-height:1.6}.damaros-bullet-list li:before{content:'> ';color:var(--blue);opacity:.65;font-family:var(--fm)}@media(max-width:700px){.damaros-api-item{grid-template-columns:1fr;gap:.1rem}.damaros-api-note{text-align:left;white-space:normal}}
 .damaros-workflow-head{display:none!important}.damaros-bottom-center{display:none!important}
@@ -1678,7 +1678,7 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
 </head>
 <body>
 <div class="damaros-site">
-<nav class="damaros-tab-bar"><div class="damaros-tab-links"><button class="damaros-tab-btn active" data-panel="home">Home</button><button class="damaros-tab-btn" data-panel="engineering">Engineering</button><button class="damaros-tab-btn" data-panel="docs">Documentation</button><button class="damaros-tab-btn" data-panel="trust">Trust</button></div></nav>
+<nav class="damaros-tab-bar"><div class="damaros-tab-links"><button class="damaros-tab-btn active" data-panel="home">Home</button><button class="damaros-tab-btn" data-panel="trust">Trust</button><button class="damaros-tab-btn" data-panel="docs">Documentation</button><button class="damaros-tab-btn" data-panel="engineering">Engineering</button></div></nav>
 
 <div id="damaros-panel-home" class="damaros-panel active">
 <div class="damaros-ignition">
@@ -2071,140 +2071,417 @@ spec:
 
 </div></div>
 
-<div id="damaros-panel-trust" class="damaros-panel"><div class="damaros-docs-wrap">
-<div class="damaros-docs-eyebrow">Trust &amp; Security</div><h1 class="damaros-docs-title">Trust Center</h1>
-<p class="damaros-docs-subtitle">Damaros runs <strong>protocol</strong> → <strong>population</strong> → <strong>screening</strong> → <strong>forms</strong> → <strong>replay</strong>: deterministic, replayable clinical-trial eligibility on Epic-native <strong>populations</strong> (FHIR cohorts). The substrate below — audit chain, tenant isolation, RBAC, encryption, backup, supply-chain integrity, and joint incident response — is <strong>implemented and tested today</strong>. Third-party attestations (SOC 2, HITRUST, App Orchard) layer on top of that substrate; the active programs below are tracked separately so prospective partners can see what's verifiable now versus what's in flight.</p>
+<div id="damaros-panel-trust" class="damaros-panel">
+  <div class="damaros-docs-wrap">
 
-<section class="damaros-docs-section" id="trust-00"><div class="damaros-docs-section-label">00_OPERATIONAL_POSTURE</div><h2 class="damaros-docs-section-heading">Operational posture</h2><table class="damaros-kv-table">
-<tr><td>READ_ACCESS</td><td>Read-only against institutional sources (Epic FHIR, SMART Backend Services). No EHR write scopes requested at initial deployment (see <a class="damaros-kv-link" href="#docs-03c">Documentation §03C</a>).</td></tr>
-<tr><td>WRITES</td><td>Confined to the Damaros application database inside the hospital-approved deployment boundary. No outbound mutation of source-of-truth systems.</td></tr>
-<tr><td>AUDIT_CHAIN</td><td>Hash-chained SHA-256 audit on every domain event. Chain heads signed by KMS, externally published to S3 object-lock + RFC 3161 timestamp authority.</td></tr>
-<tr><td>TENANCY</td><td>Tenant-isolated by <code>(org, study, trial)</code>. Postgres RLS enforced on 20+ tables; cross-tenant access denied at the database layer, not just the application layer.</td></tr>
-<tr><td>DETERMINISM</td><td>No stochastic AI on the <strong>screening</strong> hot path. Identical inputs → identical PASS/REVIEW/FAIL with criterion-level provenance (see <a class="damaros-kv-link" href="#engineering-01">Engineering Note 01 §01</a>).</td></tr>
-<tr><td>EGRESS_DEFAULT</td><td>Deny-by-default API egress NetworkPolicy with explicit CIDR allowlists for Epic FHIR, OIDC, in-cluster Postgres/Redis, and DNS only.</td></tr>
-</table></section>
+    <div class="damaros-docs-eyebrow">Trust &amp; Security</div>
+    <h1 class="damaros-docs-title">Trust Boundary</h1>
+    <p class="damaros-docs-subtitle">
+      Damaros is hospital-side execution infrastructure for clinical trials. The trust model is built around three boundaries:
+      <strong>source-system access</strong>, <strong>trial-scoped execution</strong>, and <strong>replayable evidence</strong>.
+      The product does not require EHR write-back for initial deployment, does not put generative AI on the patient-screening hot path,
+      and does not represent third-party attestations as complete before they are issued. This page separates what is enforced by
+      architecture, what is controlled by the hospital deployment, and what remains in external readiness programs.
+    </p>
 
-<section class="damaros-docs-section" id="trust-01"><div class="damaros-docs-section-label">01_PUBLIC_ENDPOINTS</div><h2 class="damaros-docs-section-heading">Public verification endpoints</h2><div class="damaros-docs-body"><p>The Damaros product repository and container registry are private. The JWKS endpoints below are the public artifacts you can verify without an NDA — they back Epic SMART Backend Services and rotate alongside the incumbent key so there is no authentication gap. Supply-chain artifacts (SBOM, Cosign signatures, build provenance per §07) and operator CLIs (audit chain verify per §02) are available under NDA for review packets and pilot deployments.</p></div>
+    <section class="damaros-docs-section" id="trust-00">
+      <div class="damaros-docs-section-label">00_BOUNDARY_SUMMARY</div>
+      <h2 class="damaros-docs-section-heading">What Damaros does, and what it does not do.</h2>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>EXECUTION_MODEL</td>
+          <td>Damaros runs <strong>protocol</strong> → <strong>population</strong> → <strong>screening</strong> → <strong>forms</strong> → <strong>replay</strong> inside a hospital-approved deployment boundary.</td>
+        </tr>
+        <tr>
+          <td>EHR_POSTURE</td>
+          <td>Read-only for initial Epic integration. No EHR write scopes are requested for first deployment; write helpers remain disabled unless separately contracted, configured, and attested.</td>
+        </tr>
+        <tr>
+          <td>AI_BOUNDARY</td>
+          <td>No stochastic AI decides eligibility on patient-identifiable clinical data. Screening is deterministic; optional AI assistance is limited to non-patient protocol or sponsor-document materials.</td>
+        </tr>
+        <tr>
+          <td>DATA_BOUNDARY</td>
+          <td>Patient data is normalized into trial-scoped evidence structures, not replicated into a general-purpose shadow EHR.</td>
+        </tr>
+        <tr>
+          <td>OUTPUT_BOUNDARY</td>
+          <td>Outbound artifacts are screening classifications, criterion-level rationale, evidence references, operational telemetry, and replay packets. Raw FHIR payload exfiltration is not the product posture.</td>
+        </tr>
+        <tr>
+          <td>ATTESTATION_BOUNDARY</td>
+          <td>SOC 2, HITRUST, App Orchard, cyber liability, and VDP are readiness programs until issued or accepted. They are not implied by implemented controls.</td>
+        </tr>
+      </table>
+    </section>
 
-<div class="damaros-docs-pre-caption">JWKS endpoints (public keys; private keys never leave deployment)</div>
-<pre class="damaros-docs-pre">curl -s https://www.damaros.ai/.well-known/jwks-prod.json    | jq .
+    <section class="damaros-docs-section" id="trust-01">
+      <div class="damaros-docs-section-label">01_VERIFIABLE_NOW</div>
+      <h2 class="damaros-docs-section-heading">Implemented controls available for diligence review.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          Damaros distinguishes implemented product controls from institutional approvals. The controls below are architectural
+          primitives or deployment controls that can be inspected in a review packet, pilot environment, or code-level diligence session.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>READ_ONLY_SOURCE_ACCESS</td>
+          <td>Epic FHIR / SMART Backend Services integration is read-only for population ingest and screening. Production access remains subject to hospital approval, Epic registration, and granted scopes.</td>
+        </tr>
+        <tr>
+          <td>TRIAL_SCOPED_NORMALIZATION</td>
+          <td>FHIR, Bulk FHIR, and tabular inputs normalize into protocol-scoped evidence contracts. Unsupported resources do not become hidden eligibility inputs.</td>
+        </tr>
+        <tr>
+          <td>DETERMINISTIC_SCREENING</td>
+          <td>Fixed protocol version + fixed population snapshot + fixed evidence snapshot + fixed evaluation timestamp produce the same PASS / REVIEW / FAIL outcomes.</td>
+        </tr>
+        <tr>
+          <td>FAIL_CLOSED_REVIEW</td>
+          <td>Missing, stale, conflicting, or unmapped evidence resolves to REVIEW where required by the criterion, not silent PASS.</td>
+        </tr>
+        <tr>
+          <td>RBAC_AND_TENANCY</td>
+          <td>Organization, study, and trial boundaries are enforced through application authorization and database-level tenant scoping.</td>
+        </tr>
+        <tr>
+          <td>AUDIT_AND_REPLAY</td>
+          <td>Screening decisions retain protocol version, population snapshot, evidence snapshot, criterion state, rationale, and operator activity for reconstruction.</td>
+        </tr>
+        <tr>
+          <td>EGRESS_CONTROL</td>
+          <td>Deployment baseline supports deny-by-default API egress with explicit allowlists for Epic FHIR, OIDC, DNS, Postgres, Redis, and approved service endpoints.</td>
+        </tr>
+        <tr>
+          <td>SECRET_HANDLING</td>
+          <td>Epic signing keys and access tokens are server-side secrets. Private signing material is not committed to source, exposed in browsers, or published through JWKS.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-02">
+      <div class="damaros-docs-section-label">02_SITE_GATED</div>
+      <h2 class="damaros-docs-section-heading">Controls that require hospital participation.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          A production deployment is not a button-click SaaS install. The critical boundary is the hospital environment:
+          identity, source-system access, network policy, cohort definition, contracting, and validation. Damaros narrows this lift,
+          but does not pretend it disappears.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>EPIC_REGISTRATION</td>
+          <td>Hospital and Epic approval are required for production client credentials, token URL, FHIR base URL, JWKS registration, and granted scopes.</td>
+        </tr>
+        <tr>
+          <td>FHIR_SCOPE_GRANTS</td>
+          <td>Patient, Group, Observation, Condition, MedicationRequest, Procedure, AllergyIntolerance, and DocumentReference access must match the contracted use case and site policy.</td>
+        </tr>
+        <tr>
+          <td>BULK_FHIR</td>
+          <td>Bulk FHIR is optional and site-gated. It is used only for scheduled, bounded cohort refresh when approved by the institution.</td>
+        </tr>
+        <tr>
+          <td>IDENTITY_PROVIDER</td>
+          <td>OIDC / SSO configuration is customer-specific. The hospital retains authority over identity, user provisioning, and access termination.</td>
+        </tr>
+        <tr>
+          <td>NETWORK_ALLOWLISTS</td>
+          <td>Hospital IT validates egress, ingress, private networking, DNS, firewall rules, VPN / peering, and SIEM integration per deployment model.</td>
+        </tr>
+        <tr>
+          <td>CONTRACTING</td>
+          <td>BAA, DUA, pilot SOW, retention terms, subprocessor terms, incident contacts, and support obligations are executed before production use.</td>
+        </tr>
+        <tr>
+          <td>VALIDATION_COHORT</td>
+          <td>Retrospective validation requires a site-approved cohort, coordinator adjudication comparator, and agreed metrics for false-PASS, false-FAIL, REVIEW burden, and criterion-level agreement.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-03">
+      <div class="damaros-docs-section-label">03_NOT_CLAIMED</div>
+      <h2 class="damaros-docs-section-heading">Explicit non-claims.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          Trust pages fail when they make the reader infer what is not being claimed. Damaros states those boundaries directly.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>NO_SOC_2_REPORT_YET</td>
+          <td>SOC 2 is in progress. No SOC 2 Type I or Type II report should be inferred until issued by the auditor.</td>
+        </tr>
+        <tr>
+          <td>NO_HITRUST_CERTIFICATION_YET</td>
+          <td>HITRUST e1 readiness mapping is in progress. HITRUST certification is not claimed.</td>
+        </tr>
+        <tr>
+          <td>NO_APP_ORCHARD_PRODUCTION_APPROVAL_YET</td>
+          <td>Epic documentation and JWKS posture may be prepared, but production registration remains subject to Epic and hospital approval.</td>
+        </tr>
+        <tr>
+          <td>NO_ZERO_TOUCH_IMPLEMENTATION</td>
+          <td>Implementation requires hospital data access, mapping review, identity configuration, network review, contracting, and validation.</td>
+        </tr>
+        <tr>
+          <td>NO_GENERAL_PURPOSE_EHR_COPY</td>
+          <td>Damaros is not a longitudinal clinical data warehouse and does not expose a general-purpose patient chart outside trial execution structures.</td>
+        </tr>
+        <tr>
+          <td>NO_AUTONOMOUS_CLINICAL_ADJUDICATION</td>
+          <td>Damaros triages evidence. Coordinators and investigators remain responsible for clinical review, enrollment decisions, and site procedures.</td>
+        </tr>
+      </table>
+      <div class="damaros-callout">
+        These non-claims are intentional design constraints. They keep the product inside a narrower, reviewable, hospital-compatible execution boundary.
+      </div>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-04">
+      <div class="damaros-docs-section-label">04_DATA_FLOW</div>
+      <h2 class="damaros-docs-section-heading">Data flow and PHI boundary.</h2>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>INGRESS</td>
+          <td>Epic FHIR REST, optional Bulk FHIR, and approved tabular extracts enter through authenticated, site-approved ingest paths.</td>
+        </tr>
+        <tr>
+          <td>NORMALIZATION</td>
+          <td>Inputs are mapped into a trial-scoped evidence contract. Unmapped resources are excluded from deterministic screening and surfaced as implementation review items.</td>
+        </tr>
+        <tr>
+          <td>SCREENING</td>
+          <td>The deterministic engine evaluates normalized evidence against pinned protocol logic and produces PASS / REVIEW / FAIL at criterion level.</td>
+        </tr>
+        <tr>
+          <td>REPLAY</td>
+          <td>Replay reconstructs the decision from protocol version, population snapshot, evidence snapshot, evaluation timestamp, criterion result, and audit events.</td>
+        </tr>
+        <tr>
+          <td>EGRESS</td>
+          <td>Approved outputs are operational artifacts: screening classifications, evidence references, discrepancy reports, validation packets, and audit/replay material.</td>
+        </tr>
+        <tr>
+          <td>AI_EGRESS</td>
+          <td>Patient-identifiable clinical data is not sent to third-party LLMs for screening. Optional AI assistance is restricted to non-patient protocol or sponsor-document text when enabled.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-05">
+      <div class="damaros-docs-section-label">05_MESSY_SITE_DATA</div>
+      <h2 class="damaros-docs-section-heading">Messy site data is handled as a first-class risk.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          Clinical trial execution fails when software assumes a cleaner record than the site actually has. Damaros treats missing ECOG,
+          prior-line ambiguity, delayed biomarkers, staging conflicts, unit inconsistencies, duplicate identifiers, stale labs, and unmapped
+          source fields as execution states. The system does not hide those gaps behind a generated rationale.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>MISSING_REQUIRED_FACT</td>
+          <td>Criterion moves to REVIEW when a required fact is absent from the normalized evidence contract.</td>
+        </tr>
+        <tr>
+          <td>CONFLICTING_FACTS</td>
+          <td>Conflict is preserved for operator review unless site-approved precedence rules define deterministic resolution.</td>
+        </tr>
+        <tr>
+          <td>STALE_EVIDENCE</td>
+          <td>Time-window failures are evaluated against protocol logic and <code>evaluation_as_of</code>; stale evidence does not become implied eligibility.</td>
+        </tr>
+        <tr>
+          <td>UNMAPPED_FIELD</td>
+          <td>Unmapped data becomes a mapping work item, not an invisible input to the engine.</td>
+        </tr>
+        <tr>
+          <td>VALIDATION_OUTPUT</td>
+          <td>Disagreements with coordinator adjudication are analyzed by criterion, source fact, timestamp, and mapping rule.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-06">
+      <div class="damaros-docs-section-label">06_VALIDATION</div>
+      <h2 class="damaros-docs-section-heading">Validation is criterion-level.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          Patient-level eligibility agreement is not enough. A site needs to know whether disagreement came from protocol interpretation,
+          missing evidence, source-system mapping, stale data, coordinator judgment, or engine behavior. Damaros validation is structured
+          around the patient × criterion unit because that is where trial screening actually breaks.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>PRIMARY_COMPARATOR</td>
+          <td>Coordinator or investigator adjudication on a site-approved retrospective cohort.</td>
+        </tr>
+        <tr>
+          <td>PRIMARY_UNIT</td>
+          <td>Patient × criterion decision, with patient-level summaries derived from criterion outcomes.</td>
+        </tr>
+        <tr>
+          <td>CORE_METRICS</td>
+          <td>Criterion-level agreement, false-PASS, false-FAIL, REVIEW rate, evidence completeness, mapping coverage, and replay reproducibility.</td>
+        </tr>
+        <tr>
+          <td>DISCREPANCY_ANALYSIS</td>
+          <td>Every disagreement is linked to protocol version, source evidence, normalized fact, mapping rule, and replay packet.</td>
+        </tr>
+        <tr>
+          <td>FIRST_GO_LIVE_BAR</td>
+          <td>Defined jointly with the site. Damaros should not be treated as production-ready for a trial class until retrospective validation supports that use case.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-07">
+      <div class="damaros-docs-section-label">07_DEPLOYMENT_MODELS</div>
+      <h2 class="damaros-docs-section-heading">Deployment model determines operational responsibility.</h2>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>CUSTOMER_CLOUD</td>
+          <td>Runs in customer-approved AWS, GCP, Azure, or equivalent environment. Customer controls cloud account, network, identity, logs, and production secrets.</td>
+        </tr>
+        <tr>
+          <td>DAMAROS_OPERATED_TENANT</td>
+          <td>Damaros operates the tenant under contract, BAA / DPA terms, incident process, subprocessor inventory, and agreed retention policy.</td>
+        </tr>
+        <tr>
+          <td>ON_PREM_OR_PRIVATE_NETWORK</td>
+          <td>Supported when required by hospital policy, subject to infrastructure review and scoped implementation plan.</td>
+        </tr>
+        <tr>
+          <td>SHARED_RESPONSIBILITY</td>
+          <td>Damaros owns product controls and implementation support. The hospital owns source-system authorization, identity policy, network approval, clinical validation, and production sign-off.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="damaros-docs-section" id="trust-08">
+      <div class="damaros-docs-section-label">08_PUBLIC_VERIFICATION</div>
+      <h2 class="damaros-docs-section-heading">Public verification endpoints.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          The public surface is intentionally small. JWKS endpoints expose public keys for Epic SMART Backend Services registration.
+          Private keys, production configuration, SBOMs, signatures, audit transcripts, and security packets are available only through
+          controlled diligence channels.
+        </p>
+      </div>
+
+      <div class="damaros-docs-pre-caption">JWKS endpoints: public keys only</div>
+      <pre class="damaros-docs-pre">curl -s https://www.damaros.ai/.well-known/jwks-prod.json    | jq .
 curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
-<p class="damaros-docs-pre-note">Production and non-production keypairs are independent. Rotation publishes the next public key in JWKS alongside the incumbent so Epic always has overlapping validity (see <a class="damaros-kv-link" href="#docs-02a">Documentation §02A</a>).</p>
-</section>
 
-<section class="damaros-docs-section" id="trust-02"><div class="damaros-docs-section-label">02_AUDIT_AND_REPLAY</div><h2 class="damaros-docs-section-heading">Audit and replay</h2><ul class="damaros-bullet-list">
-<li><strong>Hash-chained audit log:</strong> every domain event (<strong>population</strong> sync, <strong>screening</strong> run, <strong>forms</strong>, overrides, exports) records a SHA-256 hash linked to the prior event's hash. Tamper detection is structural; a single missing or altered event breaks the chain.</li>
-<li><strong>KMS-signed chain heads:</strong> chain heads are signed by a KMS key under deployment control, then externally published to S3 object-lock and RFC 3161 timestamp authority. Three independent witnesses to "this state existed at this time."</li>
-<li><strong>Operator-facing CLI:</strong> <code>damaros chain verify</code> produces a deterministic transcript that any auditor (internal or external) can reproduce against the same chain. Not "trust us"; "run it yourself."</li>
-<li><strong>replayable screening:</strong> any criterion outcome can be re-executed against the original <strong>protocol</strong> version, <strong>population</strong> snapshot (cohort frame), evidence snapshot, and <code>evaluation_as_of</code>. Same inputs → bit-identical decision (see <a class="damaros-kv-link" href="#engineering-03">Engineering Note 01 §03</a>).</li>
-<li><strong>Sample transcript available on request</strong> for review packets.</li>
-</ul></section>
+      <p class="damaros-docs-pre-note">
+        Production and non-production keypairs are independent. Private signing material is never published through JWKS.
+      </p>
+    </section>
 
-<section class="damaros-docs-section" id="trust-03"><div class="damaros-docs-section-label">03_TENANT_ISOLATION</div><h2 class="damaros-docs-section-heading">Tenant isolation</h2><ul class="damaros-bullet-list">
-<li><strong>Postgres Row-Level Security</strong> applied on 20+ trial-scoped tables (<strong>population</strong> / cohort tables, <strong>screening</strong> rows, audit events, exports, overrides, evidence references).</li>
-<li><strong>Tenancy keyed on <code>(org, study, trial)</code>;</strong> every authenticated principal carries scoped claims, and queries filter at the database layer before returning rows to the application.</li>
-<li><strong>Property-based fuzz tests</strong> in CI assert that generated principals from one tenant cannot read or write rows belonging to another, across full table coverage.</li>
-<li><strong>No cross-tenant joins</strong> in application code; <strong>population</strong> and <strong>screening</strong> artifacts cannot be aggregated outside the deployment-approved tenancy boundary.</li>
-</ul></section>
+    <section class="damaros-docs-section" id="trust-09">
+      <div class="damaros-docs-section-label">09_READINESS_PROGRAMS</div>
+      <h2 class="damaros-docs-section-heading">External readiness programs.</h2>
+      <div class="damaros-docs-body">
+        <p>
+          The rows below are status disclosures, not substitutes for reports, certificates, registrations, policies, or insurance instruments.
+        </p>
+      </div>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>SOC_2_TYPE_I</td>
+          <td><em>In progress.</em> Evidence collection and control mapping underway. No SOC 2 report is claimed until issued by the auditor.</td>
+        </tr>
+        <tr>
+          <td>SOC_2_TYPE_II</td>
+          <td><em>Planned.</em> Observation period begins after Type I scope and control design are finalized.</td>
+        </tr>
+        <tr>
+          <td>HITRUST_e1</td>
+          <td><em>Readiness mapping in progress.</em> External assessment preparation underway. HITRUST certification is not claimed.</td>
+        </tr>
+        <tr>
+          <td>EPIC_APP_ORCHARD</td>
+          <td><em>Registration in flight.</em> JWKS and integration documentation are prepared. Production connectivity remains subject to Epic registration, hospital approval, client credentials, and scope grants.</td>
+        </tr>
+        <tr>
+          <td>VANTA_PLATFORM</td>
+          <td><em>Active.</em> Used for evidence collection, vendor-risk workflow, questionnaire support, and Trust Center operations. Vanta use is not itself an attestation.</td>
+        </tr>
+        <tr>
+          <td>CYBER_LIABILITY_E_O</td>
+          <td><em>In procurement.</em> Carrier, limits, exclusions, and certificate availability will be disclosed when bound.</td>
+        </tr>
+        <tr>
+          <td>21_CFR_PART_11</td>
+          <td><em>Tracked.</em> Electronic records and electronic signature controls are scoped to regulated workflows when contracted. Not claimed as universally active across all deployments.</td>
+        </tr>
+        <tr>
+          <td>FORMAL_RISK_REGISTER</td>
+          <td><em>Operating lightweight today; formalization pending.</em> Qualitative risk tracking is active. Formal owner-based register, review cadence, and sign-off mature with the security program.</td>
+        </tr>
+        <tr>
+          <td>SECURITY_AWARENESS_TRAINING</td>
+          <td><em>Headcount-gated.</em> Formal employee program activates with additional personnel. Contractor and vendor access remains governed by least privilege and contractual controls.</td>
+        </tr>
+        <tr>
+          <td>PUBLISHED_VDP</td>
+          <td><em>In progress.</em> Coordinated reports route through Contact until the dedicated Vulnerability Disclosure Policy publishes with scope, safe harbor, and response SLAs.</td>
+        </tr>
+      </table>
+    </section>
 
-<section class="damaros-docs-section" id="trust-04"><div class="damaros-docs-section-label">04_IDENTITY_AND_ACCESS</div><h2 class="damaros-docs-section-heading">Identity &amp; access control</h2><ul class="damaros-bullet-list">
-<li><strong>16 named roles</strong> with explicit permission matrices: coordinator, investigator, monitor, auditor, security, operator, integrations service identity, and others. RBAC enforced at every API entry point with <code>principal_from_request</code> resolving subject + organization + trial scope.</li>
-<li><strong>Fail-closed:</strong> ambiguous or missing principals return 401/403, never a degraded read. No "default to public" path.</li>
-<li><strong>JWT + JWKS</strong> for OIDC-backed user sessions; signed bearer tokens with rotation and revocation. Web sessions TTL-bound.</li>
-<li><strong>Service-to-service automation</strong> uses dedicated org-scoped tokens stored in a secret manager, with rotation on demand and per-call audit logging — no human session impersonation.</li>
-<li><strong>Epic Backend Services</strong> uses <code>private_key_jwt</code> (RFC 7523) with RS384-signed assertions; private signing keys never appear in JWKS, source, or browser bundles.</li>
-</ul></section>
+    <section class="damaros-docs-section" id="trust-10">
+      <div class="damaros-docs-section-label">10_DILIGENCE_PACKET</div>
+      <h2 class="damaros-docs-section-heading">Documents available under NDA.</h2>
+      <ul class="damaros-bullet-list">
+        <li>Security architecture brief</li>
+        <li>Data flow diagram</li>
+        <li>Epic integration packet</li>
+        <li>FHIR scope worksheet</li>
+        <li>Network policy and egress allowlist template</li>
+        <li>HIPAA Security Risk Assessment summary</li>
+        <li>NIST CSF 2.0 self-assessment</li>
+        <li>NIST 800-53 Moderate mapping on CISO request</li>
+        <li>Subprocessor inventory with terms</li>
+        <li>BAA template</li>
+        <li>DUA / limited data set template</li>
+        <li>Pilot SOW template</li>
+        <li>Validation plan template</li>
+        <li>Sample replay packet</li>
+        <li>Sample audit-chain verification transcript</li>
+        <li>SOC 2 / HITRUST readiness plan</li>
+      </ul>
+      <div class="damaros-callout">
+        Diligence materials are shared through controlled review channels. Production configuration, security evidence, tenant diagrams,
+        and customer-specific artifacts are not published on the public website.
+      </div>
+    </section>
 
-<section class="damaros-docs-section" id="trust-05"><div class="damaros-docs-section-label">05_DATA_PROTECTION</div><h2 class="damaros-docs-section-heading">Data protection</h2><ul class="damaros-bullet-list">
-<li><strong>Encryption in transit:</strong> TLS for all FHIR, browser, and inter-service traffic.</li>
-<li><strong>Encryption at rest:</strong> Postgres + S3 storage encryption per deployment architecture and customer BAA/DPA terms.</li>
-<li><strong>PHI scrubber</strong> on application logs: structured field-level exclusion lists strip free-text clinical narrative from default log templates. High-sensitivity routes use reduced payloads.</li>
-<li><strong>Secret management:</strong> Epic signing keys, KMS material, automation tokens, and DB credentials live in a secret manager or secure mount. Never in git, never in client bundles, never in browser-visible config.</li>
-<li><strong>No silent egress:</strong> protocol assistance paths (where enabled at all) operate only on non-patient protocol/synopsis text behind deployment flags and pattern guards (see <a class="damaros-kv-link" href="#docs-04">Documentation §04</a>). Default hospital deployments keep external assistance off.</li>
-</ul></section>
+    <section class="damaros-docs-section" id="trust-11">
+      <div class="damaros-docs-section-label">11_CONTACT</div>
+      <h2 class="damaros-docs-section-heading">Contact</h2>
+      <div class="damaros-contact-block">
+        <div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://damaros.ai">damaros.ai</a></div>
+        <div>Security &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div>
+        <div>Diligence &nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div>
+      </div>
+    </section>
 
-<section class="damaros-docs-section" id="trust-06"><div class="damaros-docs-section-label">06_BACKUP_AND_RECOVERY</div><h2 class="damaros-docs-section-heading">Backup &amp; disaster recovery</h2><ul class="damaros-bullet-list">
-<li><strong>WAL-G continuous archiving</strong> with point-in-time recovery (PITR) for the Damaros application database. Recovery to any committed second within the retention window.</li>
-<li><strong>DR drill CLI</strong> (<code>damaros dr_drill</code>) executes restore-to-isolated-environment on a documented cadence. Drills are recorded with chain-attested timestamps; the exercise itself is auditable.</li>
-<li><strong>Documented RTO/RPO targets</strong> per deployment contract; drill outputs publish actuals against targets so customers see drift before it becomes an incident.</li>
-<li><strong>Tested restore, not theoretical:</strong> every drill performs a full schema + data restore and validates application boot + health-check, not just "the backup file exists."</li>
-</ul></section>
+    <div class="damaros-callout">
+      © 2026 Damaros, LLC. The information on this page is provided for technical and diligence review and does not create a warranty,
+      certification, regulatory determination, or guarantee of site-specific performance. Production use is governed by the applicable
+      agreement, deployment scope, institutional approvals, and validation plan. Any sample data, endpoint, configuration, or workflow
+      shown is notional unless explicitly identified as production tenant material.
+    </div>
 
-<section class="damaros-docs-section" id="trust-07"><div class="damaros-docs-section-label">07_SUPPLY_CHAIN</div><h2 class="damaros-docs-section-heading">Supply-chain integrity</h2><ul class="damaros-bullet-list">
-<li><strong>SBOM published per release</strong> in CycloneDX format, attached to the container image and downloadable via <code>cosign download sbom</code>.</li>
-<li><strong>Cosign signatures</strong> on every release artifact, tied to the GitHub Actions workflow identity (keyless OIDC). Verifiable with <code>cosign verify</code>; tampered images fail signature check.</li>
-<li><strong>Trivy</strong> in CI for container image vulnerability scanning; high/critical CVEs gate the build.</li>
-<li><strong>pip-audit</strong> in CI for Python dependency vulnerabilities; advisories surface on the PR before merge.</li>
-<li><strong>Build provenance:</strong> every release ties to a specific commit, workflow run, and signer identity. Reproducible from source.</li>
-</ul></section>
-
-<section class="damaros-docs-section" id="trust-08"><div class="damaros-docs-section-label">08_INCIDENT_RESPONSE</div><h2 class="damaros-docs-section-heading">Incident response</h2><ul class="damaros-bullet-list">
-<li><strong>Joint IR model:</strong> Damaros and the customer security team operate a shared runbook. Damaros publishes initial triage; customer drives institutional notification and clinical response per their policy.</li>
-<li><strong>HIPAA breach notification clocks</strong> wired into the playbook: 60-day individual + HHS notification (≥500 affected) with documented decision tree for risk-of-harm assessment.</li>
-<li><strong>Audit-chain forensics:</strong> incident scoping uses the hash-chained event log. "What was accessed, by whom, when" is a query, not a reconstruction project.</li>
-<li><strong>Post-incident:</strong> root cause + corrective action documented and communicated to affected customers within contractual timelines.</li>
-</ul></section>
-
-<section class="damaros-docs-section" id="trust-09"><div class="damaros-docs-section-label">09_HIPAA_SECURITY_RULE</div><h2 class="damaros-docs-section-heading">HIPAA Security Rule mapping</h2><div class="damaros-docs-body"><p>Internal Security Risk Assessment complete against §§164.308 (Administrative), 164.310 (Physical), 164.312 (Technical), 164.314 (Organizational), and 164.316 (Policies &amp; documentation). 61 standards/specifications mapped to current implementation with codebase evidence.</p></div><table class="damaros-kv-table">
-<tr><td>HIGH_RISK_ITEMS</td><td>0</td></tr>
-<tr><td>INADEQUATE_MITIGATIONS</td><td>0</td></tr>
-<tr><td>FORMAL_GAPS</td><td>Sanction Policy and Security Awareness Training are not formalized at single-founder headcount; both scale with hire #2. Disclosed honestly rather than backdated.</td></tr>
-<tr><td>AVAILABLE_ON_REQUEST</td><td>Damaros HIPAA SRA report (control mapping spreadsheet + executive summary)</td></tr>
-</table></section>
-
-<section class="damaros-docs-section" id="trust-10"><div class="damaros-docs-section-label">10_NIST_CSF_2_0</div><h2 class="damaros-docs-section-heading">NIST Cybersecurity Framework 2.0</h2><div class="damaros-docs-body"><p>Self-assessment complete against all 6 Functions (Govern, Identify, Protect, Detect, Respond, Recover) and 106 subcategories.</p></div><table class="damaros-kv-table">
-<tr><td>OVERALL_TIER</td><td>Tier 3 — Repeatable</td></tr>
-<tr><td>TIER_4_FUNCTIONS</td><td>Audit chain integrity, deterministic <strong>replay</strong> (Adaptive)</td></tr>
-<tr><td>HEADCOUNT_GAPS</td><td>GV.RM-01/02/06 (formal risk register), PR.AT-01/02 (security awareness training program). Both are headcount-dependent and disclosed.</td></tr>
-<tr><td>AVAILABLE_ON_REQUEST</td><td>NIST CSF 2.0 control mapping spreadsheet + tier rationale</td></tr>
-</table></section>
-
-<section class="damaros-docs-section" id="trust-11"><div class="damaros-docs-section-label">11_DATA_CLASSIFICATION</div><h2 class="damaros-docs-section-heading">Three-class data classification</h2><table class="damaros-kv-table">
-<tr><td>CLASS_A_PHI</td><td>Identifiable patient data from institutional sources. Stays inside the hospital-approved deployment boundary. Not transmitted to third-party assistance endpoints under any deployment configuration on the <strong>screening</strong> hot path.</td></tr>
-<tr><td>CLASS_B_LIMITED_DATASET</td><td>De-identified or limited dataset per HIPAA §164.514(e). Permitted under Data Use Agreement; tagged at ingest and prevented from re-identification at export.</td></tr>
-<tr><td>CLASS_C_NON_PATIENT</td><td>protocol text, synopsis, configuration, and operational telemetry. May pass deployment-flagged assistance paths where explicitly enabled by the site. No patient identifiers, no cohort-linked fields.</td></tr>
-</table></section>
-
-<section class="damaros-docs-section" id="trust-12"><div class="damaros-docs-section-label">12_SUBPROCESSORS</div><h2 class="damaros-docs-section-heading">Subprocessors</h2><div class="damaros-docs-body"><p>Default deployment posture: <strong>zero subprocessors with PHI access</strong>. Infrastructure subprocessors (cloud, KMS, object storage, timestamp authority, identity provider) operate on encrypted blobs or non-PHI metadata. Updated on change.</p></div><table class="damaros-kv-table">
-<tr><td>CLOUD_PROVIDER</td><td>Customer-selected (AWS / GCP / Azure / on-prem). Damaros operates customer-owned infrastructure or runs in a Damaros-operated tenant per contract.</td></tr>
-<tr><td>KMS</td><td>Cloud-native KMS (AWS KMS / GCP KMS / Azure Key Vault). Holds chain-signing keys; never sees plaintext PHI.</td></tr>
-<tr><td>OBJECT_STORAGE</td><td>S3 (or equivalent) with object-lock for chain-head witnesses. Encrypted at rest.</td></tr>
-<tr><td>TIMESTAMP_AUTHORITY</td><td>RFC 3161 TSA for chain-head timestamps. Receives hash digests only, no PHI.</td></tr>
-<tr><td>IDENTITY_PROVIDER</td><td>Customer-selected OIDC IdP (Okta, Azure AD, Auth0, etc.). Damaros does not operate user identity directly.</td></tr>
-<tr><td>FULL_LIST_ON_REQUEST</td><td>Detailed subprocessor inventory with terms available under NDA.</td></tr>
-</table></section>
-
-<section class="damaros-docs-section" id="trust-13"><div class="damaros-docs-section-label">13_DOCUMENTS_ON_REQUEST</div><h2 class="damaros-docs-section-heading">Documents available on request</h2><ul class="damaros-bullet-list">
-<li>HIPAA Security Risk Assessment (executive summary + control mapping)</li>
-<li>NIST CSF 2.0 self-assessment (tier rationale + 106-subcategory mapping)</li>
-<li>NIST 800-53 Moderate baseline mapping (on CISO request)</li>
-<li>Data flow diagram</li>
-<li>Data Use Agreement template (HIPAA limited-dataset)</li>
-<li>Business Associate Agreement template</li>
-<li>Network policy / egress allowlist template (deploy-time NetworkPolicy)</li>
-<li>Subprocessor inventory with terms</li>
-<li>Sample <code>damaros chain verify</code> transcript</li>
-<li>SOC 2 Type I / HITRUST e1 program plan (timelines + scope)</li>
-</ul><div class="damaros-callout">Most are NDA-gated; standard turnaround is 2 business days from request.</div></section>
-
-<div class="damaros-docs-divider"></div>
-
-<section class="damaros-docs-section" id="trust-14"><div class="damaros-docs-section-label">14_ACTIVE_PROGRAMS</div><h2 class="damaros-docs-section-heading">Active programs (in progress)</h2><div class="damaros-docs-body"><p>The substrate above is implemented and tested today. Third-party attestations layer on top of that substrate; the programs below are active and tracked. Status reflects program state, not aspirational marketing.</p></div><table class="damaros-kv-table">
-<tr><td>SOC_2_TYPE_I</td><td><em>In progress.</em> Vanta evidence collection active; auditor engagement underway. Type I report target 8–16 weeks from kickoff.</td></tr>
-<tr><td>SOC_2_TYPE_II</td><td><em>Planned.</em> Begins after Type I observation period.</td></tr>
-<tr><td>HITRUST_e1</td><td><em>Readiness mapping in progress.</em> AEA selection in flight (Vanta-paired or specialist firm — CORL Technologies / Coalfire / A-LIGN).</td></tr>
-<tr><td>EPIC_APP_ORCHARD</td><td><em>Submission package complete.</em> JWKS hosted; integration documentation public (see <a class="damaros-kv-link" href="#docs">Documentation</a>). Registration in flight.</td></tr>
-<tr><td>VANTA_PLATFORM</td><td><em>Active.</em> Automated Compliance, Trust Center, Vendor Risk Management, Questionnaire Automation. Continuous evidence collection.</td></tr>
-<tr><td>CYBER_LIABILITY_E_O</td><td><em>In procurement.</em> Cyber liability + professional E&amp;O coverage. Carrier and limits to be published here once bound.</td></tr>
-<tr><td>21_CFR_PART_11</td><td><em>Tracked.</em> Electronic records / electronic signatures program plan exists; activation scoped to trials with FDA-regulated clinical decision-making.</td></tr>
-<tr><td>FORMAL_RISK_REGISTER</td><td><em>Headcount-gated.</em> Qualitative tier-based risk scoring used today; formal register stands up with security hire.</td></tr>
-<tr><td>SECURITY_AWARENESS_TRAINING</td><td><em>Headcount-gated.</em> Single-founder org today; formal program activates with hire #2.</td></tr>
-<tr><td>PUBLISHED_VDP</td><td><em>In progress.</em> Coordinated reports via Contact (§15) until dedicated channel publishes; formal Vulnerability Disclosure Policy (scope, safe harbor, response SLAs) publishing alongside this Trust page update.</td></tr>
-</table></section>
-
-<section class="damaros-docs-section" id="trust-15"><div class="damaros-docs-section-label">15_CONTACT</div><h2 class="damaros-docs-section-heading">Contact</h2><div class="damaros-contact-block"><div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://damaros.ai">damaros.ai</a></div><div>Contact &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div></div></section>
-
-</div></div></div>
+  </div>
+</div>
+</div>
 
 <script>
 (function () {
