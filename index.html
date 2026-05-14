@@ -1238,6 +1238,12 @@ body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-
   min-height: 0;
   align-items: start;
 }
+#damaros-panel-home.active .damaros-ignition .matrix[hidden] {
+  display: none !important;
+}
+#damaros-panel-home.active .damaros-ignition .detail-panel:has(.matrix[hidden]) {
+  gap: 0.92rem;
+}
 #damaros-panel-home.active .damaros-ignition .metric {
   padding: 0.9rem 0.95rem;
   min-height: 0;
@@ -2454,15 +2460,6 @@ spec:
         title: "From NCT ID to criterion-level replay.",
         text:
           "Damaros is the hospital-side execution substrate for oncology trials—Protocol, Population, Screening, Forms, and Replay compiled into criteria, a governed evidence plane, coordinator lineage, and audit-grade reconstruction, not a parallel analytics narrative. Critically, the first institutional question is not whether the interface persuades; it is whether Damaros validates against the institution's protocols, data, and adjudication standard.",
-        highlights: [
-          "Protocol through Replay are execution primitives—graphs, planes, verdicts, packets, manifests—not narrated phases.",
-          "Criteria compile from protocol; evidence normalizes on a site-governed plane; coordinator lineage stays bound to objects.",
-          "Replay re-derives criterion outcomes from locked inputs; audit memory is the artifact, not regenerated prose.",
-        ],
-        outcomes: [
-          "The gate is validation against protocols, normalized evidence, and adjudication—not interface persuasion.",
-          "Validation brief for scope; trust packet for controls, boundaries, and integration posture.",
-        ],
         badges: [],
         ctas: [
           { href: "mailto:anirudh@damaros.ai?subject=Damaros%20Validation%20Brief", label: "Request Validation Brief", secondary: false },
@@ -2721,11 +2718,18 @@ spec:
     const dw = document.getElementById("detailWhy");
     const bg = document.getElementById("badges");
     const ctaRow = document.getElementById("detailCtaRow");
+    const matrix = document.querySelector("#damaros-panel-home .matrix");
+    const hi = Array.isArray(d.highlights) && d.highlights.length > 0;
+    const ou = Array.isArray(d.outcomes) && d.outcomes.length > 0;
     if (dl) dl.textContent = d.label;
     if (dt) dt.textContent = d.title;
     if (dx) dx.textContent = d.text;
-    if (dd) dd.innerHTML = renderList(d.highlights);
-    if (dw) dw.innerHTML = renderList(d.outcomes);
+    if (dd) dd.innerHTML = hi ? renderList(d.highlights) : "";
+    if (dw) dw.innerHTML = ou ? renderList(d.outcomes) : "";
+    if (matrix) {
+      if (hi || ou) matrix.removeAttribute("hidden");
+      else matrix.setAttribute("hidden", "");
+    }
     if (bg) {
       var bhtml = renderBadges(d.badges || []);
       bg.innerHTML = bhtml;
