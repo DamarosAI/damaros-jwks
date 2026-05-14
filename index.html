@@ -2075,7 +2075,7 @@ spec:
   <div class="damaros-docs-wrap">
 
     <div class="damaros-docs-eyebrow">Trust &amp; Validation</div>
-    <h1 class="damaros-docs-title">Built to be inspected before it is trusted.</h1>
+    <h1 class="damaros-docs-title">Inspectable Trust. Enforced Boundaries.</h1>
     <p class="damaros-docs-subtitle">
       Damaros is hospital-side execution infrastructure for clinical trials. Trust does not come from a demo screen or a claim of artificial intelligence.
       It comes from bounded validation, explicit data boundaries, evidence-linked screening outputs, and security controls a hospital can inspect.
@@ -2357,18 +2357,16 @@ spec:
     <section class="damaros-docs-section" id="trust-08">
       <div class="damaros-docs-section-label">08_PUBLIC_JWKS</div>
       <h2 class="damaros-docs-section-heading">Public verification endpoints.</h2>
-      <div class="damaros-docs-body">
-        <p>
-          The public surface stays small. JWKS endpoints expose public keys for Epic SMART Backend Services registration only.
-          Private keys, production configuration, and diligence packets are shared through controlled channels.
-        </p>
-      </div>
-      <div class="damaros-docs-pre-caption">JWKS endpoints: public keys only</div>
-      <pre class="damaros-docs-pre">curl -s https://www.damaros.ai/.well-known/jwks-prod.json    | jq .
-curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
-      <p class="damaros-docs-pre-note">
-        Production and non-production keypairs are independent. Private signing material is never published through JWKS.
-      </p>
+      <table class="damaros-kv-table">
+        <tr>
+          <td>PUBLIC_VERIFICATION</td>
+          <td>
+            Public JWKS endpoints for Epic SMART Backend Services registration are documented in
+            <a class="damaros-kv-link" href="#docs-02a">Documentation §02A</a>. Private keys, production configuration,
+            and diligence packets are shared only through controlled review channels.
+          </td>
+        </tr>
+      </table>
     </section>
 
     <section class="damaros-docs-section" id="trust-09">
@@ -2376,8 +2374,7 @@ curl -s https://www.damaros.ai/.well-known/jwks-nonprod.json | jq .</pre>
       <h2 class="damaros-docs-section-heading">Contact</h2>
       <div class="damaros-contact-block">
         <div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://damaros.ai">damaros.ai</a></div>
-        <div>Security &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div>
-        <div>Diligence &nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div>
+        <div>Contact &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="mailto:anirudh@damaros.ai">anirudh@damaros.ai</a></div>
       </div>
     </section>
 
