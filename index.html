@@ -1032,6 +1032,12 @@ body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-
   min-height: min(460px, calc(100svh - var(--tab) - 9.2rem));
   align-items: stretch;
 }
+@media (min-width: 921px) {
+  #damaros-panel-home.active .damaros-ignition .workflow-map,
+  #damaros-panel-home.active .damaros-ignition .detail-panel {
+    min-height: 470px;
+  }
+}
 #damaros-panel-home.active .damaros-ignition .workflow-map {
   border: 1px solid rgba(123, 150, 178, 0.18);
   background: linear-gradient(180deg, rgba(7, 10, 14, 0.74), rgba(0, 0, 0, 0.54));
