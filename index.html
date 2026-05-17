@@ -23,7 +23,7 @@
 {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","@id":"https://www.damaros.ai/#software","name":"Damaros™","applicationCategory":"HealthApplication","softwareApplicationCategory":"Clinical trial execution software","operatingSystem":"Web","url":"https://www.damaros.ai/","description":"Hospital-side execution substrate for oncology trials: Protocol, Population, Screening, Forms, and Replay. Deterministic criterion-level screening, evidence lineage, and audit reconstruction.","provider":{"@type":"Organization","name":"Damaros, LLC","url":"https://damaros.ai","logo":{"@type":"ImageObject","url":"https://www.damaros.ai/assets/damaros-white-on-black.png"}},"isAccessibleForFree":true,"inLanguage":"en"}]}
 </script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
   :root{--fh:'Chakra Petch',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'Space Grotesk',sans-serif;--blue:#7B96B2;--blue2:#A9C0D6;--bd:rgba(123,150,178,.25);--bg:#000;--panel:#07090b;--panel2:#0b1016;--tp:#E8E8E8;--ts:rgba(232,232,232,.72);--td:rgba(232,232,232,.38);--muted:rgba(232,232,232,.52);--tab:56px;--green:#4ADE80;--amber:#FACC15;--red:#FB7185}
   *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#000!important;color:var(--tp);font-family:var(--fb)}body.damaros-home-lock{overflow:hidden}body.damaros-docs-active{overflow-y:auto;overflow-x:hidden}.damaros-site{min-height:100vh;background:#000!important;color:var(--tp);position:relative;overflow:hidden}.damaros-site:before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(123,150,178,.007) 2px,rgba(123,150,178,.007) 4px),linear-gradient(90deg,rgba(123,150,178,.025),transparent 18%,transparent 82%,rgba(123,150,178,.025));pointer-events:none;z-index:100}.damaros-site:after{content:'';position:fixed;inset:-12%;background:radial-gradient(circle at 44% 36%,rgba(123,150,178,.13),transparent 25%),radial-gradient(circle at 85% 72%,rgba(123,150,178,.055),transparent 18%);pointer-events:none;z-index:0}
   .damaros-tab-bar{position:fixed;top:0;left:0;right:0;height:var(--tab);display:flex;align-items:center;justify-content:space-between!important;padding:0 1.15rem!important;z-index:200;background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(123,150,178,.11);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.damaros-tab-links{display:flex;align-items:center;margin:0!important;padding:0!important;gap:.05rem}.damaros-tab-btn{height:var(--tab);padding:0 1rem;border:0;background:transparent;color:rgba(232,232,232,.52);cursor:pointer;font-family:var(--fm);font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;position:relative}.damaros-tab-btn:after{content:'';position:absolute;left:1rem;right:1rem;bottom:0;height:1px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s}.damaros-tab-btn.active,.damaros-tab-btn:hover{color:#f0f4f8}.damaros-tab-btn.active:after{transform:scaleX(1)}.damaros-top-status{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--td)}.damaros-env{border:1px solid rgba(123,150,178,.28);border-radius:999px;padding:.32rem .65rem;color:var(--blue2);background:rgba(123,150,178,.08)}.damaros-health{display:inline-flex;align-items:center;gap:.35rem}.damaros-health:before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(74,222,128,.45)}
@@ -517,1305 +517,145 @@ body.damaros-docs-active .damaros-site:before{background:repeating-linear-gradie
   .damaros-detail-badges{position:relative!important;width:auto!important;justify-content:flex-start!important;margin-top:.7rem!important}
 }
 
-/* Dot ignition: scoped to #damaros-panel-home .damaros-ignition; body state: damaros-ignition-home-active + ig-init | ig-workspace | ig-return */
-html {
-  scrollbar-gutter: stable;
-}
-body.damaros-ignition-home-active.damaros-home-lock {
-  scrollbar-gutter: stable;
-}
-#damaros-panel-home.active {
-  padding: 0 !important;
-  min-height: 100vh !important;
-  position: relative;
-  overflow: hidden;
-  background: #000 !important;
-}
-#damaros-panel-home.active .damaros-ignition {
-  --fh: 'Chakra Petch', sans-serif;
-  --fb: 'Space Grotesk', sans-serif;
-  --fm: 'Space Grotesk', sans-serif;
-  --tp: #e8e8e8;
-  --ts: rgba(232, 232, 232, 0.7);
-  --td: rgba(232, 232, 232, 0.42);
-  --blue: #7b96b2;
-  --blue2: #a9c0d6;
-  --bd: rgba(123, 150, 178, 0.2);
-  --tab: 52px;
-  position: relative;
-  isolation: isolate;
-}
-#damaros-panel-home.active .damaros-ignition button,
-#damaros-panel-home.active .damaros-ignition a {
-  font: inherit;
-}
-#damaros-panel-home.active .damaros-ignition::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(123, 150, 178, 0.008) 2px, rgba(123, 150, 178, 0.008) 4px),
-    linear-gradient(90deg, rgba(123, 150, 178, 0.028), transparent 22%, transparent 78%, rgba(123, 150, 178, 0.028));
-  opacity: 0.7;
-}
-#damaros-panel-home.active.damaros-ig-scroll {
-  overflow-y: auto !important;
-}
-body.damaros-ignition-home-active.ig-workspace {
-  overflow-y: auto !important;
-}
-#damaros-panel-home.active .damaros-ignition .site {
-  position: relative;
-  min-height: 100svh;
-  overflow: hidden;
-}
-#damaros-panel-home.active .damaros-ignition .monogram-bg {
-  position: fixed;
-  top: 9%;
-  left: -4%;
-  right: -4%;
-  height: 84%;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  background: transparent;
-  opacity: 0.34;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, #000 42%, rgba(0, 0, 0, 0.35) 70%, transparent 88%);
-  mask-image: radial-gradient(ellipse at center, #000 0%, #000 42%, rgba(0, 0, 0, 0.35) 70%, transparent 88%);
-  transition: opacity 0.9s ease, filter 0.9s ease;
-  transform: translate3d(var(--mono-x, 0px), var(--mono-y, 0px), 0);
-  will-change: transform;
-}
-#damaros-panel-home.active .damaros-ignition .monogram-grid {
-  position: absolute;
-  top: -24%;
-  left: -14%;
-  width: 128%;
-  height: 148%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 104px);
-  grid-auto-rows: 104px;
-  gap: 34px;
-  opacity: 0.24;
-  transform: rotate(-8deg) translate3d(0, 0, 0);
-  animation: damarosIgDrift 12s linear infinite;
-  will-change: transform;
-}
-#damaros-panel-home.active .damaros-ignition .monogram-grid img {
-  width: 104px;
-  height: 104px;
-  object-fit: contain;
-  display: block;
-  opacity: 0.14;
-  filter: grayscale(1) brightness(0.66) contrast(1.18);
-  mix-blend-mode: screen;
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .monogram-bg {
-  opacity: 0.38;
-  filter: blur(0.15px);
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .monogram-bg {
-  opacity: 0.34;
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .monogram-bg {
-  opacity: 0.4;
-}
-#damaros-panel-home.active .damaros-ignition .dot-haze {
-  position: fixed;
-  left: var(--active-dot-x, 50vw);
-  top: var(--active-dot-y, 42vh);
-  width: clamp(320px, 42vw, 620px);
-  height: clamp(320px, 42vw, 620px);
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.3;
-  background: radial-gradient(circle, rgba(169, 192, 214, 0.11) 0%, rgba(123, 150, 178, 0.07) 24%, rgba(123, 150, 178, 0.032) 50%, transparent 76%);
-  filter: blur(46px);
-  mix-blend-mode: screen;
-  transition: left 0.2s ease, top 0.2s ease, opacity 0.65s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .dot-haze {
-  opacity: 0.42;
-  transform: translate(-50%, -50%) scale(1.04);
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .dot-haze {
-  opacity: 0.18;
-  transform: translate(-50%, -50%) scale(0.72);
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .dot-haze {
-  opacity: 0.34;
-  transform: translate(-50%, -50%) scale(0.86);
-}
-#damaros-panel-home.active .damaros-ignition .scan-ring {
-  position: fixed;
-  left: var(--active-dot-x, 50vw);
-  top: var(--active-dot-y, 42vh);
-  width: 16px;
-  height: 16px;
-  margin: -8px 0 0 -8px;
-  border-radius: 50%;
-  border: 2px solid rgba(169, 192, 214, 0.55);
-  opacity: 0;
-  z-index: 11;
-  pointer-events: none;
-  transform-origin: center center;
-  box-sizing: border-box;
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .scan-ring.one {
-  animation: damarosIgSolidRingBounce 1.12s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .scan-ring.two {
-  animation: damarosIgRingExpand 1.18s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .scan-ring.three {
-  animation: damarosIgRingExpand 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .scan-ring.one {
-  animation: damarosIgSolidRingBounce 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .scan-ring.two {
-  animation: damarosIgRingCollapse 0.82s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .scan-ring.three {
-  animation: damarosIgRingCollapse 0.92s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
-}
-#damaros-panel-home.active .damaros-ignition .home {
-  position: relative;
-  z-index: 2;
-  min-height: 100svh;
-  padding: calc(var(--tab) + 1.4rem) clamp(1rem, 2.3vw, 2rem) 2.8rem;
-  display: grid;
-  place-items: center;
-}
-body.damaros-ignition-home-active:not(.ig-workspace):not(.ig-return) #damaros-panel-home.active .damaros-ignition .home {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-}
-#damaros-panel-home.active .damaros-ignition .hero {
-  position: absolute;
-  inset: calc(var(--tab) + 1rem) 1rem 2.2rem;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  transition: opacity 0.72s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.72s ease;
-  touch-action: manipulation;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .hero {
-  opacity: 0;
-  transform: translateY(-12px) scale(0.96);
-  filter: blur(2px);
-  pointer-events: none;
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .hero {
-  opacity: 0;
-  transform: translateY(-8px) scale(0.98);
-  pointer-events: none;
-}
-#damaros-panel-home.active .damaros-ignition .hero-inner {
-  max-width: 980px;
-}
-#damaros-panel-home.active .damaros-ignition .logo,
-#damaros-panel-home.active .damaros-ignition .workspace-logo {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.26rem, 0.52vw, 0.42rem);
-  font-family: var(--fh);
-  font-weight: 700;
-  letter-spacing: normal;
-  line-height: 1;
-  text-shadow: 0 0 42px rgba(123, 150, 178, 0.14);
-}
-#damaros-panel-home.active .damaros-ignition .logo {
-  font-size: clamp(4rem, 8.5vw, 8rem);
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo {
-  position: relative;
-  font-size: clamp(1.85rem, 3.3vw, 2.8rem);
-  opacity: 0;
-  transform: translateY(-10px) scale(0.98);
-  transition: opacity 0.8s ease 0.32s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.32s;
-  cursor: pointer;
-  border: 0;
-  background: transparent;
-  color: var(--tp);
-  padding: 0.32rem 0.45rem;
-  margin: -0.32rem -0.45rem;
-  border-radius: 0.4rem;
-  -webkit-tap-highlight-color: transparent;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo-wordmark {
-  pointer-events: none;
-  user-select: none;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .workspace-logo {
-  opacity: 0.96;
-  transform: translateY(0) scale(1);
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .workspace-logo {
-  opacity: 0.64;
-  transform: translateY(0) scale(0.98);
-  transition: opacity 0.42s ease, transform 0.52s cubic-bezier(0.16, 1, 0.3, 1);
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo:hover,
-#damaros-panel-home.active .damaros-ignition .workspace-logo:focus-visible {
-  outline: none;
-  text-shadow: 0 0 30px rgba(169, 192, 214, 0.28);
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  width: clamp(190px, 25vw, 360px);
-  height: clamp(112px, 14vw, 220px);
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  opacity: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(169, 192, 214, 0.1) 0%, rgba(123, 150, 178, 0.052) 38%, transparent 74%);
-  filter: blur(30px);
-  transition: opacity 0.9s ease 0.35s;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .workspace-logo::before {
-  opacity: 0.46;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo::after {
-  display: none;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo-dot::before,
-#damaros-panel-home.active .damaros-ignition .workspace-logo-dot::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  border: 2px solid rgba(169, 192, 214, 0.5);
-  transform: translate(-50%, -50%) scale(0.25);
-  opacity: 0;
-  pointer-events: none;
-  box-sizing: border-box;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .workspace-logo-dot::before {
-  animation: damarosIgSolidRingBounceLogo 1.12s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .workspace-logo-dot::after {
-  animation: damarosIgDotLogoRing 1.45s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
-}
-#damaros-panel-home.active .damaros-ignition .ignition-dot,
-#damaros-panel-home.active .damaros-ignition .workspace-logo-dot {
-  border: 0;
-  padding: 0;
-  border-radius: 999px;
-  background: var(--blue);
-  box-shadow: 0 0 10px rgba(169, 192, 214, 0.62), 0 0 28px rgba(123, 150, 178, 0.24), 0 0 58px rgba(123, 150, 178, 0.1);
-  animation: pulse 2.2s ease-in-out infinite;
-  position: relative;
-  outline: none;
-}
-#damaros-panel-home.active .damaros-ignition .ignition-dot {
-  width: clamp(8px, 0.7vw, 12px);
-  height: clamp(8px, 0.7vw, 12px);
-  flex: 0 0 clamp(8px, 0.7vw, 12px);
-  cursor: pointer;
-  transform: translateY(0.04em);
-  isolation: isolate;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-logo-dot {
-  width: 7px;
-  height: 7px;
-  flex: 0 0 7px;
-  transform: translateY(0.05em);
-  position: relative;
-  pointer-events: none;
-}
-#damaros-panel-home.active .damaros-ignition .ignition-dot::before {
-  content: '';
-  position: absolute;
-  inset: -12px;
-  border: 1px solid rgba(169, 192, 214, 0);
-  border-radius: 999px;
-  opacity: 0;
-  transition: inset 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, border-color 0.35s ease;
-}
-#damaros-panel-home.active .damaros-ignition .ignition-dot::after {
-  content: '';
-  position: absolute;
-  inset: -58px;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(169, 192, 214, 0.075) 0%, rgba(123, 150, 178, 0.055) 32%, transparent 72%);
-  filter: blur(20px);
-  opacity: 0.4;
-  z-index: -1;
-  pointer-events: none;
-  animation: damarosIgHazeBreath 5.4s ease-in-out infinite;
-}
-#damaros-panel-home.active .damaros-ignition .ignition-dot:hover::before,
-#damaros-panel-home.active .damaros-ignition .ignition-dot:focus-visible::before {
-  inset: -18px;
-  border-color: rgba(169, 192, 214, 0.28);
-  opacity: 1;
-}
-#damaros-panel-home.active .damaros-ignition .ignition-dot:hover,
-#damaros-panel-home.active .damaros-ignition .ignition-dot:focus-visible {
-  box-shadow: 0 0 14px rgba(169, 192, 214, 0.72), 0 0 38px rgba(123, 150, 178, 0.32), 0 0 80px rgba(123, 150, 178, 0.13);
-}
-#damaros-panel-home.active .damaros-ignition .command-line.hero-action-cue {
-  margin-top: 1.15rem;
-  min-height: 2.2em;
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  max-width: 22rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 0.5rem;
-  box-sizing: border-box;
-  font-family: var(--fm);
-  font-weight: 500;
-  font-size: clamp(0.86rem, 1.35vw, 1.06rem);
-  line-height: 1.45;
-  letter-spacing: 0.055em;
-  text-transform: none;
-  color: rgba(169, 192, 214, 0.92);
-  text-shadow: 0 0 28px rgba(123, 150, 178, 0.22);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .command-line.hero-action-cue,
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .command-line.hero-action-cue {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-#damaros-panel-home.active .damaros-ignition .cta-row {
-  margin-top: 1.35rem;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-}
-#damaros-panel-home.active .damaros-ignition .cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  text-decoration: none;
-  color: var(--tp);
-  border: 1px solid var(--bd);
-  padding: 0.82rem 1.35rem;
-  text-transform: uppercase;
-  font-family: var(--fh);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  background: rgba(0, 0, 0, 0.28);
-  transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
-}
-#damaros-panel-home.active .damaros-ignition .cta:hover {
-  background: rgba(123, 150, 178, 0.1);
-  border-color: rgba(169, 192, 214, 0.42);
-  transform: translateY(-1px);
-}
-#damaros-panel-home.active .damaros-ignition .cta.cta-secondary {
-  background: transparent;
-  border-color: rgba(123, 150, 178, 0.22);
-  color: rgba(232, 232, 232, 0.78);
-}
-#damaros-panel-home.active .damaros-ignition .cta.cta-secondary:hover {
-  border-color: rgba(169, 192, 214, 0.45);
-  color: var(--tp);
-  background: rgba(123, 150, 178, 0.06);
-}
-#damaros-panel-home.active .damaros-ignition .workspace {
-  width: min(1200px, calc(100vw - 2rem));
-  min-height: min(560px, calc(100svh - var(--tab) - 4.2rem));
-  opacity: 0;
-  transform: translateY(28px) scale(0.985);
-  pointer-events: none;
-  transition: opacity 0.78s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), filter 0.52s ease;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 0.65rem;
-  position: relative;
-  z-index: 4;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .workspace {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .workspace {
-  opacity: 0;
-  transform: translateY(0) scale(1);
-  filter: blur(2px);
-  pointer-events: none;
-  transition: opacity 0.52s ease, filter 0.52s ease;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-head {
-  text-align: left;
-  padding: 0.02rem 0 0.5rem;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 0.75rem;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-tagline {
-  margin: 0 0 0.06em;
-  flex: 0 1 auto;
-  font-family: var(--fb);
-  font-weight: 500;
-  font-size: clamp(0.68rem, 1.08vw, 0.88rem);
-  letter-spacing: 0.05em;
-  line-height: 1.28;
-  color: var(--blue);
-  opacity: 0.9;
-  text-align: right;
-  text-transform: lowercase;
-  max-width: min(420px, 56vw);
-  text-wrap: balance;
-  text-shadow: 0 0 22px rgba(123, 150, 178, 0.22);
-  pointer-events: none;
-  user-select: none;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-tagline.workspace-tagline-terminal {
-  font-family: var(--fb);
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-tagline-terminal .workspace-tagline-prefix {
-  opacity: 0.82;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-tagline-terminal .workspace-tagline-rotator {
-  display: inline-block;
-  min-width: 14.5ch;
-  text-align: left;
-  color: rgba(186, 210, 232, 0.95);
-  font-weight: 500;
-}
-#damaros-panel-home.active .damaros-ignition .workspace-tagline-terminal .workspace-tagline-rotator::after {
-  content: "▍";
-  display: inline-block;
-  margin-left: 0.06em;
-  font-weight: 300;
-  color: rgba(186, 210, 232, 0.55);
-  animation: workspace-tagline-cursor 1.06s steps(1, end) infinite;
-  transform: translateY(-0.04em);
-}
-@media (prefers-reduced-motion: reduce) {
-  #damaros-panel-home.active .damaros-ignition .workspace-tagline-terminal .workspace-tagline-rotator::after {
-    animation: none;
-    opacity: 0.45;
-  }
-}
-@keyframes workspace-tagline-cursor {
-  0%,
-  45% {
-    opacity: 0.75;
-  }
-  50%,
-  100% {
-    opacity: 0.12;
-  }
-}
-#damaros-panel-home.active .damaros-ignition .cockpit {
-  display: grid;
-  grid-template-columns: minmax(248px, 0.42fr) minmax(0, 1fr);
-  gap: 0.9rem;
-  height: auto;
-  min-height: min(580px, calc(100svh - var(--tab) - 8.35rem));
-  align-items: stretch;
-}
-#damaros-panel-home.active .damaros-ignition .workflow-map {
-  border: 1px solid rgba(123, 150, 178, 0.18);
-  background: linear-gradient(180deg, rgba(7, 10, 14, 0.74), rgba(0, 0, 0, 0.54));
-  box-shadow: 0 0 50px rgba(123, 150, 178, 0.032), inset 0 0 0 1px rgba(255, 255, 255, 0.012);
-  overflow: hidden;
-  height: 100%;
-  min-height: 0;
-  align-self: stretch;
-  padding: 0.55rem;
-  display: grid;
-  grid-template-rows: repeat(6, minmax(3.4rem, 1fr));
-  gap: 0.42rem;
-  align-content: stretch;
-  box-sizing: border-box;
-}
-#damaros-panel-home.active .damaros-ignition .step {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  text-align: left;
-  border: 1px solid rgba(123, 150, 178, 0.13);
-  background: rgba(5, 8, 12, 0.72);
-  color: var(--tp);
-  padding: 0.64rem 0.86rem;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.32s ease, background 0.32s ease;
-}
-#damaros-panel-home.active .damaros-ignition .step:hover {
-  transform: translateY(-1px);
-  border-color: rgba(169, 192, 214, 0.36);
-  background: rgba(14, 20, 28, 0.78);
-}
-#damaros-panel-home.active .damaros-ignition .step.active {
-  border-color: rgba(169, 192, 214, 0.52);
-  background: linear-gradient(135deg, rgba(123, 150, 178, 0.14), rgba(5, 8, 12, 0.74));
-}
-#damaros-panel-home.active .damaros-ignition .step span {
-  display: block;
-  color: rgba(169, 192, 214, 0.62);
-  font-size: 0.52rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 0.16rem;
-}
-#damaros-panel-home.active .damaros-ignition .step b {
-  display: block;
-  font-family: var(--fh);
-  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
-  letter-spacing: 0.035em;
-  line-height: 1.18;
-}
-#damaros-panel-home.active .damaros-ignition .detail-panel {
-  padding: 0;
-  display: grid;
-  grid-template-rows: auto auto;
-  align-content: start;
-  gap: 1.72rem;
-  min-height: 0;
-  height: auto;
-  align-self: start;
-}
-#damaros-panel-home.active .damaros-ignition .detail-top,
-#damaros-panel-home.active .damaros-ignition .metric {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(123, 150, 178, 0.15);
-  background: linear-gradient(180deg, rgba(7, 10, 14, 0.58), rgba(0, 0, 0, 0.34));
-  box-shadow: 0 0 40px rgba(123, 150, 178, 0.025), inset 0 0 0 1px rgba(255, 255, 255, 0.012);
-}
-#damaros-panel-home.active .damaros-ignition .detail-top {
-  padding: 0.92rem 1rem 0.98rem;
-  min-height: 0;
-}
-#damaros-panel-home.active .damaros-ignition .detail-top::after,
-#damaros-panel-home.active .damaros-ignition .step::after,
-#damaros-panel-home.active .damaros-ignition .metric::after {
-  content: '';
-  position: absolute;
-  inset: -45% -80%;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateX(-34%) rotate(14deg);
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.045) 45%, rgba(169, 192, 214, 0.105) 50%, rgba(255, 255, 255, 0.04) 55%, transparent 100%);
-  transition: opacity 0.35s ease, transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
-  mix-blend-mode: screen;
-}
-#damaros-panel-home.active .damaros-ignition .detail-top:hover::after,
-#damaros-panel-home.active .damaros-ignition .step:hover::after,
-#damaros-panel-home.active .damaros-ignition .metric:hover::after {
-  opacity: 1;
-  transform: translateX(34%) rotate(14deg);
-}
-#damaros-panel-home.active .damaros-ignition .label {
-  color: rgba(169, 192, 214, 0.72);
-  font-size: 0.58rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-weight: 800;
-}
-#damaros-panel-home.active .damaros-ignition h1 {
-  margin: 0.35rem 0 0.5rem;
-  font-family: var(--fh);
-  font-size: clamp(1.45rem, 2.55vw, 2.25rem);
-  line-height: 1.05;
-  letter-spacing: 0.01em;
-}
-#damaros-panel-home.active .damaros-ignition .detail-top p {
-  margin: 0;
-  color: var(--ts);
-  font-size: clamp(0.82rem, 1.05vw, 0.94rem);
-  line-height: 1.58;
-  max-width: 820px;
-}
-#damaros-panel-home.active .damaros-ignition .detail-cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  margin-top: 0.72rem;
-  align-items: center;
-  justify-content: flex-start;
-}
-#damaros-panel-home.active .damaros-ignition .detail-cta-row[hidden] {
-  display: none !important;
-}
-#damaros-panel-home.active .damaros-ignition .badges {
-  display: flex;
-  gap: clamp(0.28rem, 0.9vw, 0.42rem);
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  max-width: none;
-  margin: 0.72rem 0 0;
-}
-#damaros-panel-home.active .damaros-ignition .badge {
-  border: 1px solid rgba(169, 192, 214, 0.22);
-  border-radius: 999px;
-  padding: clamp(0.26rem, 0.65vw, 0.34rem) clamp(0.46rem, 1.1vw, 0.62rem);
-  color: rgba(232, 238, 245, 0.82);
-  background: rgba(169, 192, 214, 0.05);
-  font-weight: 500;
-  font-size: clamp(0.52rem, 0.95vw, 0.66rem);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  -webkit-font-smoothing: antialiased;
-}
-#damaros-panel-home.active .damaros-ignition .badge.gold {
-  color: #fed7aa;
-  border-color: rgba(251, 146, 60, 0.26);
-  background: rgba(251, 146, 60, 0.052);
-}
-#damaros-panel-home.active .damaros-ignition .badge.violet {
-  color: #ddd6fe;
-  border-color: rgba(167, 139, 250, 0.26);
-  background: rgba(167, 139, 250, 0.052);
-}
-#damaros-panel-home.active .damaros-ignition .badge.blue {
-  color: #bfdbfe;
-  border-color: rgba(143, 191, 255, 0.26);
-  background: rgba(143, 191, 255, 0.052);
-}
-#damaros-panel-home.active .damaros-ignition .badge.green {
-  color: #bbf7d0;
-  border-color: rgba(74, 222, 128, 0.26);
-  background: rgba(74, 222, 128, 0.052);
-}
-#damaros-panel-home.active .damaros-ignition .badge.amber {
-  color: #fde68a;
-  border-color: rgba(250, 204, 21, 0.26);
-  background: rgba(250, 204, 21, 0.052);
-}
-#damaros-panel-home.active .damaros-ignition .badge.pass {
-  color: #86efac;
-  border-color: rgba(74, 222, 128, 0.28);
-  background: rgba(74, 222, 128, 0.06);
-}
-#damaros-panel-home.active .damaros-ignition .badge.review {
-  color: #fde68a;
-  border-color: rgba(250, 204, 21, 0.28);
-  background: rgba(250, 204, 21, 0.06);
-}
-#damaros-panel-home.active .damaros-ignition .badge.fail {
-  color: #fca5a5;
-  border-color: rgba(251, 113, 133, 0.28);
-  background: rgba(251, 113, 133, 0.06);
-}
-#damaros-panel-home.active .damaros-ignition .badge.teal {
-  color: #99f6e4;
-  border-color: rgba(45, 212, 191, 0.26);
-  background: rgba(45, 212, 191, 0.052);
-}
-#damaros-panel-home.active .damaros-ignition .badge.steel {
-  color: #cbd5e1;
-  border-color: rgba(148, 163, 184, 0.28);
-  background: rgba(148, 163, 184, 0.07);
-}
-#damaros-panel-home.active .damaros-ignition .matrix {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
-  min-height: 0;
-  align-items: start;
-}
-#damaros-panel-home.active .damaros-ignition .matrix[hidden] {
-  display: none !important;
-}
-#damaros-panel-home.active .damaros-ignition .detail-panel:has(.matrix[hidden]) {
-  gap: 0.92rem;
-}
-@media (min-width: 921px) {
-  #damaros-panel-home.active .damaros-ignition .workspace-head {
-    padding-left: clamp(0.5rem, 1.1vw, 0.9rem);
-  }
-  #damaros-panel-home.active .damaros-ignition .workflow-map {
-    margin-left: clamp(0.5rem, 1.1vw, 0.9rem);
-  }
-  #damaros-panel-home.active .damaros-ignition .cockpit {
-    min-height: 580px;
-    max-height: 580px;
-  }
-  #damaros-panel-home.active .damaros-ignition .workflow-map {
-    height: 540px;
-    min-height: 540px;
-    max-height: 540px;
-    align-self: stretch;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-panel {
-    height: auto;
-    min-height: 0;
-    max-height: 560px;
-    align-self: start;
-    grid-template-rows: auto auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-top {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-  }
-  #damaros-panel-home.active.workflow-standard .damaros-ignition .detail-panel {
-    height: 540px;
-    min-height: 540px;
-    max-height: 540px;
-    grid-template-rows: 274px minmax(0, 1fr);
-    overflow: hidden;
-  }
-  #damaros-panel-home.active.workflow-standard .damaros-ignition .detail-top {
-    height: 274px;
-    min-height: 274px;
-    max-height: 274px;
-  }
-}
-#damaros-panel-home.active .damaros-ignition .metric {
-  padding: 0.9rem 0.95rem;
-  min-height: 0;
-  height: auto;
-  transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-}
-#damaros-panel-home.active .damaros-ignition .metric:hover {
-  border-color: rgba(169, 192, 214, 0.28);
-  background: linear-gradient(180deg, rgba(11, 16, 22, 0.62), rgba(0, 0, 0, 0.36));
-  transform: translateY(-1px);
-}
-#damaros-panel-home.active .damaros-ignition .metric span {
-  display: block;
-  color: rgba(169, 192, 214, 0.62);
-  font-size: 0.6rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  font-weight: 800;
-  margin-bottom: 0.6rem;
-}
-#damaros-panel-home.active .damaros-ignition .metric ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 0.52rem;
-}
-#damaros-panel-home.active .damaros-ignition .metric li {
-  position: relative;
-  padding-left: 0.95rem;
-  color: rgba(232, 232, 232, 0.8);
-  font-weight: 600;
-  line-height: 1.58;
-  font-size: 0.88rem;
-}
-#damaros-panel-home.active .damaros-ignition .metric li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.65em;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--blue2);
-  box-shadow: 0 0 10px rgba(169, 192, 214, 0.32);
-}
-#damaros-panel-home.active .damaros-ignition .stage-in {
-  opacity: 0;
-  transform: translateY(10px);
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .stage-in {
-  animation: damarosIgStageIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .stage-in:nth-child(1) {
-  animation-delay: 0.08s;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .stage-in:nth-child(2) {
-  animation-delay: 0.15s;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .stage-in:nth-child(3) {
-  animation-delay: 0.22s;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .stage-in:nth-child(4) {
-  animation-delay: 0.29s;
-}
-body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .stage-in:nth-child(5) {
-  animation-delay: 0.36s;
-}
-#damaros-panel-home.active .damaros-ignition .bottom-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 18;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.78rem 1.15rem;
-  color: var(--td);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.86) 38%);
-  pointer-events: none;
-}
-#damaros-panel-home.active .damaros-ignition .bottom-bar #damarosVisitorLocation {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-@keyframes damarosIgDrift {
-  0% {
-    transform: rotate(-8deg) translate3d(0, 0, 0);
-  }
-  50% {
-    transform: rotate(-8deg) translate3d(38px, -6px, 0);
-  }
-  100% {
-    transform: rotate(-8deg) translate3d(0, 0, 0);
-  }
-}
-@keyframes damarosIgHazeBreath {
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: scale(0.98);
-  }
-  50% {
-    opacity: 0.62;
-    transform: scale(1.04);
-  }
-}
-@keyframes damarosIgRingExpand {
-  0% {
-    opacity: 0;
-    transform: scale(0.25);
-  }
-  12% {
-    opacity: 0.75;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(42);
-  }
-}
-@keyframes damarosIgSolidRingBounce {
-  0% {
-    opacity: 0;
-    transform: scale(0.28);
-  }
-  18% {
-    opacity: 0.92;
-    transform: scale(2.85);
-  }
-  42% {
-    opacity: 0.72;
-    transform: scale(0.82);
-  }
-  68% {
-    opacity: 0.38;
-    transform: scale(1.55);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.02);
-  }
-}
-@keyframes damarosIgSolidRingBounceLogo {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.22);
-  }
-  18% {
-    opacity: 0.9;
-    transform: translate(-50%, -50%) scale(2.65);
-  }
-  42% {
-    opacity: 0.68;
-    transform: translate(-50%, -50%) scale(0.78);
-  }
-  68% {
-    opacity: 0.36;
-    transform: translate(-50%, -50%) scale(1.42);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-@keyframes damarosIgDotLogoRing {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.25);
-  }
-  18% {
-    opacity: 0.55;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(8);
-  }
-}
-@keyframes damarosIgRingCollapse {
-  0% {
-    opacity: 0;
-    transform: scale(18);
-  }
-  20% {
-    opacity: 0.54;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.55);
-  }
-}
-@keyframes damarosIgIgnitionPulse {
-  0% {
-    transform: translateY(0.04em) scale(1);
-  }
-  45% {
-    transform: translateY(0.04em) scale(1.75);
-  }
-  100% {
-    transform: translateY(0.04em) scale(1.05);
-  }
-}
-@keyframes damarosIgStageIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .ignition-dot {
-  animation: damarosIgIgnitionPulse 1.35s ease forwards;
-  pointer-events: none;
-}
-@media (max-width: 920px) {
-  #damaros-panel-home.active .damaros-ignition .monogram-bg {
-    opacity: 0.39;
-  }
-  #damaros-panel-home.active .damaros-ignition .monogram-grid {
-    opacity: 0.29;
-  }
-  #damaros-panel-home.active .damaros-ignition .monogram-grid img {
-    opacity: 0.18;
-    filter: grayscale(1) brightness(0.88) contrast(1.1);
-  }
-  body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .monogram-bg {
-    opacity: 0.44;
-  }
-  body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .monogram-bg {
-    opacity: 0.38;
-  }
-  body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .monogram-bg {
-    opacity: 0.42;
-  }
-  @media (prefers-color-scheme: dark) {
-    #damaros-panel-home.active .damaros-ignition .monogram-bg {
-      opacity: 0.45;
-    }
-    #damaros-panel-home.active .damaros-ignition .monogram-grid {
-      opacity: 0.35;
-    }
-    #damaros-panel-home.active .damaros-ignition .monogram-grid img {
-      opacity: 0.23;
-      filter: grayscale(1) brightness(0.97) contrast(1.08);
-    }
-    body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ignition .monogram-bg {
-      opacity: 0.5;
-    }
-    body.damaros-ignition-home-active.ig-workspace #damaros-panel-home.active .damaros-ignition .monogram-bg {
-      opacity: 0.44;
-    }
-    body.damaros-ignition-home-active.ig-return #damaros-panel-home.active .damaros-ignition .monogram-bg {
-      opacity: 0.47;
-    }
-  }
-  #damaros-panel-home.active:not(.damaros-ig-scroll) {
-    overflow: hidden !important;
-  }
-  #damaros-panel-home.active.damaros-ig-scroll {
-    overflow-y: auto !important;
-  }
-  #damaros-panel-home.active .damaros-ignition .site {
-    overflow: hidden;
-  }
-  #damaros-panel-home.active.damaros-ig-scroll .damaros-ignition .site {
-    overflow: visible;
-    min-height: auto;
-  }
-  body.damaros-ignition-home-active:not(.ig-workspace):not(.ig-return) #damaros-panel-home.active:not(.damaros-ig-scroll) .damaros-ignition .home,
-  body.damaros-ignition-home-active.ig-init #damaros-panel-home.active:not(.damaros-ig-scroll) .damaros-ignition .home {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100dvh;
-    padding: calc(var(--tab) + env(safe-area-inset-top, 0px) + 0.35rem) 0.75rem calc(3.1rem + env(safe-area-inset-bottom, 0px));
-    box-sizing: border-box;
-  }
-  body.damaros-ignition-home-active:not(.ig-workspace):not(.ig-return) #damaros-panel-home.active:not(.damaros-ig-scroll) .damaros-ignition .hero,
-  body.damaros-ignition-home-active.ig-init #damaros-panel-home.active:not(.damaros-ig-scroll) .damaros-ignition .hero {
-    position: relative;
-    inset: auto;
-    width: 100%;
-    flex: 1 1 auto;
-    align-self: stretch;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-  }
-  #damaros-panel-home.active.damaros-ig-scroll .damaros-ignition .home {
-    display: grid;
-    place-items: start center;
-    min-height: auto;
-    padding: calc(var(--tab) + 0.75rem) 0.75rem 1.25rem;
-  }
-  #damaros-panel-home.active.damaros-ig-scroll .damaros-ignition .hero {
-    position: absolute;
-    inset: calc(var(--tab) + 0.5rem) 0.75rem auto;
-    height: 0;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-  }
-  #damaros-panel-home.active .damaros-ignition .logo {
-    font-size: clamp(3.4rem, 16vw, 5.8rem);
-  }
-  body.damaros-ignition-home-active:not(.ig-workspace) #damaros-panel-home.active:not(.damaros-ig-scroll) .damaros-ignition .workspace {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: min(760px, calc(100vw - 1rem)) !important;
-    max-width: calc(100vw - 1rem);
-    margin: 0 auto;
-    height: 0 !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-  }
-  #damaros-panel-home.active .damaros-ignition .workspace {
-    width: min(760px, calc(100vw - 1rem));
-    min-height: auto;
-    margin-top: clamp(0.6rem, 2svh, 1.4rem);
-    gap: 0.65rem;
-    padding-bottom: 2.5rem;
-    visibility: visible;
-  }
-  #damaros-panel-home.active .damaros-ignition .workspace-head {
-    padding: 0.18rem 0 0.5rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .workspace-tagline.workspace-tagline-terminal {
-    white-space: normal;
-    text-align: left;
-    max-width: 100%;
-    align-self: stretch;
-  }
-  #damaros-panel-home.active .damaros-ignition .cockpit {
-    grid-template-columns: 1fr;
-    gap: 0.65rem;
-    height: auto;
-    min-height: 0;
-  }
-  #damaros-panel-home.active .damaros-ignition .workflow-map {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    grid-template-rows: auto;
-    gap: clamp(0.14rem, 1.1vw, 0.28rem);
-    overflow-x: visible;
-    overflow-y: visible;
-    padding: 0.38rem clamp(0.22rem, 1.5vw, 0.36rem);
-    height: auto;
-    width: 100%;
-  }
-  #damaros-panel-home.active .damaros-ignition .step {
-    min-height: 2.65rem;
-    max-height: none;
-    min-width: 0;
-    aspect-ratio: auto;
-    padding: 0.28rem 0.08rem;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 0;
-  }
-  #damaros-panel-home.active .damaros-ignition .step span {
-    font-family: var(--fh);
-    font-size: clamp(0.62rem, 3.35vw, 0.78rem);
-    margin-bottom: 0;
-    letter-spacing: 0.06em;
-    text-align: center;
-    color: rgba(232, 238, 245, 0.88);
-  }
-  #damaros-panel-home.active .damaros-ignition .step.active span {
-    color: #8fbfff;
-  }
-  #damaros-panel-home.active .damaros-ignition .step b {
-    display: none !important;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-panel {
-    gap: 1rem;
-    height: auto;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-top {
-    min-height: 0;
-  }
-  #damaros-panel-home.active .damaros-ignition .badges {
-    margin-top: 0.55rem;
-    gap: 0.26rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-cta-row {
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0.55rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-cta-row .cta {
-    justify-content: center;
-    text-align: center;
-  }
-  #damaros-panel-home.active .damaros-ignition .badge {
-    font-size: clamp(0.48rem, 2.4vw, 0.58rem);
-    padding: 0.22rem 0.4rem;
-    letter-spacing: 0.065em;
-    font-weight: 450;
-  }
-  #damaros-panel-home.active .damaros-ignition .matrix {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.65rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .metric {
-    padding: 0.78rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .metric li {
-    font-size: 0.82rem;
-    line-height: 1.48;
-  }
-}
-@media (max-width: 620px) {
-  #damaros-panel-home.active .damaros-ignition .workspace-logo {
-    font-size: clamp(1.6rem, 12vw, 2.45rem);
-  }
-  #damaros-panel-home.active .damaros-ignition .workflow-map {
-    gap: 0.12rem;
-    padding: 0.32rem 0.18rem;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-  #damaros-panel-home.active .damaros-ignition .step {
-    min-height: 2.45rem;
-    padding: 0.22rem 0.04rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .step span {
-    font-size: clamp(0.58rem, 3.8vw, 0.72rem);
-  }
-  #damaros-panel-home.active .damaros-ignition .matrix {
-    grid-template-columns: 1fr;
-  }
-  #damaros-panel-home.active .damaros-ignition .bottom-bar {
-    padding: 0.7rem 0.85rem;
-    font-size: 0.5rem;
-  }
-}
-@media (max-height: 760px) and (min-width: 921px) {
-  #damaros-panel-home.active .damaros-ignition .home {
-    padding-top: calc(var(--tab) + 0.65rem);
-    padding-bottom: 2.4rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .workspace {
-    width: min(1120px, calc(100vw - 1.5rem));
-    min-height: min(560px, calc(100svh - var(--tab) - 4rem));
-    gap: 0.55rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .workspace-head {
-    padding: 0.02rem 0.8rem 0.5rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .workspace-logo {
-    font-size: clamp(1.65rem, 3vw, 2.45rem);
-  }
-  #damaros-panel-home.active .damaros-ignition .cockpit {
-    min-height: min(510px, calc(100svh - var(--tab) - 7.5rem));
-    height: auto;
-  }
-  #damaros-panel-home.active .damaros-ignition .workflow-map {
-    gap: 0.28rem;
-    padding: 0.4rem;
-    grid-template-rows: repeat(6, minmax(3rem, 1fr));
-  }
-  #damaros-panel-home.active .damaros-ignition .step {
-    padding: 0.34rem 0.5rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-panel {
-    gap: 1rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-top {
-    padding: 0.85rem 0.9rem;
-    min-height: 0;
-  }
-  #damaros-panel-home.active .damaros-ignition h1 {
-    font-size: clamp(1.22rem, 2.2vw, 1.9rem);
-  }
-  #damaros-panel-home.active .damaros-ignition .detail-top p {
-    font-size: 0.78rem;
-    line-height: 1.45;
-  }
-  #damaros-panel-home.active .damaros-ignition .matrix {
-    gap: 0.6rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .metric {
-    padding: 0.68rem;
-  }
-  #damaros-panel-home.active .damaros-ignition .metric li {
-    font-size: 0.78rem;
-    line-height: 1.42;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  #damaros-panel-home.active .damaros-ignition *,
-  #damaros-panel-home.active .damaros-ignition *::before,
-  #damaros-panel-home.active .damaros-ignition *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  #damaros-panel-home.active .damaros-ignition .scan-ring,
-  #damaros-panel-home.active .damaros-ignition .workspace-logo::after,
-  #damaros-panel-home.active .damaros-ignition .detail-top::after,
-  #damaros-panel-home.active .damaros-ignition .step::after,
-  #damaros-panel-home.active .damaros-ignition .metric::after {
-    display: none;
-  }
-}
+
+/* ================================================================
+   Homepage v2 — Provenance substrate
+   Body state: default=hero | body.is-playing | body.is-cockpit
+   ================================================================ */
+
+/* Background */
+.ig-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ig-monogram-bg{position:absolute;inset:0;background:#000;-webkit-mask-image:radial-gradient(ellipse at center,#000 0%,#000 42%,rgba(0,0,0,.35) 70%,transparent 88%);mask-image:radial-gradient(ellipse at center,#000 0%,#000 42%,rgba(0,0,0,.35) 70%,transparent 88%);overflow:hidden}
+.ig-monogram-grid{position:absolute;top:-20%;left:-12%;width:124%;height:140%;display:grid;grid-template-columns:repeat(auto-fill,100px);grid-auto-rows:100px;gap:32px;opacity:.09;transform:rotate(-8deg) translate3d(0,0,0);animation:igGridDrift 14s linear infinite;will-change:transform}
+.ig-monogram-grid img{width:100px;height:100px;object-fit:contain;display:block;opacity:.055;filter:grayscale(1) brightness(.6) contrast(1.3);mix-blend-mode:screen}
+@keyframes igGridDrift{0%{transform:rotate(-8deg) translate3d(0,0,0)}50%{transform:rotate(-8deg) translate3d(36px,-8px,0)}100%{transform:rotate(-8deg) translate3d(0,0,0)}}
+@keyframes igFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Panel */
+#damaros-panel-home.active{min-height:100vh;position:relative;overflow-x:hidden;padding:0!important;background:#000!important}
+body.damaros-home-lock{overflow:auto!important}
+
+/* Hero */
+.ig-hero{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--tab) + 2rem) clamp(1rem,4vw,3rem) 3rem;text-align:center;transition:opacity .55s ease,transform .55s cubic-bezier(.16,1,.3,1)}
+body.is-playing .ig-hero,body.is-playing .ig-cockpit,body.is-playing .ig-manifesto,body.is-playing .ig-stakeholders,body.is-playing .ig-bottom-bar{display:none}
+body.is-cockpit .ig-hero{display:none}
+.ig-hero-inner{display:flex;flex-direction:column;align-items:center;max-width:780px}
+.ig-wordmark{display:flex;align-items:center;gap:clamp(.26rem,.5vw,.42rem);font-family:var(--fh);font-size:clamp(4rem,7vw,7.4rem);font-weight:700;line-height:1;letter-spacing:normal;text-shadow:0 0 48px rgba(123,150,178,.12);animation:igFadeUp .75s ease .05s both}
+.ig-dot{appearance:none;border:none;background:none;padding:0;width:clamp(8px,.7vw,11px);height:clamp(8px,.7vw,11px);flex:0 0 clamp(8px,.7vw,11px);border-radius:50%;background:var(--blue);box-shadow:0 0 18px rgba(123,150,178,.58);cursor:pointer;animation:igDotPulse 2.2s ease-in-out infinite;transform:translateY(.06em);transition:transform .2s ease,box-shadow .2s ease}
+.ig-dot:hover,.ig-dot:focus-visible{box-shadow:0 0 30px rgba(123,150,178,.9),0 0 60px rgba(123,150,178,.4);outline:none;transform:translateY(.06em) scale(1.25)}
+@keyframes igDotPulse{0%,100%{opacity:1}50%{opacity:.22}}
+.ig-headline{font-family:'Playfair Display','Georgia',serif;font-size:clamp(1.65rem,3.6vw,3.2rem);font-weight:400;font-style:italic;letter-spacing:-.01em;line-height:1.15;margin:clamp(.9rem,2.2vh,1.4rem) 0 0;color:var(--tp);animation:igFadeUp .75s ease .2s both}
+.ig-subline{font-family:var(--fb);font-size:clamp(.82rem,1.25vw,1.05rem);line-height:1.62;color:var(--ts);margin:clamp(.55rem,1.2vh,.9rem) 0 0;max-width:610px;animation:igFadeUp .75s ease .35s both}
+.ig-cue{font-family:var(--fm);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--td);margin:clamp(.9rem,2vh,1.4rem) 0 0;animation:igFadeUp .75s ease .5s both}
+
+/* Audience switch */
+.ig-audience-switch{position:fixed;top:calc(var(--tab) + .6rem);right:.7rem;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:.2rem;animation:igFadeUp .6s ease .7s both}
+body.is-playing .ig-audience-switch,body.is-cockpit .ig-audience-switch{display:none}
+.ig-aud-btn{appearance:none;border:1px solid transparent;background:transparent;font-family:var(--fm);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--td);cursor:pointer;padding:.28rem .52rem;border-radius:999px;transition:color .25s,background .25s,border-color .25s;text-align:right}
+.ig-aud-btn:hover{color:var(--ts)}
+.ig-aud-btn.active{color:var(--blue2);border-color:rgba(123,150,178,.28);background:rgba(123,150,178,.07)}
+
+/* Stage (autoplay) */
+.ig-stage{position:relative;z-index:10;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--tab) + 1.2rem) clamp(1rem,3vw,2rem) 2rem;opacity:0;pointer-events:none;transition:opacity .6s ease}
+body.is-playing .ig-stage{opacity:1;pointer-events:auto;position:fixed;top:0;left:0;right:0;bottom:0;background:#000;z-index:80;min-height:0}
+body.is-cockpit .ig-stage{display:none}
+.ig-caption{font-family:var(--fb);font-size:clamp(.88rem,1.4vw,1.12rem);line-height:1.55;color:var(--ts);text-align:center;max-width:600px;margin:0 auto 1.5rem;min-height:2.8em;transition:opacity .38s ease}
+.ig-caption.fading{opacity:0}
+.ig-viz-wrap{width:100%;max-width:940px;flex:1;display:flex;align-items:center}
+.ig-viz{width:100%;height:auto;max-height:min(500px,58svh);display:block;overflow:visible}
+.ig-skip{appearance:none;border:1px solid rgba(123,150,178,.2);background:rgba(0,0,0,.36);color:var(--td);font-family:var(--fm);font-size:.54rem;letter-spacing:.13em;text-transform:uppercase;padding:.42rem .88rem;cursor:pointer;margin-top:1.2rem;transition:color .25s,border-color .25s}
+.ig-skip:hover{color:var(--ts);border-color:rgba(123,150,178,.45)}
+
+/* SVG visualization */
+.viz-layer{transition:opacity .65s cubic-bezier(.16,1,.3,1)}
+.viz-layer.viz-active{opacity:1!important}
+.viz-layer.viz-dim{opacity:.22!important}
+.viz-layer.viz-mid{opacity:.5!important}
+.viz-origin-glow{fill:none;stroke:rgba(123,150,178,.15);stroke-width:1;animation:igOriginGlow 3s ease-in-out infinite}
+.viz-origin-pulse{fill:none;stroke:rgba(123,150,178,.07);stroke-width:1;animation:igOriginGlow 3s ease-in-out infinite 1.2s}
+@keyframes igOriginGlow{0%,100%{r:36px;stroke-opacity:.15}50%{r:47px;stroke-opacity:.3}}
+.viz-origin{fill:rgba(123,150,178,.32);stroke:var(--blue2);stroke-width:1.5}
+.viz-conn{stroke:rgba(123,150,178,.4);stroke-width:1;stroke-dasharray:4 3;fill:none}
+.viz-conn-solid{stroke:rgba(123,150,178,.42);stroke-width:1.2;fill:none}
+.viz-particle{fill:rgba(123,150,178,.32)}
+.viz-particle.eligible{fill:rgba(169,192,214,.8);animation:igParticlePulse 2.4s ease-in-out infinite}
+.viz-particle.near-eligible{fill:rgba(123,150,178,.45)}
+@keyframes igParticlePulse{0%,100%{fill:rgba(169,192,214,.8)}50%{fill:rgba(169,192,214,.36)}}
+.viz-criterion{fill:rgba(123,150,178,.28);stroke:rgba(169,192,214,.55);stroke-width:1.2}
+.viz-criterion.pass{fill:rgba(74,222,128,.22);stroke:rgba(74,222,128,.75)}
+.viz-criterion.review{fill:rgba(250,204,21,.22);stroke:rgba(250,204,21,.75)}
+.viz-criterion.fail{fill:rgba(251,113,133,.22);stroke:rgba(251,113,133,.75)}
+.viz-form-node{fill:rgba(123,150,178,.25);stroke:rgba(169,192,214,.5);stroke-width:1.2}
+.viz-evidence{fill:rgba(169,192,214,.5)}
+.viz-decision-glow{fill:none;stroke:rgba(169,192,214,.12);stroke-width:1;animation:igDecisionGlow 2.2s ease-in-out infinite}
+@keyframes igDecisionGlow{0%,100%{r:42px;stroke-opacity:.12}50%{r:55px;stroke-opacity:.28}}
+.viz-decision{fill:rgba(169,192,214,.32);stroke:var(--blue2);stroke-width:1.5}
+.viz-lbl-sm{font-family:var(--fm);font-size:8.5px;fill:rgba(169,192,214,.62);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
+.viz-lbl-xs{font-family:var(--fm);font-size:7px;fill:rgba(123,150,178,.5);letter-spacing:.06em;text-anchor:middle}
+.viz-lbl-decision{font-family:var(--fm);font-size:8.5px;fill:rgba(169,192,214,.72);letter-spacing:.12em;text-transform:uppercase;text-anchor:middle}
+.tl-track{stroke:rgba(123,150,178,.16);stroke-width:1}
+.tl-stop{fill:rgba(123,150,178,.32)}
+.tl-stop-lbl{font-family:var(--fm);font-size:6.5px;fill:rgba(123,150,178,.42);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
+.tl-cursor{fill:var(--amber);filter:drop-shadow(0 0 5px rgba(250,204,21,.55));transition:cx .75s cubic-bezier(.16,1,.3,1)}
+
+/* Cockpit */
+.ig-cockpit{position:relative;z-index:10;padding:calc(var(--tab) + clamp(1.4rem,3vh,2.4rem)) clamp(1rem,3vw,2.5rem) clamp(2rem,4vh,3.5rem);opacity:0;pointer-events:none;transition:opacity .6s ease .2s}
+body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
+.ig-cockpit-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:1.35rem}
+.ig-stage-nav{display:flex;gap:.42rem;align-items:center;border-bottom:1px solid rgba(123,150,178,.1);padding-bottom:.68rem;flex-wrap:wrap}
+.ig-stage-btn{appearance:none;border:none;background:transparent;font-family:var(--fm);font-size:.61rem;letter-spacing:.13em;text-transform:uppercase;color:var(--td);cursor:pointer;padding:.38rem .7rem;transition:color .25s;position:relative;display:flex;align-items:center;gap:.34rem}
+.ig-stage-btn span{font-size:.46rem;opacity:.5}
+.ig-stage-btn:hover{color:var(--ts)}
+.ig-stage-btn.active{color:var(--blue2)}
+.ig-stage-btn.active::after{content:'';position:absolute;bottom:-.7rem;left:.7rem;right:.7rem;height:1px;background:var(--blue)}
+.ig-cockpit-body{display:grid;grid-template-columns:1fr 320px;gap:1.35rem;align-items:start}
+.ig-cockpit-viz-wrap{border:1px solid rgba(123,150,178,.15);background:linear-gradient(180deg,rgba(8,11,15,.88),rgba(0,0,0,.6));padding:1.1rem;box-shadow:0 0 48px rgba(123,150,178,.042),inset 0 0 0 1px rgba(255,255,255,.014);transition:border-color .5s,box-shadow .5s}
+.ig-cockpit-viz-wrap:hover{border-color:rgba(123,150,178,.26);box-shadow:0 0 62px rgba(123,150,178,.065),inset 0 0 0 1px rgba(255,255,255,.02)}
+.ig-cockpit-viz{width:100%;height:auto;display:block}
+.ig-cockpit-rail{border:1px solid rgba(123,150,178,.15);background:linear-gradient(180deg,rgba(5,8,11,.82),rgba(0,0,0,.58));padding:1.1rem;box-shadow:0 0 42px rgba(123,150,178,.035),inset 0 0 0 1px rgba(255,255,255,.012);min-height:280px;display:flex;flex-direction:column;gap:.68rem}
+.ig-rail-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(169,192,214,.55);font-weight:700}
+.ig-rail-title{font-family:var(--fh);font-size:1.14rem;font-weight:600;letter-spacing:.01em;margin:0;color:var(--tp);line-height:1.22}
+.ig-rail-body{font-family:var(--fb);font-size:.83rem;line-height:1.6;color:var(--ts);margin:0}
+.ig-rail-note{font-family:var(--fm);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(123,150,178,.5);margin-top:auto}
+.ig-rail-outcomes{display:flex;gap:.35rem;flex-wrap:wrap}
+.ig-rail-outcomes:empty{display:none}
+.ig-outcome{font-family:var(--fm);font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;padding:.24rem .46rem;border-radius:999px}
+.ig-outcome.pass{color:#86efac;border:1px solid rgba(74,222,128,.34);background:rgba(74,222,128,.08)}
+.ig-outcome.review{color:#fde68a;border:1px solid rgba(250,204,21,.34);background:rgba(250,204,21,.08)}
+.ig-outcome.fail{color:#fca5a5;border:1px solid rgba(251,113,133,.34);background:rgba(251,113,133,.08)}
+.ig-rail-cta{margin-top:auto}
+.ig-rail-cta a{font-family:var(--fm);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);text-decoration:none;border-bottom:1px solid rgba(123,150,178,.28);padding-bottom:.12rem;transition:color .25s,border-color .25s}
+.ig-rail-cta a:hover{color:var(--tp);border-color:rgba(169,192,214,.55)}
+.ig-cockpit-controls{display:flex;gap:.7rem;align-items:center;justify-content:center;padding-top:.38rem}
+.ig-ctrl-btn{appearance:none;border:1px solid rgba(123,150,178,.2);background:rgba(0,0,0,.32);color:var(--td);font-family:var(--fm);font-size:.53rem;letter-spacing:.13em;text-transform:uppercase;padding:.44rem .92rem;cursor:pointer;transition:color .25s,border-color .25s,background .25s}
+.ig-ctrl-btn:hover{color:var(--ts);border-color:rgba(123,150,178,.44);background:rgba(123,150,178,.07)}
+.ig-ctrl-home{color:rgba(123,150,178,.48)!important}
+
+/* Manifesto */
+.ig-manifesto{position:relative;z-index:10;padding:clamp(3rem,7vh,5.5rem) clamp(1.5rem,5vw,5rem);opacity:0;pointer-events:none;transition:opacity .6s ease .4s;border-top:1px solid rgba(123,150,178,.07)}
+body.is-cockpit .ig-manifesto{opacity:1;pointer-events:auto}
+.ig-manifesto p{font-family:'Playfair Display','Georgia',serif;font-size:clamp(1.12rem,2.2vw,1.85rem);font-weight:400;font-style:italic;line-height:1.4;letter-spacing:-.01em;color:rgba(232,232,232,.68);margin:0}
+.ig-manifesto p+p{margin-top:clamp(.55rem,1.4vh,.95rem)}
+
+/* Stakeholders */
+.ig-stakeholders{position:relative;z-index:10;padding:clamp(2rem,5vh,4rem) clamp(1.5rem,5vw,5rem);display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;opacity:0;pointer-events:none;transition:opacity .6s ease .5s}
+body.is-cockpit .ig-stakeholders{opacity:1;pointer-events:auto}
+.ig-stakeholder-card{border:1px solid rgba(123,150,178,.12);background:linear-gradient(180deg,rgba(7,10,14,.72),rgba(0,0,0,.42));padding:1.15rem 1.1rem;display:flex;flex-direction:column;gap:.76rem;transition:border-color .42s,box-shadow .42s,background .42s,transform .42s cubic-bezier(.16,1,.3,1)}
+.ig-stakeholder-card:hover{border-color:rgba(123,150,178,.26);box-shadow:0 0 42px rgba(123,150,178,.055),inset 0 0 0 1px rgba(255,255,255,.014);background:linear-gradient(180deg,rgba(9,13,18,.82),rgba(0,0,0,.52));transform:translateY(-2px)}
+.ig-stakeholder-card.highlighted{border-color:rgba(169,192,214,.3);box-shadow:0 0 48px rgba(123,150,178,.075),inset 0 0 0 1px rgba(255,255,255,.018)}
+.ig-card-aud{font-family:var(--fm);font-size:.48rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(169,192,214,.52)}
+.ig-card-body{font-family:var(--fb);font-size:.86rem;line-height:1.58;color:var(--ts);margin:0;flex:1}
+.ig-card-cta{font-family:var(--fm);font-size:.53rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2);text-decoration:none;border-bottom:1px solid rgba(123,150,178,.28);padding-bottom:.12rem;align-self:flex-start;transition:color .25s,border-color .25s}
+.ig-card-cta:hover{color:var(--tp);border-color:rgba(169,192,214,.52)}
+
+/* Bottom bar */
+.ig-bottom-bar{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:clamp(.8rem,1.8vh,1.2rem) clamp(1.5rem,5vw,5rem);color:var(--td);font-family:var(--fm);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;border-top:1px solid rgba(123,150,178,.06);opacity:0;pointer-events:none;transition:opacity .5s ease .7s}
+body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
+
+/* Responsive */
+@media(max-width:900px){.ig-cockpit-body{grid-template-columns:1fr}.ig-cockpit-rail{min-height:auto}.ig-audience-switch{flex-direction:row;flex-wrap:wrap;justify-content:flex-end;padding:.42rem .6rem;gap:.12rem}}
+@media(max-width:600px){.ig-audience-switch{display:none}.ig-headline{font-size:clamp(1.4rem,5.5vw,2.2rem)}.ig-subline{font-size:.86rem}.ig-manifesto p{font-size:clamp(1rem,4.5vw,1.42rem)}.ig-stakeholders{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.ig-monogram-grid,.ig-dot,.viz-origin-glow,.viz-origin-pulse,.viz-decision-glow,.viz-particle.eligible{animation:none}.ig-dot{opacity:.85}.tl-cursor{transition:none}.viz-layer,.ig-hero,.ig-stage,.ig-cockpit,.ig-manifesto,.ig-stakeholders,.ig-bottom-bar{transition:none}}
 
 </style>
 </head>
@@ -1830,65 +670,257 @@ body.damaros-ignition-home-active.ig-init #damaros-panel-home.active .damaros-ig
     </div>
   </nav>
 <div id="damaros-panel-home" class="damaros-panel active">
-<div class="damaros-ignition">
-<div class="site">
-<div class="monogram-bg" aria-hidden="true"><div class="monogram-grid" id="monogramGrid"></div></div>
-<div class="dot-haze" aria-hidden="true"></div>
-<div class="scan-ring one" aria-hidden="true"></div>
-<div class="scan-ring two" aria-hidden="true"></div>
-<div class="scan-ring three" aria-hidden="true"></div>
-<main class="home" id="ignitionHomeMain">
-<section class="hero" id="ignitionHero" aria-label="Damaros hero">
-<div class="hero-inner">
-<div class="logo">Damaros<button type="button" class="ignition-dot" id="ignitionDot" aria-label="Initialize Damaros workspace: Thesis, Protocol, Population, Screening, Forms, Replay"></button></div>
-<p class="command-line hero-action-cue" id="heroActionCue" aria-live="polite">click anywhere to initialize</p>
+
+<!-- Background -->
+<div class="ig-bg" aria-hidden="true">
+  <div class="ig-monogram-bg"><div class="ig-monogram-grid" id="igMonogramGrid"></div></div>
 </div>
+
+<!-- Audience switch (fixed top-right) -->
+<div class="ig-audience-switch" role="group" aria-label="View by audience">
+  <button class="ig-aud-btn active" data-aud="investors" type="button">Investors</button>
+  <button class="ig-aud-btn" data-aud="sponsors" type="button">Sponsors &amp; CROs</button>
+  <button class="ig-aud-btn" data-aud="sites" type="button">Sites</button>
+  <button class="ig-aud-btn" data-aud="partners" type="button">Research Partners</button>
+</div>
+
+<!-- Hero -->
+<section class="ig-hero" id="igHero" aria-label="Damaros">
+  <div class="ig-hero-inner">
+    <div class="ig-wordmark">
+      <span>Damaros</span>
+      <button type="button" class="ig-dot" id="igDot" aria-label="Begin Damaros walkthrough"></button>
+    </div>
+    <h1 class="ig-headline" id="igHeadline">Clinical trials, simplified.</h1>
+    <p class="ig-subline">Damaros transforms protocol logic, site evidence, coordinator work, and audit trails into one replayable execution system.</p>
+    <p class="ig-cue" id="igCue" aria-live="polite">Press the dot, or scroll.</p>
+  </div>
 </section>
-<section class="workspace" id="workspace" aria-label="Damaros workspace: Thesis, Protocol, Population, Screening, Forms, Replay">
-<header class="workspace-head">
-<button type="button" class="workspace-logo" id="workspaceLogo" aria-label="Return to Damaros homepage"><span class="workspace-logo-wordmark">Damaros</span><span class="workspace-logo-dot" id="workspaceLogoDot" aria-hidden="true"></span></button>
-<p class="workspace-tagline workspace-tagline-terminal" id="workspaceTagline" aria-label="Clinical trial execution; descriptor cycles through governed execution terms."><span class="workspace-tagline-prefix">clinical trial execution, </span><span class="workspace-tagline-rotator" id="workspaceTaglineRotator"></span></p>
-</header>
-<div class="cockpit">
-<div class="workflow-map" aria-label="Thesis, Protocol, Population, Screening, Forms, Replay">
-<button type="button" class="step active stage-in" data-step="thesis" aria-label="Step 00 Thesis. NCT to criterion replay.">
-  <span>00</span><b>Thesis</b>
-</button>
-<button type="button" class="step stage-in" data-step="protocol" aria-label="Step 01 Protocol. NCT to Criterion Tree.">
-  <span>01</span><b>Protocol</b>
-</button>
-<button type="button" class="step stage-in" data-step="population" aria-label="Step 02 Population. Site evidence plane.">
-  <span>02</span><b>Population</b>
-</button>
-<button type="button" class="step stage-in" data-step="screening" aria-label="Step 03 Screening. Deterministic adjudication.">
-  <span>03</span><b>Screening</b>
-</button>
-<button type="button" class="step stage-in" data-step="forms" aria-label="Step 04 Forms. Operational packet layer.">
-  <span>04</span><b>Forms</b>
-</button>
-<button type="button" class="step stage-in" data-step="replay" aria-label="Step 05 Replay. Audit reconstruction.">
-  <span>05</span><b>Replay</b>
-</button>
-</div>
-<article class="detail-panel" aria-live="polite">
-<div class="detail-top">
-<div class="label" id="detailLabel"></div>
-<h1 id="detailTitle"></h1>
-<p id="detailText"></p>
-<div class="detail-cta-row" id="detailCtaRow" hidden></div>
-<div class="badges" id="badges"></div>
-</div>
-<div class="matrix">
-<div class="metric"><span>Highlights</span><div id="detailDoes"></div></div>
-<div class="metric"><span>Outcomes</span><div id="detailWhy"></div></div>
-</div>
-</article>
-</div>
+
+<!-- Provenance stage -->
+<section class="ig-stage" id="igStage" aria-label="Damaros provenance walkthrough" aria-hidden="true">
+  <p class="ig-caption" id="igCaption" aria-live="polite" aria-atomic="true"></p>
+  <div class="ig-viz-wrap">
+    <svg class="ig-viz" id="igViz" viewBox="0 0 820 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Population, Screening, Forms, Replay">
+      <g class="viz-layer" id="vizProtocol" opacity="0">
+        <circle class="viz-origin-glow" cx="88" cy="200" r="36"/>
+        <circle class="viz-origin-pulse" cx="88" cy="200" r="50"/>
+        <circle class="viz-origin" cx="88" cy="200" r="16"/>
+        <line class="viz-conn-solid" x1="104" y1="200" x2="175" y2="200"/>
+        <text class="viz-lbl-sm" x="88" y="234">Protocol</text>
+        <text class="viz-lbl-xs" x="88" y="248">Trident · v24.06</text>
+      </g>
+      <g class="viz-layer" id="vizPopulation" opacity="0">
+        <line class="viz-conn-solid" x1="330" y1="200" x2="350" y2="200"/>
+      </g>
+      <g class="viz-layer" id="vizScreening" opacity="0">
+        <line class="viz-conn" x1="395" y1="195" x2="370" y2="155"/>
+        <line class="viz-conn" x1="395" y1="195" x2="395" y2="150"/>
+        <line class="viz-conn" x1="395" y1="195" x2="420" y2="155"/>
+        <line class="viz-conn" x1="370" y1="150" x2="350" y2="112"/>
+        <line class="viz-conn" x1="370" y1="150" x2="380" y2="112"/>
+        <line class="viz-conn" x1="395" y1="150" x2="395" y2="112"/>
+        <line class="viz-conn" x1="420" y1="150" x2="410" y2="112"/>
+        <line class="viz-conn" x1="420" y1="150" x2="435" y2="112"/>
+        <circle class="viz-criterion" cx="395" cy="200" r="10"/>
+        <circle class="viz-criterion pass" cx="370" cy="150" r="8"/>
+        <circle class="viz-criterion pass" cx="395" cy="150" r="8"/>
+        <circle class="viz-criterion review" cx="420" cy="150" r="8"/>
+        <circle class="viz-criterion pass" cx="350" cy="112" r="6"/>
+        <circle class="viz-criterion fail" cx="380" cy="112" r="6"/>
+        <circle class="viz-criterion pass" cx="395" cy="112" r="6"/>
+        <circle class="viz-criterion review" cx="410" cy="112" r="6"/>
+        <circle class="viz-criterion pass" cx="435" cy="112" r="6"/>
+        <line class="viz-conn" x1="395" y1="205" x2="370" y2="255"/>
+        <line class="viz-conn" x1="395" y1="205" x2="420" y2="255"/>
+        <circle class="viz-criterion pass" cx="370" cy="260" r="8"/>
+        <circle class="viz-criterion review" cx="420" cy="260" r="8"/>
+        <line class="viz-conn" x1="370" y1="265" x2="358" y2="295"/>
+        <line class="viz-conn" x1="420" y1="265" x2="432" y2="295"/>
+        <circle class="viz-criterion pass" cx="358" cy="298" r="6"/>
+        <circle class="viz-criterion fail" cx="432" cy="298" r="6"/>
+        <line class="viz-conn-solid" x1="447" y1="200" x2="478" y2="200"/>
+      </g>
+      <g class="viz-layer" id="vizForms" opacity="0">
+        <line class="viz-conn" x1="480" y1="190" x2="548" y2="158"/>
+        <line class="viz-conn" x1="480" y1="200" x2="548" y2="200"/>
+        <line class="viz-conn" x1="480" y1="210" x2="548" y2="242"/>
+        <line class="viz-conn" x1="558" y1="158" x2="620" y2="185"/>
+        <line class="viz-conn" x1="558" y1="200" x2="620" y2="200"/>
+        <line class="viz-conn" x1="558" y1="242" x2="620" y2="215"/>
+        <circle class="viz-form-node" cx="548" cy="158" r="10"/>
+        <circle class="viz-form-node" cx="548" cy="200" r="10"/>
+        <circle class="viz-form-node" cx="548" cy="242" r="10"/>
+        <circle class="viz-evidence" cx="524" cy="145" r="4"/>
+        <circle class="viz-evidence" cx="530" cy="168" r="3"/>
+        <circle class="viz-evidence" cx="524" cy="200" r="4"/>
+        <circle class="viz-evidence" cx="530" cy="218" r="3"/>
+        <circle class="viz-evidence" cx="524" cy="255" r="4"/>
+      </g>
+      <g class="viz-layer" id="vizDecision" opacity="1">
+        <circle class="viz-decision-glow" cx="680" cy="200" r="42"/>
+        <circle class="viz-decision" cx="680" cy="200" r="18"/>
+        <text class="viz-lbl-decision" x="680" y="235">Decision</text>
+      </g>
+      <g class="viz-timeline">
+        <line class="tl-track" x1="55" y1="400" x2="755" y2="400"/>
+        <circle class="tl-stop" cx="88" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="88" y="416">Protocol</text>
+        <circle class="tl-stop" cx="245" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="245" y="416">Population</text>
+        <circle class="tl-stop" cx="395" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="395" y="416">Screening</text>
+        <circle class="tl-stop" cx="548" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="548" y="416">Forms</text>
+        <circle class="tl-stop" cx="680" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="680" y="416">Replay</text>
+        <circle class="tl-cursor" id="igTlCursor" cx="680" cy="400" r="5.5"/>
+      </g>
+    </svg>
+  </div>
+  <button class="ig-skip" id="igSkip" type="button">Skip to walkthrough</button>
 </section>
-</main>
-<div class="bottom-bar"><span id="damarosVisitorLocation" title=""></span><span>© 2026 Damaros™</span></div>
+
+<!-- Cockpit -->
+<section class="ig-cockpit" id="igCockpit" aria-label="Damaros execution walkthrough" aria-hidden="true">
+  <div class="ig-cockpit-inner">
+    <nav class="ig-stage-nav" aria-label="Workflow stages">
+      <button class="ig-stage-btn" data-stage="protocol" type="button"><span>01</span>Protocol</button>
+      <button class="ig-stage-btn" data-stage="population" type="button"><span>02</span>Population</button>
+      <button class="ig-stage-btn active" data-stage="screening" type="button"><span>03</span>Screening</button>
+      <button class="ig-stage-btn" data-stage="forms" type="button"><span>04</span>Forms</button>
+      <button class="ig-stage-btn" data-stage="replay" type="button"><span>05</span>Replay</button>
+    </nav>
+    <div class="ig-cockpit-body">
+      <div class="ig-cockpit-viz-wrap">
+        <svg class="ig-cockpit-viz" id="igCockpitViz" viewBox="0 0 820 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stage detail">
+          <g class="viz-layer" id="cvizProtocol" opacity="0">
+            <circle class="viz-origin-glow" cx="88" cy="200" r="36"/>
+            <circle class="viz-origin" cx="88" cy="200" r="16"/>
+            <line class="viz-conn-solid" x1="104" y1="200" x2="175" y2="200"/>
+            <text class="viz-lbl-sm" x="88" y="234">Protocol</text>
+            <text class="viz-lbl-xs" x="88" y="248">Trident · v24.06</text>
+          </g>
+          <g class="viz-layer" id="cvizPopulation" opacity="0">
+            <line class="viz-conn-solid" x1="330" y1="200" x2="350" y2="200"/>
+          </g>
+          <g class="viz-layer" id="cvizScreening" opacity="0">
+            <line class="viz-conn" x1="395" y1="195" x2="370" y2="155"/>
+            <line class="viz-conn" x1="395" y1="195" x2="395" y2="150"/>
+            <line class="viz-conn" x1="395" y1="195" x2="420" y2="155"/>
+            <line class="viz-conn" x1="370" y1="150" x2="350" y2="112"/>
+            <line class="viz-conn" x1="370" y1="150" x2="380" y2="112"/>
+            <line class="viz-conn" x1="395" y1="150" x2="395" y2="112"/>
+            <line class="viz-conn" x1="420" y1="150" x2="410" y2="112"/>
+            <line class="viz-conn" x1="420" y1="150" x2="435" y2="112"/>
+            <circle class="viz-criterion" cx="395" cy="200" r="10"/>
+            <circle class="viz-criterion pass" cx="370" cy="150" r="8"/>
+            <circle class="viz-criterion pass" cx="395" cy="150" r="8"/>
+            <circle class="viz-criterion review" cx="420" cy="150" r="8"/>
+            <circle class="viz-criterion pass" cx="350" cy="112" r="6"/>
+            <circle class="viz-criterion fail" cx="380" cy="112" r="6"/>
+            <circle class="viz-criterion pass" cx="395" cy="112" r="6"/>
+            <circle class="viz-criterion review" cx="410" cy="112" r="6"/>
+            <circle class="viz-criterion pass" cx="435" cy="112" r="6"/>
+            <line class="viz-conn" x1="395" y1="205" x2="370" y2="255"/>
+            <line class="viz-conn" x1="395" y1="205" x2="420" y2="255"/>
+            <circle class="viz-criterion pass" cx="370" cy="260" r="8"/>
+            <circle class="viz-criterion review" cx="420" cy="260" r="8"/>
+            <line class="viz-conn" x1="370" y1="265" x2="358" y2="295"/>
+            <line class="viz-conn" x1="420" y1="265" x2="432" y2="295"/>
+            <circle class="viz-criterion pass" cx="358" cy="298" r="6"/>
+            <circle class="viz-criterion fail" cx="432" cy="298" r="6"/>
+            <line class="viz-conn-solid" x1="447" y1="200" x2="478" y2="200"/>
+          </g>
+          <g class="viz-layer" id="cvizForms" opacity="0">
+            <line class="viz-conn" x1="480" y1="190" x2="548" y2="158"/>
+            <line class="viz-conn" x1="480" y1="200" x2="548" y2="200"/>
+            <line class="viz-conn" x1="480" y1="210" x2="548" y2="242"/>
+            <line class="viz-conn" x1="558" y1="158" x2="620" y2="185"/>
+            <line class="viz-conn" x1="558" y1="200" x2="620" y2="200"/>
+            <line class="viz-conn" x1="558" y1="242" x2="620" y2="215"/>
+            <circle class="viz-form-node" cx="548" cy="158" r="10"/>
+            <circle class="viz-form-node" cx="548" cy="200" r="10"/>
+            <circle class="viz-form-node" cx="548" cy="242" r="10"/>
+            <circle class="viz-evidence" cx="524" cy="145" r="4"/>
+            <circle class="viz-evidence" cx="530" cy="168" r="3"/>
+            <circle class="viz-evidence" cx="524" cy="200" r="4"/>
+            <circle class="viz-evidence" cx="530" cy="218" r="3"/>
+            <circle class="viz-evidence" cx="524" cy="255" r="4"/>
+          </g>
+          <g class="viz-layer" id="cvizDecision" opacity="1">
+            <circle class="viz-decision-glow" cx="680" cy="200" r="42"/>
+            <circle class="viz-decision" cx="680" cy="200" r="18"/>
+            <text class="viz-lbl-decision" x="680" y="235">Decision</text>
+          </g>
+          <g class="viz-timeline">
+            <line class="tl-track" x1="55" y1="400" x2="755" y2="400"/>
+            <circle class="tl-stop" cx="88" cy="400" r="3"/>
+            <text class="tl-stop-lbl" x="88" y="416">Protocol</text>
+            <circle class="tl-stop" cx="245" cy="400" r="3"/>
+            <text class="tl-stop-lbl" x="245" y="416">Population</text>
+            <circle class="tl-stop" cx="395" cy="400" r="3"/>
+            <text class="tl-stop-lbl" x="395" y="416">Screening</text>
+            <circle class="tl-stop" cx="548" cy="400" r="3"/>
+            <text class="tl-stop-lbl" x="548" y="416">Forms</text>
+            <circle class="tl-stop" cx="680" cy="400" r="3"/>
+            <text class="tl-stop-lbl" x="680" y="416">Replay</text>
+            <circle class="tl-cursor" id="igCTlCursor" cx="395" cy="400" r="5.5"/>
+          </g>
+        </svg>
+      </div>
+      <aside class="ig-cockpit-rail" id="igCockpitRail" aria-live="polite">
+        <div class="ig-rail-label" id="igRailLabel"></div>
+        <h2 class="ig-rail-title" id="igRailTitle"></h2>
+        <p class="ig-rail-body" id="igRailBody"></p>
+        <div class="ig-rail-outcomes" id="igRailOutcomes"></div>
+        <div class="ig-rail-cta" id="igRailCta"></div>
+        <div class="ig-rail-note" id="igRailNote"></div>
+      </aside>
+    </div>
+    <div class="ig-cockpit-controls">
+      <button class="ig-ctrl-btn" id="igCtrlRewind" type="button">← Replay walkthrough</button>
+      <button class="ig-ctrl-btn ig-ctrl-home" id="igCtrlHome" type="button">Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- Manifesto -->
+<section class="ig-manifesto" id="igManifesto" aria-hidden="true">
+  <p>Damaros keeps the reasoning behind every clinical decision intact.</p>
+  <p>Trials become objects you can audit, not stories you have to reconstruct.</p>
+</section>
+
+<!-- Stakeholder paths -->
+<section class="ig-stakeholders" id="igStakeholders" aria-hidden="true">
+  <div class="ig-stakeholder-card" data-aud="investors">
+    <div class="ig-card-aud">Investors</div>
+    <p class="ig-card-body">A substrate, not a CRO. One engine across all sites.</p>
+    <a class="ig-card-cta" href="mailto:anirudh@damaros.ai?subject=Damaros%20Investor%20Brief">Read the investor brief</a>
+  </div>
+  <div class="ig-stakeholder-card" data-aud="sponsors">
+    <div class="ig-card-aud">Sponsors &amp; CROs</div>
+    <p class="ig-card-body">Run the same protocol at every site. Replay every decision.</p>
+    <a class="ig-card-cta" href="mailto:anirudh@damaros.ai?subject=Damaros%20Pilot">Talk to us about a pilot</a>
+  </div>
+  <div class="ig-stakeholder-card" data-aud="sites">
+    <div class="ig-card-aud">Sites</div>
+    <p class="ig-card-body">Eligibility runs on your real cohort. Forms assemble from real evidence.</p>
+    <a class="ig-card-cta" href="mailto:anirudh@damaros.ai?subject=Damaros%20Site%20Validation%20Brief">Request a site validation brief</a>
+  </div>
+  <div class="ig-stakeholder-card" data-aud="partners">
+    <div class="ig-card-aud">Research Partners</div>
+    <p class="ig-card-body">Modular, FHIR-native, auditable execution for trial science.</p>
+    <a class="ig-card-cta" href="mailto:anirudh@damaros.ai?subject=Damaros%20Teaming">Propose a teaming project</a>
+  </div>
+</section>
+
+<!-- Bottom bar -->
+<div class="ig-bottom-bar">
+  <span id="igLocation" title=""></span>
+  <span>© 2026 Damaros™</span>
 </div>
-</div>
+
 </div>
 
 <div id="damaros-panel-docs" class="damaros-panel"><div class="damaros-docs-wrap">
@@ -2419,331 +1451,69 @@ spec:
 (function () {
   const MONOGRAM_SRC =
     "https://cdn.prod.website-files.com/68bf7963d15243aa9de0b68c/68bf7986af7ebf743a5ea4a9_Damaros%20v4%20Logo%20White.png";
-    const workflow = {
-      thesis: {
-        label: "00 / THESIS",
-        title: "Hospital-side execution substrate for oncology trials.",
-        text:
-          "Five primitives compose the stack: Protocol, Population, Screening, Forms, Replay. Every criterion outcome reconstructs from a locked protocol version, a content-hashed evidence snapshot, and a multi-source verified Trident ontology release; no model output is a clinical verdict. One deterministic engine runs synthetic, retrospective, and production paths. Epic Backend Services is wired in code: SMART JWT with dual-key JWKS rotation drill, persisted Bulk FHIR job spine, Inferno-style FHIR conformance suite, and a Site Readiness Report endpoint that returns a pre-cutover checklist.",
-        badges: [],
-        ctas: [
-          { href: "mailto:anirudh@damaros.ai?subject=Damaros%20Validation%20Brief", label: "Request Validation Brief", secondary: false },
-          { href: "#trust", label: "View Trust Packet", secondary: true },
-        ],
-      },
+  // ================================================================
+  // Homepage v2 — Provenance substrate
+  // ================================================================
 
-      protocol: {
-        label: "01 / PROTOCOL",
-        title: "Protocol becomes executable logic for site workflows.",
-        text: "Damaros fetches and locks NCT protocol records, compiles inclusion and exclusion logic into a versioned Criterion Tree, and emits an Evidence Requirements Map before patient evidence is requested. Every LLM call routes through LLMPolicyGateway with an ai_origin envelope (prompt version, content hash, model id). A PR-gated AI Eval CI enforces protocol-extraction floors before merge.",
-        highlights: [
-          "NCT ingestion. Inclusion/exclusion structuring. Amendment-aware versioning.",
-          "Single canonical FHIR-to-Trident compiler. Deterministic resource ordering. Stable content hash.",
-          "Every LLM call through LLMPolicyGateway. AI Eval CI gates extraction before merge.",
-        ],
-        outcomes: [
-          "Locked, content-hashed protocol object.",
-          "Site extract field ask, reviewable in one pass.",
-          "Manual mapping addressed without overclaiming zero human review.",
-        ],
-        badges: [
-          ["NCT FETCH", "blue"],
-          ["VERSION LOCK", "violet"],
-          ["AI ORIGIN ENVELOPE", "teal"],
-          ["EVAL CI GATED", "green"],
-        ],
-      },
+  const igAudiences = {
+    investors: "Clinical trials, simplified.",
+    sponsors: "Run trials, with their reasoning intact.",
+    sites: "Trials your team can actually run.",
+    partners: "An execution substrate for trial science."
+  };
 
-      population: {
-        label: "02 / POPULATION",
-        title: "Population enters through one parser registry.",
-        text: "CSV, Excel, REDCap, JSON/NDJSON, FHIR Bundle, Bulk FHIR NDJSON, and Epic flat exports feed the same bounded evidence plane. A DuckDB profile and Frictionless schema check run as a pre-screen DQ gate; structural faults (duplicate MRN, impossible date, null primary key) block before screening. Bulk FHIR exports persist as bounded retry/resume jobs. Tenant binding is enforced at API, workbench, and ingest.",
-        highlights: [
-          "One parser registry for files, FHIR, Bulk FHIR NDJSON, Epic flat, and warehouse exports.",
-          "DQ pre-screen gate: DuckDB profile, Frictionless schema, structural rules.",
-          "Bulk FHIR job spine: persisted, bounded, retry/resume with manifest lineage.",
-        ],
-        outcomes: [
-          "Protocol-scoped evidence with source-field lineage.",
-          "Site controls the pathway; live EHR not required for validation.",
-          "Population snapshot chains forward to Screening and Replay.",
-        ],
-        badges: [
-          ["BULK FHIR JOB SPINE", "blue"],
-          ["DQ PRE-SCREEN", "amber"],
-          ["TENANT BOUND", "violet"],
-          ["PARSER REGISTRY", "green"],
-        ],
-      },
+  const igAutoplayBeats = [
+    { stageId: "replay",     caption: "An eligibility decision.",                                                          cursorX: 680, ms: 900 },
+    { stageId: "forms",      caption: "Every form that authorized it traces to evidence.",                                 cursorX: 548, ms: 1600 },
+    { stageId: "screening",  caption: "Every piece of evidence was tested against a criterion.",                           cursorX: 395, ms: 1600 },
+    { stageId: "population", caption: "The same logic ran across the entire cohort.",                                      cursorX: 245, ms: 1600 },
+    { stageId: "protocol",   caption: "All of it resolves to a versioned protocol, compiled against the Trident ontology.", cursorX: 88,  ms: 1700 },
+    { stageId: "_fwd",       caption: "",                                                                                   cursorX: 680, ms: 1800, fast: true }
+  ];
 
-      screening: {
-        label: "03 / SCREENING",
-        title: "Screening is deterministic, and refuses to run without a locked protocol.",
-        text: "Each patient × criterion pair resolves to PASS, REVIEW, FAIL, or a structural auxiliary state under versioned protocol logic. A service guard rejects screening against an unlocked protocol with a 409 protocol_not_locked contract. ECOG performance status maps from LOINC 89247-1. Runtime corpus fetches are lint-blocked out of the screening path.",
-        highlights: [
-          "Deterministic rule execution. Patient × criterion outputs. Explicit REVIEW driver taxonomy.",
-          "ECOG maps from LOINC 89247-1. No hardcoded clinical gaps on solid-tumor protocols.",
-          "Multi-source verified Trident ontology collapses REVIEW on KRAS G12C and organ-function LOINCs.",
-        ],
-        outcomes: [
-          "Criterion-level false PASS and false FAIL analysis against site adjudication.",
-          "Uncertainty surfaces as REVIEW, not silent coercion.",
-          "No LLM on patient data. Runtime corpus fetches lint-blocked out of core/screening.",
-        ],
-        badges: [
-          ["PASS", "green"],
-          ["REVIEW", "amber"],
-          ["FAIL", "red"],
-          ["NO LLM ON PHI", "steel"],
-        ],
-      },
+  const igStageData = {
+    protocol:   { label: "01 / Protocol",   title: "Protocol becomes executable logic.",       body: "NCT records compile into a versioned criterion tree. Every inclusion and exclusion rule is locked with a content hash before patient evidence is requested.", note: "Compiled against the Trident ontology release.", outcomes: null, cta: null },
+    population: { label: "02 / Population", title: "Population enters through one parser.",    body: "FHIR, Bulk FHIR, REDCap, CSV, and Epic flat exports feed the same bounded evidence plane. A data quality gate blocks structural faults before screening.", note: "Tenant-isolated. Site controls the pathway.", outcomes: null, cta: null },
+    screening:  { label: "03 / Screening",  title: "Screening is deterministic.",              body: "Each patient × criterion pair resolves to a recorded outcome under versioned protocol logic. The engine refuses to run against an unlocked protocol.", note: null, outcomes: [["PASS","pass"],["REVIEW","review"],["FAIL","fail"]], cta: null },
+    forms:      { label: "04 / Forms",      title: "Forms inherit the protocol substrate.",    body: "Coordinator artifacts assemble from the same Protocol, Population, and Screening objects. Every AI extraction routes through the same policy envelope.", note: "Source links preserved throughout.", outcomes: null, cta: null },
+    replay:     { label: "05 / Replay",     title: "Every decision reconstructs.",             body: "Replay re-derives screening outputs from the locked protocol version, evidence snapshot, and ontology release. The signed Replay Bundle is a cryptographic artifact.", note: "Ontology-pinned. Trace-linked. Audit-grade.", outcomes: null, cta: { href: "mailto:anirudh@damaros.ai?subject=Damaros%20Validation%20Brief", label: "Request validation brief" } }
+  };
 
-      forms: {
-        label: "04 / FORMS",
-        title: "Forms inherit the protocol substrate and the AI envelope.",
-        text: "Forms assembles coordinator-facing artifacts from the same Protocol, Population, and Screening objects, preserving source links. Where AI extracts facts or drafts narrative, it routes through the same LLMPolicyGateway envelope as protocol. PR-gated AI Eval CI enforces forms fact recall and exact-match floors. Sponsor packet redaction preserves ai_origin lineage.",
-        highlights: [
-          "Eligibility documentation. Evidence requirements. Coordinator packet assembly.",
-          "All AI extraction through LLMPolicyGateway. AI Eval CI on forms fact recall and exact.",
-          "Sponsor redaction preserves ai_origin lineage. PDF layout extraction bounded to non-PHI.",
-        ],
-        outcomes: [
-          "Coordinator summaries and startup artifacts with full source trace.",
-          "Traceability without claiming autonomous document completion.",
-          "Same substrate as Screening and Replay. No parallel narrative layer.",
-        ],
-        badges: [
-          ["SOURCE-LINKED", "blue"],
-          ["AI EVAL GATED", "green"],
-          ["AI ORIGIN PRESERVED", "violet"],
-          ["NON-PHI LAYOUT", "steel"],
-        ],
-      },
+  const igStageCursorX = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
 
-      replay: {
-        label: "05 / REPLAY",
-        title: "Every decision reconstructs from a content-hashed substrate.",
-        text: "Replay re-derives screening outputs from the locked protocol version, evidence snapshot, ontology release, and run manifest. Each replay event binds ontology_release_id and ontology_manifest_hash. OTEL GenAI spans correlate ai_origin_id to trace_id. The Signed Replay Bundle is a KMS-signed cryptographic artifact. Phase 5 retrospective validation runs the same engine as production.",
-        highlights: [
-          "Patient × criterion trace. Content-pinned inputs. Ontology-pinned events.",
-          "OTEL GenAI spans correlate ai_origin_id to trace_id end-to-end.",
-          "Signed Replay Bundle: KMS-signed manifest plus evidence lineage.",
-        ],
-        outcomes: [
-          "Audit-grade reconstruction. Ontology-pinned evidence. Institutional memory object.",
-          "Divergence attributable to named inputs and a named ontology release.",
-          "One engine runs synthetic, retrospective, and production. No parallel narrative.",
-        ],
-        badges: [
-          ["ONTOLOGY-PINNED EVENT", "blue"],
-          ["TRACE-LINKED ORIGIN", "violet"],
-          ["SIGNED REPLAY BUNDLE", "green"],
-          ["AUDIT TRAIL", "steel"],
-        ],
-      },
-    };
+  const igStageAudHighlight = { protocol: "partners", population: "sites", screening: "sponsors", forms: "sites", replay: "investors" };
 
-  const dot = document.getElementById("ignitionDot");
-  const workspaceLogo = document.getElementById("workspaceLogo");
-  const workspaceLogoDot = document.getElementById("workspaceLogoDot");
-  const workspaceTaglineRotator = document.getElementById("workspaceTaglineRotator");
-  const heroActionCue = document.getElementById("heroActionCue");
-  const grid = document.getElementById("monogramGrid");
-  const mqPointerCoarse = window.matchMedia("(pointer: coarse)");
+  // ── State ──
+  let igState = "hero"; // hero | playing | cockpit
+  let igCurrentStage = "screening";
+  let igCurrentAudience = "investors";
+  let igAutoplayRunning = false;
+  let igAutoplayAbort = false;
+  let scrollTriggered = false;
 
-  function heroActionCuePhrase() {
-    return mqPointerCoarse.matches ? "tap anywhere to initialize" : "click anywhere to initialize";
-  }
+  // ── DOM refs ──
+  const igDot = document.getElementById("igDot");
+  const igHero = document.getElementById("igHero");
+  const igStage = document.getElementById("igStage");
+  const igCockpit = document.getElementById("igCockpit");
+  const igManifesto = document.getElementById("igManifesto");
+  const igStakeholders = document.getElementById("igStakeholders");
+  const igCaption = document.getElementById("igCaption");
+  const igHeadline = document.getElementById("igHeadline");
+  const igTlCursor = document.getElementById("igTlCursor");
+  const igCTlCursor = document.getElementById("igCTlCursor");
+  const igMonogramGrid = document.getElementById("igMonogramGrid");
+  const igSkip = document.getElementById("igSkip");
+  const igCtrlRewind = document.getElementById("igCtrlRewind");
+  const igCtrlHome = document.getElementById("igCtrlHome");
 
-  const TAGLINE_WORDS = ["simplified", "operationalized", "replayable", "governed", "source-linked", "defensible"];
-  let taglineRotatorTimer = null;
-  let taglineWordIndex = 0;
-  let taglineDisplayLen = 0;
-  let taglinePhase = "typing";
-
-  function clearTaglineRotator() {
-    if (taglineRotatorTimer !== null) {
-      clearTimeout(taglineRotatorTimer);
-      taglineRotatorTimer = null;
-    }
-  }
-
-  function scheduleTaglineRotator(ms) {
-    taglineRotatorTimer = setTimeout(tickTaglineRotator, ms);
-  }
-
-  function tickTaglineRotator() {
-    taglineRotatorTimer = null;
-    if (!workspaceTaglineRotator || state !== "workspace") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      workspaceTaglineRotator.textContent = TAGLINE_WORDS[0];
-      return;
-    }
-    const word = TAGLINE_WORDS[taglineWordIndex];
-    const typeMs = 54;
-    const deleteMs = 42;
-    const pauseTypedMs = 2000;
-    const pauseEmptyMs = 380;
-
-    if (taglinePhase === "typing") {
-      taglineDisplayLen += 1;
-      workspaceTaglineRotator.textContent = word.slice(0, taglineDisplayLen);
-      if (taglineDisplayLen >= word.length) {
-        taglinePhase = "pause";
-        scheduleTaglineRotator(pauseTypedMs);
-        return;
-      }
-      scheduleTaglineRotator(typeMs);
-      return;
-    }
-
-    if (taglinePhase === "pause") {
-      taglinePhase = "deleting";
-      scheduleTaglineRotator(pauseEmptyMs);
-      return;
-    }
-
-    if (taglinePhase === "deleting") {
-      taglineDisplayLen -= 1;
-      workspaceTaglineRotator.textContent = word.slice(0, Math.max(0, taglineDisplayLen));
-      if (taglineDisplayLen <= 0) {
-        taglineWordIndex = (taglineWordIndex + 1) % TAGLINE_WORDS.length;
-        taglinePhase = "typing";
-        taglineDisplayLen = 0;
-        scheduleTaglineRotator(pauseEmptyMs);
-        return;
-      }
-      scheduleTaglineRotator(deleteMs);
-    }
-  }
-
-  function startTaglineRotator() {
-    clearTaglineRotator();
-    if (!workspaceTaglineRotator) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      workspaceTaglineRotator.textContent = TAGLINE_WORDS[0];
-      return;
-    }
-    taglineWordIndex = 0;
-    taglineDisplayLen = 0;
-    taglinePhase = "typing";
-    workspaceTaglineRotator.textContent = "";
-    scheduleTaglineRotator(500);
-  }
-
-  function stopTaglineRotator() {
-    clearTaglineRotator();
-    if (workspaceTaglineRotator) workspaceTaglineRotator.textContent = "";
-  }
-
-  let state = "idle";
-  let parallaxX = 0;
-  let parallaxY = 0;
-
-  function updateHeroActionCue() {
-    if (!heroActionCue || state !== "idle") return;
-    heroActionCue.textContent = heroActionCuePhrase();
-  }
-
-  function bindHeroActionCueMedia() {
-    function onPointerTypeChange() {
-      if (state === "idle") updateHeroActionCue();
-      flushDotAnchors();
-    }
-    if (typeof mqPointerCoarse.addEventListener === "function") {
-      mqPointerCoarse.addEventListener("change", onPointerTypeChange);
-    } else if (typeof mqPointerCoarse.addListener === "function") {
-      mqPointerCoarse.addListener(onPointerTypeChange);
-    }
-  }
-
-  function renderList(items) {
-    return "<ul>" + items.map((item) => "<li>" + item + "</li>").join("") + "</ul>";
-  }
-  function renderBadges(items) {
-    return items.map(([label, kind]) => '<span class="badge ' + kind + '">' + label + "</span>").join("");
-  }
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  function setWorkflow(key) {
-    const d = workflow[key];
-    if (!d) return;
-    document.querySelectorAll("#damaros-panel-home .step").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.step === key);
-    });
-    const dl = document.getElementById("detailLabel");
-    const dt = document.getElementById("detailTitle");
-    const dx = document.getElementById("detailText");
-    const dd = document.getElementById("detailDoes");
-    const dw = document.getElementById("detailWhy");
-    const bg = document.getElementById("badges");
-    const ctaRow = document.getElementById("detailCtaRow");
-    const matrix = document.querySelector("#damaros-panel-home .matrix");
-    const homePanelEl = document.getElementById("damaros-panel-home");
-    const hi = Array.isArray(d.highlights) && d.highlights.length > 0;
-    const ou = Array.isArray(d.outcomes) && d.outcomes.length > 0;
-    if (dl) dl.textContent = d.label;
-    if (dt) dt.textContent = d.title;
-    if (dx) dx.textContent = d.text;
-    if (dd) dd.innerHTML = hi ? renderList(d.highlights) : "";
-    if (dw) dw.innerHTML = ou ? renderList(d.outcomes) : "";
-    if (matrix) {
-      if (hi || ou) matrix.removeAttribute("hidden");
-      else matrix.setAttribute("hidden", "");
-    }
-    if (bg) {
-      var bhtml = renderBadges(d.badges || []);
-      bg.innerHTML = bhtml;
-      bg.style.display = bhtml.trim() ? "" : "none";
-    }
-    if (ctaRow) {
-      var ctas = d.ctas;
-      if (ctas && ctas.length) {
-        ctaRow.innerHTML = ctas
-          .map(function (c) {
-            var cls = "cta" + (c.secondary ? " cta-secondary" : "");
-            var href = String(c.href || "").replace(/"/g, "");
-            return '<a class="' + cls + '" href="' + href + '">' + escapeHtml(c.label || "") + "</a>";
-          })
-          .join("");
-        ctaRow.removeAttribute("hidden");
-      } else {
-        ctaRow.innerHTML = "";
-        ctaRow.setAttribute("hidden", "");
-      }
-      if (homePanelEl) {
-        var hasCtas = !!(ctas && ctas.length);
-        homePanelEl.classList.toggle("workflow-has-cta", hasCtas);
-        homePanelEl.classList.toggle("workflow-standard", !hasCtas);
-      }
-    }
-  }
-
-  function setActiveDotFromElement(el) {
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    document.documentElement.style.setProperty("--active-dot-x", (rect.left + rect.width / 2).toFixed(2) + "px");
-    document.documentElement.style.setProperty("--active-dot-y", (rect.top + rect.height / 2).toFixed(2) + "px");
-  }
-
-  function updateHeroDotAnchor() {
-    setActiveDotFromElement(dot);
-  }
-  function updateWorkspaceDotAnchor() {
-    setActiveDotFromElement(workspaceLogoDot || workspaceLogo);
-  }
-
+  // ── Monogram grid ──
   function initMonogramGrid() {
-    if (!grid) return;
+    if (!igMonogramGrid) return;
     const test = new Image();
     test.onload = function () {
-      grid.innerHTML = "";
-      const n = window.innerWidth < 700 ? 150 : 235;
+      igMonogramGrid.innerHTML = "";
+      const n = window.innerWidth < 700 ? 120 : 210;
       for (let i = 0; i < n; i++) {
         const img = document.createElement("img");
         img.src = MONOGRAM_SRC;
@@ -2751,135 +1521,290 @@ spec:
         img.draggable = false;
         img.loading = "eager";
         img.decoding = "async";
-        img.style.transform =
-          "rotate(" + (Math.random() * 6 - 3).toFixed(2) + "deg) scale(" + (0.94 + Math.random() * 0.12).toFixed(3) + ")";
+        img.style.transform = "rotate(" + (Math.random() * 6 - 3).toFixed(2) + "deg) scale(" + (0.94 + Math.random() * 0.12).toFixed(3) + ")";
         img.style.opacity = (0.72 + Math.random() * 0.24).toFixed(3);
-        grid.appendChild(img);
+        igMonogramGrid.appendChild(img);
       }
     };
-    test.onerror = function () {
-      grid.innerHTML = "";
-    };
+    test.onerror = function () { igMonogramGrid.innerHTML = ""; };
     test.src = MONOGRAM_SRC;
   }
 
-  function initParallax() {
-    let raf = null;
-    let targetX = 0;
-    let targetY = 0;
-    function applyParallax() {
-      raf = null;
-      parallaxX += (targetX - parallaxX) * 0.22;
-      parallaxY += (targetY - parallaxY) * 0.22;
-      document.documentElement.style.setProperty("--mono-x", parallaxX.toFixed(2) + "px");
-      document.documentElement.style.setProperty("--mono-y", parallaxY.toFixed(2) + "px");
-      if (Math.abs(targetX - parallaxX) > 0.05 || Math.abs(targetY - parallaxY) > 0.05) raf = requestAnimationFrame(applyParallax);
+  // ── Particles (seeded for visual stability) ──
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function initPopulationParticles() {
+    const layers = [
+      document.getElementById("vizPopulation"),
+      document.getElementById("cvizPopulation")
+    ];
+    const eligibleSet = new Set([3, 7, 11, 14, 18, 22, 26, 31, 37, 42, 48, 55, 61, 68, 74]);
+    const nearSet = new Set([5, 9, 13, 20, 28, 35, 44, 52, 58, 65]);
+    layers.forEach(function (layer) {
+      if (!layer) return;
+      const rng = mulberry32(42);
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 90; i++) {
+        const x = 180 + rng() * 145;
+        const y = 80 + rng() * 260;
+        const r = 1.8 + rng() * 1.8;
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", x.toFixed(1));
+        circle.setAttribute("cy", y.toFixed(1));
+        circle.setAttribute("r", r.toFixed(2));
+        let cls = "viz-particle";
+        if (eligibleSet.has(i)) {
+          cls += " eligible";
+          circle.style.animationDelay = (rng() * 1.5).toFixed(2) + "s";
+        } else if (nearSet.has(i)) {
+          cls += " near-eligible";
+        }
+        circle.setAttribute("class", cls);
+        frag.appendChild(circle);
+      }
+      layer.insertBefore(frag, layer.firstChild);
+    });
+  }
+
+  // ── SVG focus ──
+  const vizLayerIds = {
+    main:    { protocol: "vizProtocol",  population: "vizPopulation",  screening: "vizScreening",  forms: "vizForms",  replay: "vizDecision" },
+    cockpit: { protocol: "cvizProtocol", population: "cvizPopulation", screening: "cvizScreening", forms: "cvizForms", replay: "cvizDecision" }
+  };
+  const allStages = ["protocol", "population", "screening", "forms", "replay"];
+
+  function setVizFocus(stageId, vizType) {
+    const ids = vizLayerIds[vizType || "main"];
+    const activeIdx = allStages.indexOf(stageId);
+    allStages.forEach(function (s) {
+      const el = document.getElementById(ids[s]);
+      if (!el) return;
+      el.classList.remove("viz-active", "viz-dim", "viz-mid");
+      if (s === stageId) {
+        el.classList.add("viz-active");
+      } else {
+        const thisIdx = allStages.indexOf(s);
+        if (Math.abs(activeIdx - thisIdx) === 1) el.classList.add("viz-mid");
+        else el.classList.add("viz-dim");
+      }
+    });
+  }
+
+  function setTimelineCursor(cursorX, fastSwing) {
+    if (igTlCursor) {
+      igTlCursor.style.transition = fastSwing ? "cx .55s cubic-bezier(.16,1,.3,1)" : "";
+      igTlCursor.setAttribute("cx", cursorX);
     }
-    window.addEventListener("mousemove", function (e) {
-      if (!grid || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      targetX = (e.clientX / window.innerWidth - 0.5) * 72;
-      targetY = (e.clientY / window.innerHeight - 0.5) * 40;
-      if (!raf) raf = requestAnimationFrame(applyParallax);
-    });
-    window.addEventListener("mouseleave", function () {
-      targetX = 0;
-      targetY = 0;
-      if (!raf) raf = requestAnimationFrame(applyParallax);
-    });
   }
 
-  function wait(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  // ── Autoplay ──
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
-  function homePanel() {
-    return document.getElementById("damaros-panel-home");
-  }
-
-  function flushDotAnchors() {
-    const fn = state === "workspace" || state === "returning" ? updateWorkspaceDotAnchor : updateHeroDotAnchor;
-    fn();
-    requestAnimationFrame(fn);
-    setTimeout(fn, 0);
-    setTimeout(fn, 120);
-    setTimeout(fn, 400);
-  }
-
-  async function initialize() {
-    if (state !== "idle") return;
-    state = "initializing";
-    stopTaglineRotator();
-    var phPre = homePanel();
-    if (phPre) phPre.scrollTop = 0;
+  async function runAutoplay() {
+    if (igAutoplayRunning) return;
+    igAutoplayRunning = true;
+    igAutoplayAbort = false;
+    igState = "playing";
+    document.body.classList.add("is-playing");
+    document.body.classList.remove("is-cockpit");
+    if (igStage) igStage.setAttribute("aria-hidden", "false");
+    if (igCockpit) igCockpit.setAttribute("aria-hidden", "true");
+    if (igManifesto) igManifesto.setAttribute("aria-hidden", "true");
+    if (igStakeholders) igStakeholders.setAttribute("aria-hidden", "true");
     window.scrollTo(0, 0);
-    updateHeroDotAnchor();
-    document.body.classList.add("ig-init");
+
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    await wait(reduceMotion ? 80 : 760);
-    document.body.classList.remove("ig-init");
-    document.body.classList.add("ig-workspace");
-    const ph = homePanel();
-    if (ph) {
-      ph.classList.add("damaros-ig-scroll");
-      ph.scrollTop = 0;
+
+    // Reset viz: only decision visible at start
+    setVizFocus("replay", "main");
+    if (igTlCursor) {
+      igTlCursor.style.transition = "";
+      igTlCursor.setAttribute("cx", 680);
     }
-    window.scrollTo(0, 0);
-    state = "workspace";
-    setWorkflow("thesis");
-    flushDotAnchors();
-    startTaglineRotator();
+    if (igCaption) {
+      igCaption.classList.add("fading");
+      igCaption.textContent = "";
+    }
+    await wait(reduceMotion ? 0 : 240);
+
+    for (let i = 0; i < igAutoplayBeats.length; i++) {
+      if (igAutoplayAbort) break;
+      const beat = igAutoplayBeats[i];
+
+      if (igCaption && beat.caption !== undefined) {
+        igCaption.classList.add("fading");
+        await wait(reduceMotion ? 0 : 200);
+        if (igAutoplayAbort) break;
+        igCaption.textContent = beat.caption;
+        igCaption.classList.remove("fading");
+      }
+
+      const focusId = beat.stageId === "_fwd" ? "replay" : beat.stageId;
+      setVizFocus(focusId, "main");
+      setTimelineCursor(beat.cursorX, !!beat.fast);
+
+      await wait(reduceMotion ? 160 : beat.ms);
+    }
+
+    igAutoplayRunning = false;
+    if (!igAutoplayAbort) {
+      enterCockpit();
+    }
   }
 
-  async function returnHome() {
-    if (state !== "workspace") return;
-    stopTaglineRotator();
-    state = "returning";
-    var phR = homePanel();
-    if (phR) phR.scrollTop = 0;
-    window.scrollTo(0, 0);
-    await new Promise(function (resolve) {
-      requestAnimationFrame(function () {
-        requestAnimationFrame(resolve);
+  function abortAutoplay() {
+    igAutoplayAbort = true;
+    igAutoplayRunning = false;
+  }
+
+  function enterCockpit() {
+    igState = "cockpit";
+    document.body.classList.remove("is-playing");
+    document.body.classList.add("is-cockpit");
+    if (igStage) igStage.setAttribute("aria-hidden", "true");
+    if (igCockpit) igCockpit.setAttribute("aria-hidden", "false");
+    if (igManifesto) igManifesto.setAttribute("aria-hidden", "false");
+    if (igStakeholders) igStakeholders.setAttribute("aria-hidden", "false");
+    focusStage(igCurrentStage);
+    requestAnimationFrame(function () {
+      if (igCockpit) igCockpit.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function goHome() {
+    abortAutoplay();
+    igState = "hero";
+    document.body.classList.remove("is-playing", "is-cockpit");
+    if (igStage) igStage.setAttribute("aria-hidden", "true");
+    if (igCockpit) igCockpit.setAttribute("aria-hidden", "true");
+    if (igManifesto) igManifesto.setAttribute("aria-hidden", "true");
+    if (igStakeholders) igStakeholders.setAttribute("aria-hidden", "true");
+    if (igHero) igHero.removeAttribute("aria-hidden");
+    scrollTriggered = false;
+    if (igCaption) { igCaption.textContent = ""; igCaption.classList.remove("fading"); }
+    setVizFocus("replay", "main");
+    if (igTlCursor) { igTlCursor.style.transition = ""; igTlCursor.setAttribute("cx", 680); }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // ── Cockpit stage focus ──
+  function escapeHtml(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  }
+
+  function focusStage(stageId) {
+    if (!igStageData[stageId]) return;
+    igCurrentStage = stageId;
+    document.querySelectorAll(".ig-stage-btn").forEach(function (btn) {
+      btn.classList.toggle("active", btn.dataset.stage === stageId);
+    });
+    setVizFocus(stageId, "cockpit");
+    const cx = igStageCursorX[stageId] || 395;
+    if (igCTlCursor) igCTlCursor.setAttribute("cx", cx);
+
+    const data = igStageData[stageId];
+    const label = document.getElementById("igRailLabel");
+    const title = document.getElementById("igRailTitle");
+    const body = document.getElementById("igRailBody");
+    const outcomes = document.getElementById("igRailOutcomes");
+    const cta = document.getElementById("igRailCta");
+    const note = document.getElementById("igRailNote");
+    if (label) label.textContent = data.label;
+    if (title) title.textContent = data.title;
+    if (body) body.textContent = data.body;
+    if (outcomes) {
+      if (data.outcomes && data.outcomes.length) {
+        outcomes.innerHTML = data.outcomes.map(function (o) {
+          return '<span class="ig-outcome ' + o[1] + '">' + o[0] + '</span>';
+        }).join("");
+      } else {
+        outcomes.innerHTML = "";
+      }
+    }
+    if (cta) {
+      if (data.cta) {
+        cta.innerHTML = '<a href="' + data.cta.href + '">' + escapeHtml(data.cta.label) + '</a>';
+      } else {
+        cta.innerHTML = "";
+      }
+    }
+    if (note) note.textContent = data.note || "";
+
+    const audToHighlight = igStageAudHighlight[stageId];
+    document.querySelectorAll(".ig-stakeholder-card").forEach(function (card) {
+      card.classList.toggle("highlighted", !!audToHighlight && card.dataset.aud === audToHighlight);
+    });
+  }
+
+  // ── Audience switch ──
+  function setAudience(audId) {
+    if (!igAudiences[audId]) return;
+    igCurrentAudience = audId;
+    document.querySelectorAll(".ig-aud-btn").forEach(function (btn) {
+      btn.classList.toggle("active", btn.dataset.aud === audId);
+    });
+    if (igHeadline) igHeadline.textContent = igAudiences[audId];
+  }
+
+  // ── Scroll trigger ──
+  function initScrollTrigger() {
+    if (!igStage || !window.IntersectionObserver) return;
+    const sentinel = document.createElement("div");
+    sentinel.style.cssText = "position:absolute;top:120svh;left:0;width:1px;height:1px;pointer-events:none";
+    const homePanel = document.getElementById("damaros-panel-home");
+    if (!homePanel) return;
+    homePanel.appendChild(sentinel);
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && igState === "hero" && !scrollTriggered && !igAutoplayRunning) {
+          scrollTriggered = true;
+          runAutoplay();
+        }
       });
-    });
-    updateWorkspaceDotAnchor();
-    flushDotAnchors();
-    document.body.classList.add("ig-return");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    await wait(reduceMotion ? 80 : 720);
-    document.body.classList.remove("ig-workspace", "ig-return");
-    const ph = homePanel();
-    if (ph) ph.classList.remove("damaros-ig-scroll");
-    state = "idle";
-    updateHeroActionCue();
-    flushDotAnchors();
+    }, { threshold: 0.1 });
+    observer.observe(sentinel);
   }
 
+  // ── Reset (called by setPanel) ──
   window.__damarosIgnitionReset = function () {
-    state = "idle";
-    stopTaglineRotator();
-    document.body.classList.remove("ig-init", "ig-workspace", "ig-return");
-    const ph = homePanel();
-    if (ph) ph.classList.remove("damaros-ig-scroll");
-    if (workspaceTaglineRotator) workspaceTaglineRotator.textContent = "";
-    updateHeroActionCue();
+    abortAutoplay();
+    igState = "hero";
+    scrollTriggered = false;
+    document.body.classList.remove("is-playing", "is-cockpit");
+    if (igCaption) { igCaption.textContent = ""; igCaption.classList.remove("fading"); }
+    if (igStage) igStage.setAttribute("aria-hidden", "true");
+    if (igCockpit) igCockpit.setAttribute("aria-hidden", "true");
+    if (igManifesto) igManifesto.setAttribute("aria-hidden", "true");
+    if (igStakeholders) igStakeholders.setAttribute("aria-hidden", "true");
+    if (igHero) igHero.removeAttribute("aria-hidden");
+    setVizFocus("replay", "main");
+    if (igTlCursor) { igTlCursor.style.transition = ""; igTlCursor.setAttribute("cx", 680); }
   };
 
+  // ── Panel switching ──
   function setPanel(target, anchorId) {
-    document.querySelectorAll(".damaros-tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.panel === target));
-    document.querySelectorAll(".damaros-panel").forEach((p) => p.classList.toggle("active", p.id === "damaros-panel-" + target));
+    document.querySelectorAll(".damaros-tab-btn").forEach(function (b) {
+      b.classList.toggle("active", b.dataset.panel === target);
+    });
+    document.querySelectorAll(".damaros-panel").forEach(function (p) {
+      p.classList.toggle("active", p.id === "damaros-panel-" + target);
+    });
     const isHome = target === "home";
     document.body.classList.toggle("damaros-docs-active", !isHome);
-    document.body.classList.toggle("damaros-home-lock", isHome);
+    document.body.classList.remove("damaros-home-lock");
     if (!isHome) {
       document.body.classList.remove("damaros-ignition-home-active");
       window.__damarosIgnitionReset();
     } else {
       document.body.classList.add("damaros-ignition-home-active");
       window.__damarosIgnitionReset();
-      requestAnimationFrame(() => {
-        flushDotAnchors();
-      });
     }
     if (isHome) {
       history.replaceState(null, "", window.location.pathname);
@@ -2888,123 +1813,90 @@ spec:
     }
     setTimeout(function () {
       if (anchorId) {
-        var el = document.getElementById(anchorId);
-        if (el) {
-          el.scrollIntoView({ block: "start" });
-          return;
-        }
+        const el = document.getElementById(anchorId);
+        if (el) { el.scrollIntoView({ block: "start" }); return; }
       }
       if (!isHome) window.scrollTo(0, 0);
     }, 0);
   }
 
-  const ignitionHomeMain = document.getElementById("ignitionHomeMain");
-  function homeSurfaceActivatesIgnition(event) {
-    if (state !== "idle") return;
-    var el = null;
-    if (event.type === "touchend" && event.changedTouches && event.changedTouches.length && typeof document.elementFromPoint === "function") {
-      var touch = event.changedTouches[0];
-      el = document.elementFromPoint(touch.clientX, touch.clientY);
-    }
-    if (!el) {
-      var t = event.target;
-      el = t && t.nodeType === 1 ? t : t && t.parentElement;
-    }
-    if (!el || !ignitionHomeMain || !ignitionHomeMain.contains(el)) return;
-    if (typeof el.closest === "function") {
-      if (el.closest("a[href]")) return;
-      if (el.closest("nav")) return;
-    }
-    initialize();
-  }
-  if (ignitionHomeMain) {
-    ignitionHomeMain.addEventListener("click", homeSurfaceActivatesIgnition);
-    ignitionHomeMain.addEventListener("touchend", homeSurfaceActivatesIgnition, { passive: true });
-  }
-  if (dot) {
-    dot.addEventListener("click", initialize);
-    dot.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        initialize();
-      }
-    });
-  }
-  function workspaceLogoActivatesReturn(event) {
-    if (state !== "workspace") return;
-    if (!workspaceLogo || !workspaceLogo.contains(event.target)) return;
-    returnHome();
-  }
-  const workspaceHead = document.querySelector("#damaros-panel-home .workspace-head");
-  if (workspaceHead) {
-    workspaceHead.addEventListener("click", workspaceLogoActivatesReturn);
-  }
-  if (workspaceLogo) {
-    workspaceLogo.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        returnHome();
-      }
-    });
-  }
-
-  document.querySelectorAll("#damaros-panel-home .step").forEach((btn) => {
-    btn.addEventListener("click", () => setWorkflow(btn.dataset.step));
-  });
-  window.addEventListener("resize", () => {
-    updateHeroActionCue();
-    flushDotAnchors();
-  });
-
-  document.querySelectorAll(".damaros-tab-btn").forEach((btn) => btn.addEventListener("click", () => setPanel(btn.dataset.panel)));
   function routeFromHash() {
-    var h = location.hash.replace("#", "");
-    if (h === "" || h === "home") {
-      setPanel("home");
-      return;
-    }
-    var panel = h.split("-")[0];
+    const h = location.hash.replace("#", "");
+    if (h === "" || h === "home") { setPanel("home"); return; }
+    const panel = h.split("-")[0];
     if (panel === "docs" || panel === "trust" || panel === "validation") {
-      setPanel(panel, h.indexOf("-") > -1 ? h : h === "trust" ? "trust" : null);
+      setPanel(panel, h.indexOf("-") > -1 ? h : (h === "trust" ? "trust" : null));
     } else {
       setPanel("home");
     }
   }
+
+  // ── Bindings ──
+  if (igDot) {
+    igDot.addEventListener("click", function () { if (igState === "hero") runAutoplay(); });
+    igDot.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (igState === "hero") runAutoplay(); }
+    });
+  }
+  if (igSkip) {
+    igSkip.addEventListener("click", function () {
+      if (igState === "playing") { abortAutoplay(); enterCockpit(); }
+      else if (igState === "hero") { runAutoplay(); }
+    });
+  }
+  if (igCtrlHome) igCtrlHome.addEventListener("click", goHome);
+  if (igCtrlRewind) igCtrlRewind.addEventListener("click", function () {
+    if (igState === "cockpit") runAutoplay();
+  });
+
+  document.querySelectorAll(".ig-stage-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () { if (igState === "cockpit") focusStage(btn.dataset.stage); });
+    btn.addEventListener("keydown", function (e) {
+      if ((e.key === "ArrowRight" || e.key === "ArrowLeft") && igState === "cockpit") {
+        e.preventDefault();
+        const idx = allStages.indexOf(igCurrentStage);
+        if (e.key === "ArrowRight" && idx < allStages.length - 1) focusStage(allStages[idx + 1]);
+        if (e.key === "ArrowLeft" && idx > 0) focusStage(allStages[idx - 1]);
+      }
+    });
+  });
+
+  document.querySelectorAll(".ig-aud-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () { setAudience(btn.dataset.aud); });
+  });
+
+  document.querySelectorAll(".damaros-tab-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () { setPanel(btn.dataset.panel); });
+  });
   window.addEventListener("hashchange", routeFromHash);
 
+  // ── Init ──
   initMonogramGrid();
-  initParallax();
-  bindHeroActionCueMedia();
-  window.addEventListener("load", updateHeroDotAnchor);
+  initPopulationParticles();
+  initScrollTrigger();
+  setVizFocus("replay", "main");
+  focusStage("screening");
   routeFromHash();
-  setWorkflow("thesis");
 
-  const loc = document.getElementById("damarosVisitorLocation");
+  // ── Geo (visitor location) ──
+  const loc = document.getElementById("igLocation");
   if (loc) {
     const ac = new AbortController();
-    const to = setTimeout(function () {
-      try {
-        ac.abort();
-      } catch (e) {}
-    }, 5000);
+    const to = setTimeout(function () { try { ac.abort(); } catch (e) {} }, 5000);
     fetch("https://get.geojs.io/v1/ip/geo.json", { credentials: "omit", signal: ac.signal })
-      .then(function (r) {
-        if (!r.ok) throw new Error();
-        return r.json();
-      })
+      .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
       .then(function (d) {
         clearTimeout(to);
-        var c = (d.city || "").trim(),
-          reg = (d.region || "").trim(),
-          nat = (d.country || "").trim();
-        var parts = [];
+        const c = (d.city || "").trim();
+        const reg = (d.region || "").trim();
+        const nat = (d.country || "").trim();
+        const parts = [];
         if (c) parts.push(c);
         if (reg && reg.toLowerCase() !== c.toLowerCase()) parts.push(reg);
         if (nat) parts.push(nat);
-        var line = parts.length ? parts.join(", ") : "";
+        const line = parts.length ? parts.join(", ") : "";
         loc.textContent = line;
-        if (line) loc.setAttribute("title", line);
-        else loc.removeAttribute("title");
+        if (line) loc.setAttribute("title", line); else loc.removeAttribute("title");
       })
       .catch(function () {
         clearTimeout(to);
