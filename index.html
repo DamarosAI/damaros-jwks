@@ -591,6 +591,17 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 .viz-evidence{fill:rgba(169,192,214,.5)}
 .viz-decision-glow{fill:none;stroke:rgba(169,192,214,.12);stroke-width:1;animation:igDecisionGlow 2.2s ease-in-out infinite}
 @keyframes igDecisionGlow{0%,100%{r:42px;stroke-opacity:.12}50%{r:55px;stroke-opacity:.28}}
+.viz-proto-ring{transform-box:fill-box;transform-origin:center;animation:igProtoRingSpin 28s linear infinite}
+@keyframes igProtoRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.viz-proto-hex{transform-box:fill-box;transform-origin:center;animation:igHexPulse 4.2s ease-in-out infinite}
+@keyframes igHexPulse{0%,100%{stroke-opacity:.55}50%{stroke-opacity:.95}}
+.viz-replay-ring{transform-box:fill-box;transform-origin:center;animation:igReplayRingSpin 22s linear infinite reverse}
+@keyframes igReplayRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.viz-proto-grid circle{fill:rgba(240,244,248,.6)}
+.viz-proto-grid circle.viz-proto-grid-center{fill:rgba(240,244,248,.95)}
+.viz-replay-loop{transform-box:fill-box;transform-origin:center;animation:igReplayLoopPulse 3.2s ease-in-out infinite}
+@keyframes igReplayLoopPulse{0%,100%{opacity:.78}50%{opacity:1}}
+.viz-form-doc{transform-box:fill-box}
 .viz-decision{fill:rgba(169,192,214,.32);stroke:var(--blue2);stroke-width:1.5}
 .viz-lbl-sm{font-family:var(--fm);font-size:8.5px;fill:rgba(169,192,214,.62);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
 .viz-lbl-xs{font-family:var(--fm);font-size:7px;fill:rgba(123,150,178,.5);letter-spacing:.06em;text-anchor:middle}
@@ -688,8 +699,8 @@ body.is-cockpit .ig-stakeholders-cta{opacity:1;pointer-events:auto}
 .ig-outro .ig-manifesto{border-top:none;padding-top:clamp(3rem,8vh,6rem);padding-bottom:clamp(2rem,5vh,3.5rem)}
 .ig-outro .ig-stakeholders{padding-top:clamp(1.5rem,4vh,2.5rem);padding-bottom:clamp(2rem,5vh,3.5rem)}
 .ig-outro .ig-stakeholders-cta{padding-bottom:clamp(3rem,8vh,5rem)}
-.ig-cta-btn{display:inline-flex;align-items:center;gap:.55rem;background:linear-gradient(180deg,rgba(123,150,178,.18),rgba(123,150,178,.08));border:1px solid rgba(169,192,214,.45);color:#f0f4f8;font-family:var(--fm);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:.95rem 1.7rem;text-decoration:none;cursor:pointer;font-weight:600;transition:background .25s,border-color .25s,box-shadow .25s,color .25s}
-.ig-cta-btn:hover{background:linear-gradient(180deg,rgba(123,150,178,.26),rgba(123,150,178,.12));border-color:var(--blue2);color:#fff;box-shadow:0 0 24px rgba(123,150,178,.22)}
+.ig-cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:rgba(123,150,178,.08);border:1px solid rgba(123,150,178,.3);color:var(--blue2);font-family:var(--fm);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;padding:.62rem 1.15rem;text-decoration:none;cursor:pointer;font-weight:500;transition:background .25s,border-color .25s,color .25s}
+.ig-cta-btn:hover{background:rgba(123,150,178,.14);border-color:var(--blue2);color:#fff}
 .ig-cta-btn:active{transform:translateY(1px)}
 .ig-cta-btn::after{content:'→';margin-left:.15rem;transition:transform .25s ease}
 .ig-cta-btn:hover::after{transform:translateX(3px)}
@@ -785,10 +796,21 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
       <g class="viz-layer" id="vizProtocol" opacity="0">
         <circle class="viz-origin-glow" cx="88" cy="200" r="36"/>
         <circle class="viz-origin-pulse" cx="88" cy="200" r="50"/>
-        <circle class="viz-origin" cx="88" cy="200" r="16"/>
+        <circle class="viz-proto-ring" cx="88" cy="200" r="26" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
+        <polygon class="viz-proto-hex" points="88,186 99,193 99,207 88,214 77,207 77,193" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
+        <g class="viz-proto-grid">
+          <circle cx="83" cy="195" r="1.1"/>
+          <circle cx="88" cy="195" r="1.1"/>
+          <circle cx="93" cy="195" r="1.1"/>
+          <circle cx="83" cy="200" r="1.1"/>
+          <circle cx="88" cy="200" r="1.6" class="viz-proto-grid-center"/>
+          <circle cx="93" cy="200" r="1.1"/>
+          <circle cx="83" cy="205" r="1.1"/>
+          <circle cx="88" cy="205" r="1.1"/>
+          <circle cx="93" cy="205" r="1.1"/>
+        </g>
         <line class="viz-conn-solid" x1="104" y1="200" x2="175" y2="200"/>
-        <text class="viz-lbl-sm" x="88" y="234">Protocol</text>
-        <text class="viz-lbl-xs" x="88" y="248">Trident · v24.06</text>
+        <text class="viz-lbl-sm" x="88" y="240">Protocol</text>
       </g>
       <g class="viz-layer" id="vizPopulation" opacity="0">
         <line class="viz-conn-solid" x1="330" y1="200" x2="350" y2="200"/>
@@ -825,22 +847,51 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
         <line class="viz-conn" x1="480" y1="190" x2="548" y2="158"/>
         <line class="viz-conn" x1="480" y1="200" x2="548" y2="200"/>
         <line class="viz-conn" x1="480" y1="210" x2="548" y2="242"/>
-        <line class="viz-conn" x1="558" y1="158" x2="620" y2="185"/>
-        <line class="viz-conn" x1="558" y1="200" x2="620" y2="200"/>
-        <line class="viz-conn" x1="558" y1="242" x2="620" y2="215"/>
-        <circle class="viz-form-node" cx="548" cy="158" r="10"/>
-        <circle class="viz-form-node" cx="548" cy="200" r="10"/>
-        <circle class="viz-form-node" cx="548" cy="242" r="10"/>
-        <circle class="viz-evidence" cx="524" cy="145" r="4"/>
-        <circle class="viz-evidence" cx="530" cy="168" r="3"/>
-        <circle class="viz-evidence" cx="524" cy="200" r="4"/>
-        <circle class="viz-evidence" cx="530" cy="218" r="3"/>
-        <circle class="viz-evidence" cx="524" cy="255" r="4"/>
+        <line class="viz-conn" x1="568" y1="158" x2="620" y2="185"/>
+        <line class="viz-conn" x1="568" y1="200" x2="620" y2="200"/>
+        <line class="viz-conn" x1="568" y1="242" x2="620" y2="215"/>
+        <g class="viz-form-doc" transform="translate(548 158) rotate(-7)">
+          <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
+          <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
+          <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
+        </g>
+        <g class="viz-form-doc" transform="translate(548 200) rotate(2)">
+          <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
+          <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
+          <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <circle cx="9" cy="15" r="1.6" fill="rgba(250,204,21,.9)"/>
+        </g>
+        <g class="viz-form-doc" transform="translate(548 242) rotate(-4)">
+          <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
+          <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
+          <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+          <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
+        </g>
+        <circle class="viz-evidence" cx="524" cy="142" r="4"/>
+        <circle class="viz-evidence" cx="528" cy="165" r="3"/>
+        <circle class="viz-evidence" cx="522" cy="196" r="4"/>
+        <circle class="viz-evidence" cx="528" cy="220" r="3"/>
+        <circle class="viz-evidence" cx="524" cy="258" r="4"/>
       </g>
       <g class="viz-layer" id="vizDecision" opacity="1">
         <circle class="viz-decision-glow" cx="680" cy="200" r="42"/>
+        <circle class="viz-replay-ring" cx="680" cy="200" r="30" fill="none" stroke="rgba(169,192,214,.5)" stroke-width=".9" stroke-dasharray="4 5"/>
         <circle class="viz-decision" cx="680" cy="200" r="18"/>
-        <text class="viz-lbl-decision" x="680" y="235">Decision</text>
+        <text class="viz-replay-loop" x="680" y="208" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="500" fill="rgba(240,244,248,.92)">↻</text>
+        <text class="viz-lbl-decision" x="680" y="240">Replay</text>
       </g>
       <!-- Charge flash overlay rings (used during end-of-autoplay synthesis) -->
       <circle class="viz-charge-flash" cx="88" cy="200" r="24"/>
@@ -886,10 +937,21 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
       <svg class="ig-cockpit-viz" id="igCockpitViz" viewBox="0 0 820 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance substrate">
         <g class="viz-layer" id="cvizProtocol" opacity="1">
           <circle class="viz-origin-glow" cx="88" cy="200" r="36"/>
-          <circle class="viz-origin" cx="88" cy="200" r="16"/>
+          <circle class="viz-proto-ring" cx="88" cy="200" r="26" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
+          <polygon class="viz-proto-hex" points="88,186 99,193 99,207 88,214 77,207 77,193" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
+          <g class="viz-proto-grid">
+            <circle cx="83" cy="195" r="1.1"/>
+            <circle cx="88" cy="195" r="1.1"/>
+            <circle cx="93" cy="195" r="1.1"/>
+            <circle cx="83" cy="200" r="1.1"/>
+            <circle cx="88" cy="200" r="1.6" class="viz-proto-grid-center"/>
+            <circle cx="93" cy="200" r="1.1"/>
+            <circle cx="83" cy="205" r="1.1"/>
+            <circle cx="88" cy="205" r="1.1"/>
+            <circle cx="93" cy="205" r="1.1"/>
+          </g>
           <line class="viz-conn-solid" x1="104" y1="200" x2="175" y2="200"/>
-          <text class="viz-lbl-sm" x="88" y="234">Protocol</text>
-          <text class="viz-lbl-xs" x="88" y="248">Trident · v24.06</text>
+          <text class="viz-lbl-sm" x="88" y="240">Protocol</text>
         </g>
         <g class="viz-layer" id="cvizPopulation" opacity="1">
           <line class="viz-conn-solid" x1="330" y1="200" x2="350" y2="200"/>
@@ -926,22 +988,51 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
           <line class="viz-conn" x1="480" y1="190" x2="548" y2="158"/>
           <line class="viz-conn" x1="480" y1="200" x2="548" y2="200"/>
           <line class="viz-conn" x1="480" y1="210" x2="548" y2="242"/>
-          <line class="viz-conn" x1="558" y1="158" x2="620" y2="185"/>
-          <line class="viz-conn" x1="558" y1="200" x2="620" y2="200"/>
-          <line class="viz-conn" x1="558" y1="242" x2="620" y2="215"/>
-          <circle class="viz-form-node" cx="548" cy="158" r="10"/>
-          <circle class="viz-form-node" cx="548" cy="200" r="10"/>
-          <circle class="viz-form-node" cx="548" cy="242" r="10"/>
-          <circle class="viz-evidence" cx="524" cy="145" r="4"/>
-          <circle class="viz-evidence" cx="530" cy="168" r="3"/>
-          <circle class="viz-evidence" cx="524" cy="200" r="4"/>
-          <circle class="viz-evidence" cx="530" cy="218" r="3"/>
-          <circle class="viz-evidence" cx="524" cy="255" r="4"/>
+          <line class="viz-conn" x1="568" y1="158" x2="620" y2="185"/>
+          <line class="viz-conn" x1="568" y1="200" x2="620" y2="200"/>
+          <line class="viz-conn" x1="568" y1="242" x2="620" y2="215"/>
+          <g class="viz-form-doc" transform="translate(548 158) rotate(-7)">
+            <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
+            <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
+            <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
+          </g>
+          <g class="viz-form-doc" transform="translate(548 200) rotate(2)">
+            <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
+            <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
+            <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <circle cx="9" cy="15" r="1.6" fill="rgba(250,204,21,.9)"/>
+          </g>
+          <g class="viz-form-doc" transform="translate(548 242) rotate(-4)">
+            <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
+            <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
+            <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
+            <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
+          </g>
+          <circle class="viz-evidence" cx="524" cy="142" r="4"/>
+          <circle class="viz-evidence" cx="528" cy="165" r="3"/>
+          <circle class="viz-evidence" cx="522" cy="196" r="4"/>
+          <circle class="viz-evidence" cx="528" cy="220" r="3"/>
+          <circle class="viz-evidence" cx="524" cy="258" r="4"/>
         </g>
         <g class="viz-layer" id="cvizDecision" opacity="1">
           <circle class="viz-decision-glow" cx="680" cy="200" r="42"/>
+          <circle class="viz-replay-ring" cx="680" cy="200" r="30" fill="none" stroke="rgba(169,192,214,.5)" stroke-width=".9" stroke-dasharray="4 5"/>
           <circle class="viz-decision" cx="680" cy="200" r="18"/>
-          <text class="viz-lbl-decision" x="680" y="235">Decision</text>
+          <text class="viz-replay-loop" x="680" y="208" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="500" fill="rgba(240,244,248,.92)">↻</text>
+          <text class="viz-lbl-decision" x="680" y="240">Replay</text>
         </g>
         <g class="viz-timeline">
           <line class="tl-track" x1="55" y1="400" x2="755" y2="400"/>
@@ -1577,8 +1668,8 @@ spec:
 
   const igAutoplayBeats = [
     { stageId: "protocol",   caption: "Protocol becomes executable logic in seconds, not days.",                               cursorX: 88,  ms: 3400 },
-    { stageId: "population", caption: "Cascade amendment impact across the cohort instantly.",                                cursorX: 245, ms: 3200 },
-    { stageId: "screening",  caption: "Surface qualified candidates with evidence, not guesswork.",                cursorX: 395, ms: 3400 },
+    { stageId: "population", caption: "Surface qualified candidates with evidence, not guesswork.",                cursorX: 245, ms: 3200 },
+    { stageId: "screening",  caption: "Cascade amendment impact across the cohort instantly.",                                cursorX: 395, ms: 3400 },
     { stageId: "forms",      caption: "Supercharge trial document drafting.",    cursorX: 548, ms: 3600 },
     { stageId: "replay",     caption: "Auditability is built-in, not an afterthought.",                                       cursorX: 680, ms: 3200 },
     { stageId: "_charge",    caption: "One substrate. Faster trials. Defensible answers.",                                     cursorX: 680, ms: 3200, charge: true }
@@ -1612,13 +1703,13 @@ spec:
       el.textContent = word.slice(0, cockTaglineDisplayLen);
       if (cockTaglineDisplayLen >= word.length) {
         cockTaglinePhase = "pause";
-        _schedCockTagline(1900);
-      } else _schedCockTagline(58);
+        _schedCockTagline(3200);
+      } else _schedCockTagline(95);
       return;
     }
     if (cockTaglinePhase === "pause") {
       cockTaglinePhase = "deleting";
-      _schedCockTagline(420);
+      _schedCockTagline(700);
       return;
     }
     if (cockTaglinePhase === "deleting") {
@@ -1627,8 +1718,8 @@ spec:
       if (cockTaglineDisplayLen <= 0) {
         cockTaglineWordIdx = (cockTaglineWordIdx + 1) % COCK_TAGLINE_WORDS.length;
         cockTaglinePhase = "typing";
-        _schedCockTagline(360);
-      } else _schedCockTagline(40);
+        _schedCockTagline(620);
+      } else _schedCockTagline(65);
     }
   }
   function startCockTagline() {
@@ -1975,18 +2066,32 @@ spec:
   });
   if (igCockWordmark) igCockWordmark.addEventListener("click", goHome);
 
+  // Hover grace: prevents flicker when info card pops up over its own hot zone
+  let igHoverGrace = null;
+  function _cancelClearStage() {
+    if (igHoverGrace) { clearTimeout(igHoverGrace); igHoverGrace = null; }
+  }
+  function _maybeClearStage() {
+    if (igLockedStage) return;
+    _cancelClearStage();
+    igHoverGrace = setTimeout(function () {
+      clearActiveStage();
+      igHoverGrace = null;
+    }, 120);
+  }
+
   // Hot zones in cockpit SVG → info cards
   document.querySelectorAll(".viz-hotzone").forEach(function (zone) {
     const stage = zone.dataset.stage;
     zone.addEventListener("mouseenter", function () {
+      _cancelClearStage();
       if (igState !== "cockpit") return;
       if (igLockedStage && igLockedStage !== stage) return;
       showStage(stage, false);
     });
     zone.addEventListener("mouseleave", function () {
       if (igState !== "cockpit") return;
-      if (igLockedStage) return;
-      clearActiveStage();
+      _maybeClearStage();
     });
     zone.addEventListener("click", function (e) {
       if (igState !== "cockpit") return;
@@ -2003,6 +2108,12 @@ spec:
       }
     });
     zone.setAttribute("tabindex", "0");
+  });
+
+  // Info cards: keep visible while mouse is over them
+  document.querySelectorAll(".ig-info-card").forEach(function (card) {
+    card.addEventListener("mouseenter", _cancelClearStage);
+    card.addEventListener("mouseleave", _maybeClearStage);
   });
 
   // Click on cockpit (outside hotzone or card) clears lock
@@ -2025,8 +2136,9 @@ spec:
   const igOutroEl = document.getElementById("igOutro");
   if (igDownArrow) {
     igDownArrow.addEventListener("click", function () {
-      const target = igOutroEl || igStakeholdersEl;
-      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Scroll to the very bottom of the page so bottom bar (geo + copyright) is visible
+      const target = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: target, behavior: "smooth" });
     });
   }
 
