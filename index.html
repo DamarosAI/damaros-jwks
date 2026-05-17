@@ -614,11 +614,16 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 /* Cockpit — fullscreen takeover */
 .ig-cockpit{position:relative;z-index:10;padding:calc(var(--tab) + 2.4rem) clamp(1rem,3vw,2.4rem) clamp(1.4rem,3vh,2.4rem);opacity:0;pointer-events:none;transition:opacity .55s ease .15s;min-height:100svh}
 body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
-.ig-cockpit-inner{max-width:min(1700px,calc(100vw - 1.5rem));margin:0 auto;display:flex;flex-direction:column;gap:.95rem;position:relative}
+.ig-cockpit-inner{max-width:min(1700px,calc(100vw - 1.5rem));margin:0 auto;display:flex;flex-direction:column;gap:.35rem;position:relative}
 
-/* Wordmark sits above the canvas, left-aligned to canvas's left edge */
-.ig-cock-header{max-width:1140px;width:100%;margin:0 auto;display:flex;align-items:flex-end;justify-content:flex-start}
-.ig-cock-wordmark{font-family:var(--fh);font-size:clamp(1.15rem,1.5vw,1.4rem);font-weight:600;letter-spacing:.01em;color:var(--tp);display:inline-flex;align-items:center;gap:.36rem;background:transparent;border:none;padding:0 0 .55rem;cursor:pointer;line-height:1;text-shadow:0 0 18px rgba(123,150,178,.18)}
+/* Wordmark left + typewriter tagline right, both aligned to canvas edges */
+.ig-cock-header{max-width:1140px;width:100%;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;padding:0 .2rem}
+.ig-cock-wordmark{font-family:var(--fh);font-size:clamp(1.15rem,1.5vw,1.4rem);font-weight:600;letter-spacing:.01em;color:var(--tp);display:inline-flex;align-items:center;gap:.36rem;background:transparent;border:none;padding:0 0 .28rem;cursor:pointer;line-height:1;text-shadow:0 0 18px rgba(123,150,178,.18)}
+.ig-cock-tagline{margin:0 0 .32rem;font-family:var(--fm);font-size:clamp(.82rem,1.05vw,1rem);letter-spacing:.03em;line-height:1;color:var(--blue2);display:inline-flex;align-items:baseline;white-space:nowrap}
+.ig-cock-tagline-prefix{color:rgba(169,192,214,.72);font-weight:400}
+.ig-cock-tagline-rotator{color:#f0f4f8;font-weight:700;display:inline-flex;align-items:baseline;min-width:1ch}
+.ig-cock-tagline-rotator::after{content:'';display:inline-block;width:2px;height:.92em;align-self:center;background:var(--blue);margin-left:5px;animation:igCurBlink 1.15s steps(1) infinite;box-shadow:0 0 7px rgba(123,150,178,.55)}
+@keyframes igCurBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
 .ig-cock-wordmark:hover{color:#fff}
 .ig-cock-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px rgba(123,150,178,.6);animation:igDotPulse 2.2s ease-in-out infinite;transform:translateY(.08em)}
 
@@ -717,6 +722,8 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
   .ig-viz{max-height:50svh!important}
   .ig-cockpit{padding:calc(var(--tab) + 1.4rem) .6rem 1.4rem}
   .ig-cock-wordmark{font-size:1rem!important;padding-bottom:.4rem!important}
+  .ig-cock-header{flex-direction:column;align-items:flex-start;gap:.2rem;padding:0 .2rem}
+  .ig-cock-tagline{font-size:.76rem!important;padding-bottom:.3rem;margin-bottom:0!important}
   .ig-cock-canvas{padding:.45rem}
   .ig-cock-restart{width:30px!important;height:30px!important}
   .ig-info-card{padding:.95rem 1rem 1.05rem;width:calc(100% - 1rem)}
@@ -865,6 +872,9 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
   <div class="ig-cockpit-inner">
     <div class="ig-cock-header">
       <button type="button" class="ig-cock-wordmark" id="igCockWordmark" aria-label="Return to Damaros home">Damaros<span class="ig-cock-dot" aria-hidden="true"></span></button>
+      <p class="ig-cock-tagline" aria-label="clinical trial execution, cycling descriptor">
+        <span class="ig-cock-tagline-prefix">clinical trial execution,&nbsp;</span><span class="ig-cock-tagline-rotator" id="igCockTaglineRotator"></span>
+      </p>
     </div>
     <div class="ig-cock-canvas" id="igCockCanvas">
       <button type="button" class="ig-cock-restart" id="igCtrlRewind" aria-label="Replay walkthrough" title="Replay walkthrough">
@@ -999,8 +1009,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 <section class="ig-outro" id="igOutro">
 <!-- Manifesto -->
 <section class="ig-manifesto" id="igManifesto" aria-hidden="true">
-  <p>Damaros runs clinical trials at the speed of the protocol.</p>
-  <p>Coordinators move faster. Forms assemble from real evidence. Every decision is replayable to its source.</p>
+  <p>Damaros helps execute at the speed of the protocol.</p>
 </section>
 
 <!-- Stakeholder context (3-column horizontal) -->
@@ -1577,6 +1586,72 @@ spec:
 
   const igStageCursorX = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
 
+  // Cockpit tagline rotator (typewriter motif, runs only in cockpit state)
+  const COCK_TAGLINE_WORDS = ["simplified", "operationalized", "replayable"];
+  let cockTaglineTimer = null;
+  let cockTaglineWordIdx = 0;
+  let cockTaglineDisplayLen = 0;
+  let cockTaglinePhase = "typing";
+
+  function _clearCockTagline() {
+    if (cockTaglineTimer !== null) { clearTimeout(cockTaglineTimer); cockTaglineTimer = null; }
+  }
+  function _schedCockTagline(ms) { cockTaglineTimer = setTimeout(_tickCockTagline, ms); }
+
+  function _tickCockTagline() {
+    cockTaglineTimer = null;
+    const el = document.getElementById("igCockTaglineRotator");
+    if (!el || !document.body.classList.contains("is-cockpit")) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = COCK_TAGLINE_WORDS[0];
+      return;
+    }
+    const word = COCK_TAGLINE_WORDS[cockTaglineWordIdx];
+    if (cockTaglinePhase === "typing") {
+      cockTaglineDisplayLen += 1;
+      el.textContent = word.slice(0, cockTaglineDisplayLen);
+      if (cockTaglineDisplayLen >= word.length) {
+        cockTaglinePhase = "pause";
+        _schedCockTagline(1900);
+      } else _schedCockTagline(58);
+      return;
+    }
+    if (cockTaglinePhase === "pause") {
+      cockTaglinePhase = "deleting";
+      _schedCockTagline(420);
+      return;
+    }
+    if (cockTaglinePhase === "deleting") {
+      cockTaglineDisplayLen -= 1;
+      el.textContent = word.slice(0, Math.max(0, cockTaglineDisplayLen));
+      if (cockTaglineDisplayLen <= 0) {
+        cockTaglineWordIdx = (cockTaglineWordIdx + 1) % COCK_TAGLINE_WORDS.length;
+        cockTaglinePhase = "typing";
+        _schedCockTagline(360);
+      } else _schedCockTagline(40);
+    }
+  }
+  function startCockTagline() {
+    _clearCockTagline();
+    const el = document.getElementById("igCockTaglineRotator");
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = COCK_TAGLINE_WORDS[0];
+      return;
+    }
+    cockTaglineWordIdx = 0;
+    cockTaglineDisplayLen = 0;
+    cockTaglinePhase = "typing";
+    el.textContent = "";
+    _schedCockTagline(580);
+  }
+  function stopCockTagline() {
+    _clearCockTagline();
+    const el = document.getElementById("igCockTaglineRotator");
+    if (el) el.textContent = "";
+  }
+
+
   // ── State ──
   let igState = "hero"; // hero | playing | cockpit
   let igActiveStage = null;
@@ -1766,6 +1841,7 @@ spec:
     if (ctaEl) ctaEl.removeAttribute("aria-hidden");
     clearActiveStage();
     if (igViz) igViz.classList.remove("viz-charged");
+    startCockTagline();
     requestAnimationFrame(function () {
       if (igCockpit) igCockpit.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -1786,6 +1862,7 @@ spec:
     if (igCaption) { igCaption.textContent = ""; igCaption.classList.remove("fading"); }
     clearActiveStage();
     if (igViz) igViz.classList.remove("viz-charged");
+    stopCockTagline();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -1825,6 +1902,7 @@ spec:
     setMainVizFocus("protocol");
     if (igTlCursor) igTlCursor.setAttribute("cx", 88);
     if (igViz) igViz.classList.remove("viz-charged");
+    stopCockTagline();
     igLockedStage = null;
     clearActiveStage();
   };
