@@ -598,7 +598,7 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 .tl-track{stroke:rgba(123,150,178,.16);stroke-width:1}
 .tl-stop{fill:rgba(123,150,178,.32)}
 .tl-stop-lbl{font-family:var(--fm);font-size:6.5px;fill:rgba(123,150,178,.42);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
-.tl-cursor{fill:var(--amber);filter:drop-shadow(0 0 5px rgba(250,204,21,.55));transition:cx .75s cubic-bezier(.16,1,.3,1)}
+.tl-cursor{fill:var(--blue2);filter:drop-shadow(0 0 7px rgba(169,192,214,.7));transition:cx .75s cubic-bezier(.16,1,.3,1);r:6.5}
 
 /* Charge-up: all stages light simultaneously at end of autoplay */
 /* Charge sweep: stages light up sequentially left to right (loading-bar feel) */
@@ -608,13 +608,13 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 .viz-charged #vizForms     {animation:igChargeLight 1s ease 1.05s forwards}
 .viz-charged #vizDecision  {animation:igChargeLight 1s ease 1.4s  forwards}
 @keyframes igChargeLight{from{opacity:.22}to{opacity:1}}
-.viz-charged .tl-cursor{transition:cx 1.85s cubic-bezier(.65,0,.35,1);filter:drop-shadow(0 0 12px rgba(250,204,21,.9))}
+.viz-charged .tl-cursor{transition:cx 1.85s cubic-bezier(.65,0,.35,1);filter:drop-shadow(0 0 14px rgba(169,192,214,.95));r:7}
 .viz-charge-flash{display:none}
 
 /* Cockpit — fullscreen takeover */
 .ig-cockpit{position:relative;z-index:10;padding:calc(var(--tab) + 2.4rem) clamp(1rem,3vw,2.4rem) clamp(1.4rem,3vh,2.4rem);opacity:0;pointer-events:none;transition:opacity .55s ease .15s;min-height:100svh}
 body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
-.ig-cockpit-inner{max-width:1480px;margin:0 auto;display:flex;flex-direction:column;gap:.95rem;position:relative}
+.ig-cockpit-inner{max-width:min(1700px,calc(100vw - 1.5rem));margin:0 auto;display:flex;flex-direction:column;gap:.95rem;position:relative}
 
 /* Wordmark sits above the canvas, left-aligned to canvas's left edge */
 .ig-cock-header{max-width:1140px;width:100%;margin:0 auto;display:flex;align-items:flex-end;justify-content:flex-start}
@@ -633,23 +633,26 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-cock-restart svg{display:block;width:16px;height:16px}
 
 /* Hover hot zones over each stage area — no focus outline, no halos */
-.viz-hotzone{fill:transparent;cursor:pointer;pointer-events:all;outline:none}
+.viz-hotzone{fill:transparent;cursor:pointer;pointer-events:all!important;outline:none}
 .viz-hotzone:focus,.viz-hotzone:focus-visible,.viz-hotzone:active{outline:none}
+/* All decorative viz children disable pointer events so they never steal hover from hotzones */
+.ig-cockpit-viz .viz-layer,.ig-cockpit-viz .viz-layer *,.ig-cockpit-viz .viz-timeline,.ig-cockpit-viz .viz-timeline *{pointer-events:none}
 
 /* Info cards (positioned at outer edges of .ig-cockpit-inner so they fan out beyond canvas) */
-.ig-info-card{position:absolute;width:clamp(290px,25vw,360px);padding:1.1rem 1.2rem 1.25rem;background:linear-gradient(180deg,rgba(10,14,20,.97),rgba(0,0,0,.94));border:1px solid rgba(123,150,178,.32);box-shadow:0 0 42px rgba(123,150,178,.12),inset 0 0 0 1px rgba(255,255,255,.022);opacity:0;pointer-events:none;transform:scale(.86);transition:opacity .3s cubic-bezier(.16,1,.3,1),transform .3s cubic-bezier(.16,1,.3,1);z-index:6}
+.ig-info-card{position:absolute;width:clamp(310px,26vw,400px);padding:1.25rem 1.35rem 1.4rem;background:linear-gradient(180deg,rgba(10,14,20,.97),rgba(0,0,0,.94));border:1px solid rgba(123,150,178,.32);box-shadow:0 0 52px rgba(123,150,178,.14),inset 0 0 0 1px rgba(255,255,255,.024);opacity:0;pointer-events:none;transform:scale(.86);transition:opacity .3s cubic-bezier(.16,1,.3,1),transform .3s cubic-bezier(.16,1,.3,1);z-index:25}
 .ig-info-card.visible{opacity:1;pointer-events:auto;transform:scale(1)}
 .ig-info-card .ig-card-label{font-family:var(--fm);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2);font-weight:700;margin-bottom:.55rem}
-.ig-info-card .ig-card-title{font-family:var(--fh);font-size:clamp(1.02rem,1.25vw,1.16rem);font-weight:600;line-height:1.26;margin:0 0 .65rem;color:var(--tp)}
-.ig-info-card .ig-card-body{font-family:var(--fb);font-size:clamp(.78rem,.95vw,.86rem);line-height:1.6;color:rgba(232,232,232,.78);margin:0}
-.ig-info-card .ig-card-mech{margin-top:.7rem;font-family:var(--fb);font-size:clamp(.7rem,.85vw,.78rem);line-height:1.55;color:rgba(169,192,214,.72);letter-spacing:.01em}
+.ig-info-card .ig-card-title{font-family:var(--fh);font-size:clamp(1.1rem,1.4vw,1.3rem);font-weight:600;line-height:1.26;margin:0 0 .7rem;color:var(--tp)}
+.ig-info-card .ig-card-body{font-family:var(--fb);font-size:clamp(.86rem,1.05vw,.96rem);line-height:1.58;color:rgba(232,232,232,.82);margin:0}
+.ig-info-card .ig-card-mech{margin-top:.78rem;font-family:var(--fb);font-size:clamp(.78rem,.95vw,.86rem);line-height:1.55;color:rgba(169,192,214,.75);letter-spacing:.01em}
 .ig-info-card .ig-card-mech strong{color:var(--blue2);font-weight:600;font-family:var(--fm);letter-spacing:.12em;text-transform:uppercase;font-size:.62rem;display:block;margin-bottom:.2rem}
 
 /* Info card positions: fan out at edges of cockpit-inner (1480px max), canvas (1140px) centered. ~170px shoulders each side. */
+/* Cards 1,2 anchored to far-left edge of cockpit-inner; 4,5 to far-right; 3 (Screening) centered below. */
 .ig-info-card[data-stage="protocol"]   {top:0;       left:0;  --ig-card-origin:100% 100%}
-.ig-info-card[data-stage="population"] {top:34%;     left:0;  --ig-card-origin:100% 50%}
-.ig-info-card[data-stage="screening"]  {bottom:0;    left:50%;margin-left:clamp(-180px,-12vw,-160px);--ig-card-origin:50% 0%}
-.ig-info-card[data-stage="forms"]      {top:34%;     right:0; --ig-card-origin:0% 50%}
+.ig-info-card[data-stage="population"] {top:40%;     left:0;  --ig-card-origin:100% 50%}
+.ig-info-card[data-stage="screening"]  {bottom:-12px;left:50%;margin-left:clamp(-200px,-13vw,-180px);--ig-card-origin:50% 0%}
+.ig-info-card[data-stage="forms"]      {top:40%;     right:0; --ig-card-origin:0% 50%}
 .ig-info-card[data-stage="replay"]     {top:0;       right:0; --ig-card-origin:0% 100%}
 
 /* Down arrow: pulsing chevron, click scrolls to stakeholders */
@@ -661,20 +664,26 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 /* Manifesto */
 .ig-manifesto{position:relative;z-index:10;padding:clamp(3rem,6vh,4.5rem) clamp(1.5rem,5vw,5rem);opacity:0;pointer-events:none;transition:opacity .55s ease .35s;border-top:1px solid rgba(123,150,178,.07);text-align:center}
 body.is-cockpit .ig-manifesto{opacity:1;pointer-events:auto}
-.ig-manifesto p{font-family:var(--fh);font-size:clamp(1.05rem,1.95vw,1.55rem);font-weight:500;line-height:1.42;letter-spacing:-.005em;color:rgba(232,232,232,.74);margin:0;max-width:780px;margin-left:auto;margin-right:auto}
-.ig-manifesto p+p{margin-top:clamp(.55rem,1.3vh,.85rem);color:rgba(169,192,214,.68);font-size:clamp(.92rem,1.55vw,1.22rem);font-weight:400}
+.ig-manifesto p{font-family:var(--fh);font-size:clamp(1.25rem,2.4vw,1.95rem);font-weight:500;line-height:1.38;letter-spacing:-.005em;color:rgba(232,232,232,.82);margin:0;max-width:920px;margin-left:auto;margin-right:auto}
+.ig-manifesto p+p{margin-top:clamp(.7rem,1.6vh,1.1rem);color:rgba(169,192,214,.72);font-size:clamp(1.02rem,1.75vw,1.42rem);font-weight:400}
 
 /* Stakeholders: 3-column horizontal + single CTA */
-.ig-stakeholders{position:relative;z-index:10;padding:clamp(2.2rem,5vh,3.4rem) clamp(1.5rem,5vw,5rem) clamp(1.2rem,3vh,2rem);max-width:1180px;margin:0 auto;opacity:0;pointer-events:none;transition:opacity .55s ease .45s;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.4rem,3vw,2.6rem);border-top:1px solid rgba(123,150,178,.06)}
+.ig-stakeholders{position:relative;z-index:10;padding:clamp(2.2rem,5vh,3.4rem) clamp(1.5rem,5vw,5rem) clamp(1.2rem,3vh,2rem);max-width:1280px;margin:0 auto;opacity:0;pointer-events:none;transition:opacity .55s ease .45s;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.6rem,3.5vw,3rem);border-top:1px solid rgba(123,150,178,.06)}
 @media(max-width:780px){.ig-stakeholders{grid-template-columns:1fr}}
 body.is-cockpit .ig-stakeholders{opacity:1;pointer-events:auto}
 .ig-stake{display:flex;flex-direction:column;gap:.55rem}
-.ig-stake-aud{font-family:var(--fm);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(169,192,214,.62);font-weight:700}
-.ig-stake-body{font-family:var(--fb);font-size:.86rem;line-height:1.58;color:rgba(232,232,232,.74);margin:0}
+.ig-stake-aud{font-family:var(--fm);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(169,192,214,.7);font-weight:700;margin-bottom:.2rem}
+.ig-stake-body{font-family:var(--fb);font-size:clamp(.96rem,1.1vw,1.06rem);line-height:1.6;color:rgba(232,232,232,.8);margin:0}
 /* No per-card link — single CTA below all three */
 .ig-stakeholders-cta{position:relative;z-index:10;display:flex;justify-content:center;padding:0 clamp(1.5rem,5vw,5rem) clamp(2.6rem,5vh,4rem);opacity:0;pointer-events:none;transition:opacity .55s ease .55s}
 body.is-cockpit .ig-stakeholders-cta{opacity:1;pointer-events:auto}
-.ig-cta-btn{display:inline-flex;align-items:center;gap:.55rem;background:linear-gradient(180deg,rgba(123,150,178,.16),rgba(123,150,178,.06));border:1px solid rgba(169,192,214,.4);color:#f0f4f8;font-family:var(--fm);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;padding:.78rem 1.4rem;text-decoration:none;cursor:pointer;font-weight:600;transition:background .25s,border-color .25s,box-shadow .25s,color .25s}
+
+/* Outro: fills viewport, content centered vertically */
+.ig-outro{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+.ig-outro .ig-manifesto{border-top:none;padding-top:clamp(3rem,8vh,6rem);padding-bottom:clamp(2rem,5vh,3.5rem)}
+.ig-outro .ig-stakeholders{padding-top:clamp(1.5rem,4vh,2.5rem);padding-bottom:clamp(2rem,5vh,3.5rem)}
+.ig-outro .ig-stakeholders-cta{padding-bottom:clamp(3rem,8vh,5rem)}
+.ig-cta-btn{display:inline-flex;align-items:center;gap:.55rem;background:linear-gradient(180deg,rgba(123,150,178,.18),rgba(123,150,178,.08));border:1px solid rgba(169,192,214,.45);color:#f0f4f8;font-family:var(--fm);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:.95rem 1.7rem;text-decoration:none;cursor:pointer;font-weight:600;transition:background .25s,border-color .25s,box-shadow .25s,color .25s}
 .ig-cta-btn:hover{background:linear-gradient(180deg,rgba(123,150,178,.26),rgba(123,150,178,.12));border-color:var(--blue2);color:#fff;box-shadow:0 0 24px rgba(123,150,178,.22)}
 .ig-cta-btn:active{transform:translateY(1px)}
 .ig-cta-btn::after{content:'→';margin-left:.15rem;transition:transform .25s ease}
@@ -685,15 +694,44 @@ body.is-cockpit .ig-stakeholders-cta{opacity:1;pointer-events:auto}
 body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 
 /* Responsive */
-@media(max-width:1280px){
+@media(max-width:1480px){
   .ig-info-card[data-stage="protocol"],.ig-info-card[data-stage="forms"]{top:0}
-  .ig-info-card[data-stage="population"],.ig-info-card[data-stage="replay"]{top:40%}
+  .ig-info-card[data-stage="population"],.ig-info-card[data-stage="replay"]{top:38%}
 }
-@media(max-width:980px){
-  .ig-cock-canvas{padding:.5rem;min-height:auto}
-  .ig-info-card{position:relative;width:100%;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;margin:.6rem 0 0;margin-left:0!important;opacity:1;transform:none;pointer-events:auto;display:none}
-  .ig-info-card.visible{display:block}
-  .ig-cock-header{max-width:100%;padding:0 .5rem}
+@media(max-width:1080px){
+  /* On smaller desktop / tablet, cards stack below the canvas (one visible at a time) */
+  .ig-cockpit-inner{max-width:100%;padding:0 .5rem}
+  .ig-cock-canvas{padding:.6rem;min-height:auto;max-width:100%}
+  .ig-info-card{position:relative;width:100%;max-width:640px;margin:.85rem auto 0!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;opacity:0;transform:none;pointer-events:none;display:none}
+  .ig-info-card.visible{display:block;opacity:1;pointer-events:auto}
+  .ig-cock-header{max-width:100%;padding:0 .8rem}
+}
+@media(max-width:740px){
+  /* Mobile: smaller hero, smaller canvas controls, cards stacked, manifesto smaller */
+  .ig-hero{padding:calc(var(--tab) + 1.4rem) 1rem 2rem}
+  .ig-wordmark{font-size:clamp(3.2rem,16vw,5rem)!important;gap:.32rem!important}
+  .ig-dot{width:clamp(7px,2.2vw,10px)!important;height:clamp(7px,2.2vw,10px)!important;flex-basis:clamp(7px,2.2vw,10px)!important}
+  .ig-cue{margin-top:1rem!important;font-size:.62rem!important;letter-spacing:.2em!important}
+  .ig-stage{padding:calc(var(--tab) + 1rem) .7rem 1.4rem}
+  .ig-caption{font-size:.92rem!important;line-height:1.45!important;margin-bottom:1rem!important}
+  .ig-viz{max-height:50svh!important}
+  .ig-cockpit{padding:calc(var(--tab) + 1.4rem) .6rem 1.4rem}
+  .ig-cock-wordmark{font-size:1rem!important;padding-bottom:.4rem!important}
+  .ig-cock-canvas{padding:.45rem}
+  .ig-cock-restart{width:30px!important;height:30px!important}
+  .ig-info-card{padding:.95rem 1rem 1.05rem;width:calc(100% - 1rem)}
+  .ig-info-card .ig-card-title{font-size:1rem!important;line-height:1.28!important}
+  .ig-info-card .ig-card-body{font-size:.85rem!important;line-height:1.55!important}
+  .ig-info-card .ig-card-mech{font-size:.78rem!important;line-height:1.5!important}
+  .ig-down-arrow svg{width:20px;height:20px}
+  .ig-manifesto{padding:clamp(2.2rem,6vh,3.4rem) 1rem!important}
+  .ig-manifesto p{font-size:1.18rem!important;line-height:1.38!important}
+  .ig-manifesto p+p{font-size:.96rem!important}
+  .ig-stakeholders{grid-template-columns:1fr!important;padding:1.5rem 1rem!important;gap:1.6rem!important}
+  .ig-stakeholders-cta{padding:0 1rem 2.5rem!important}
+  .ig-cta-btn{font-size:.7rem!important;padding:.85rem 1.3rem!important}
+  .ig-outro{min-height:auto}
+  .ig-bottom-bar{padding:1rem 1rem!important;font-size:.52rem!important;flex-wrap:wrap;gap:.6rem}
 }
 @media(prefers-reduced-motion:reduce){
   .ig-monogram-grid,.ig-dot,.viz-origin-glow,.viz-origin-pulse,.viz-decision-glow,.viz-particle.eligible,.ig-tagline-rotator::after,.ig-cock-dot{animation:none}
@@ -957,6 +995,8 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
   </div>
 </section>
 
+<!-- Outro: manifesto + stakeholders + CTA, centered to fill viewport -->
+<section class="ig-outro" id="igOutro">
 <!-- Manifesto -->
 <section class="ig-manifesto" id="igManifesto" aria-hidden="true">
   <p>Damaros runs clinical trials at the speed of the protocol.</p>
@@ -983,6 +1023,8 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 <div class="ig-stakeholders-cta" aria-hidden="true">
   <a class="ig-cta-btn" href="mailto:anirudh@damaros.ai?subject=Damaros%20%E2%80%94%20Get%20in%20touch">Get in touch</a>
 </div>
+
+</section>
 
 <!-- Bottom bar -->
 <div class="ig-bottom-bar">
@@ -1525,11 +1567,11 @@ spec:
   // ================================================================
 
   const igAutoplayBeats = [
-    { stageId: "protocol",   caption: "Protocol becomes executable logic in days, not months.",                               cursorX: 88,  ms: 3400 },
-    { stageId: "population", caption: "Eligibility runs across the whole cohort in one pass.",                                cursorX: 245, ms: 3200 },
-    { stageId: "screening",  caption: "Coordinators reach the right candidates with reasoning intact.",                cursorX: 395, ms: 3400 },
-    { stageId: "forms",      caption: "Coordinator artifacts assemble from the same evidence the engine evaluated.",    cursorX: 548, ms: 3600 },
-    { stageId: "replay",     caption: "Every screening outcome traces back to its source.",                                       cursorX: 680, ms: 3200 },
+    { stageId: "protocol",   caption: "Protocol becomes executable logic in seconds, not days.",                               cursorX: 88,  ms: 3400 },
+    { stageId: "population", caption: "Cascade amendment impact across the cohort instantly.",                                cursorX: 245, ms: 3200 },
+    { stageId: "screening",  caption: "Surface qualified candidates with evidence, not guesswork.",                cursorX: 395, ms: 3400 },
+    { stageId: "forms",      caption: "Supercharge trial document drafting.",    cursorX: 548, ms: 3600 },
+    { stageId: "replay",     caption: "Auditability is built-in, not an afterthought.",                                       cursorX: 680, ms: 3200 },
     { stageId: "_charge",    caption: "One substrate. Faster trials. Defensible answers.",                                     cursorX: 680, ms: 3200, charge: true }
   ];
 
@@ -1902,9 +1944,11 @@ spec:
   // Down arrow → scroll to stakeholders
   const igDownArrow = document.getElementById("igDownArrow");
   const igStakeholdersEl = document.getElementById("igStakeholders");
+  const igOutroEl = document.getElementById("igOutro");
   if (igDownArrow) {
     igDownArrow.addEventListener("click", function () {
-      if (igStakeholdersEl) igStakeholdersEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      const target = igOutroEl || igStakeholdersEl;
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
 
