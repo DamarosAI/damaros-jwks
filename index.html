@@ -767,7 +767,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
   .ig-bottom-bar{padding:1rem 1rem!important;font-size:.52rem!important;flex-wrap:wrap;gap:.6rem}
 }
 @media(prefers-reduced-motion:reduce){
-  .ig-monogram-grid,.ig-dot,.viz-origin-glow,.viz-origin-pulse,.viz-decision-glow,.viz-particle.eligible,.ig-tagline-rotator::after,.ig-cock-dot,.viz-replay-rotor{animation:none}
+  .ig-monogram-grid,.ig-dot,.viz-origin-glow,.viz-origin-pulse,.viz-decision-glow,.viz-particle.eligible,.ig-tagline-rotator::after,.ig-cock-dot,.viz-replay-rotor,.viz-criterion,.viz-evidence,.viz-form-doc>circle{animation:none}
   .ig-dot{opacity:.85}
   .tl-cursor{transition:none}
   .viz-layer,.ig-hero,.ig-stage,.ig-cockpit,.ig-manifesto,.ig-stakeholders,.ig-bottom-bar,.ig-info-card{transition:none}
@@ -797,8 +797,16 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 .viz-lbl-decision{font-size:11px!important;fill:rgba(232,232,232,.92)!important}
 .tl-stop-lbl{font-size:9px!important;fill:rgba(232,232,232,.82)!important}
 
-/* ── Caption transition: clean fade, no phase glitch ── */
-.ig-caption{transition:opacity .22s cubic-bezier(.16,1,.3,1)!important}
+/* ── Caption transition: slower, smoother fade ── */
+.ig-caption{transition:opacity .32s cubic-bezier(.16,1,.3,1)!important;min-height:2.6em!important}
+
+/* ── Subtle pulse animations on screening criterion circles, forms evidence + status dots ── */
+.viz-criterion{animation:igCritPulse 5.2s ease-in-out infinite;will-change:opacity}
+@keyframes igCritPulse{0%,100%{opacity:.88}50%{opacity:1}}
+.viz-evidence{animation:igEvidencePulse 4.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center;will-change:opacity,transform}
+@keyframes igEvidencePulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
+.viz-form-doc>circle{animation:igStatusPulse 3.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;will-change:opacity,transform}
+@keyframes igStatusPulse{0%,100%{opacity:.78;transform:scale(1)}50%{opacity:1;transform:scale(1.22)}}
 
 /* ── Desktop walkthrough: more horizontal space, caption pinned just above viz ── */
 @media(min-width:741px){
@@ -875,7 +883,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 <section class="ig-stage" id="igStage" aria-label="Damaros walkthrough" aria-hidden="true">
   <p class="ig-caption" id="igCaption" aria-live="polite" aria-atomic="true"></p>
   <div class="ig-viz-wrap">
-    <svg class="ig-viz" id="igViz" viewBox="-11 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Population, Screening, Forms, Replay">
+    <svg class="ig-viz" id="igViz" viewBox="11 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Population, Screening, Forms, Replay">
       <g class="viz-layer" id="vizProtocol" opacity="0">
         <!-- Top protocol (88, 132) -->
         <circle class="viz-origin-glow" cx="88" cy="132" r="30"/>
@@ -1051,7 +1059,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
           <path d="M5.5 4.6 L3 4.6 L3 7.1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
         </svg>
       </button>
-      <svg class="ig-cockpit-viz" id="igCockpitViz" viewBox="-11 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance substrate">
+      <svg class="ig-cockpit-viz" id="igCockpitViz" viewBox="11 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance substrate">
         <g class="viz-layer" id="cvizProtocol" opacity="1">
           <!-- Top protocol (88, 132) -->
           <circle class="viz-origin-glow" cx="88" cy="132" r="30"/>
@@ -1876,7 +1884,7 @@ spec:
     screening:  "285 70 220 360",
     forms:      "438 70 220 360",
     replay:     "570 70 220 360",
-    full:       "-11 0 768 450"
+    full:       "11 0 768 450"
   };
 
   function _isMobileLayout() { return window.matchMedia("(max-width:740px)").matches; }
@@ -1904,9 +1912,25 @@ spec:
     _vbAnimId = requestAnimationFrame(tick);
   }
 
+  // Stagger pulse animations with random per-element delays so the screening criterion
+  // circles, forms evidence dots, and form-doc status dots feel organic instead of
+  // uniformly pulsing in lockstep. Negative delays start each animation already
+  // in-progress, so there's no synchronized "everything starts now" moment on load.
+  function _randomizeVizPulses() {
+    document.querySelectorAll(".viz-criterion").forEach(function (el) {
+      el.style.animationDelay = (-Math.random() * 5.2).toFixed(2) + "s";
+    });
+    document.querySelectorAll(".viz-evidence").forEach(function (el) {
+      el.style.animationDelay = (-Math.random() * 4.4).toFixed(2) + "s";
+    });
+    document.querySelectorAll(".viz-form-doc > circle").forEach(function (el) {
+      el.style.animationDelay = (-Math.random() * 3.8).toFixed(2) + "s";
+    });
+  }
+
   function _resetVizViewBox() {
     if (_vbAnimId) { cancelAnimationFrame(_vbAnimId); _vbAnimId = null; }
-    if (igViz) igViz.setAttribute("viewBox", "-11 0 768 450");
+    if (igViz) igViz.setAttribute("viewBox", "11 0 768 450");
   }
 
   const igStageCursorX = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
@@ -2128,8 +2152,8 @@ spec:
 
       if (igCaption && beat.caption !== undefined) {
         igCaption.classList.add("fading");
-        // Wait for full CSS fade-out (transition is 0.22s) + small buffer
-        await wait(reduceMotion ? 0 : 260);
+        // Wait for full CSS fade-out (transition is now 0.32s) + comfortable buffer
+        await wait(reduceMotion ? 0 : 360);
         if (igAutoplayAbort) break;
         igCaption.textContent = beat.caption;
 
@@ -2144,10 +2168,12 @@ spec:
           }
         }
 
-        // Force a reflow so the new text + faded state are committed before we restart
-        // the opacity transition. Without this the transition can mis-fire mid-cycle and
-        // produce a visible "phasing" glitch where caption flashes between texts.
+        // Force reflow + two rAFs so the DOM commit + style recalc both land before the
+        // opacity transition restarts. Without this the new text can briefly bleed into
+        // the tail end of the fade-out, producing the "flash/spazz" the user reported.
         void igCaption.offsetWidth;
+        await new Promise(function(r){ requestAnimationFrame(r); });
+        await new Promise(function(r){ requestAnimationFrame(r); });
         igCaption.classList.remove("fading");
       }
 
@@ -2447,6 +2473,7 @@ spec:
   // ── Init ──
   initMonogramGrid();
   initPopulationParticles();
+  _randomizeVizPulses();
   setMainVizFocus("protocol");
   if (igTlCursor) igTlCursor.setAttribute("cx", 88);
   routeFromHash();
