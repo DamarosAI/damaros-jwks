@@ -781,7 +781,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 
 /* ── Replay: stop the bouncing radius pulse; rotate the arrow CCW instead ── */
 .viz-decision-glow{animation:none!important;stroke-opacity:.18!important}
-.viz-replay-rotor{transform-box:fill-box;transform-origin:center;animation:igReplayArrowSpin 8s linear infinite}
+.viz-replay-rotor{transform-box:fill-box;transform-origin:center;animation:igReplayArrowSpin 11s linear infinite}
 @keyframes igReplayArrowSpin{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
 
 /* ── Mobile FPS + isolation: hide non-active stages, timeline track/cursor during walkthrough ── */
@@ -998,11 +998,15 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
         <circle class="viz-evidence" cx="524" cy="258" r="4"/>
       </g>
       <g class="viz-layer" id="vizDecision" opacity="1">
-        <circle class="viz-decision-glow" cx="680" cy="200" r="38"/>
-        <!-- CCW rotating replay arrow (smaller radius) -->
+        <circle class="viz-decision-glow" cx="680" cy="200" r="36"/>
+        <!-- CCW replay rotor: 180°-symmetric — two 90° arcs with CCW arrowheads -->
         <g class="viz-replay-rotor">
-          <path class="viz-replay-arrow" d="M 680 176 A 24 24 0 1 0 704 200" fill="none" stroke="rgba(169,192,214,.88)" stroke-width="1.7" stroke-linecap="round"/>
-          <polygon class="viz-replay-head" points="700,206 704,196 708,206" fill="rgba(169,192,214,.92)"/>
+          <!-- Top-left arc (12→9 o'clock) -->
+          <path class="viz-replay-arrow" d="M 680 178 A 22 22 0 0 0 658 200" fill="none" stroke="rgba(169,192,214,.85)" stroke-width="1.5" stroke-linecap="round"/>
+          <polygon class="viz-replay-head" points="655,199 658,205 661,199" fill="rgba(169,192,214,.92)"/>
+          <!-- Bottom-right arc (6→3 o'clock), 180° rotation of the first -->
+          <path class="viz-replay-arrow" d="M 680 222 A 22 22 0 0 0 702 200" fill="none" stroke="rgba(169,192,214,.85)" stroke-width="1.5" stroke-linecap="round"/>
+          <polygon class="viz-replay-head" points="705,201 702,195 699,201" fill="rgba(169,192,214,.92)"/>
         </g>
         <circle class="viz-decision" cx="680" cy="200" r="14"/>
       </g>
@@ -1170,11 +1174,15 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
           <circle class="viz-evidence" cx="524" cy="258" r="4"/>
         </g>
         <g class="viz-layer" id="cvizDecision" opacity="1">
-          <circle class="viz-decision-glow" cx="680" cy="200" r="38"/>
-          <!-- CCW rotating replay arrow (smaller radius) -->
+          <circle class="viz-decision-glow" cx="680" cy="200" r="36"/>
+          <!-- CCW replay rotor: 180°-symmetric — two 90° arcs with CCW arrowheads -->
           <g class="viz-replay-rotor">
-            <path class="viz-replay-arrow" d="M 680 176 A 24 24 0 1 0 704 200" fill="none" stroke="rgba(169,192,214,.88)" stroke-width="1.7" stroke-linecap="round"/>
-            <polygon class="viz-replay-head" points="700,206 704,196 708,206" fill="rgba(169,192,214,.92)"/>
+            <!-- Top-left arc (12→9 o'clock) -->
+            <path class="viz-replay-arrow" d="M 680 178 A 22 22 0 0 0 658 200" fill="none" stroke="rgba(169,192,214,.85)" stroke-width="1.5" stroke-linecap="round"/>
+            <polygon class="viz-replay-head" points="655,199 658,205 661,199" fill="rgba(169,192,214,.92)"/>
+            <!-- Bottom-right arc (6→3 o'clock), 180° rotation of the first -->
+            <path class="viz-replay-arrow" d="M 680 222 A 22 22 0 0 0 702 200" fill="none" stroke="rgba(169,192,214,.85)" stroke-width="1.5" stroke-linecap="round"/>
+            <polygon class="viz-replay-head" points="705,201 702,195 699,201" fill="rgba(169,192,214,.92)"/>
           </g>
           <circle class="viz-decision" cx="680" cy="200" r="14"/>
         </g>
