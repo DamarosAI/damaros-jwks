@@ -782,19 +782,22 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 /* ── Caption transition: clean fade, no phase glitch ── */
 .ig-caption{transition:opacity .22s cubic-bezier(.16,1,.3,1)!important}
 
-/* ── Desktop walkthrough: more horizontal space, luxurious spacing ── */
+/* ── Desktop walkthrough: more horizontal space, caption pinned just above viz ── */
 @media(min-width:741px){
-  .ig-stage{padding:calc(var(--tab) + .75rem) clamp(.5rem,1.4vw,1.4rem) 1.4rem!important}
-  .ig-viz-wrap{max-width:min(1340px,96vw)!important}
-  .ig-viz{max-height:min(610px,70svh)!important}
-  .ig-caption{font-size:clamp(.98rem,1.5vw,1.26rem)!important;margin-bottom:1.9rem!important;max-width:720px!important}
+  .ig-stage{justify-content:flex-start!important;padding:calc(var(--tab) + clamp(2rem,7svh,4.5rem)) clamp(.5rem,1.4vw,1.4rem) 1.4rem!important;gap:0!important}
+  .ig-viz-wrap{max-width:min(1340px,96vw)!important;flex:0 0 auto!important}
+  .ig-viz{max-height:min(560px,64svh)!important;width:100%!important}
+  .ig-caption{font-size:clamp(.98rem,1.5vw,1.26rem)!important;margin:0 auto .6rem!important;max-width:760px!important}
+  .ig-skip{margin-top:clamp(.8rem,2svh,1.4rem)!important}
 }
 
-/* ── Mobile walkthrough: caption below viz ── */
+/* ── Mobile walkthrough: caption right under viz, tight ── */
 @media(max-width:740px){
-  .ig-viz-wrap{order:-1}
-  .ig-caption{order:2;margin-top:.85rem!important;margin-bottom:.35rem!important;min-height:2em!important;font-size:.9rem!important;line-height:1.45!important}
-  .ig-skip{order:3}
+  .ig-stage{justify-content:center!important;gap:0!important}
+  .ig-viz-wrap{order:-1;flex:0 0 auto!important}
+  .ig-caption{order:2;margin:.35rem auto 0!important;min-height:2em!important;font-size:.9rem!important;line-height:1.45!important;padding:0 .4rem!important}
+  .ig-skip{order:3;margin-top:.9rem!important}
+  .ig-viz{max-height:54svh!important}
 }
 
 /* ── Mobile cockpit dot: proportionally sized to wordmark ── */
@@ -854,42 +857,40 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 <section class="ig-stage" id="igStage" aria-label="Damaros walkthrough" aria-hidden="true">
   <p class="ig-caption" id="igCaption" aria-live="polite" aria-atomic="true"></p>
   <div class="ig-viz-wrap">
-    <svg class="ig-viz" id="igViz" viewBox="0 0 820 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Population, Screening, Forms, Replay">
+    <svg class="ig-viz" id="igViz" viewBox="0 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Population, Screening, Forms, Replay">
       <g class="viz-layer" id="vizProtocol" opacity="0">
-        <!-- Secondary protocol (stacked above — multiple protocols) -->
-        <circle class="viz-origin-glow" cx="88" cy="170" r="24" opacity=".55"/>
-        <circle class="viz-proto-ring" cx="88" cy="170" r="17" fill="none" stroke="rgba(169,192,214,.32)" stroke-width=".8" stroke-dasharray="3 3" opacity=".7"/>
-        <polygon class="viz-proto-hex" points="88,160 96,165 96,175 88,180 80,175 80,165" fill="rgba(123,150,178,.12)" stroke="rgba(169,192,214,.52)" stroke-width="1" stroke-linejoin="round" opacity=".72"/>
-        <g opacity=".55">
-          <circle cx="85" cy="168" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="88" cy="168" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="91" cy="168" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="85" cy="172" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="88" cy="172" r="1.3" fill="rgba(240,244,248,.95)"/>
-          <circle cx="91" cy="172" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="85" cy="176" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="88" cy="176" r=".9" fill="rgba(240,244,248,.6)"/>
-          <circle cx="91" cy="176" r=".9" fill="rgba(240,244,248,.6)"/>
-        </g>
-        <line x1="88" y1="181" x2="88" y2="185" stroke="rgba(123,150,178,.38)" stroke-width=".9" stroke-dasharray="1.5 1.5"/>
-        <!-- Primary protocol -->
-        <circle class="viz-origin-glow" cx="88" cy="200" r="36"/>
-        <circle class="viz-origin-pulse" cx="88" cy="200" r="50"/>
-        <circle class="viz-proto-ring" cx="88" cy="200" r="26" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
-        <polygon class="viz-proto-hex" points="88,186 99,193 99,207 88,214 77,207 77,193" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
+        <!-- Top protocol (full-size, duplicated) -->
+        <circle class="viz-origin-glow" cx="88" cy="152" r="34"/>
+        <circle class="viz-proto-ring" cx="88" cy="152" r="24" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
+        <polygon class="viz-proto-hex" points="88,138 99,145 99,159 88,166 77,159 77,145" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
         <g class="viz-proto-grid">
-          <circle cx="83" cy="195" r="1.1"/>
-          <circle cx="88" cy="195" r="1.1"/>
-          <circle cx="93" cy="195" r="1.1"/>
-          <circle cx="83" cy="200" r="1.1"/>
-          <circle cx="88" cy="200" r="1.6" class="viz-proto-grid-center"/>
-          <circle cx="93" cy="200" r="1.1"/>
-          <circle cx="83" cy="205" r="1.1"/>
-          <circle cx="88" cy="205" r="1.1"/>
-          <circle cx="93" cy="205" r="1.1"/>
+          <circle cx="83" cy="147" r="1.1"/>
+          <circle cx="88" cy="147" r="1.1"/>
+          <circle cx="93" cy="147" r="1.1"/>
+          <circle cx="83" cy="152" r="1.1"/>
+          <circle cx="88" cy="152" r="1.6" class="viz-proto-grid-center"/>
+          <circle cx="93" cy="152" r="1.1"/>
+          <circle cx="83" cy="157" r="1.1"/>
+          <circle cx="88" cy="157" r="1.1"/>
+          <circle cx="93" cy="157" r="1.1"/>
         </g>
+        <!-- Bottom protocol (full-size, duplicated) -->
+        <circle class="viz-origin-glow" cx="88" cy="248" r="34"/>
+        <circle class="viz-proto-ring" cx="88" cy="248" r="24" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
+        <polygon class="viz-proto-hex" points="88,234 99,241 99,255 88,262 77,255 77,241" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
+        <g class="viz-proto-grid">
+          <circle cx="83" cy="243" r="1.1"/>
+          <circle cx="88" cy="243" r="1.1"/>
+          <circle cx="93" cy="243" r="1.1"/>
+          <circle cx="83" cy="248" r="1.1"/>
+          <circle cx="88" cy="248" r="1.6" class="viz-proto-grid-center"/>
+          <circle cx="93" cy="248" r="1.1"/>
+          <circle cx="83" cy="253" r="1.1"/>
+          <circle cx="88" cy="253" r="1.1"/>
+          <circle cx="93" cy="253" r="1.1"/>
+        </g>
+        <!-- Connection out to population (from vertical midpoint) -->
         <line class="viz-conn-solid" x1="104" y1="200" x2="175" y2="200"/>
-        <text class="viz-lbl-sm" x="88" y="252">Protocol</text>
       </g>
       <g class="viz-layer" id="vizPopulation" opacity="0">
         <line class="viz-conn-solid" x1="306" y1="200" x2="350" y2="200"/>
@@ -967,9 +968,10 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
       </g>
       <g class="viz-layer" id="vizDecision" opacity="1">
         <circle class="viz-decision-glow" cx="680" cy="200" r="42"/>
-        <circle class="viz-replay-ring" cx="680" cy="200" r="30" fill="none" stroke="rgba(169,192,214,.5)" stroke-width=".9" stroke-dasharray="4 5"/>
-        <circle class="viz-decision" cx="680" cy="200" r="18"/>
-        <text class="viz-lbl-decision" x="680" y="240">Replay</text>
+        <!-- Counter-clockwise replay arc -->
+        <path class="viz-replay-arrow" d="M 680 170 A 30 30 0 1 0 710 200" fill="none" stroke="rgba(169,192,214,.85)" stroke-width="1.8" stroke-linecap="round"/>
+        <polygon class="viz-replay-head" points="704,207 710,195 716,207" fill="rgba(169,192,214,.88)"/>
+        <circle class="viz-decision" cx="680" cy="200" r="14"/>
       </g>
       <!-- Charge flash overlay rings (used during end-of-autoplay synthesis) -->
       <circle class="viz-charge-flash" cx="88" cy="200" r="24"/>
@@ -1012,41 +1014,39 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
           <path d="M5.5 4.6 L3 4.6 L3 7.1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
         </svg>
       </button>
-      <svg class="ig-cockpit-viz" id="igCockpitViz" viewBox="0 0 820 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance substrate">
+      <svg class="ig-cockpit-viz" id="igCockpitViz" viewBox="0 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance substrate">
         <g class="viz-layer" id="cvizProtocol" opacity="1">
-          <!-- Secondary protocol (stacked above — multiple protocols) -->
-          <circle class="viz-origin-glow" cx="88" cy="170" r="24" opacity=".55"/>
-          <circle class="viz-proto-ring" cx="88" cy="170" r="17" fill="none" stroke="rgba(169,192,214,.32)" stroke-width=".8" stroke-dasharray="3 3" opacity=".7"/>
-          <polygon class="viz-proto-hex" points="88,160 96,165 96,175 88,180 80,175 80,165" fill="rgba(123,150,178,.12)" stroke="rgba(169,192,214,.52)" stroke-width="1" stroke-linejoin="round" opacity=".72"/>
-          <g opacity=".55">
-            <circle cx="85" cy="168" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="88" cy="168" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="91" cy="168" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="85" cy="172" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="88" cy="172" r="1.3" fill="rgba(240,244,248,.95)"/>
-            <circle cx="91" cy="172" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="85" cy="176" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="88" cy="176" r=".9" fill="rgba(240,244,248,.6)"/>
-            <circle cx="91" cy="176" r=".9" fill="rgba(240,244,248,.6)"/>
-          </g>
-          <line x1="88" y1="181" x2="88" y2="185" stroke="rgba(123,150,178,.38)" stroke-width=".9" stroke-dasharray="1.5 1.5"/>
-          <!-- Primary protocol -->
-          <circle class="viz-origin-glow" cx="88" cy="200" r="36"/>
-          <circle class="viz-proto-ring" cx="88" cy="200" r="26" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
-          <polygon class="viz-proto-hex" points="88,186 99,193 99,207 88,214 77,207 77,193" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
+          <!-- Top protocol (full-size, duplicated) -->
+          <circle class="viz-origin-glow" cx="88" cy="152" r="34"/>
+          <circle class="viz-proto-ring" cx="88" cy="152" r="24" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
+          <polygon class="viz-proto-hex" points="88,138 99,145 99,159 88,166 77,159 77,145" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
           <g class="viz-proto-grid">
-            <circle cx="83" cy="195" r="1.1"/>
-            <circle cx="88" cy="195" r="1.1"/>
-            <circle cx="93" cy="195" r="1.1"/>
-            <circle cx="83" cy="200" r="1.1"/>
-            <circle cx="88" cy="200" r="1.6" class="viz-proto-grid-center"/>
-            <circle cx="93" cy="200" r="1.1"/>
-            <circle cx="83" cy="205" r="1.1"/>
-            <circle cx="88" cy="205" r="1.1"/>
-            <circle cx="93" cy="205" r="1.1"/>
+            <circle cx="83" cy="147" r="1.1"/>
+            <circle cx="88" cy="147" r="1.1"/>
+            <circle cx="93" cy="147" r="1.1"/>
+            <circle cx="83" cy="152" r="1.1"/>
+            <circle cx="88" cy="152" r="1.6" class="viz-proto-grid-center"/>
+            <circle cx="93" cy="152" r="1.1"/>
+            <circle cx="83" cy="157" r="1.1"/>
+            <circle cx="88" cy="157" r="1.1"/>
+            <circle cx="93" cy="157" r="1.1"/>
+          </g>
+          <!-- Bottom protocol (full-size, duplicated) -->
+          <circle class="viz-origin-glow" cx="88" cy="248" r="34"/>
+          <circle class="viz-proto-ring" cx="88" cy="248" r="24" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
+          <polygon class="viz-proto-hex" points="88,234 99,241 99,255 88,262 77,255 77,241" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
+          <g class="viz-proto-grid">
+            <circle cx="83" cy="243" r="1.1"/>
+            <circle cx="88" cy="243" r="1.1"/>
+            <circle cx="93" cy="243" r="1.1"/>
+            <circle cx="83" cy="248" r="1.1"/>
+            <circle cx="88" cy="248" r="1.6" class="viz-proto-grid-center"/>
+            <circle cx="93" cy="248" r="1.1"/>
+            <circle cx="83" cy="253" r="1.1"/>
+            <circle cx="88" cy="253" r="1.1"/>
+            <circle cx="93" cy="253" r="1.1"/>
           </g>
           <line class="viz-conn-solid" x1="104" y1="200" x2="175" y2="200"/>
-          <text class="viz-lbl-sm" x="88" y="252">Protocol</text>
         </g>
         <g class="viz-layer" id="cvizPopulation" opacity="1">
           <line class="viz-conn-solid" x1="306" y1="200" x2="350" y2="200"/>
@@ -1124,9 +1124,10 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
         </g>
         <g class="viz-layer" id="cvizDecision" opacity="1">
           <circle class="viz-decision-glow" cx="680" cy="200" r="42"/>
-          <circle class="viz-replay-ring" cx="680" cy="200" r="30" fill="none" stroke="rgba(169,192,214,.5)" stroke-width=".9" stroke-dasharray="4 5"/>
-          <circle class="viz-decision" cx="680" cy="200" r="18"/>
-          <text class="viz-lbl-decision" x="680" y="240">Replay</text>
+          <!-- Counter-clockwise replay arc -->
+          <path class="viz-replay-arrow" d="M 680 170 A 30 30 0 1 0 710 200" fill="none" stroke="rgba(169,192,214,.85)" stroke-width="1.8" stroke-linecap="round"/>
+          <polygon class="viz-replay-head" points="704,207 710,195 716,207" fill="rgba(169,192,214,.88)"/>
+          <circle class="viz-decision" cx="680" cy="200" r="14"/>
         </g>
         <g class="viz-timeline">
           <line class="tl-track" x1="55" y1="400" x2="755" y2="400"/>
@@ -1142,7 +1143,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
           <text class="tl-stop-lbl" x="680" y="416">Replay</text>
         </g>
         <!-- Hot zones (transparent, focus outline disabled) -->
-        <rect class="viz-hotzone" data-stage="protocol"   x="20"  y="140" width="150" height="140"/>
+        <rect class="viz-hotzone" data-stage="protocol"   x="20"  y="105" width="150" height="195"/>
         <rect class="viz-hotzone" data-stage="population" x="175" y="85"  width="155" height="240"/>
         <rect class="viz-hotzone" data-stage="screening"  x="335" y="80"  width="140" height="270"/>
         <rect class="viz-hotzone" data-stage="forms"      x="478" y="120" width="135" height="190"/>
@@ -1807,14 +1808,16 @@ spec:
     { stageId: "_charge",    caption: "One system. Faster trials. Defensible answers.",               cursorX: 680, ms: 2540, charge: true }
   ];
 
-  // Mobile viewBox zoom: each stage zooms in on its graphic, charge zooms back to full
+  // Mobile walkthrough: snap viewBox to a consistent 220x320 crop centered on each symbol.
+  // No smooth tracking between beats — each symbol "pops" into view with its caption.
+  // Charge beat smoothly zooms back to the full workflow before the load-up animation.
   const igMobileViewBoxes = {
-    protocol:   "0 135 220 305",
-    population: "158 65 200 360",
-    screening:  "312 45 205 385",
-    forms:      "448 92 220 338",
-    replay:     "602 122 208 308",
-    full:       "0 0 820 450"
+    protocol:   "-22 40 220 320",
+    population: "135 40 220 320",
+    screening:  "285 40 220 320",
+    forms:      "438 40 220 320",
+    replay:     "570 40 220 320",
+    full:       "0 0 768 450"
   };
 
   function _isMobileLayout() { return window.matchMedia("(max-width:740px)").matches; }
@@ -1844,7 +1847,7 @@ spec:
 
   function _resetVizViewBox() {
     if (_vbAnimId) { cancelAnimationFrame(_vbAnimId); _vbAnimId = null; }
-    if (igViz) igViz.setAttribute("viewBox", "0 0 820 450");
+    if (igViz) igViz.setAttribute("viewBox", "0 0 768 450");
   }
 
   const igStageCursorX = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
@@ -2054,20 +2057,37 @@ spec:
       if (igAutoplayAbort) break;
       const beat = igAutoplayBeats[i];
 
+      // Charge beat: kick off the smooth zoom-out (mobile) BEFORE the caption swap
+      // so the full workflow is visible by the time the load-up animation starts.
+      if (beat.charge && onMobile) {
+        _animateViewBox(igViz, igMobileViewBoxes.full, 700);
+      }
+
       if (igCaption && beat.caption !== undefined) {
         igCaption.classList.add("fading");
-        // Wait for full CSS fade-out (transition is 0.22s) before swapping text
+        // Wait for full CSS fade-out (transition is 0.22s) before swapping text + viz
         await wait(reduceMotion ? 0 : 240);
         if (igAutoplayAbort) break;
         igCaption.textContent = beat.caption;
-        // One rAF so the DOM commit lands before we remove fading
+
+        // Stage beats: swap viz focus + cursor + mobile viewBox during the caption blackout
+        // so the new symbol "pops" in with the caption (no smooth tracking between symbols).
+        if (!beat.charge) {
+          setMainVizFocus(beat.stageId);
+          setTimelineCursor(beat.cursorX);
+          if (onMobile) {
+            // Instant snap — no smooth animation. Each symbol is rendered at the same scale.
+            igViz.setAttribute("viewBox", igMobileViewBoxes[beat.stageId] || igMobileViewBoxes.full);
+          }
+        }
+
         await new Promise(function(r){ requestAnimationFrame(r); });
         igCaption.classList.remove("fading");
       }
 
       if (beat.charge) {
-        // Mobile: zoom back to full workflow before charge
-        if (onMobile) _animateViewBox(igViz, igMobileViewBoxes.full, 700);
+        // Wait for mobile zoom-out to finish before kicking off the load-up animation
+        if (onMobile) await wait(reduceMotion ? 0 : 480);
         // Synthesis: instant-snap cursor to Protocol (no transition), then smooth glide to Replay
         if (igTlCursor) {
           igTlCursor.style.transition = "none";
@@ -2075,16 +2095,11 @@ spec:
           void igTlCursor.getBoundingClientRect(); // force reflow so the snap is final
           igTlCursor.style.transition = "";
         }
-        await wait(reduceMotion ? 0 : onMobile ? 750 : 140);
+        await wait(reduceMotion ? 0 : 140);
         if (igAutoplayAbort) break;
         if (igViz) igViz.classList.add("viz-charged");
         // The .viz-charged .tl-cursor rule kicks in a 1.85s smooth transition
         igTlCursor.setAttribute("cx", 680);
-      } else {
-        setMainVizFocus(beat.stageId);
-        setTimelineCursor(beat.cursorX);
-        // Mobile: zoom in on this stage's graphic
-        if (onMobile) _animateViewBox(igViz, igMobileViewBoxes[beat.stageId] || igMobileViewBoxes.full, 520);
       }
 
       await wait(reduceMotion ? 160 : beat.ms);
