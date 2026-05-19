@@ -68,6 +68,8 @@
     --mono-stage-opacity:1;
     --mono-hero-mask:radial-gradient(ellipse at center,var(--mask-solid) 0%,var(--mask-solid) 36%,var(--mask-fade) 60%,transparent 75%);
     --mono-stage-mask:radial-gradient(ellipse at center,var(--mask-solid) 0%,var(--mask-solid) 42%,var(--mask-fade) 70%,transparent 88%);
+    --mono-cockpit-mask:var(--mono-stage-mask);
+    --mono-cockpit-grid-opacity:var(--mono-grid-opacity);
     --cockpit-canvas-bg:linear-gradient(180deg,var(--gradient-path-top),var(--gradient-path-bottom));
     --cockpit-card-bg:linear-gradient(180deg,var(--card-bg-top),var(--card-bg-bottom));
     --cockpit-surface-backdrop:none;
@@ -113,12 +115,14 @@
       --mono-hero-grid-opacity:.13;
       --mono-tile-opacity-min:.10;
       --mono-tile-opacity-range:.085;
-      --mono-stage-opacity:.62;
+      --mono-stage-opacity:1;
       --mono-hero-mask:radial-gradient(ellipse 60% 48% at 50% 46%,transparent 0%,transparent 29%,var(--mask-fade) 48%,var(--mask-solid) 71%);
       --mono-stage-mask:radial-gradient(ellipse 70% 56% at 50% 46%,transparent 0%,transparent 34%,var(--mask-fade) 56%,var(--mask-solid) 84%);
-      --cockpit-canvas-bg:var(--cockpit-surface);
-      --cockpit-card-bg:var(--cockpit-card);
-      --cockpit-surface-backdrop:none;
+      --mono-cockpit-mask:radial-gradient(ellipse at center,var(--mask-solid) 0%,var(--mask-solid) 42%,var(--mask-fade) 70%,transparent 88%);
+      --mono-cockpit-grid-opacity:.12;
+      --cockpit-canvas-bg:linear-gradient(180deg,var(--gradient-path-top),var(--gradient-path-bottom));
+      --cockpit-card-bg:linear-gradient(168deg,var(--card-bg-top) 0%,var(--card-bg-bottom) 100%);
+      --cockpit-surface-backdrop:blur(8px);
       --table-cell-bg:transparent;
       --panel-backdrop:blur(10px);
       --mask-solid:var(--bg);--mask-fade:rgba(228,232,236,.35);
@@ -131,8 +135,6 @@
       --panel-bg:linear-gradient(165deg,var(--gradient-detail-top) 0%,var(--gradient-path-top) 38%,var(--gradient-path-bottom) 100%);
       --panel-bg-hover:linear-gradient(165deg,rgba(255,255,255,.92) 0%,var(--gradient-detail-top) 34%,var(--gradient-path-bottom) 100%);
       --card-bg:linear-gradient(168deg,var(--card-bg-top) 0%,var(--card-bg-bottom) 100%);
-      --cockpit-surface:rgba(252,253,255,.99);
-      --cockpit-card:rgba(255,255,255,.995);
       --viz-lbl-sm:rgba(55,72,90,.82);--viz-lbl-xs:rgba(91,118,148,.72);--viz-lbl-decision:rgba(45,62,78,.88);
       --viz-particle:rgba(91,118,148,.42);--viz-particle-eligible:rgba(55,72,90,.78);
       --viz-criterion-fill:rgba(123,150,178,.32);--viz-criterion-stroke:rgba(55,72,90,.62);
@@ -162,12 +164,14 @@
     --mono-hero-grid-opacity:.13;
     --mono-tile-opacity-min:.10;
     --mono-tile-opacity-range:.085;
-    --mono-stage-opacity:.62;
+    --mono-stage-opacity:1;
     --mono-hero-mask:radial-gradient(ellipse 60% 48% at 50% 46%,transparent 0%,transparent 29%,var(--mask-fade) 48%,var(--mask-solid) 71%);
     --mono-stage-mask:radial-gradient(ellipse 70% 56% at 50% 46%,transparent 0%,transparent 34%,var(--mask-fade) 56%,var(--mask-solid) 84%);
-    --cockpit-canvas-bg:var(--cockpit-surface);
-    --cockpit-card-bg:var(--cockpit-card);
-    --cockpit-surface-backdrop:none;
+    --mono-cockpit-mask:radial-gradient(ellipse at center,var(--mask-solid) 0%,var(--mask-solid) 42%,var(--mask-fade) 70%,transparent 88%);
+    --mono-cockpit-grid-opacity:.12;
+    --cockpit-canvas-bg:linear-gradient(180deg,var(--gradient-path-top),var(--gradient-path-bottom));
+    --cockpit-card-bg:linear-gradient(168deg,var(--card-bg-top) 0%,var(--card-bg-bottom) 100%);
+    --cockpit-surface-backdrop:blur(8px);
     --table-cell-bg:transparent;
     --panel-backdrop:blur(10px);
     --mask-solid:var(--bg);--mask-fade:rgba(228,232,236,.35);
@@ -180,8 +184,6 @@
     --panel-bg:linear-gradient(165deg,var(--gradient-detail-top) 0%,var(--gradient-path-top) 38%,var(--gradient-path-bottom) 100%);
     --panel-bg-hover:linear-gradient(165deg,rgba(255,255,255,.92) 0%,var(--gradient-detail-top) 34%,var(--gradient-path-bottom) 100%);
     --card-bg:linear-gradient(168deg,var(--card-bg-top) 0%,var(--card-bg-bottom) 100%);
-    --cockpit-surface:rgba(252,253,255,.99);
-    --cockpit-card:rgba(255,255,255,.995);
     --viz-lbl-sm:rgba(55,72,90,.82);--viz-lbl-xs:rgba(91,118,148,.72);--viz-lbl-decision:rgba(45,62,78,.88);
     --viz-particle:rgba(91,118,148,.42);--viz-particle-eligible:rgba(55,72,90,.78);
     --viz-criterion-fill:rgba(123,150,178,.32);--viz-criterion-stroke:rgba(55,72,90,.62);
@@ -694,10 +696,13 @@ body.damaros-docs-active .damaros-site:before{background:var(--site-overlay)!imp
 /* Background */
 .ig-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .ig-monogram-bg{position:absolute;inset:0;background:var(--bg);-webkit-mask-image:var(--mono-hero-mask,var(--mono-stage-mask));mask-image:var(--mono-hero-mask,var(--mono-stage-mask));overflow:hidden}
-body.is-cockpit .ig-monogram-bg,body.is-playing .ig-monogram-bg{opacity:var(--mono-stage-opacity);-webkit-mask-image:var(--mono-stage-mask);mask-image:var(--mono-stage-mask)}
+body.is-playing:not(.is-cockpit) .ig-monogram-bg{opacity:var(--mono-stage-opacity);-webkit-mask-image:var(--mono-stage-mask);mask-image:var(--mono-stage-mask)}
+body.is-cockpit .ig-monogram-bg{opacity:var(--mono-stage-opacity);-webkit-mask-image:var(--mono-cockpit-mask,var(--mono-stage-mask));mask-image:var(--mono-cockpit-mask,var(--mono-stage-mask))}
 body.is-cockpit .ig-cock-canvas,body.is-cockpit .ig-info-card{backdrop-filter:var(--cockpit-surface-backdrop)!important;-webkit-backdrop-filter:var(--cockpit-surface-backdrop)!important}
 .ig-monogram-grid{position:absolute;top:-20%;left:-12%;width:124%;height:140%;display:grid;grid-template-columns:repeat(auto-fill,100px);grid-auto-rows:100px;gap:32px;opacity:var(--mono-grid-opacity);transform:rotate(-8deg) translate3d(0,0,0);animation:igGridDrift 14s linear infinite;will-change:transform}
 body:not(.is-playing):not(.is-cockpit) .ig-monogram-grid{opacity:var(--mono-hero-grid-opacity,var(--mono-grid-opacity))}
+body.is-cockpit .ig-monogram-grid{opacity:var(--mono-cockpit-grid-opacity,var(--mono-grid-opacity))}
+[data-theme="light"] body.is-cockpit,:root:not([data-theme="dark"]) body.is-cockpit{--mono-tile-opacity-min:.14;--mono-tile-opacity-range:.10}
 .ig-monogram-grid img{width:100px;height:100px;object-fit:contain;display:block;filter:var(--mono-filter);mix-blend-mode:var(--mono-blend)}
 @keyframes igGridDrift{0%{transform:rotate(-8deg) translate3d(0,0,0)}50%{transform:rotate(-8deg) translate3d(36px,-8px,0)}100%{transform:rotate(-8deg) translate3d(0,0,0)}}
 @keyframes igFadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -1239,7 +1244,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   border-color:var(--panel-border-strong)!important;
   box-shadow:var(--panel-shadow-lg)!important;
 }
-[data-theme="light"] body.is-cockpit .ig-cock-canvas:hover{background:var(--cockpit-card-bg)!important}
+[data-theme="light"] body.is-cockpit .ig-cock-canvas:hover{background:linear-gradient(180deg,var(--gradient-detail-top),var(--gradient-path-bottom))!important}
 [data-theme="light"] .damaros-monogram-grid img,
 [data-theme="light"] .ig-monogram-grid img{filter:var(--mono-filter)!important;mix-blend-mode:var(--mono-blend)!important}
 [data-theme="light"] .damaros-workflow-btn,
@@ -1280,7 +1285,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     border-color:var(--panel-border-strong)!important;
     box-shadow:var(--panel-shadow-lg)!important;
   }
-  :root:not([data-theme="dark"]) body.is-cockpit .ig-cock-canvas:hover{background:var(--cockpit-card-bg)!important}
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-cock-canvas:hover{background:linear-gradient(180deg,var(--gradient-detail-top),var(--gradient-path-bottom))!important}
   :root:not([data-theme="dark"]) .damaros-monogram-grid img,
   :root:not([data-theme="dark"]) .ig-monogram-grid img{filter:var(--mono-filter)!important;mix-blend-mode:var(--mono-blend)!important}
   :root:not([data-theme="dark"]) .damaros-workflow-btn,
@@ -2797,6 +2802,7 @@ spec:
     document.body.classList.remove("is-charging");
     _resetVizViewBox();
     startCockTagline();
+    if (isLightTheme()) monogramReadyPromise = initMonogramGrid();
     _scrollToCockpitTop(false);
   }
 
