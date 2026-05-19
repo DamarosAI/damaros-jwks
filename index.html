@@ -108,6 +108,8 @@
       --panel-bg:linear-gradient(165deg,var(--gradient-detail-top) 0%,var(--gradient-path-top) 38%,var(--gradient-path-bottom) 100%);
       --panel-bg-hover:linear-gradient(165deg,rgba(255,255,255,.92) 0%,var(--gradient-detail-top) 34%,var(--gradient-path-bottom) 100%);
       --card-bg:linear-gradient(168deg,var(--card-bg-top) 0%,var(--card-bg-bottom) 100%);
+      --cockpit-surface:rgba(252,253,255,.97);
+      --cockpit-card:rgba(255,255,255,.98);
       --viz-lbl-sm:rgba(55,72,90,.82);--viz-lbl-xs:rgba(91,118,148,.72);--viz-lbl-decision:rgba(45,62,78,.88);
       --viz-particle:rgba(91,118,148,.42);--viz-particle-eligible:rgba(55,72,90,.78);
       --viz-criterion-fill:rgba(123,150,178,.32);--viz-criterion-stroke:rgba(55,72,90,.62);
@@ -144,6 +146,8 @@
     --panel-bg:linear-gradient(165deg,var(--gradient-detail-top) 0%,var(--gradient-path-top) 38%,var(--gradient-path-bottom) 100%);
     --panel-bg-hover:linear-gradient(165deg,rgba(255,255,255,.92) 0%,var(--gradient-detail-top) 34%,var(--gradient-path-bottom) 100%);
     --card-bg:linear-gradient(168deg,var(--card-bg-top) 0%,var(--card-bg-bottom) 100%);
+    --cockpit-surface:rgba(252,253,255,.97);
+    --cockpit-card:rgba(255,255,255,.98);
     --viz-lbl-sm:rgba(55,72,90,.82);--viz-lbl-xs:rgba(91,118,148,.72);--viz-lbl-decision:rgba(45,62,78,.88);
     --viz-particle:rgba(91,118,148,.42);--viz-particle-eligible:rgba(55,72,90,.78);
     --viz-criterion-fill:rgba(123,150,178,.32);--viz-criterion-stroke:rgba(55,72,90,.62);
@@ -1251,6 +1255,54 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 }
 @media(max-width:700px){
   .damaros-monogram-grid img{filter:var(--mono-filter)!important;mix-blend-mode:var(--mono-blend)!important}
+}
+
+/* Light cockpit — opaque map/cards; fade monogram in center */
+[data-theme="light"] body.is-cockpit .ig-monogram-bg,
+[data-theme="light"] body.is-playing .ig-monogram-bg{
+  opacity:.5;
+  -webkit-mask-image:radial-gradient(ellipse 72% 58% at 50% 46%,transparent 0%,transparent 40%,var(--mask-fade) 62%,var(--mask-solid) 86%);
+  mask-image:radial-gradient(ellipse 72% 58% at 50% 46%,transparent 0%,transparent 40%,var(--mask-fade) 62%,var(--mask-solid) 86%);
+}
+[data-theme="light"] body.is-cockpit .ig-cock-canvas,
+[data-theme="light"] body.is-cockpit .ig-info-card{
+  background:var(--cockpit-surface)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+[data-theme="light"] body.is-cockpit .ig-info-card{background:var(--cockpit-card)!important}
+[data-theme="light"] body.is-cockpit .ig-cock-canvas:hover,
+[data-theme="light"] body.is-cockpit .ig-info-card:hover{
+  background:var(--cockpit-card)!important;
+}
+
+/* Light docs — no grey table cell blocks inside panels */
+[data-theme="light"] .damaros-kv-table,
+[data-theme="light"] .damaros-kv-table td,
+[data-theme="light"] .damaros-api-list,
+[data-theme="light"] .damaros-api-item{background:transparent!important}
+[data-theme="light"] .damaros-docs-section:hover{background:var(--panel-bg)!important;transform:none}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-monogram-bg,
+  :root:not([data-theme="dark"]) body.is-playing .ig-monogram-bg{
+    opacity:.5;
+    -webkit-mask-image:radial-gradient(ellipse 72% 58% at 50% 46%,transparent 0%,transparent 40%,var(--mask-fade) 62%,var(--mask-solid) 86%);
+    mask-image:radial-gradient(ellipse 72% 58% at 50% 46%,transparent 0%,transparent 40%,var(--mask-fade) 62%,var(--mask-solid) 86%);
+  }
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-cock-canvas,
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-info-card{
+    background:var(--cockpit-surface)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-info-card{background:var(--cockpit-card)!important}
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-cock-canvas:hover,
+  :root:not([data-theme="dark"]) body.is-cockpit .ig-info-card:hover{background:var(--cockpit-card)!important}
+  :root:not([data-theme="dark"]) .damaros-kv-table,
+  :root:not([data-theme="dark"]) .damaros-kv-table td,
+  :root:not([data-theme="dark"]) .damaros-api-list,
+  :root:not([data-theme="dark"]) .damaros-api-item{background:transparent!important}
+  :root:not([data-theme="dark"]) .damaros-docs-section:hover{background:var(--panel-bg)!important;transform:none}
 }
 
 </style>
