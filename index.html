@@ -689,7 +689,7 @@ body.damaros-docs-active .damaros-site:before{background:var(--site-overlay)!imp
 
 
 /* ================================================================
-   Homepage v3 — Provenance substrate (revised)
+   Homepage v3 - Provenance substrate (revised)
    Body state: default=hero | body.is-playing | body.is-cockpit
    ================================================================ */
 
@@ -731,7 +731,7 @@ body.is-playing .ig-hero,body.is-cockpit .ig-hero{position:fixed;inset:0;z-index
 .ig-tagline-rotator::after{content:'';display:inline-block;width:2px;height:.95em;align-self:center;background:var(--blue);margin-left:5px;animation:igCurBlink 1.15s steps(1) infinite;box-shadow:0 0 8px rgba(123,150,178,.55)}
 @keyframes igCurBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
 
-/* Stage (autoplay) — fullscreen takeover */
+/* Stage (autoplay) - fullscreen takeover */
 .ig-stage{position:fixed;top:0;left:0;right:0;bottom:0;z-index:80;background:var(--bg)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--tab-total) + 1.2rem) clamp(1rem,3vw,2rem) 2rem;opacity:0;pointer-events:none;transition:opacity .48s cubic-bezier(.16,1,.3,1);will-change:opacity}
 body.is-playing.is-stage-live .ig-stage{opacity:1;pointer-events:auto}
 body.is-cockpit .ig-stage{display:none}
@@ -805,7 +805,7 @@ body.is-charging .ig-viz:not(.viz-charged) .tl-cursor{opacity:0}
 .viz-charged .tl-cursor{transition:cx 1.85s cubic-bezier(.65,0,.35,1),opacity .28s ease;filter:drop-shadow(0 0 14px rgba(169,192,214,.95));r:7}
 .viz-charge-flash{display:none}
 
-/* Cockpit — fullscreen takeover */
+/* Cockpit - fullscreen takeover */
 .ig-cockpit{position:relative;z-index:10;padding:calc(var(--tab-total) + 2.4rem) clamp(1rem,3vw,2.4rem) clamp(1.4rem,3vh,2.4rem);opacity:0;pointer-events:none;transition:opacity .55s ease .15s;min-height:100svh}
 body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-cockpit-inner{max-width:min(1700px,calc(100vw - 1.5rem));margin:0 auto;display:flex;flex-direction:column;gap:.35rem;position:relative}
@@ -825,13 +825,13 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-cock-canvas{position:relative;width:100%;max-width:1320px;margin:0 auto;border:1px solid var(--panel-border);background:var(--cockpit-canvas-bg);box-shadow:var(--panel-shadow-lg);padding:clamp(.7rem,1.6vw,1.2rem);min-height:min(645px,76svh);--orb-inset-x:8%;--orb-inset-y:17%}
 .ig-cockpit-viz{width:100%;height:auto;display:block;max-height:min(620px,74svh)}
 
-/* Restart button — flush left edge, top against top edge of canvas */
+/* Restart button - flush left edge, top against top edge of canvas */
 .ig-cock-restart{position:absolute;top:-1px;left:-1px;background:var(--surface-glass);border:1px solid var(--panel-border);border-top:1px solid var(--panel-border);border-left:1px solid var(--panel-border);color:var(--td);width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:color .25s,border-color .25s,background .25s;z-index:10}
 .ig-cock-restart:hover{color:var(--blue2);border-color:var(--panel-border-strong);background:rgba(123,150,178,.08)}
 .ig-cock-restart:focus-visible{outline:1px solid var(--blue2);outline-offset:1px}
 .ig-cock-restart svg{display:block;width:16px;height:16px}
 
-/* Hover hot zones over each stage area — no focus outline, no halos */
+/* Hover hot zones over each stage area - no focus outline, no halos */
 .viz-hotzone{fill:transparent;cursor:pointer;pointer-events:all!important;outline:none}
 .viz-hotzone:focus,.viz-hotzone:focus-visible,.viz-hotzone:active{outline:none}
 /* All decorative viz children disable pointer events so they never steal hover from hotzones */
@@ -881,7 +881,7 @@ body.is-cockpit .ig-stakeholders{opacity:1;pointer-events:auto}
 .ig-stake:hover{border-color:var(--panel-border-strong);box-shadow:var(--panel-shadow-lg);transform:translateY(-2px)}
 .ig-stake-aud{font-family:var(--fm);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2);font-weight:700;margin-bottom:.2rem}
 .ig-stake-body{font-family:var(--fb);font-size:clamp(.96rem,1.1vw,1.06rem);line-height:1.6;color:var(--ts);margin:0}
-/* No per-card link — single CTA below all three */
+/* No per-card link - single CTA below all three */
 .ig-stakeholders-cta{position:relative;z-index:10;display:flex;justify-content:center;padding:0 clamp(1.5rem,5vw,5rem) clamp(2.6rem,5vh,4rem);opacity:0;pointer-events:none;transition:opacity .55s ease .55s}
 body.is-cockpit .ig-stakeholders-cta{opacity:1;pointer-events:auto}
 
@@ -1041,7 +1041,7 @@ body.is-cockpit .ig-brand-orb::after{
   body.is-mobile-play .ig-monogram-grid{animation-duration:18s!important}
   body.is-mobile-play .viz-hotzone{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   body.is-mobile-play .ig-cock-restart,.ig-down-arrow,.ig-up-arrow,.ig-cock-wordmark{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  /* Cockpit is the top of the page — no scroll-up affordance; use wordmark or HOME tab */
+  /* Cockpit is the top of the page - no scroll-up affordance; use wordmark or HOME tab */
   .ig-outro-up,.ig-up-arrow{display:none!important}
   body.is-cockpit .ig-hero{display:none!important}
   html:has(body.damaros-ignition-home-active.is-cockpit),body.damaros-ignition-home-active.is-cockpit{overscroll-behavior-y:none}
@@ -1130,11 +1130,11 @@ body.is-playing .ig-cockpit{transition:none!important;opacity:0!important;pointe
 }
 
 /* ================================================================
-   Global polish — smoothness, cohesion, GPU compositing
+   Global polish - smoothness, cohesion, GPU compositing
    All rules here sit last in the cascade: same specificity wins.
    ================================================================ */
 
-/* 1. Font rendering baseline — antialiased on all platforms */
+/* 1. Font rendering baseline - antialiased on all platforms */
 html{color-scheme:dark light;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 [data-theme="light"]{color-scheme:light}
 [data-theme="dark"]{color-scheme:dark}
@@ -1182,7 +1182,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .ig-cock-canvas:hover{border-color:var(--panel-border-strong);box-shadow:var(--panel-shadow-lg),inset 0 0 0 1px rgba(255,255,255,.018)}
 
 /* 7. Hero entrance: add a whisper of scale to the translateY for depth.
-      At 1% scale the change is sub-pixel at all text sizes — felt, not seen. */
+      At 1% scale the change is sub-pixel at all text sizes - felt, not seen. */
 @keyframes igFadeUp{
   from{opacity:0;transform:translateY(10px) scale(.99)}
   to  {opacity:1;transform:translateY(0)    scale(1)}
@@ -1199,7 +1199,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .ig-caption{transform:translateZ(0)}
 
 /* ── Screening symbol animations ── */
-/* Center root node: beacon pulse (scale + brightness) — more prominent than leaf nodes */
+/* Center root node: beacon pulse (scale + brightness) - more prominent than leaf nodes */
 .viz-screen-root{
   animation:igScreenBeacon 3.8s ease-in-out infinite;
   transform-box:fill-box;transform-origin:center;
@@ -1233,7 +1233,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 }
 
 /* ================================================================
-   Light mode — metallic glass panels (mirrors dark sheen/stack)
+   Light mode - metallic glass panels (mirrors dark sheen/stack)
    ================================================================ */
 [data-theme="light"] .damaros-workflow-path,
 [data-theme="light"] .damaros-detail,
@@ -1324,7 +1324,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .damaros-api-list,.damaros-api-item{background:var(--table-cell-bg)!important}
 
 /* ─────────────────────────────────────────────────────────────
-   Brand orbs — Trident (left) + Luna (right) inside cockpit canvas
+   Brand orbs - Trident (left) + Luna (right) inside cockpit canvas
    Metallic dark orbs with Chakra Petch label; hover/tap reveal card
    ───────────────────────────────────────────────────────────── */
 .ig-brand-orb{
@@ -1485,7 +1485,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           <circle cx="88" cy="137" r="1.1"/>
           <circle cx="93" cy="137" r="1.1"/>
         </g>
-        <!-- Middle protocol (58, 200) — offset left -->
+        <!-- Middle protocol (58, 200) - offset left -->
         <circle class="viz-origin-glow" cx="58" cy="200" r="30"/>
         <circle class="viz-proto-ring" cx="58" cy="200" r="22" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
         <polygon class="viz-proto-hex" points="58,186 69,193 69,207 58,214 47,207 47,193" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
@@ -1660,7 +1660,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
             <circle cx="88" cy="137" r="1.1"/>
             <circle cx="93" cy="137" r="1.1"/>
           </g>
-          <!-- Middle protocol (58, 200) — offset left -->
+          <!-- Middle protocol (58, 200) - offset left -->
           <circle class="viz-origin-glow" cx="58" cy="200" r="30"/>
           <circle class="viz-proto-ring" cx="58" cy="200" r="22" fill="none" stroke="rgba(169,192,214,.42)" stroke-width=".9" stroke-dasharray="3 3"/>
           <polygon class="viz-proto-hex" points="58,186 69,193 69,207 58,214 47,207 47,193" fill="rgba(123,150,178,.2)" stroke="var(--blue2)" stroke-width="1.1" stroke-linejoin="round"/>
@@ -1809,12 +1809,12 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <div class="ig-info-card ig-info-card-brand" data-stage="trident" id="cardTrident" role="region" aria-label="Trident overview">
         <div class="ig-card-label">Trident</div>
         <h3 class="ig-card-title">Trident is the learning ontology.</h3>
-        <p class="ig-card-body">Trial knowledge compounds into executable logic—versioned and governed across every site run.</p>
+        <p class="ig-card-body">Trial knowledge compounds into executable logic, versioned and governed across every site run.</p>
       </div>
       <div class="ig-info-card ig-info-card-brand" data-stage="luna" id="cardLuna" role="region" aria-label="Luna overview">
         <div class="ig-card-label">Luna</div>
         <h3 class="ig-card-title">Luna is the governance harness.</h3>
-        <p class="ig-card-body">AI-assisted work stays traceable and reviewable—provenance, PHI gating, and scoped tasks enforced.</p>
+        <p class="ig-card-body">AI-assisted work stays traceable and reviewable, with provenance, PHI gating, and scoped tasks enforced.</p>
       </div>
     </div>
 
@@ -1825,27 +1825,27 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     <div class="ig-info-card" data-stage="protocol" id="cardProtocol" role="region" aria-label="Protocol detail">
       <div class="ig-card-label">01 · Protocol</div>
       <h3 class="ig-card-title">Protocol requirements become executable logic.</h3>
-      <p class="ig-card-body">Eligibility language locks into versioned trial logic on Trident—one execution basis per site run via content-hashed, amendment-aware releases.</p>
+      <p class="ig-card-body">Eligibility language locks into versioned trial logic on Trident, with one execution basis per site run via content-hashed, amendment-aware releases.</p>
     </div>
     <div class="ig-info-card" data-stage="population" id="cardPopulation" role="region" aria-label="Population detail">
       <div class="ig-card-label">02 · Population</div>
       <h3 class="ig-card-title">Site data becomes trial-ready evidence.</h3>
-      <p class="ig-card-body">FHIR, exports, and governed files resolve to one evidence plane before screening—site-approved access, tenant-isolated cohort sync.</p>
+      <p class="ig-card-body">FHIR, exports, and governed files resolve to one evidence plane before screening, under site-approved access and tenant-isolated cohort sync.</p>
     </div>
     <div class="ig-info-card" data-stage="screening" id="cardScreening" role="region" aria-label="Screening detail">
       <div class="ig-card-label">03 · Screening</div>
       <h3 class="ig-card-title">Eligibility resolves at criterion level.</h3>
-      <p class="ig-card-body">Each patient × criterion yields PASS, REVIEW, or FAIL with attached evidence—deterministic engine, human review preserved.</p>
+      <p class="ig-card-body">Each patient × criterion yields PASS, REVIEW, or FAIL with attached evidence, via a deterministic engine with human review preserved.</p>
     </div>
     <div class="ig-info-card" data-stage="forms" id="cardForms" role="region" aria-label="Forms detail">
       <div class="ig-card-label">04 · Forms</div>
       <h3 class="ig-card-title">Forms carry governed provenance.</h3>
-      <p class="ig-card-body">Coordinator and sponsor artifacts assemble from evidence lineage—field-level traceability under Luna governance.</p>
+      <p class="ig-card-body">Coordinator and sponsor artifacts assemble from evidence lineage, with field-level traceability under Luna governance.</p>
     </div>
     <div class="ig-info-card" data-stage="replay" id="cardReplay" role="region" aria-label="Replay detail">
       <div class="ig-card-label">05 · Replay</div>
       <h3 class="ig-card-title">Decisions become institutional memory.</h3>
-      <p class="ig-card-body">Replay reconstructs protocol version, evidence inputs, and execution context—signed bundle, one engine through cutover.</p>
+      <p class="ig-card-body">Replay reconstructs protocol version, evidence inputs, and execution context as a signed bundle, through one engine to cutover.</p>
     </div>
 
     <button type="button" class="ig-down-arrow" id="igDownArrow" aria-label="Scroll to overview">
@@ -2055,7 +2055,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 <div class="damaros-docs-divider"></div>
 
-<section class="damaros-docs-section" id="docs-04"><div class="damaros-docs-section-label">04_CLINICAL_DATA_BOUNDARY</div><h2 class="damaros-docs-section-heading">Clinical data boundary</h2><div class="damaros-docs-body"><p>Screening runs the deterministic engine on normalized FHIR facts already inside the trial boundary (§00). Luna is the governance harness where AI-assisted work becomes traceable, reviewable, and safe—provenance, reviewability, PHI gating, and task scope included—while screening outcomes remain deterministic.</p></div><ul class="damaros-bullet-list">
+<section class="damaros-docs-section" id="docs-04"><div class="damaros-docs-section-label">04_CLINICAL_DATA_BOUNDARY</div><h2 class="damaros-docs-section-heading">Clinical data boundary</h2><div class="damaros-docs-body"><p>Screening runs the deterministic engine on normalized FHIR facts already inside the trial boundary (§00). Luna is the governance harness where AI-assisted work becomes traceable, reviewable, and safe, with provenance, reviewability, PHI gating, and task scope included, while screening outcomes remain deterministic.</p></div><ul class="damaros-bullet-list">
 <li><strong>populations</strong> (Epic cohorts) are defined by approved <strong>protocol</strong> logic or institutional configuration.</li>
 <li>Patient data is retrieved through FHIR read APIs or, only when explicitly enabled, Bulk FHIR export for <strong>scheduled, bounded cohort refresh</strong>, per site policy and §03B. Bulk is <strong>read-only</strong>, <strong>site-controlled</strong>, in line with Epic's population access model (§00 / §02D), not continuous extraction.</li>
 <li>PHI is processed inside the institution-approved deployment boundary (VPC / tenant isolation per deploy contract).</li>
@@ -2467,7 +2467,7 @@ spec:
   const MONOGRAM_SRC =
     "https://cdn.prod.website-files.com/68bf7963d15243aa9de0b68c/68bf7986af7ebf743a5ea4a9_Damaros%20v4%20Logo%20White.png";
   // ================================================================
-  // Homepage v3 — Provenance substrate (revised)
+  // Homepage v3 - Provenance substrate (revised)
   // ================================================================
 
   const igTimelineX = { protocol: 88, population: 236, screening: 384, forms: 532, replay: 680 };
@@ -2933,7 +2933,7 @@ spec:
         // viz-charged removes the opacity:0 rule → cursor fades back in at cx=88 (.28s)
         // and simultaneously begins the 1.85s cx transition to 680.
         igTlCursor.setAttribute("cx", 680);
-        // Restore transitions — animations are in control now
+        // Restore transitions - animations are in control now
         mainLayers.forEach(function(el){ el.style.transition = ""; });
       }
 
