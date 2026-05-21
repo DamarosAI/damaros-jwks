@@ -857,11 +857,42 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-info-card[data-stage="forms"]      {top:36%;     right:0; --ig-card-origin:0% 50%}
 .ig-info-card[data-stage="replay"]     {top:2.8rem;  right:0; --ig-card-origin:0% 100%}
 
-/* Down arrow: pulsing chevron, click scrolls to stakeholders */
-.ig-cock-hint{text-align:center;margin:.85rem 0 0;font-family:var(--fm);font-size:.644rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td);opacity:.9;transition:opacity .3s ease}
-.ig-cock-hint::before{content:'Hover/Tap to Inspect each step'}
-@media(hover:none){.ig-cock-hint::before{content:'Hover/Tap to Inspect each step'}}
+/* Brand bar: hint center; Trident/Luna chips on mobile (orbs hidden in canvas) */
+.ig-cock-brand-bar{
+  display:flex;align-items:center;justify-content:center;gap:clamp(.5rem,2vw,.85rem);
+  margin:.85rem auto 0;max-width:1320px;width:100%;flex-wrap:wrap;
+}
+.ig-cock-hint{
+  margin:0;text-align:center;flex:1 1 12rem;min-width:0;
+  font-family:var(--fm);font-size:.644rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--td);opacity:.9;transition:opacity .3s ease;
+}
+.ig-hint-touch{display:none}
+.ig-hint-hover{display:inline}
+@media(max-width:740px){
+  .ig-hint-hover{display:none}
+  .ig-hint-touch{display:inline}
+}
 .ig-cockpit.ig-has-active .ig-cock-hint{opacity:0}
+.ig-brand-chip{
+  display:none;
+  flex:0 0 auto;
+  font-family:var(--fm);font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue2);background:rgba(123,150,178,.12);border:1px solid rgba(123,150,178,.28);
+  padding:.42rem .72rem;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  transition:color .25s,border-color .25s,background .25s,box-shadow .25s;
+}
+.ig-brand-chip:hover,.ig-brand-chip:focus-visible{
+  color:var(--tp);border-color:var(--panel-border-strong);background:rgba(123,150,178,.2);
+  outline:none;box-shadow:0 0 0 1px rgba(169,192,214,.18);
+}
+[data-theme="light"] .ig-brand-chip,
+:root:not([data-theme="dark"]) .ig-brand-chip{
+  background:rgba(123,150,178,.1);border-color:rgba(91,118,148,.32);color:rgba(45,62,78,.92);
+}
+[data-theme="light"] .ig-brand-chip:hover,
+:root:not([data-theme="dark"]) .ig-brand-chip:hover{color:#0a131c}
 .ig-down-arrow{display:block;margin:.6rem auto 0;background:transparent;border:none;color:var(--blue2);cursor:pointer;padding:.4rem .7rem;line-height:0;opacity:.7;transition:opacity .25s,color .25s}
 .ig-down-arrow:hover{opacity:1;color:var(--tp)}
 .ig-down-arrow svg{display:block;width:22px;height:22px;animation:igArrowPulse 1.8s ease-in-out infinite}
@@ -934,7 +965,8 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
   .ig-info-card .ig-card-body{font-size:.85rem!important;line-height:1.55!important}
   .ig-info-card .ig-card-mech{font-size:.78rem!important;line-height:1.5!important}
   .ig-down-arrow svg{width:20px;height:20px}
-  .ig-cock-hint{font-size:.575rem!important;margin-top:.65rem!important;letter-spacing:.18em!important;color:var(--ts)!important;opacity:.9!important}
+  .ig-cock-brand-bar{margin-top:.65rem!important}
+  .ig-cock-hint{font-size:.575rem!important;letter-spacing:.18em!important;color:var(--ts)!important;opacity:.9!important}
   .ig-manifesto{padding:1.1rem 1rem .85rem!important}
   .ig-manifesto h1,.ig-manifesto p{font-size:.98rem!important;line-height:1.36!important;padding:.85rem 1rem!important}
   .ig-manifesto p+p{font-size:.86rem!important}
@@ -1422,11 +1454,12 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   .ig-cock-canvas{--orb-inset-x:7%;--orb-inset-y:14%}
 }
 
-/* Mobile: shrink orbs proportionally so they don't crowd the timeline */
+/* Mobile: orbs out of canvas; compact chips in brand bar beside hint */
 @media(max-width:740px){
-  .ig-brand-orb{width:42px;height:42px}
-  .ig-brand-orb-label{font-size:.48rem;letter-spacing:.05em}
-  .ig-cock-canvas{--orb-inset-x:6%;--orb-inset-y:12%}
+  .ig-cock-canvas .ig-brand-orb{display:none!important}
+  .ig-brand-chip{display:inline-flex;align-items:center;justify-content:center}
+  .ig-cock-brand-bar{gap:.45rem .55rem;margin-top:.65rem}
+  .ig-cock-hint{flex:1 1 9rem;font-size:.575rem;letter-spacing:.18em;color:var(--ts)}
 }
 
 /* Reduced motion: stop float */
@@ -1818,8 +1851,14 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       </div>
     </div>
 
-    <!-- Hint: above info cards so it sits above cards on mobile -->
-    <p class="ig-cock-hint" id="igCockHint" aria-hidden="false"></p>
+    <div class="ig-cock-brand-bar" aria-label="Workflow hint and brand layers">
+      <button type="button" class="ig-brand-chip" data-stage="trident" aria-label="Trident overview" aria-haspopup="dialog">Trident</button>
+      <p class="ig-cock-hint" id="igCockHint" aria-hidden="false">
+        <span class="ig-hint-hover">Hover to inspect each step</span>
+        <span class="ig-hint-touch">Tap to inspect each step</span>
+      </p>
+      <button type="button" class="ig-brand-chip" data-stage="luna" aria-label="Luna overview" aria-haspopup="dialog">Luna</button>
+    </div>
 
     <!-- Info cards fanned out at the edges of the cockpit-inner -->
     <div class="ig-info-card" data-stage="protocol" id="cardProtocol" role="region" aria-label="Protocol detail">
@@ -3139,7 +3178,7 @@ spec:
   }
 
   // Hot zones in cockpit SVG → info cards (plus brand orbs at canvas corners)
-  document.querySelectorAll(".viz-hotzone, .ig-brand-orb").forEach(function (zone) {
+  document.querySelectorAll(".viz-hotzone, .ig-brand-orb, .ig-brand-chip").forEach(function (zone) {
     const stage = zone.dataset.stage;
     zone.addEventListener("mouseenter", function () {
       _cancelClearStage();
@@ -3184,7 +3223,7 @@ spec:
   if (igCockCanvas) {
     igCockCanvas.addEventListener("click", function (e) {
       if (igState !== "cockpit") return;
-      if (e.target.closest(".viz-hotzone") || e.target.closest(".ig-brand-orb") || e.target.closest(".ig-info-card")) return;
+      if (e.target.closest(".viz-hotzone") || e.target.closest(".ig-brand-orb") || e.target.closest(".ig-brand-chip") || e.target.closest(".ig-info-card")) return;
       unlockStage();
     });
   }
