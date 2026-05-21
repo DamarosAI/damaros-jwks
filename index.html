@@ -1704,7 +1704,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <div class="ig-card-label">03 · Screening</div>
       <h3 class="ig-card-title">Eligibility resolves at criterion level, deterministically.</h3>
       <p class="ig-card-body">Each patient × criterion produces PASS, REVIEW, or FAIL with attached evidence and preserved human-review pathways.</p>
-      <div class="ig-card-mech"><strong>Mechanism</strong>Deterministic eligibility core. Luna never touches patient screening.</div>
+      <div class="ig-card-mech"><strong>Mechanism</strong>Deterministic eligibility core. Screening outcomes remain rules-driven.</div>
     </div>
     <div class="ig-info-card" data-stage="forms" id="cardForms" role="region" aria-label="Forms detail">
       <div class="ig-card-label">04 · Forms</div>
@@ -1926,7 +1926,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 <div class="damaros-docs-divider"></div>
 
-<section class="damaros-docs-section" id="docs-04"><div class="damaros-docs-section-label">04_CLINICAL_DATA_BOUNDARY</div><h2 class="damaros-docs-section-heading">Clinical data boundary</h2><div class="damaros-docs-body"><p>Screening runs the deterministic engine on normalized FHIR facts already inside the trial boundary (§00). Luna and protocol assistance never sit on the patient screening hot path.</p></div><ul class="damaros-bullet-list">
+<section class="damaros-docs-section" id="docs-04"><div class="damaros-docs-section-label">04_CLINICAL_DATA_BOUNDARY</div><h2 class="damaros-docs-section-heading">Clinical data boundary</h2><div class="damaros-docs-body"><p>Screening runs the deterministic engine on normalized FHIR facts already inside the trial boundary (§00). Luna governs provenance and institutional review boundaries while screening outcomes remain deterministic.</p></div><ul class="damaros-bullet-list">
 <li><strong>populations</strong> (Epic cohorts) are defined by approved <strong>protocol</strong> logic or institutional configuration.</li>
 <li>Patient data is retrieved through FHIR read APIs or, only when explicitly enabled, Bulk FHIR export for <strong>scheduled, bounded cohort refresh</strong>, per site policy and §03B. Bulk is <strong>read-only</strong>, <strong>site-controlled</strong>, in line with Epic's population access model (§00 / §02D), not continuous extraction.</li>
 <li>PHI is processed inside the institution-approved deployment boundary (VPC / tenant isolation per deploy contract).</li>
