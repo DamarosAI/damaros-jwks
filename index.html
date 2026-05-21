@@ -1808,8 +1808,8 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
       <div class="ig-info-card ig-info-card-brand" data-stage="trident" id="cardTrident" role="region" aria-label="Trident overview">
         <div class="ig-card-label">Trident</div>
-        <h3 class="ig-card-title">Trident is the learning ontology.</h3>
-        <p class="ig-card-body">Trial knowledge compounds into executable logic, versioned and governed across every site run.</p>
+        <h3 class="ig-card-title">Trident is trial knowledge that sharpens with every protocol release and site run.</h3>
+        <p class="ig-card-body">That knowledge compounds into executable logic, versioned across every site run.</p>
       </div>
       <div class="ig-info-card ig-info-card-brand" data-stage="luna" id="cardLuna" role="region" aria-label="Luna overview">
         <div class="ig-card-label">Luna</div>
@@ -1915,7 +1915,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 <p><strong>Population-level evaluation.</strong> Inclusion and exclusion run consistently across every patient in an approved cohort, not one-off chart pulls. Bulk FHIR export is an optional, site-gated complement to REST reads: read-only, explicitly enabled, bounded jobs aligned with Epic's population access model, not streaming replication.</p>
 <p><strong>Deterministic core.</strong> Versioned protocol logic plus normalized clinical facts from REST and optional bulk export feed a single eligibility engine. Outputs are PASS, REVIEW, or FAIL at criterion granularity with evidence and sync provenance. No generative verdict on the screening path.</p>
 <p><strong>Reproducibility on PHI.</strong> Same protocol version plus same normalized inputs yields identical criterion outcomes. Replay reproduces outcomes with full provenance. Models can assist language-heavy work; they do not become the system of record.</p>
-<p><strong>Trident</strong> is the learning ontology where trial knowledge compounds into executable logic.</p>
+<p><strong>Trident</strong> is trial knowledge that sharpens with every protocol release and site run, and compounds into executable logic. Trident sharpens through new releases and amendments, not runtime changes to eligibility.</p>
 <p><strong>Luna</strong> is the governance harness where AI-assisted work becomes traceable, reviewable, and safe.</p>
 <p><strong>Readiness exercised before cutover:</strong> Site Readiness Report, FHIR R4 and US Core conformance testing, dual-key JWKS rotation drill, bounded bulk export jobs, and deterministic normalization with stable content hashing.</p>
 </div>
@@ -2228,7 +2228,7 @@ spec:
         <tr><td>SYNTHETIC_VALIDATION</td><td>Engineering proof of the protocol-to-decision platform before site data.</td></tr>
         <tr><td>SITE_VALIDATION</td><td>Site-facing package; see <a class="damaros-kv-link" href="#validation">Validation</a> for pathway.</td></tr>
         <tr><td>LUNA_GOVERNANCE</td><td>The governance harness where AI-assisted work becomes traceable, reviewable, and safe. Patient evidence, eligibility execution, adjudication, and replay remain deterministic.</td></tr>
-        <tr><td>TRIDENT_RELEASE</td><td>The learning ontology where trial knowledge compounds into executable logic.</td></tr>
+        <tr><td>TRIDENT_RELEASE</td><td>Trial knowledge release; sharpens protocol logic via content-hashed, amendment-aware execution basis.</td></tr>
         <tr><td>FHIR_CONFORMANCE_SUITE</td><td>Automated FHIR R4 and US Core conformance testing in CI.</td></tr>
         <tr><td>EPIC_SITE_READINESS_REPORT</td><td>Pre-cutover checklist for Epic Backend Services.</td></tr>
         <tr><td>JWKS_DUAL_KEY_ROTATION_DRILL</td><td>Dual-key JWKS rotation exercised in CI. Change-controlled, not timer-driven.</td></tr>

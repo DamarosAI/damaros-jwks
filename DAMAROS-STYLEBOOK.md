@@ -19,7 +19,7 @@ Adapted from Palantir's briefing register for Damaros product, docs, and cockpit
 | Name | Role |
 |------|------|
 | **Damaros** | Provenance substrate for trial operations |
-| **Trident** | Versioned trial logic and protocol execution |
+| **Trident** | Trial knowledge that sharpens with releases and site runs; compounds into executable logic |
 | **Luna** | Governance harness for AI-assisted, traceable work |
 | **Protocol** | Eligibility language locked to Trident releases |
 | **Population** | Evidence plane before screening |
@@ -33,11 +33,25 @@ Adapted from Palantir's briefing register for Damaros product, docs, and cockpit
 2. **Title**: definitional noun phrase (what this stage *is*).
 3. **Body**: Claim, then mechanism in one or two sentences. No scroll on desktop; prune until it fits.
 
+**Example (Trident):**
+
+> Trident is trial knowledge that sharpens with every protocol release and site run.
+
+> That knowledge compounds into executable logic, versioned across every site run.
+
 **Example (Screening):**
 
 > Each patient × criterion yields PASS, REVIEW, or FAIL with attached evidence, via a deterministic engine with human review preserved.
 
 Not: claim and mechanism joined by an em dash (forbidden).
+
+## Trident vs Luna (word boundaries)
+
+**Trident:** sharpens, compounds, release, site run, compiles, versioned, content-hashed, amendment-aware, execution basis.
+
+**Luna:** governance, harness, traceable, reviewable, PHI gating, scoped tasks, provenance (for assisted work).
+
+Do not use **ontology** or **governed** on Trident (Palantir overlap and Luna blur). Trident improves via **new releases**, not runtime eligibility changes.
 
 ## Claim → mechanism → consequence
 
@@ -49,7 +63,7 @@ Same unit as Palantir technical prose, without em dashes:
 
 ## Vocabulary
 
-**Use:** provenance, versioned, deterministic, evidence plane, lineage, content-hashed, amendment-aware, tenant-isolated, PHI gating, traceable, reviewable, signed bundle, cutover.
+**Use:** provenance, versioned, sharpens, compounds, deterministic, evidence plane, lineage, content-hashed, amendment-aware, tenant-isolated, PHI gating, traceable, reviewable, signed bundle, cutover.
 
 **Avoid:** revolutionary, game-changing, seamless, cutting-edge, synergy, bare superlatives without an architectural anchor.
 
