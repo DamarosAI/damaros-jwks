@@ -26,7 +26,7 @@
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#E4E8EC" media="(prefers-color-scheme: light)">
-<title>Damaros™</title>
+<title>Damaros™ | Clinical Trial Execution Infrastructure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
@@ -34,17 +34,17 @@
 <link rel="shortcut icon" href="/assets/damaros-favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/assets/damaros-favicon.png">
 <link rel="preload" as="image" href="https://cdn.prod.website-files.com/68bf7963d15243aa9de0b68c/68bf7986af7ebf743a5ea4a9_Damaros%20v4%20Logo%20White.png">
-<meta name="description" content="Damaros™">
+<meta name="description" content="Damaros is clinical trial execution infrastructure: protocol, population, screening, forms, and replay on one deterministic, auditable workflow.">
 <link rel="canonical" href="https://www.damaros.ai/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Damaros™">
 <meta property="og:url" content="https://www.damaros.ai/">
-<meta property="og:title" content="Damaros™">
-<meta property="og:description" content="Damaros™">
+<meta property="og:title" content="Damaros™ | Clinical Trial Execution Infrastructure">
+<meta property="og:description" content="Protocol to replay on one governed execution chain. Deterministic eligibility, human review, and replayable evidence lineage.">
 <meta property="og:image" content="https://www.damaros.ai/assets/damaros-white-on-black.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Damaros™">
-<meta name="twitter:description" content="Damaros™">
+<meta name="twitter:title" content="Damaros™ | Clinical Trial Execution Infrastructure">
+<meta name="twitter:description" content="Deterministic trial execution infrastructure for hospitals, sponsors, CROs, and diligence reviewers.">
 <meta name="twitter:image" content="https://www.damaros.ai/assets/damaros-white-on-black.png">
 <style>
   :root,[data-theme="dark"]{
@@ -722,7 +722,7 @@ body.is-playing .ig-hero,body.is-cockpit .ig-hero{position:fixed;inset:0;z-index
 .ig-dot{appearance:none;border:none;background:none;padding:0;width:clamp(9px,.78vw,12px);height:clamp(9px,.78vw,12px);flex:0 0 clamp(9px,.78vw,12px);border-radius:50%;background:var(--blue);box-shadow:0 0 18px rgba(123,150,178,.58);cursor:pointer;animation:igDotPulse 2.2s ease-in-out infinite;transform:translateY(.06em);transition:transform .2s ease,box-shadow .2s ease}
 .ig-dot:hover,.ig-dot:focus-visible{box-shadow:0 0 30px rgba(123,150,178,.9),0 0 60px rgba(123,150,178,.4);outline:none;transform:translateY(.06em) scale(1.25)}
 @keyframes igDotPulse{0%,100%{opacity:1}50%{opacity:.22}}
-.ig-cue{margin-top:clamp(1.4rem,2.6vh,2rem);font-family:var(--fm);font-size:clamp(.62rem,.78vw,.78rem);letter-spacing:.22em;text-transform:uppercase;color:var(--blue2);opacity:.78;animation:igFadeUp .75s ease .35s both}
+.ig-cue{margin-top:clamp(1.4rem,2.6vh,2rem);font-family:var(--fm);font-size:clamp(.62rem,.78vw,.78rem);letter-spacing:.22em;text-transform:uppercase;color:var(--blue2);opacity:.86;animation:igFadeUp .75s ease .35s both}
 
 /* Hero tagline (typewriter motif) */
 .ig-tagline{margin-top:clamp(1.6rem,3vh,2.2rem);font-family:var(--fm);font-size:clamp(.95rem,1.55vw,1.22rem);letter-spacing:.035em;line-height:1.5;animation:igFadeUp .75s ease .25s both;display:flex;align-items:baseline;justify-content:center;flex-wrap:wrap;gap:.18em}
@@ -735,7 +735,7 @@ body.is-playing .ig-hero,body.is-cockpit .ig-hero{position:fixed;inset:0;z-index
 .ig-stage{position:fixed;top:0;left:0;right:0;bottom:0;z-index:80;background:var(--bg)!important;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--tab-total) + 1.2rem) clamp(1rem,3vw,2rem) 2rem;opacity:0;pointer-events:none;transition:opacity .48s cubic-bezier(.16,1,.3,1);will-change:opacity}
 body.is-playing.is-stage-live .ig-stage{opacity:1;pointer-events:auto}
 body.is-cockpit .ig-stage{display:none}
-.ig-caption{font-family:var(--fb);font-size:clamp(.92rem,1.45vw,1.18rem);line-height:1.5;color:var(--ts);text-align:center;max-width:640px;margin:0 auto 1.6rem;min-height:2.7em;transition:opacity .35s ease}
+.ig-caption{font-family:var(--fb);font-size:clamp(.92rem,1.45vw,1.18rem);line-height:1.5;color:var(--tp);text-align:center;max-width:700px;margin:0 auto 1.6rem;min-height:2.7em;transition:opacity .35s ease;padding:.52rem .9rem;border:1px solid rgba(123,150,178,.2);background:linear-gradient(145deg,rgba(12,15,19,.58),rgba(6,8,10,.36));box-shadow:0 12px 30px rgba(0,0,0,.28)}
 .ig-caption.fading{opacity:0}
 .ig-viz-wrap{width:100%;max-width:1040px;flex:1;display:flex;align-items:center;justify-content:center}
 .ig-viz{width:100%;height:auto;max-height:min(540px,62svh);display:block;overflow:visible}
@@ -787,7 +787,7 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 .viz-lbl-decision{font-family:var(--fm);font-size:8.5px;fill:var(--viz-lbl-decision);letter-spacing:.12em;text-transform:uppercase;text-anchor:middle}
 .tl-track{stroke:rgba(123,150,178,.16);stroke-width:1}
 .tl-stop{fill:rgba(123,150,178,.32)}
-.tl-stop-lbl{font-family:var(--fm);font-size:6.5px;fill:rgba(123,150,178,.42);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
+.tl-stop-lbl{font-family:var(--fm);font-size:6.5px;fill:rgba(169,192,214,.78);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
 .tl-cursor{fill:var(--blue2);filter:drop-shadow(0 0 7px rgba(169,192,214,.7));transition:cx .75s cubic-bezier(.16,1,.3,1),opacity .28s ease;r:6.5}
 /* Hide cursor during the gap between replay and load-up: the cursor must instant-snap
    from replay (cx=680) back to protocol (cx=88), which would be a visible jolt. Fading
@@ -840,7 +840,8 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 /* Info cards (positioned at outer edges of .ig-cockpit-inner so they fan out beyond canvas) */
 .ig-info-card{position:absolute;width:clamp(248px,20vw,310px);padding:.95rem 1rem 1.05rem;background:var(--cockpit-card-bg);border:1px solid var(--panel-border);box-shadow:var(--card-shadow);opacity:0;pointer-events:none;transform:scale(.86);transition:opacity .3s cubic-bezier(.16,1,.3,1),transform .3s cubic-bezier(.16,1,.3,1);z-index:25}
 .ig-info-card.visible{opacity:1;pointer-events:auto;transform:scale(1)}
-.ig-info-card .ig-card-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2);font-weight:700;margin-bottom:.42rem}
+.ig-info-card .ig-card-label{font-family:var(--fm);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2);font-weight:700;margin-bottom:.42rem;display:flex;align-items:center;gap:.38rem}
+.ig-info-card .ig-card-label::before,.damaros-docs-section-label::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue2);box-shadow:0 0 12px rgba(123,150,178,.55)}
 .ig-info-card .ig-card-title{font-family:var(--fh);font-size:clamp(.92rem,1.1vw,1.05rem);font-weight:600;line-height:1.28;margin:0 0 .5rem;color:var(--tp)}
 .ig-info-card .ig-card-body{font-family:var(--fb);font-size:clamp(.74rem,.88vw,.82rem);line-height:1.55;color:var(--ts);margin:0}
 .ig-info-card .ig-card-mech{margin-top:.58rem;font-family:var(--fb);font-size:clamp(.68rem,.82vw,.76rem);line-height:1.5;color:var(--blue2);letter-spacing:.01em}
@@ -858,8 +859,8 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 
 /* Down arrow: pulsing chevron, click scrolls to stakeholders */
 .ig-cock-hint{text-align:center;margin:.85rem 0 0;font-family:var(--fm);font-size:.644rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td);opacity:.9;transition:opacity .3s ease}
-.ig-cock-hint::before{content:'Hover over any symbol to learn more'}
-@media(hover:none){.ig-cock-hint::before{content:'Tap any symbol to learn more'}}
+.ig-cock-hint::before{content:'Inspect any stage for execution proof'}
+@media(hover:none){.ig-cock-hint::before{content:'Tap any stage for execution proof'}}
 .ig-cockpit.ig-has-active .ig-cock-hint{opacity:0}
 .ig-down-arrow{display:block;margin:.6rem auto 0;background:transparent;border:none;color:var(--blue2);cursor:pointer;padding:.4rem .7rem;line-height:0;opacity:.7;transition:opacity .25s,color .25s}
 .ig-down-arrow:hover{opacity:1;color:var(--tp)}
@@ -889,8 +890,8 @@ body.is-cockpit .ig-stakeholders-cta{opacity:1;pointer-events:auto}
 .ig-outro .ig-manifesto{border-top:none;padding-top:clamp(3rem,8vh,6rem);padding-bottom:clamp(2rem,5vh,3.5rem)}
 .ig-outro .ig-stakeholders{padding-top:clamp(1.5rem,4vh,2.5rem);padding-bottom:clamp(2rem,5vh,3.5rem)}
 .ig-outro .ig-stakeholders-cta{padding-bottom:clamp(3rem,8vh,5rem)}
-.ig-cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:rgba(123,150,178,.08);border:1px solid rgba(123,150,178,.3);color:var(--blue2);font-family:var(--fm);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;padding:.62rem 1.15rem;text-decoration:none;cursor:pointer;font-weight:500;transition:background .25s,border-color .25s,color .25s}
-.ig-cta-btn:hover{background:rgba(123,150,178,.14);border-color:var(--blue2);color:var(--ink-on-accent)}
+.ig-cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:rgba(123,150,178,.08);border:1px solid rgba(123,150,178,.42);color:var(--blue2);font-family:var(--fm);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;padding:.62rem 1.15rem;text-decoration:none;cursor:pointer;font-weight:500;transition:background .25s,border-color .25s,color .25s,box-shadow .25s}
+.ig-cta-btn:hover{background:rgba(123,150,178,.16);border-color:rgba(169,192,214,.9);color:var(--ink-on-accent);box-shadow:0 0 0 1px rgba(169,192,214,.24),0 10px 26px rgba(0,0,0,.32)}
 .ig-cta-btn:active{transform:translateY(1px)}
 .ig-cta-btn::after{content:'→';margin-left:.15rem;transition:transform .25s ease}
 .ig-cta-btn:hover::after{transform:translateX(3px)}
@@ -1325,7 +1326,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <span>Damaros</span>
       <button type="button" class="ig-dot" id="igDot" aria-label="Initialize Damaros walkthrough"></button>
     </div>
-    <p class="ig-cue" id="igCue" aria-live="polite">click or tap anywhere</p>
+    <p class="ig-cue" id="igCue" aria-live="polite">initialize trial execution walkthrough</p>
   </div>
 </section>
 
@@ -1660,32 +1661,32 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     <!-- Info cards fanned out at the edges of the cockpit-inner -->
     <div class="ig-info-card" data-stage="protocol" id="cardProtocol" role="region" aria-label="Protocol detail">
       <div class="ig-card-label">01 · Protocol</div>
-      <h3 class="ig-card-title">Protocol becomes executable logic, immediately.</h3>
-      <p class="ig-card-body">Trial criteria lock into versioned, runnable logic on Trident, the shared clinical layer every site run shares. No manual mapping. No spreadsheet drift.</p>
+      <h3 class="ig-card-title">Protocol requirements become executable logic.</h3>
+      <p class="ig-card-body">Eligibility language locks into governed trial logic on Trident. One versioned execution basis for every site run.</p>
       <div class="ig-card-mech"><strong>Mechanism</strong>Content-hashed protocol. Amendment-aware releases.</div>
     </div>
     <div class="ig-info-card" data-stage="population" id="cardPopulation" role="region" aria-label="Population detail">
       <div class="ig-card-label">02 · Population</div>
-      <h3 class="ig-card-title">One ingest path. One evidence plane.</h3>
-      <p class="ig-card-body">Epic FHIR, bulk cohort export, REDCap, and governed files normalize the same way. Structural faults never reach screening.</p>
+      <h3 class="ig-card-title">Site data becomes trial-ready evidence.</h3>
+      <p class="ig-card-body">FHIR, structured exports, and governed files resolve into one evidence plane with explicit quality boundaries before screening.</p>
       <div class="ig-card-mech"><strong>Mechanism</strong>Site-approved access. Bounded cohort sync. Tenant isolation.</div>
     </div>
     <div class="ig-info-card" data-stage="screening" id="cardScreening" role="region" aria-label="Screening detail">
       <div class="ig-card-label">03 · Screening</div>
-      <h3 class="ig-card-title">Eligibility evaluated across the cohort, deterministically.</h3>
-      <p class="ig-card-body">Each patient × criterion resolves PASS, REVIEW, or FAIL with evidence attached. Same rules on every run.</p>
+      <h3 class="ig-card-title">Eligibility resolves at criterion level, deterministically.</h3>
+      <p class="ig-card-body">Each patient × criterion produces PASS, REVIEW, or FAIL with attached evidence and preserved human-review pathways.</p>
       <div class="ig-card-mech"><strong>Mechanism</strong>Deterministic eligibility core. Luna never touches patient screening.</div>
     </div>
     <div class="ig-info-card" data-stage="forms" id="cardForms" role="region" aria-label="Forms detail">
       <div class="ig-card-label">04 · Forms</div>
-      <h3 class="ig-card-title">Forms assemble from real evidence.</h3>
-      <p class="ig-card-body">Coordinator and sponsor artifacts assemble from the evidence screening already used, with every field traceable.</p>
+      <h3 class="ig-card-title">Forms become operational artifacts, not re-keyed documents.</h3>
+      <p class="ig-card-body">Coordinator and sponsor artifacts assemble from governed evidence lineage with field-level traceability and reviewability.</p>
       <div class="ig-card-mech"><strong>Mechanism</strong>Luna governs document AI. Human review before use.</div>
     </div>
     <div class="ig-info-card" data-stage="replay" id="cardReplay" role="region" aria-label="Replay detail">
       <div class="ig-card-label">05 · Replay</div>
-      <h3 class="ig-card-title">Every decision reconstructs from its source.</h3>
-      <p class="ig-card-body">Every outcome rebuilds from protocol version, inputs, and the Trident release that grounded it. Validation and production share one record.</p>
+      <h3 class="ig-card-title">Decisions become reconstructable institutional memory.</h3>
+      <p class="ig-card-body">Replay reconstructs outcomes from protocol version, evidence inputs, and governed execution context across validation and production.</p>
       <div class="ig-card-mech"><strong>Mechanism</strong>Signed replay bundle. One engine from first site test through cutover.</div>
     </div>
 
@@ -1709,22 +1710,22 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 </div>
 <!-- Manifesto -->
 <section class="ig-manifesto" id="igManifesto" aria-hidden="true">
-  <h1>Damaros converts trial ambiguity into execution velocity.</h1>
+  <h1>Damaros turns fragmented trial work into governed execution infrastructure.</h1>
 </section>
 
 <!-- Stakeholder context (3-column horizontal) -->
 <section class="ig-stakeholders" id="igStakeholders" aria-hidden="true">
   <div class="ig-stake">
     <div class="ig-stake-aud">Sponsors &amp; CROs</div>
-    <p class="ig-stake-body">Comparable execution, criterion-level audit, and sponsor-ready replay packets across sites and trials.</p>
+    <p class="ig-stake-body">Comparable execution, criterion-level accountability, and replay-ready diligence artifacts across sites and protocols.</p>
   </div>
   <div class="ig-stake">
     <div class="ig-stake-aud">Clinical trial sites</div>
-    <p class="ig-stake-body">Protocol to screening to documentation in one governed flow. Less re-keying. Defensible decisions.</p>
+    <p class="ig-stake-body">Protocol, population, screening, forms, and replay on one governed flow. Less operational drag. Defensible decisions.</p>
   </div>
   <div class="ig-stake">
     <div class="ig-stake-aud">Research &amp; teaming partners</div>
-    <p class="ig-stake-body">FHIR-ready infrastructure with PHI-bounded Luna on documents only. Deterministic eligibility and full replay for diligence.</p>
+    <p class="ig-stake-body">FHIR-ready infrastructure with deterministic patient execution, governed AI-assisted document work, and inspectable replay lineage.</p>
   </div>
 </section>
 
@@ -1744,19 +1745,20 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 </div>
 
 <div id="damaros-panel-docs" class="damaros-panel"><div class="damaros-docs-wrap">
-<div class="damaros-docs-eyebrow">Epic / FHIR</div><h1 class="damaros-docs-title">Production integration reference</h1>
-<p class="damaros-docs-subtitle">Epic Backend Services is the primary path: server-to-server SMART JWT, read-only scopes, site-approved cohort sync, bounded bulk export when enabled, and clinical facts normalized through Trident before deterministic screening. Readiness is exercised in CI: Site Readiness Report, FHIR conformance testing, and dual-key JWKS rotation. Governed file extracts remain a supplementary validation path.</p>
+<div class="damaros-docs-eyebrow">Epic / FHIR</div><h1 class="damaros-docs-title">Enterprise integration reference</h1>
+<p class="damaros-docs-subtitle">FHIR is Damaros' enterprise integration spine: read-only Backend Services access, site-approved cohort sync, secure JWT/JWKS posture, and deterministic execution on governed evidence. Structured extracts remain practical validation paths when site conditions require them.</p>
 <div class="damaros-docs-body damaros-docs-lead">
-<p><strong>Epic Backend Services is the primary connection for site validation and production cutover.</strong></p>
-<p>The same deterministic screening engine, Trident standards release, and replay contract run validation and production. Validation evidence carries forward to cutover without re-mapping. File-based validation remains available when Epic cannot be landed in the pilot window.</p>
+<p><strong>Epic Backend Services is the primary path for institutional validation and production cutover.</strong></p>
+<p>The same deterministic execution chain runs validation and production. Validation evidence carries forward to cutover without rebuilding workflow logic. File-based validation remains available when Epic onboarding cannot land inside pilot windows.</p>
 </div>
 
 <section class="damaros-docs-section" id="docs-00"><div class="damaros-docs-section-label">00_SUBMISSION_NARRATIVE</div><h2 class="damaros-docs-section-heading">Research execution on approved cohorts. Not ad hoc analytics.</h2><div class="damaros-docs-body">
-<p>Damaros is clinical-trial execution infrastructure for site-approved cohorts. Site-approved FHIR access binds locked protocol logic to a defined population, evaluates eligibility deterministically, and preserves criterion-level evidence and replay artifacts on one audit path. Corrections and validation packets ride the same lineage.</p>
+<p>Damaros is clinical-trial execution infrastructure for site-approved cohorts. Site-approved FHIR access binds locked protocol logic to a defined population, evaluates eligibility deterministically, and preserves criterion-level evidence with replay lineage on one audit path.</p>
 <p><strong>Population-level evaluation.</strong> Inclusion and exclusion run consistently across every patient in an approved cohort, not one-off chart pulls. Bulk FHIR export is an optional, site-gated complement to REST reads: read-only, explicitly enabled, bounded jobs aligned with Epic's population access model, not streaming replication.</p>
 <p><strong>Deterministic core.</strong> Versioned protocol logic plus normalized clinical facts from REST and optional bulk export feed a single eligibility engine. Outputs are PASS, REVIEW, or FAIL at criterion granularity with evidence and sync provenance. No generative verdict on the screening path.</p>
-<p><strong>Reproducibility on PHI.</strong> Same protocol version and same normalized inputs yield identical criterion outcomes. Replay reproduces them with full provenance. Luna assists protocol and document workflows only; patient screening stays rule-based.</p>
-<p><strong>Trident</strong> is the shared clinical knowledge layer: authoritative mappings sites inherit so criteria mean the same thing everywhere. Facts normalize through Trident before screening runs.</p>
+<p><strong>Reproducibility on PHI.</strong> Same protocol version plus same normalized inputs yields identical criterion outcomes. Replay reproduces outcomes with full provenance. Models can assist language-heavy work; they do not become the system of record.</p>
+<p><strong>Trident</strong> is the learning ontology where trial knowledge compounds into executable logic. Trident helps Damaros structure trial knowledge into reusable execution concepts.</p>
+<p><strong>Luna</strong> is the provenance layer where AI-assisted work becomes governed, traceable, and safe. Luna gives AI-assisted work provenance, reviewability, and institutional boundaries.</p>
 <p><strong>Readiness exercised before cutover:</strong> Site Readiness Report, FHIR R4 and US Core conformance testing, dual-key JWKS rotation drill, bounded bulk export jobs, and deterministic normalization with stable content hashing.</p>
 </div>
 <div class="damaros-callout"><strong>No shadow EHR.</strong> Damaros is not a secondary warehouse. Ingest ends in protocol-scoped screening artifacts. Epic remains system of record for longitudinal care.</div>
@@ -2017,17 +2019,17 @@ spec:
   <div class="damaros-docs-wrap" id="trust" style="scroll-margin-top:calc(var(--tab-total) + 12px)">
 
     <div class="damaros-docs-eyebrow">Trust</div>
-    <h1 class="damaros-docs-title">Trust, proof, and boundaries.</h1>
+    <h1 class="damaros-docs-title">Trust, proof, and execution boundaries.</h1>
     <p class="damaros-docs-subtitle">
-      Trust ships as artifacts: engineering proofs, Luna governance gates, Trident multi-source clinical knowledge, NIST CSF 2.0 and HIPAA SRA self-assessments, and Epic/FHIR readiness checks. This page states what is proven, what is not claimed, and what stays with the covered entity. Site validation detail lives on the <a class="damaros-kv-link" href="#validation">Validation</a> page.
+      Trust ships as inspectable artifacts: deterministic execution proofs, governed AI provenance controls, replay evidence lineage, and Epic/FHIR readiness checks. This page shows what is proven, what is not claimed, and what remains with the covered entity. Site validation detail lives on the <a class="damaros-kv-link" href="#validation">Validation</a> page.
     </p>
 
     <section class="damaros-docs-section" id="trust-00">
       <div class="damaros-docs-section-label">00_VALIDATION_AS_INSTITUTIONAL_PROOF</div>
-      <h2 class="damaros-docs-section-heading">Validation is how institutions start.</h2>
+      <h2 class="damaros-docs-section-heading">Institutional validation starts with operational proof.</h2>
       <div class="damaros-docs-body">
         <p>
-          Damaros is evaluable before any production EHR cutover. The site nominates a closed oncology protocol, supplies a comparator (prior coordinator, PI, screening committee, or REDCap adjudication), and elects a connection pathway. Damaros returns deterministic patient × criterion outputs, agreement metrics, REVIEW drivers, and a Signed Replay Bundle. Operational detail (pathway selection, extract contract, screening run, replay artifact) is documented on the <a class="damaros-kv-link" href="#validation">Validation</a> page. Damaros is not represented as clinically validated or production-deployed in these packets.
+          Damaros is evaluable before production EHR cutover. The site nominates a closed oncology protocol, provides a comparator (prior coordinator, PI, screening committee, or REDCap adjudication), and selects a connection pathway. Damaros returns deterministic patient × criterion outputs, agreement metrics, REVIEW drivers, and a Signed Replay Bundle. Operational detail is documented on the <a class="damaros-kv-link" href="#validation">Validation</a> page. These packets do not claim clinical validation or production deployment by themselves.
         </p>
       </div>
       <table class="damaros-kv-table">
@@ -2040,10 +2042,10 @@ spec:
 
     <section class="damaros-docs-section" id="trust-01">
       <div class="damaros-docs-section-label">01_CLINICAL_AUTHORITY_BOUNDARY</div>
-      <h2 class="damaros-docs-section-heading">Damaros produces evidence-linked screening outputs; the site retains clinical authority.</h2>
+      <h2 class="damaros-docs-section-heading">Damaros produces evidence-linked outputs; sites retain clinical authority.</h2>
       <div class="damaros-docs-body">
         <p>
-          Damaros does not enroll patients, override coordinator judgment, or replace investigator signoff. When Damaros and the comparator diverge,
+          Damaros does not enroll patients, override coordinator judgment, or replace investigator signoff. Patient evidence does not go to LLMs on the screening path. When Damaros and the comparator diverge,
           the disagreement is routed as a review object with criterion, evidence, driver, protocol version, and source lineage. The coordinator, PI,
           or delegated site authority remains the decision-maker of record. Damaros does not make autonomous enrollment, eligibility, or consent decisions
           and does not replace coordinator abstraction, investigator judgment, IRB review, or sponsor adjudication.
@@ -2053,10 +2055,10 @@ spec:
 
     <section class="damaros-docs-section" id="trust-02">
       <div class="damaros-docs-section-label">02_CLAIM_BOUNDARY</div>
-      <h2 class="damaros-docs-section-heading">Engineering validation proves platform behavior, not clinical agreement.</h2>
+      <h2 class="damaros-docs-section-heading">Engineering validation proves system behavior, not clinical agreement.</h2>
       <div class="damaros-docs-body">
         <p>
-          Synthetic packages exercise Damaros before site patient data enters the system: deterministic execution, lineage, artifact completeness, replay, and no-AI patient screening controls. They do not claim clinical accuracy, sponsor endorsement, FDA validation, or live Epic approval. The site validation pathway is what produces clinical agreement evidence.
+          Synthetic packages exercise Damaros before site patient data enters workflow: deterministic execution, lineage, artifact completeness, replay, and no-LLM-on-patient-evidence controls. They do not claim clinical accuracy, sponsor endorsement, FDA validation, or live Epic approval. Site validation is what produces clinical agreement evidence.
         </p>
       </div>
     </section>
@@ -2067,8 +2069,8 @@ spec:
       <table class="damaros-kv-table">
         <tr><td>SYNTHETIC_VALIDATION</td><td>Engineering proof of the protocol-to-decision platform before site data.</td></tr>
         <tr><td>SITE_VALIDATION</td><td>Site-facing package; see <a class="damaros-kv-link" href="#validation">Validation</a> for pathway.</td></tr>
-        <tr><td>LUNA_GOVERNANCE</td><td>Governed AI on protocol and forms only. Automated quality gates. Every model call traceable. Patient screening excluded.</td></tr>
-        <tr><td>TRIDENT_RELEASE</td><td>Shared clinical knowledge layer. Verified mappings from independent authoritative sources. Disagreements preserved, not flattened.</td></tr>
+        <tr><td>LUNA_GOVERNANCE</td><td>The provenance layer where AI-assisted work becomes governed, traceable, and safe. Patient evidence, eligibility execution, adjudication, and replay remain deterministic.</td></tr>
+        <tr><td>TRIDENT_RELEASE</td><td>The learning ontology where trial knowledge compounds into executable logic.</td></tr>
         <tr><td>FHIR_CONFORMANCE_SUITE</td><td>Automated FHIR R4 and US Core conformance testing in CI.</td></tr>
         <tr><td>EPIC_SITE_READINESS_REPORT</td><td>Pre-cutover checklist for Epic Backend Services.</td></tr>
         <tr><td>JWKS_DUAL_KEY_ROTATION_DRILL</td><td>Dual-key JWKS rotation exercised in CI. Change-controlled, not timer-driven.</td></tr>
@@ -2174,20 +2176,20 @@ spec:
     <div class="damaros-docs-eyebrow">Validation playbook</div>
     <h1 class="damaros-docs-title">Validation pathway.</h1>
     <p class="damaros-docs-subtitle">
-      Validation measures how fast a site turns a closed protocol and closed cohort into mapped evidence, screening outputs, coordinator artifacts, and a replayable audit record.
+      Validation measures how quickly a site converts a closed protocol and closed cohort into governed evidence, criterion-level screening outputs, operational artifacts, and replayable audit memory.
     </p>
     <div class="damaros-docs-body damaros-docs-lead">
-      <p>Two connection pathways. Epic Backend Services when available. Governed file extract when Epic cannot be landed in the pilot window or the cohort sits outside FHIR.</p>
-      <p>Both use the same engine, Trident standards release, evidence model, and Signed Replay Bundle. Prove faster, clearer trial execution with a record sponsors and monitors can trust. Epic/FHIR reference is under <a class="damaros-kv-link" href="#docs">Epic / FHIR</a>.</p>
+      <p>Two connection pathways: Epic Backend Services when available, governed structured extract when Epic onboarding cannot land in the pilot window or cohort data sits outside direct FHIR access.</p>
+      <p>Both routes use the same deterministic execution chain and replay model. Prove faster, clearer trial execution with a record sponsors and monitors can inspect. Epic/FHIR reference is under <a class="damaros-kv-link" href="#docs">Epic / FHIR</a>.</p>
     </div>
 
     <section class="damaros-docs-section" id="val-00">
       <div class="damaros-docs-section-label">00_TWO_PATHWAYS_ONE_ENGINE</div>
-      <h2 class="damaros-docs-section-heading">Two pathways, one engine.</h2>
+      <h2 class="damaros-docs-section-heading">Two pathways, one execution chain.</h2>
       <div class="damaros-docs-body">
-        <p><strong>Primary: Epic Backend Services.</strong> The site approves a read-only connection to the closed cohort. Damaros pulls the needed patient evidence, runs the workflow, and returns validation metrics plus a Signed Replay Bundle.</p>
-        <p><strong>Supplementary: governed file extract.</strong> The site provides CSV, Excel, REDCap, JSON/NDJSON, FHIR Bundle, Bulk FHIR NDJSON, Epic flat export, or warehouse export through an approved data pathway.</p>
-        <p>Both routes end in the same artifacts: mapped evidence, screening outputs, REVIEW drivers, coordinator artifacts, discrepancy analysis, workflow timing, and replay.</p>
+        <p><strong>Primary: Epic Backend Services.</strong> The site approves a read-only connection to the closed cohort. Damaros materializes trial-ready evidence, runs deterministic screening, and returns validation metrics plus a Signed Replay Bundle.</p>
+        <p><strong>Supplementary: governed file extract.</strong> The site provides approved structured files through an institutional pathway when direct FHIR access is unavailable.</p>
+        <p>Both routes produce the same proof surfaces: mapped evidence, criterion-level outputs, REVIEW drivers, coordinator artifacts, discrepancy analysis, workflow timing, and replay.</p>
       </div>
     </section>
 
@@ -2274,7 +2276,7 @@ spec:
     <section class="damaros-docs-section" id="val-12">
       <div class="damaros-docs-section-label">12_DATA_PATHWAYS</div>
       <h2 class="damaros-docs-section-heading">Data pathways.</h2>
-      <div class="damaros-docs-body"><p>Epic Backend Services uses read-only, site-approved FHIR access. Governed file extract supports de-identified, limited-dataset, site-hosted, or hybrid workflows. Both pathways preserve tenant binding, evidence lineage, deterministic screening, and replay.</p></div>
+      <div class="damaros-docs-body"><p>Epic Backend Services uses read-only, site-approved FHIR access. Governed structured extract supports de-identified, limited-dataset, site-hosted, or hybrid workflows. Both pathways preserve tenant binding, evidence lineage, deterministic screening, human review boundaries, and replay.</p></div>
     </section>
 
     <section class="damaros-docs-section" id="val-13">
@@ -2311,12 +2313,12 @@ spec:
   // ================================================================
 
   const igAutoplayBeats = [
-    { stageId: "protocol",   caption: "Protocol becomes executable logic in seconds, not days.",      cursorX: 88,  ms: 2710 },
-    { stageId: "population", caption: "Surface qualified candidates with evidence, not guesswork.",   cursorX: 245, ms: 2540 },
-    { stageId: "screening",  caption: "Cascade amendment impact across the cohort instantly.",         cursorX: 395, ms: 2710 },
-    { stageId: "forms",      caption: "Supercharge trial document drafting.",                          cursorX: 548, ms: 2860 },
-    { stageId: "replay",     caption: "Auditability is built-in, not an afterthought.",               cursorX: 680, ms: 2540 },
-    { stageId: "_charge",    caption: "One system. Faster trials. Defensible answers.",               cursorX: 680, ms: 2540, charge: true }
+    { stageId: "protocol",   caption: "Protocol requirements become executable logic.",                cursorX: 88,  ms: 2660 },
+    { stageId: "population", caption: "FHIR, exports, and site complexity become trial-ready evidence.", cursorX: 245, ms: 2700 },
+    { stageId: "screening",  caption: "Each patient resolves PASS, REVIEW, or FAIL at criterion level.", cursorX: 395, ms: 2720 },
+    { stageId: "forms",      caption: "Trial documents become governed operational artifacts.",        cursorX: 548, ms: 2640 },
+    { stageId: "replay",     caption: "Decisions become reconstructable institutional memory.",        cursorX: 680, ms: 2600 },
+    { stageId: "_charge",    caption: "Clinical trial execution infrastructure. Deterministic. Inspectable. Ready.", cursorX: 680, ms: 2580, charge: true }
   ];
 
   // Mobile walkthrough: smooth viewBox pans centered on each stage label.
@@ -2445,7 +2447,7 @@ spec:
   const igStageCursorX = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
 
   // Cockpit tagline rotator (typewriter motif, runs only in cockpit state)
-  const COCK_TAGLINE_WORDS = ["simplified", "operationalized", "replayable"];
+  const COCK_TAGLINE_WORDS = ["governed", "deterministic", "inspectable"];
   let cockTaglineTimer = null;
   let cockTaglineWordIdx = 0;
   let cockTaglineDisplayLen = 0;
