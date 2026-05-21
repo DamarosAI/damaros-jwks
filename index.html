@@ -969,6 +969,21 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 .viz-replay-rotor{transform-box:fill-box;transform-origin:center;animation:igReplayArrowSpin 11s linear infinite}
 @keyframes igReplayArrowSpin{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
 
+/* ── Walkthrough animation gating: animate only active stage until charge-up ── */
+body.is-playing:not(.is-charging) .ig-viz .viz-layer:not(.viz-active) *{
+  animation-play-state:paused!important;
+}
+body.is-playing:not(.is-charging) .ig-viz .viz-layer.viz-active *{
+  animation-play-state:running!important;
+}
+body.is-playing.is-charging .ig-viz .viz-layer *{
+  animation-play-state:running!important;
+}
+/* Cockpit keeps all motion enabled after autoplay handoff */
+body.is-cockpit .ig-cockpit-viz .viz-layer *{
+  animation-play-state:running!important;
+}
+
 /* ── Mobile walkthrough: fluid pans + live symbol motion (no display:none pops) ── */
 @media(max-width:740px){
   body.is-mobile-play.is-playing .ig-viz{
