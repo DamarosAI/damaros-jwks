@@ -822,7 +822,7 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-cock-dot{display:inline-block;width:.125em;height:.125em;min-width:6px;min-height:6px;max-width:10px;max-height:10px;border-radius:50%;background:var(--blue);box-shadow:0 0 18px rgba(123,150,178,.58);animation:igDotPulse 2.2s ease-in-out infinite;transform:translateY(.06em);vertical-align:baseline;flex-shrink:0}
 
 /* Canvas wrapper */
-.ig-cock-canvas{position:relative;width:100%;max-width:1320px;margin:0 auto;border:1px solid var(--panel-border);background:var(--cockpit-canvas-bg);box-shadow:var(--panel-shadow-lg);padding:clamp(.7rem,1.6vw,1.2rem);min-height:min(645px,76svh)}
+.ig-cock-canvas{position:relative;width:100%;max-width:1320px;margin:0 auto;border:1px solid var(--panel-border);background:var(--cockpit-canvas-bg);box-shadow:var(--panel-shadow-lg);padding:clamp(.7rem,1.6vw,1.2rem);min-height:min(645px,76svh);--orb-inset-x:8%;--orb-inset-y:17%}
 .ig-cockpit-viz{width:100%;height:auto;display:block;max-height:min(620px,74svh)}
 
 /* Restart button — flush left edge, top against top edge of canvas */
@@ -852,10 +852,18 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
    Protocol + Replay sit BELOW the header row so they never cover the wordmark or the tagline.
    Population + Forms shift down to keep visual balance. */
 .ig-info-card[data-stage="protocol"]   {top:2.8rem;  left:0;  --ig-card-origin:100% 100%}
-.ig-info-card[data-stage="population"] {top:48%;     left:0;  --ig-card-origin:100% 50%}
+.ig-info-card[data-stage="population"] {top:36%;     left:0;  --ig-card-origin:100% 50%}
 .ig-info-card[data-stage="screening"]  {bottom:-12px;left:50%;margin-left:clamp(-155px,-10vw,-124px);--ig-card-origin:50% 0%}
-.ig-info-card[data-stage="forms"]      {top:48%;     right:0; --ig-card-origin:0% 50%}
+.ig-info-card[data-stage="forms"]      {top:36%;     right:0; --ig-card-origin:0% 50%}
 .ig-info-card[data-stage="replay"]     {top:2.8rem;  right:0; --ig-card-origin:0% 100%}
+
+/* Desktop: workflow hover cards stay above canvas but below brand orbs */
+@media(min-width:1081px){
+  .ig-info-card[data-stage="protocol"],
+  .ig-info-card[data-stage="population"],
+  .ig-info-card[data-stage="forms"],
+  .ig-info-card[data-stage="replay"]{max-height:min(240px,34vh);overflow:auto}
+}
 
 /* Down arrow: pulsing chevron, click scrolls to stakeholders */
 .ig-cock-hint{text-align:center;margin:.85rem 0 0;font-family:var(--fm);font-size:.644rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td);opacity:.9;transition:opacity .3s ease}
@@ -985,6 +993,10 @@ body.is-playing.is-charging .ig-viz .viz-layer *{
 }
 /* Cockpit keeps all motion enabled after autoplay handoff */
 body.is-cockpit .ig-cockpit-viz .viz-layer *{
+  animation-play-state:running!important;
+}
+body.is-cockpit .ig-brand-orb::before,
+body.is-cockpit .ig-brand-orb::after{
   animation-play-state:running!important;
 }
 
@@ -1325,97 +1337,69 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
    ───────────────────────────────────────────────────────────── */
 .ig-brand-orb{
   position:absolute;
-  width:54px;height:54px;
+  width:52px;height:52px;
   border-radius:50%;
-  border:1px solid rgba(123,150,178,.28);
-  background:
-    radial-gradient(circle at 32% 28%,rgba(255,255,255,.14) 0%,rgba(143,165,189,.10) 22%,rgba(40,52,66,.85) 60%,#04060a 96%),
-    radial-gradient(circle at 70% 80%,rgba(123,150,178,.18),transparent 50%);
-  box-shadow:
-    inset 0 -10px 16px rgba(0,0,0,.66),
-    inset 0 4px 8px rgba(255,255,255,.05),
-    inset 0 0 0 1px rgba(255,255,255,.04),
-    0 6px 22px rgba(0,0,0,.55),
-    0 0 0 1px rgba(123,150,178,.08);
+  border:none;
+  background:rgba(123,150,178,.2);
+  box-shadow:0 0 0 1px rgba(123,150,178,.12);
   display:flex;align-items:center;justify-content:center;
-  padding:0;cursor:pointer;z-index:20;
+  padding:0;cursor:pointer;z-index:32;
+  overflow:visible;
   -webkit-tap-highlight-color:transparent;
   animation:igOrbFloat 5.8s ease-in-out infinite;
-  transition:border-color .35s ease,box-shadow .45s ease,transform .35s cubic-bezier(.16,1,.3,1);
+  transition:transform .35s cubic-bezier(.16,1,.3,1),filter .35s ease;
 }
 .ig-brand-orb::before{
-  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(ellipse 60% 30% at 50% 18%,rgba(255,255,255,.18),transparent 70%);
-  mix-blend-mode:screen;opacity:.6;
+  content:'';position:absolute;inset:-12px;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(123,150,178,.15);
+  background:none;
+  mix-blend-mode:normal;
+  opacity:1;
+  animation:igOrbRingPulse 3s ease-in-out infinite;
+}
+@keyframes igOrbRingPulse{0%,100%{transform:scale(1);opacity:.28}50%{transform:scale(1.14);opacity:.5}}
+.ig-brand-orb::after{
+  content:'';position:absolute;inset:4px;border-radius:50%;pointer-events:none;
+  border:.9px dashed rgba(169,192,214,.42);
+  animation:igProtoRingSpin 28s linear infinite;
 }
 .ig-brand-orb-label{
   position:relative;z-index:1;
-  font-family:var(--fh);
-  font-size:.6rem;font-weight:500;letter-spacing:.06em;
+  font-family:var(--fm);
+  font-size:6.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
   color:var(--blue2);
-  text-shadow:0 0 8px rgba(123,150,178,.45),0 1px 2px rgba(0,0,0,.85);
+  text-shadow:0 0 8px rgba(123,150,178,.45);
   pointer-events:none;user-select:none;line-height:1;
 }
-.ig-brand-orb-left {left:1.6rem; bottom:4.4rem}
-.ig-brand-orb-right{right:1.6rem;bottom:4.4rem; animation-delay:-2.9s}
+.ig-brand-orb-left {left:var(--orb-inset-x);right:auto;bottom:var(--orb-inset-y)}
+.ig-brand-orb-right{right:var(--orb-inset-x);left:auto;bottom:var(--orb-inset-y);animation-delay:-2.9s}
 .ig-brand-orb:hover,.ig-brand-orb:focus-visible{
   outline:none;
-  border-color:rgba(169,192,214,.55);
   transform:translateY(-2px);
-  box-shadow:
-    inset 0 -10px 16px rgba(0,0,0,.6),
-    inset 0 4px 10px rgba(255,255,255,.09),
-    inset 0 0 0 1px rgba(255,255,255,.06),
-    0 10px 30px rgba(0,0,0,.6),
-    0 0 0 1px rgba(169,192,214,.22),
-    0 0 26px rgba(169,192,214,.18);
+  filter:drop-shadow(0 0 14px rgba(169,192,214,.28));
+  background:rgba(123,150,178,.28);
 }
 .ig-brand-orb:hover .ig-brand-orb-label,
-.ig-brand-orb:focus-visible .ig-brand-orb-label{color:var(--tp);text-shadow:0 0 10px rgba(169,192,214,.6),0 1px 2px rgba(0,0,0,.85)}
+.ig-brand-orb:focus-visible .ig-brand-orb-label{color:var(--tp)}
 @keyframes igOrbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .ig-brand-orb:hover{animation-play-state:paused}
 
 /* Brand info cards: positioned above the orbs */
-.ig-info-card[data-stage="trident"]{left:1.6rem;bottom:7.5rem;--ig-card-origin:0% 100%;width:clamp(220px,18vw,272px)}
-.ig-info-card[data-stage="luna"]   {right:1.6rem;bottom:7.5rem;--ig-card-origin:100% 100%;width:clamp(220px,18vw,272px)}
+.ig-info-card[data-stage="trident"]{left:var(--orb-inset-x);bottom:calc(var(--orb-inset-y) + 3.6rem);--ig-card-origin:0% 100%;width:clamp(220px,18vw,272px);z-index:33}
+.ig-info-card[data-stage="luna"]   {right:var(--orb-inset-x);bottom:calc(var(--orb-inset-y) + 3.6rem);--ig-card-origin:100% 100%;width:clamp(220px,18vw,272px);z-index:33}
 
-/* Light mode: brushed-aluminum metallic orbs */
+/* Light mode: same flat symbol language as cockpit viz */
 [data-theme="light"] .ig-brand-orb,
 :root:not([data-theme="dark"]) .ig-brand-orb{
-  border-color:rgba(91,118,148,.42);
-  background:
-    radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0%,rgba(218,226,234,.85) 28%,rgba(132,150,170,.78) 62%,#566678 96%),
-    radial-gradient(circle at 70% 80%,rgba(91,118,148,.5),transparent 55%);
-  box-shadow:
-    inset 0 -10px 16px rgba(40,55,72,.4),
-    inset 0 4px 10px rgba(255,255,255,.75),
-    inset 0 0 0 1px rgba(255,255,255,.55),
-    0 8px 22px rgba(91,118,148,.28),
-    0 0 0 1px rgba(91,118,148,.22);
+  background:rgba(123,150,178,.14);
+  box-shadow:0 0 0 1px rgba(91,118,148,.22);
 }
 [data-theme="light"] .ig-brand-orb::before,
-:root:not([data-theme="dark"]) .ig-brand-orb::before{
-  background:radial-gradient(ellipse 60% 30% at 50% 16%,rgba(255,255,255,.7),transparent 70%);
-  mix-blend-mode:normal;opacity:.85;
-}
+:root:not([data-theme="dark"]) .ig-brand-orb::before{border-color:rgba(91,118,148,.22)}
+[data-theme="light"] .ig-brand-orb::after,
+:root:not([data-theme="dark"]) .ig-brand-orb::after{border-color:rgba(91,118,148,.45)}
 [data-theme="light"] .ig-brand-orb-label,
-:root:not([data-theme="dark"]) .ig-brand-orb-label{
-  color:#1a2229;
-  text-shadow:0 1px 1px rgba(255,255,255,.85),0 0 6px rgba(255,255,255,.65);
-}
-[data-theme="light"] .ig-brand-orb:hover,
-[data-theme="light"] .ig-brand-orb:focus-visible,
-:root:not([data-theme="dark"]) .ig-brand-orb:hover,
-:root:not([data-theme="dark"]) .ig-brand-orb:focus-visible{
-  border-color:rgba(45,62,80,.55);
-  box-shadow:
-    inset 0 -10px 16px rgba(40,55,72,.38),
-    inset 0 4px 12px rgba(255,255,255,.85),
-    inset 0 0 0 1px rgba(255,255,255,.7),
-    0 12px 32px rgba(91,118,148,.32),
-    0 0 0 1px rgba(45,62,80,.36),
-    0 0 26px rgba(91,118,148,.32);
-}
+:root:not([data-theme="dark"]) .ig-brand-orb-label{color:rgba(45,62,78,.88);text-shadow:none}
 [data-theme="light"] .ig-brand-orb:hover .ig-brand-orb-label,
 :root:not([data-theme="dark"]) .ig-brand-orb:hover .ig-brand-orb-label{color:#0a131c}
 
@@ -1423,16 +1407,14 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 @media(max-width:1080px){
   .ig-info-card[data-stage="trident"],
   .ig-info-card[data-stage="luna"]{width:100%!important;max-width:640px}
-  .ig-brand-orb-left {left:1rem;bottom:3.4rem}
-  .ig-brand-orb-right{right:1rem;bottom:3.4rem}
+  .ig-cock-canvas{--orb-inset-x:7%;--orb-inset-y:14%}
 }
 
 /* Mobile: shrink orbs proportionally so they don't crowd the timeline */
 @media(max-width:740px){
   .ig-brand-orb{width:42px;height:42px}
   .ig-brand-orb-label{font-size:.48rem;letter-spacing:.05em}
-  .ig-brand-orb-left {left:.6rem;bottom:2.6rem}
-  .ig-brand-orb-right{right:.6rem;bottom:2.6rem}
+  .ig-cock-canvas{--orb-inset-x:6%;--orb-inset-y:12%}
 }
 
 /* Reduced motion: stop float */
@@ -1523,9 +1505,9 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
         </g>
       </g>
       <g class="viz-layer" id="vizPopulation" opacity="0">
-        <line class="viz-conn-solid" x1="306" y1="200" x2="350" y2="200"/>
+        <line class="viz-conn-solid" x1="118" y1="200" x2="198" y2="200"/>
       </g>
-      <g class="viz-layer" id="vizScreening" opacity="0">
+      <g class="viz-layer" id="vizScreening" opacity="0" transform="translate(-11 0)">
         <line class="viz-conn" x1="389" y1="188" x2="375" y2="157"/>
         <line class="viz-conn" x1="395" y1="190" x2="395" y2="158"/>
         <line class="viz-conn" x1="401" y1="188" x2="415" y2="157"/>
@@ -1551,9 +1533,9 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
         <line class="viz-conn" x1="422" y1="268" x2="430" y2="292"/>
         <circle class="viz-criterion pass" cx="358" cy="298" r="6"/>
         <circle class="viz-criterion fail" cx="432" cy="298" r="6"/>
-        <line class="viz-conn-solid" x1="447" y1="200" x2="478" y2="200"/>
+        <line class="viz-conn-solid" x1="437" y1="200" x2="505" y2="200"/>
       </g>
-      <g class="viz-layer" id="vizForms" opacity="0">
+      <g class="viz-layer" id="vizForms" opacity="0" transform="translate(-16 0)">
         <g class="viz-form-doc" transform="translate(548 158) rotate(-7)">
           <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
           <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
@@ -1610,20 +1592,20 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       </g>
       <!-- Charge flash overlay rings (used during end-of-autoplay synthesis) -->
       <circle class="viz-charge-flash" cx="88" cy="200" r="24"/>
-      <circle class="viz-charge-flash" cx="250" cy="200" r="34"/>
-      <circle class="viz-charge-flash" cx="395" cy="200" r="38"/>
-      <circle class="viz-charge-flash" cx="548" cy="200" r="32"/>
+      <circle class="viz-charge-flash" cx="236" cy="200" r="34"/>
+      <circle class="viz-charge-flash" cx="384" cy="200" r="38"/>
+      <circle class="viz-charge-flash" cx="532" cy="200" r="32"/>
       <circle class="viz-charge-flash" cx="680" cy="200" r="28"/>
       <g class="viz-timeline">
         <line class="tl-track" x1="55" y1="400" x2="755" y2="400"/>
         <circle class="tl-stop" cx="88" cy="400" r="3"/>
         <text class="tl-stop-lbl" x="88" y="416">Protocol</text>
-        <circle class="tl-stop" cx="245" cy="400" r="3"/>
-        <text class="tl-stop-lbl" x="245" y="416">Population</text>
-        <circle class="tl-stop" cx="395" cy="400" r="3"/>
-        <text class="tl-stop-lbl" x="395" y="416">Screening</text>
-        <circle class="tl-stop" cx="548" cy="400" r="3"/>
-        <text class="tl-stop-lbl" x="548" y="416">Forms</text>
+        <circle class="tl-stop" cx="236" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="236" y="416">Population</text>
+        <circle class="tl-stop" cx="384" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="384" y="416">Screening</text>
+        <circle class="tl-stop" cx="532" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="532" y="416">Forms</text>
         <circle class="tl-stop" cx="680" cy="400" r="3"/>
         <text class="tl-stop-lbl" x="680" y="416">Replay</text>
         <circle class="tl-cursor" id="igTlCursor" cx="88" cy="400" r="5.5"/>
@@ -1698,9 +1680,9 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           </g>
         </g>
         <g class="viz-layer" id="cvizPopulation" opacity="1">
-          <line class="viz-conn-solid" x1="306" y1="200" x2="350" y2="200"/>
+          <line class="viz-conn-solid" x1="118" y1="200" x2="198" y2="200"/>
         </g>
-        <g class="viz-layer" id="cvizScreening" opacity="1" transform="translate(-20 0)">
+        <g class="viz-layer" id="cvizScreening" opacity="1" transform="translate(-11 0)">
           <line class="viz-conn" x1="389" y1="188" x2="375" y2="157"/>
           <line class="viz-conn" x1="395" y1="190" x2="395" y2="158"/>
           <line class="viz-conn" x1="401" y1="188" x2="415" y2="157"/>
@@ -1726,9 +1708,9 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           <line class="viz-conn" x1="422" y1="268" x2="430" y2="292"/>
           <circle class="viz-criterion pass" cx="358" cy="298" r="6"/>
           <circle class="viz-criterion fail" cx="432" cy="298" r="6"/>
-          <line class="viz-conn-solid" x1="447" y1="200" x2="478" y2="200"/>
+          <line class="viz-conn-solid" x1="437" y1="200" x2="505" y2="200"/>
         </g>
-        <g class="viz-layer" id="cvizForms" opacity="1">
+        <g class="viz-layer" id="cvizForms" opacity="1" transform="translate(-16 0)">
           <g class="viz-form-doc" transform="translate(548 158) rotate(-7)">
             <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
             <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
@@ -1787,20 +1769,20 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           <line class="tl-track" x1="55" y1="400" x2="755" y2="400"/>
           <circle class="tl-stop" cx="88" cy="400" r="3"/>
           <text class="tl-stop-lbl" x="88" y="416">Protocol</text>
-          <circle class="tl-stop" cx="245" cy="400" r="3"/>
-          <text class="tl-stop-lbl" x="245" y="416">Population</text>
-          <circle class="tl-stop" cx="375" cy="400" r="3"/>
-          <text class="tl-stop-lbl" x="375" y="416">Screening</text>
-          <circle class="tl-stop" cx="548" cy="400" r="3"/>
-          <text class="tl-stop-lbl" x="548" y="416">Forms</text>
+          <circle class="tl-stop" cx="236" cy="400" r="3"/>
+          <text class="tl-stop-lbl" x="236" y="416">Population</text>
+          <circle class="tl-stop" cx="384" cy="400" r="3"/>
+          <text class="tl-stop-lbl" x="384" y="416">Screening</text>
+          <circle class="tl-stop" cx="532" cy="400" r="3"/>
+          <text class="tl-stop-lbl" x="532" y="416">Forms</text>
           <circle class="tl-stop" cx="680" cy="400" r="3"/>
           <text class="tl-stop-lbl" x="680" y="416">Replay</text>
         </g>
         <!-- Hot zones (transparent, focus outline disabled) -->
         <rect class="viz-hotzone" data-stage="protocol"   x="14"  y="95"  width="160" height="220"/>
-        <rect class="viz-hotzone" data-stage="population" x="175" y="85"  width="155" height="240"/>
-        <rect class="viz-hotzone" data-stage="screening"  x="315" y="80"  width="140" height="270"/>
-        <rect class="viz-hotzone" data-stage="forms"      x="478" y="120" width="135" height="190"/>
+        <rect class="viz-hotzone" data-stage="population" x="168" y="85"  width="155" height="240"/>
+        <rect class="viz-hotzone" data-stage="screening"  x="308" y="80"  width="148" height="270"/>
+        <rect class="viz-hotzone" data-stage="forms"      x="462" y="120" width="135" height="190"/>
         <rect class="viz-hotzone" data-stage="replay"     x="615" y="145" width="135" height="140"/>
       </svg>
 
@@ -2481,13 +2463,15 @@ spec:
   // Homepage v3 — Provenance substrate (revised)
   // ================================================================
 
+  const igTimelineX = { protocol: 88, population: 236, screening: 384, forms: 532, replay: 680 };
+
   const igAutoplayBeats = [
-    { stageId: "protocol",   caption: "Encode protocol requirements into executable logic.",            cursorX: 88,  ms: 2660 },
-    { stageId: "population", caption: "Unify fragmented site data into clear evidence.",               cursorX: 245, ms: 2700 },
-    { stageId: "screening",  caption: "Run criterion-level review across every patient.",              cursorX: 395, ms: 2720 },
-    { stageId: "forms",      caption: "Supercharge trial documentation with governed provenance.",     cursorX: 548, ms: 2640 },
-    { stageId: "replay",     caption: "Reconstruct decisions through traceable provenance.",           cursorX: 680, ms: 2600 },
-    { stageId: "_charge",    caption: "One execution engine. PASS / REVIEW / FAIL at institutional scale.", cursorX: 680, ms: 2580, charge: true }
+    { stageId: "protocol",   caption: "Encode protocol requirements into executable logic.",            cursorX: igTimelineX.protocol,   ms: 2660 },
+    { stageId: "population", caption: "Unify fragmented site data into clear evidence.",               cursorX: igTimelineX.population, ms: 2700 },
+    { stageId: "screening",  caption: "Run criterion-level review across every patient.",              cursorX: igTimelineX.screening,  ms: 2720 },
+    { stageId: "forms",      caption: "Supercharge trial documentation with governed provenance.",     cursorX: igTimelineX.forms,      ms: 2640 },
+    { stageId: "replay",     caption: "Reconstruct decisions through traceable provenance.",           cursorX: igTimelineX.replay, ms: 2600 },
+    { stageId: "_charge",    caption: "One execution engine. PASS / REVIEW / FAIL at institutional scale.", cursorX: igTimelineX.replay, ms: 2580, charge: true }
   ];
 
   // Mobile walkthrough: smooth viewBox pans centered on each stage label.
@@ -2613,7 +2597,7 @@ spec:
     if (igViz) igViz.setAttribute("viewBox", "11 0 768 450");
   }
 
-  const igStageCursorX = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
+  const igStageCursorX = igTimelineX;
 
   // Cockpit tagline rotator (typewriter motif, runs only in cockpit state)
   const COCK_TAGLINE_WORDS = ["simplified", "observable", "reproducible"];
@@ -2784,7 +2768,7 @@ spec:
       const rng = mulberry32(42);
       const frag = document.createDocumentFragment();
       for (let i = 0; i < 65; i++) {
-        const x = 185 + rng() * 115;
+        const x = 171 + rng() * 130;
         const y = 95 + rng() * 215;
         const r = 1.6 + rng() * 1.6;
         const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -2828,7 +2812,7 @@ spec:
       stop.classList.remove("is-active");
       stop.setAttribute("r", "3");
     });
-    const map = { protocol: 88, population: 245, screening: 395, forms: 548, replay: 680 };
+    const map = igTimelineX;
     const cx = map[stageId];
     if (!cx) return;
     document.querySelectorAll("#igViz .tl-stop").forEach(function (stop) {
