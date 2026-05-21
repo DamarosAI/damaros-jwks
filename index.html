@@ -857,14 +857,6 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-info-card[data-stage="forms"]      {top:36%;     right:0; --ig-card-origin:0% 50%}
 .ig-info-card[data-stage="replay"]     {top:2.8rem;  right:0; --ig-card-origin:0% 100%}
 
-/* Desktop: workflow hover cards stay above canvas but below brand orbs */
-@media(min-width:1081px){
-  .ig-info-card[data-stage="protocol"],
-  .ig-info-card[data-stage="population"],
-  .ig-info-card[data-stage="forms"],
-  .ig-info-card[data-stage="replay"]{max-height:min(240px,34vh);overflow:auto}
-}
-
 /* Down arrow: pulsing chevron, click scrolls to stakeholders */
 .ig-cock-hint{text-align:center;margin:.85rem 0 0;font-family:var(--fm);font-size:.644rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td);opacity:.9;transition:opacity .3s ease}
 .ig-cock-hint::before{content:'Hover/Tap to Inspect each step'}
@@ -1384,9 +1376,25 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 @keyframes igOrbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 .ig-brand-orb:hover{animation-play-state:paused}
 
-/* Brand info cards: positioned above the orbs */
-.ig-info-card[data-stage="trident"]{left:var(--orb-inset-x);bottom:calc(var(--orb-inset-y) + 3.6rem);--ig-card-origin:0% 100%;width:clamp(220px,18vw,272px);z-index:33}
-.ig-info-card[data-stage="luna"]   {right:var(--orb-inset-x);bottom:calc(var(--orb-inset-y) + 3.6rem);--ig-card-origin:100% 100%;width:clamp(220px,18vw,272px);z-index:33}
+/* Brand info cards: inside canvas, anchored above orbs (bottom-left / bottom-right) */
+.ig-cock-canvas > .ig-info-card[data-stage="trident"]{
+  top:auto;right:auto;
+  left:var(--orb-inset-x);
+  bottom:calc(var(--orb-inset-y) + 3.4rem);
+  --ig-card-origin:0% 100%;
+  width:clamp(200px,17vw,252px);
+  z-index:33;
+}
+.ig-cock-canvas > .ig-info-card[data-stage="luna"]{
+  top:auto;left:auto;
+  right:var(--orb-inset-x);
+  bottom:calc(var(--orb-inset-y) + 3.4rem);
+  --ig-card-origin:100% 100%;
+  width:clamp(200px,17vw,252px);
+  z-index:33;
+}
+.ig-info-card-brand .ig-card-title{margin-bottom:.38rem}
+.ig-info-card-brand .ig-card-body{line-height:1.45}
 
 /* Light mode: same flat symbol language as cockpit viz */
 [data-theme="light"] .ig-brand-orb,
@@ -1405,8 +1413,12 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 /* Tablet/medium: when cards stack below canvas, orbs still anchor in canvas */
 @media(max-width:1080px){
-  .ig-info-card[data-stage="trident"],
-  .ig-info-card[data-stage="luna"]{width:100%!important;max-width:640px}
+  .ig-cock-canvas > .ig-info-card[data-stage="trident"],
+  .ig-cock-canvas > .ig-info-card[data-stage="luna"]{
+    position:relative!important;
+    left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+    width:100%!important;max-width:640px;margin:.85rem auto 0!important;
+  }
   .ig-cock-canvas{--orb-inset-x:7%;--orb-inset-y:14%}
 }
 
@@ -1793,6 +1805,17 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <button type="button" class="ig-brand-orb ig-brand-orb-right" data-stage="luna" aria-label="Luna overview" aria-haspopup="dialog">
         <span class="ig-brand-orb-label">Luna</span>
       </button>
+
+      <div class="ig-info-card ig-info-card-brand" data-stage="trident" id="cardTrident" role="region" aria-label="Trident overview">
+        <div class="ig-card-label">Trident</div>
+        <h3 class="ig-card-title">Trident is the learning ontology.</h3>
+        <p class="ig-card-body">Trial knowledge compounds into executable logic—versioned and governed across every site run.</p>
+      </div>
+      <div class="ig-info-card ig-info-card-brand" data-stage="luna" id="cardLuna" role="region" aria-label="Luna overview">
+        <div class="ig-card-label">Luna</div>
+        <h3 class="ig-card-title">Luna is the governance harness.</h3>
+        <p class="ig-card-body">AI-assisted work stays traceable and reviewable—provenance, PHI gating, and scoped tasks enforced.</p>
+      </div>
     </div>
 
     <!-- Hint: above info cards so it sits above cards on mobile -->
@@ -1802,43 +1825,27 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     <div class="ig-info-card" data-stage="protocol" id="cardProtocol" role="region" aria-label="Protocol detail">
       <div class="ig-card-label">01 · Protocol</div>
       <h3 class="ig-card-title">Protocol requirements become executable logic.</h3>
-      <p class="ig-card-body" title="Trident — The learning ontology where trial knowledge compounds into executable logic.">Eligibility language locks into governed trial logic on Trident. One versioned execution basis for every site run.</p>
-      <div class="ig-card-mech"><strong>Mechanism</strong>Content-hashed protocol. Amendment-aware releases.</div>
+      <p class="ig-card-body">Eligibility language locks into versioned trial logic on Trident—one execution basis per site run via content-hashed, amendment-aware releases.</p>
     </div>
     <div class="ig-info-card" data-stage="population" id="cardPopulation" role="region" aria-label="Population detail">
       <div class="ig-card-label">02 · Population</div>
       <h3 class="ig-card-title">Site data becomes trial-ready evidence.</h3>
-      <p class="ig-card-body">FHIR, structured exports, and governed files resolve into one evidence plane with explicit quality boundaries before screening.</p>
-      <div class="ig-card-mech"><strong>Mechanism</strong>Site-approved access. Bounded cohort sync. Tenant isolation.</div>
+      <p class="ig-card-body">FHIR, exports, and governed files resolve to one evidence plane before screening—site-approved access, tenant-isolated cohort sync.</p>
     </div>
     <div class="ig-info-card" data-stage="screening" id="cardScreening" role="region" aria-label="Screening detail">
       <div class="ig-card-label">03 · Screening</div>
-      <h3 class="ig-card-title">Eligibility resolves at criterion level, deterministically.</h3>
-      <p class="ig-card-body">Each patient × criterion produces PASS, REVIEW, or FAIL with attached evidence and preserved human-review pathways.</p>
-      <div class="ig-card-mech"><strong>Mechanism</strong>Deterministic eligibility core. Screening outcomes remain rules-driven.</div>
+      <h3 class="ig-card-title">Eligibility resolves at criterion level.</h3>
+      <p class="ig-card-body">Each patient × criterion yields PASS, REVIEW, or FAIL with attached evidence—deterministic engine, human review preserved.</p>
     </div>
     <div class="ig-info-card" data-stage="forms" id="cardForms" role="region" aria-label="Forms detail">
       <div class="ig-card-label">04 · Forms</div>
-      <h3 class="ig-card-title">Forms become operational artifacts with governed provenance.</h3>
-      <p class="ig-card-body">Coordinator and sponsor artifacts assemble from governed evidence lineage with field-level traceability and reviewability.</p>
-      <div class="ig-card-mech" title="Luna — The governance harness for AI-assisted work. Traceable outputs. Human review. Safe boundaries."><strong>Mechanism</strong>Luna is the governance harness for AI-assisted work—traceable outputs, human review, and safe boundaries (provenance, PHI gating, task scope).</div>
+      <h3 class="ig-card-title">Forms carry governed provenance.</h3>
+      <p class="ig-card-body">Coordinator and sponsor artifacts assemble from evidence lineage—field-level traceability under Luna governance.</p>
     </div>
     <div class="ig-info-card" data-stage="replay" id="cardReplay" role="region" aria-label="Replay detail">
       <div class="ig-card-label">05 · Replay</div>
-      <h3 class="ig-card-title">Decisions become reconstructable institutional memory.</h3>
-      <p class="ig-card-body">Replay reconstructs outcomes from protocol version, evidence inputs, and governed execution context across validation and production.</p>
-      <div class="ig-card-mech"><strong>Mechanism</strong>Signed replay bundle. One engine from first site test through cutover.</div>
-    </div>
-
-    <div class="ig-info-card ig-info-card-brand" data-stage="trident" id="cardTrident" role="region" aria-label="Trident overview">
-      <div class="ig-card-label">Trident</div>
-      <h3 class="ig-card-title">Learning ontology</h3>
-      <p class="ig-card-body">The learning ontology where trial knowledge compounds into executable logic.</p>
-    </div>
-    <div class="ig-info-card ig-info-card-brand" data-stage="luna" id="cardLuna" role="region" aria-label="Luna overview">
-      <div class="ig-card-label">Luna</div>
-      <h3 class="ig-card-title">Governance harness</h3>
-      <p class="ig-card-body">The governance harness where AI-assisted work becomes traceable, reviewable, and safe.</p>
+      <h3 class="ig-card-title">Decisions become institutional memory.</h3>
+      <p class="ig-card-body">Replay reconstructs protocol version, evidence inputs, and execution context—signed bundle, one engine through cutover.</p>
     </div>
 
     <button type="button" class="ig-down-arrow" id="igDownArrow" aria-label="Scroll to overview">
