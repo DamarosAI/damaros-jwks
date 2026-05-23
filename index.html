@@ -2936,6 +2936,12 @@ spec:
     });
   }
 
+  function revealCaptionNow(text) {
+    if (!igCaption) return;
+    igCaption.classList.remove("fading");
+    igCaption.textContent = text || "";
+  }
+
   // ── Autoplay (left to right + ending charge-up) ──
   function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
@@ -2958,8 +2964,6 @@ spec:
       igViz.setAttribute("viewBox", igMobileViewBoxes.protocol);
     }
 
-    await (monogramReadyPromise || Promise.resolve());
-
     setMainVizFocus("protocol");
     setTimelineCursor(88);
     setTimelineStop("protocol");
@@ -2967,6 +2971,16 @@ spec:
     _syncMobileStageLayout();
     _setMobilePlayMode(onMobile);
     _applyMobileHotzones(onMobile);
+
+    if (onMobile && igAutoplayBeats[0]) {
+      revealCaptionNow(igAutoplayBeats[0].caption);
+      document.querySelectorAll("#igViz .viz-timeline,#igViz .tl-track,#igViz .tl-stop,#igViz .tl-stop-lbl,#igViz .tl-cursor").forEach(function (el) {
+        el.style.opacity = "1";
+        el.style.visibility = "visible";
+      });
+    }
+
+    await (monogramReadyPromise || Promise.resolve());
 
     document.body.classList.add("is-playing");
     if (reduceMotion) {
@@ -2976,16 +2990,17 @@ spec:
       document.body.classList.add("is-stage-live");
     }
 
-    if (igCaption) { igCaption.classList.add("fading"); igCaption.textContent = ""; }
-    await wait(reduceMotion ? 0 : 220);
+    if (!onMobile && igCaption) { igCaption.classList.add("fading"); igCaption.textContent = ""; }
+    if (!onMobile) await wait(reduceMotion ? 0 : 220);
 
     for (let i = 0; i < igAutoplayBeats.length; i++) {
       if (igAutoplayAbort) break;
       const beat = igAutoplayBeats[i];
 
       if (igCaption && beat.caption !== undefined) {
-        igCaption.classList.add("fading");
-        await wait(reduceMotion ? 0 : 320);
+        const captionAlreadyVisible = onMobile && i === 0 && !beat.charge;
+        if (!captionAlreadyVisible) igCaption.classList.add("fading");
+        if (!captionAlreadyVisible) await wait(reduceMotion ? 0 : (onMobile ? 180 : 320));
         if (igAutoplayAbort) break;
         igCaption.textContent = beat.caption;
 
@@ -3001,14 +3016,16 @@ spec:
               igMobileViewBoxes[beat.stageId] || igMobileViewBoxes.full,
               panMs
             );
-            await wait(reduceMotion ? 0 : Math.max(0, panMs - 360));
+            await wait(reduceMotion ? 0 : Math.max(0, panMs - (captionAlreadyVisible ? 0 : 540)));
           }
         }
 
-        void igCaption.offsetWidth;
-        await new Promise(function (r) { requestAnimationFrame(r); });
-        await new Promise(function (r) { requestAnimationFrame(r); });
-        igCaption.classList.remove("fading");
+        if (!captionAlreadyVisible) {
+          void igCaption.offsetWidth;
+          await new Promise(function (r) { requestAnimationFrame(r); });
+          await new Promise(function (r) { requestAnimationFrame(r); });
+          igCaption.classList.remove("fading");
+        }
         if (mobilePanPromise) await mobilePanPromise;
       }
 
