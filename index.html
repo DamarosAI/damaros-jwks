@@ -2633,10 +2633,10 @@ spec:
   }
 
   async function _runMobileReplayOutro(beatMs, reduceMotion) {
-    const prePanMs = reduceMotion ? 0 : 860;
-    const holdMs = reduceMotion ? 0 : Math.max(760, beatMs - prePanMs);
+    const zoomOutMs = reduceMotion ? 0 : 860;
+    const holdMs = reduceMotion ? 0 : Math.max(760, beatMs - zoomOutMs);
     await wait(holdMs);
-    if (igAutoplayAbort) return;
+    if (igAutoplayAbort) return 0;
 
     document.body.classList.add("is-outro-zoom");
     _mainVizLayers().forEach(function (el) {
@@ -2647,7 +2647,9 @@ spec:
       stop.setAttribute("r", "3");
     });
 
-    await _animateViewBox(igViz, igMobileViewBoxes.full, prePanMs);
+    await _animateViewBox(igViz, igMobileViewBoxes.full, zoomOutMs);
+    await flushFrames(2);
+    return zoomOutMs;
   }
 
   async function _beginMobileChargeSweep(reduceMotion) {
@@ -3037,9 +3039,9 @@ spec:
           await wait(reduceMotion ? 160 : Math.max(0, beat.ms - igChargeTimelineMs));
         }
       } else if (beat.stageId === "replay" && onMobile && igAutoplayBeats[i + 1] && igAutoplayBeats[i + 1].charge) {
-        await _runMobileReplayOutro(beat.ms, reduceMotion);
+        const zoomOutMs = await _runMobileReplayOutro(beat.ms, reduceMotion);
         if (igAutoplayAbort) break;
-        await wait(reduceMotion ? 0 : 260);
+        if (zoomOutMs > 0) await wait(zoomOutMs);
         if (igAutoplayAbort) break;
         const chargeBeat = igAutoplayBeats[i + 1];
         if (igCaption) igCaption.textContent = chargeBeat.caption;
