@@ -1081,6 +1081,19 @@ body.is-cockpit .ig-cockpit-viz .viz-layer *{
   body.is-mobile-play .ig-caption{margin-top:var(--ig-mobile-cap-gap,clamp(1.2rem,2.8svh,1.8rem))!important}
   body.is-mobile-play .ig-skip{margin-top:var(--ig-mobile-skip-gap,clamp(1rem,2.4svh,1.6rem))!important;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   body.is-mobile-play .ig-monogram-grid{animation-duration:18s!important}
+  /* Charge-up: hold equal dim baseline before sweep (avoids replay-at-1 → .22 snap) */
+  body.is-mobile-play.is-charging .ig-viz .viz-layer{
+    opacity:.22!important;
+    transition:none!important;
+  }
+  body.is-mobile-play.is-charging .ig-viz.viz-charged .viz-layer{
+    transition:none!important;
+  }
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizProtocol  {animation:igChargeLight .72s ease 0s    forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizPopulation{animation:igChargeLight .72s ease .22s  forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizScreening {animation:igChargeLight .72s ease .44s  forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizForms     {animation:igChargeLight .72s ease .66s  forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizDecision  {animation:igChargeLight .72s ease .88s  forwards}
   body.is-mobile-play .viz-hotzone{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   body.is-mobile-play .ig-cock-restart,.ig-down-arrow,.ig-up-arrow,.ig-cock-wordmark{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   /* Cockpit is the top of the page - no scroll-up affordance; use wordmark or HOME tab */
@@ -1371,6 +1384,18 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 @media(max-width:740px){
   .ig-cock-brand-bar{gap:.45rem .55rem;margin-top:.65rem}
   .ig-cock-hint{flex:1 1 9rem;font-size:.575rem;letter-spacing:.18em;color:var(--ts)}
+}
+/* Mobile dark hero: monogram ~18% brighter than desktop dark baseline */
+@media(max-width:740px){
+  [data-theme="dark"] body:not(.is-playing):not(.is-cockpit) .ig-monogram-grid,
+  :root:not([data-theme="light"]) body:not(.is-playing):not(.is-cockpit) .ig-monogram-grid{
+    opacity:.106;
+  }
+  [data-theme="dark"] body:not(.is-playing):not(.is-cockpit) .ig-monogram-grid img,
+  :root:not([data-theme="light"]) body:not(.is-playing):not(.is-cockpit) .ig-monogram-grid img{
+    filter:grayscale(1) brightness(.71) contrast(1.3);
+    mix-blend-mode:screen;
+  }
 }
 
 </style>
@@ -1776,8 +1801,8 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     </div>
     <div class="ig-info-card" data-stage="forms" id="cardForms" role="region" aria-label="Forms detail">
       <div class="ig-card-label">04 · Forms</div>
-      <h3 class="ig-card-title">Documentation accelerates with assisted drafting.</h3>
-      <p class="ig-card-body">Models draft coordinator and sponsor forms from screening evidence, with human review before outputs ship. Luna enforces traceability, not the creative bottleneck.</p>
+      <h3 class="ig-card-title">Trial documentation assembles from screening lineage.</h3>
+      <p class="ig-card-body">Coordinator and sponsor forms draft from criterion-level evidence under Luna governance, with human review before outputs ship. Every field traces to protocol version and source facts.</p>
     </div>
     <div class="ig-info-card" data-stage="replay" id="cardReplay" role="region" aria-label="Replay detail">
       <div class="ig-card-label">05 · Replay</div>
@@ -2413,7 +2438,7 @@ spec:
     { stageId: "protocol",   caption: "Encode protocol requirements into executable logic.",            cursorX: igTimelineX.protocol,   ms: 2660 },
     { stageId: "population", caption: "Unify fragmented site data into clear evidence.",               cursorX: igTimelineX.population, ms: 2700 },
     { stageId: "screening",  caption: "Run criterion-level review across every patient.",              cursorX: igTimelineX.screening,  ms: 2720 },
-    { stageId: "forms",      caption: "Draft trial documentation faster with AI-assisted assembly.", cursorX: igTimelineX.forms,      ms: 2640 },
+    { stageId: "forms",      caption: "Faster trial documentation with AI-assisted assembly.", cursorX: igTimelineX.forms,      ms: 2640 },
     { stageId: "replay",     caption: "Rebuild any decision record for audit and QA.",                 cursorX: igTimelineX.replay, ms: 2600 },
     { stageId: "_charge",    caption: "One execution engine. Criterion-level eligibility at institutional scale.", cursorX: igTimelineX.replay, ms: 2580, charge: true }
   ];
@@ -2818,13 +2843,20 @@ spec:
       if (igAutoplayAbort) break;
       const beat = igAutoplayBeats[i];
 
-      // Charge beat: reveal all layers + smooth zoom-out (mobile) BEFORE the caption swap
-      // so the full workflow is visible by the time the load-up animation starts.
+      // Charge beat: on mobile, flatten layer opacity and zoom out before is-charging
+      // so replay does not snap from viz-active (1) to dim (.22) when charge rules apply.
       if (beat.charge) {
-        document.body.classList.add("is-charging");
         if (onMobile) {
-          await _animateViewBox(igViz, igMobileViewBoxes.full, reduceMotion ? 0 : 820);
+          const mainLayers = allStages.map(function (s) { return document.getElementById(vizLayerIds.main[s]); }).filter(Boolean);
+          mainLayers.forEach(function (el) {
+            el.style.transition = "none";
+            el.classList.remove("viz-active", "viz-dim", "viz-mid");
+          });
+          void igViz && igViz.getBoundingClientRect();
+          mainLayers.forEach(function (el) { el.style.transition = ""; });
+          await _animateViewBox(igViz, igMobileViewBoxes.full, reduceMotion ? 0 : 720);
         }
+        document.body.classList.add("is-charging");
       }
 
       if (igCaption && beat.caption !== undefined) {
