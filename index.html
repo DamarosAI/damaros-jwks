@@ -748,7 +748,7 @@ body.is-cockpit .ig-stage{display:none}
 .viz-layer.viz-dim{opacity:.22!important}
 .viz-layer.viz-mid{opacity:.22!important}
 /* During autoplay: all stages stay grey/dim. Only charge sweep brings them alive. */
-body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #vizScreening,body.is-playing #vizForms,body.is-playing #vizDecision{opacity:.22}
+body.is-playing #vizProtocol,body.is-playing #vizEvidence,body.is-playing #vizScreening,body.is-playing #vizDecision{opacity:.22}
 .viz-origin-glow{fill:none;stroke:rgba(123,150,178,.15);stroke-width:1;animation:igOriginGlow 3s ease-in-out infinite}
 .viz-origin-pulse{fill:none;stroke:rgba(123,150,178,.07);stroke-width:1;animation:igOriginGlow 3s ease-in-out infinite 1.2s}
 @keyframes igOriginGlow{0%,100%{r:36px;stroke-opacity:.15}50%{r:47px;stroke-opacity:.3}}
@@ -763,13 +763,10 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 .viz-criterion.pass{fill:rgba(74,222,128,.22);stroke:rgba(74,222,128,.75)}
 .viz-criterion.review{fill:rgba(250,204,21,.22);stroke:rgba(250,204,21,.75)}
 .viz-criterion.fail{fill:rgba(251,113,133,.22);stroke:rgba(251,113,133,.75)}
-.viz-form-node{fill:var(--viz-form-fill);stroke:var(--viz-form-stroke);stroke-width:1.2}
 .viz-evidence{fill:var(--viz-evidence)}
 .viz-decision-glow{fill:none;stroke:var(--viz-decision-glow);stroke-width:1;animation:igDecisionGlow 2.2s ease-in-out infinite}
 @keyframes igDecisionGlow{0%,100%{r:42px;stroke-opacity:.12}50%{r:55px;stroke-opacity:.28}}
 .viz-proto-ring{stroke:var(--viz-proto-ring);transform-box:fill-box;transform-origin:center;animation:igProtoRingSpin 28s linear infinite}
-.viz-form-doc rect{fill:var(--viz-form-fill)!important;stroke:var(--viz-doc-stroke)!important}
-.viz-form-doc line{stroke:var(--viz-doc-line)!important}
 .viz-replay-arrow{stroke:var(--viz-replay-stroke)!important;stroke-dasharray:4 3}
 .viz-replay-head{fill:var(--viz-replay-stroke)!important}
 @keyframes igProtoRingSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
@@ -780,7 +777,6 @@ body.is-playing #vizProtocol,body.is-playing #vizPopulation,body.is-playing #viz
 .viz-proto-grid circle{fill:var(--viz-proto-grid)}
 .viz-proto-grid circle.viz-proto-grid-center{fill:var(--viz-proto-grid-center)}
 
-.viz-form-doc{transform-box:fill-box}
 .viz-decision{fill:var(--viz-decision-fill);stroke:var(--blue2);stroke-width:1.5}
 .viz-lbl-sm{font-family:var(--fm);font-size:8.5px;fill:var(--viz-lbl-sm);letter-spacing:.1em;text-transform:uppercase;text-anchor:middle}
 .viz-lbl-xs{font-family:var(--fm);font-size:7px;fill:var(--viz-lbl-xs);letter-spacing:.06em;text-anchor:middle}
@@ -797,10 +793,9 @@ body.is-charging .ig-viz:not(.viz-charged) .tl-cursor{opacity:0}
 /* Charge-up: all stages light simultaneously at end of autoplay */
 /* Charge sweep: stages light up sequentially left to right (loading-bar feel) */
 .viz-charged #vizProtocol  {animation:igChargeLight 1s ease 0s    forwards}
-.viz-charged #vizPopulation{animation:igChargeLight 1s ease .35s  forwards}
-.viz-charged #vizScreening {animation:igChargeLight 1s ease .7s   forwards}
-.viz-charged #vizForms     {animation:igChargeLight 1s ease 1.05s forwards}
-.viz-charged #vizDecision  {animation:igChargeLight 1s ease 1.4s  forwards}
+.viz-charged #vizEvidence  {animation:igChargeLight 1s ease .42s  forwards}
+.viz-charged #vizScreening {animation:igChargeLight 1s ease .84s  forwards}
+.viz-charged #vizDecision  {animation:igChargeLight 1s ease 1.26s forwards}
 @keyframes igChargeLight{from{opacity:.22}to{opacity:1}}
 .viz-charged .tl-cursor{transition:cx 1.85s cubic-bezier(.65,0,.35,1),opacity .28s ease;filter:drop-shadow(0 0 14px rgba(169,192,214,.95));r:7}
 .viz-charge-flash{display:none}
@@ -847,15 +842,16 @@ body.is-cockpit .ig-cockpit{opacity:1;pointer-events:auto}
 .ig-info-card .ig-card-mech{margin-top:.58rem;font-family:var(--fb);font-size:clamp(.68rem,.82vw,.76rem);line-height:1.5;color:var(--blue2);letter-spacing:.01em}
 .ig-info-card .ig-card-mech strong{color:var(--blue2);font-weight:600;font-family:var(--fm);letter-spacing:.12em;text-transform:uppercase;font-size:.56rem;display:block;margin-bottom:.18rem}
 
-/* Info card positions: fan out at edges of cockpit-inner (1480px max), canvas (1140px) centered. ~170px shoulders each side. */
-/* Cards 1,2 anchored to far-left of cockpit-inner; 4,5 to far-right; 3 (Screening) centered below.
-   Protocol + Replay sit BELOW the header row so they never cover the wordmark or the tagline.
-   Population + Forms shift down to keep visual balance. */
-.ig-info-card[data-stage="protocol"]   {top:2.8rem;  left:0;  --ig-card-origin:100% 100%}
-.ig-info-card[data-stage="population"] {top:36%;     left:0;  --ig-card-origin:100% 50%}
-.ig-info-card[data-stage="screening"]  {bottom:-12px;left:50%;margin-left:clamp(-155px,-10vw,-124px);--ig-card-origin:50% 0%}
-.ig-info-card[data-stage="forms"]      {top:36%;     right:0; --ig-card-origin:0% 50%}
-.ig-info-card[data-stage="replay"]     {top:2.8rem;  right:0; --ig-card-origin:0% 100%}
+/* Info card positions: 2 on each side of the canvas, never obscuring the wordmark,
+   the typewriter tagline, the SVG symbols, or the Trident/Luna chips below.
+   Left column: Protocol (top), Evidence (bottom).
+   Right column: Screening (top), Replay (bottom).
+   Top row sits BELOW the header to clear the wordmark + tagline.
+   Bottom row sits ABOVE the brand bar to clear the Trident/Luna chips. */
+.ig-info-card[data-stage="protocol"]  {top:3.2rem;    left:0;  --ig-card-origin:100% 100%}
+.ig-info-card[data-stage="evidence"]  {bottom:4.6rem; left:0;  --ig-card-origin:100% 0%}
+.ig-info-card[data-stage="screening"] {bottom:4.6rem; right:0; --ig-card-origin:0% 0%}
+.ig-info-card[data-stage="replay"]    {top:3.2rem;    right:0; --ig-card-origin:0% 100%}
 
 /* Trident/Luna cards: stack under brand bar; hidden cards take no layout space */
 .ig-info-card[data-stage="trident"],
@@ -952,8 +948,8 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
 
 /* Responsive */
 @media(max-width:1480px){
-  .ig-info-card[data-stage="protocol"],.ig-info-card[data-stage="replay"]{top:2.8rem}
-  .ig-info-card[data-stage="population"],.ig-info-card[data-stage="forms"]{top:46%}
+  .ig-info-card[data-stage="protocol"],.ig-info-card[data-stage="replay"]{top:3.2rem}
+  .ig-info-card[data-stage="evidence"],.ig-info-card[data-stage="screening"]{bottom:4.6rem}
 }
 @media(max-width:1080px){
   /* On smaller desktop / tablet, cards stack below the canvas (one visible at a time) */
@@ -1015,7 +1011,7 @@ body.is-cockpit .ig-bottom-bar{opacity:1;pointer-events:auto}
   .ig-bottom-bar{padding:1rem 1rem!important;font-size:.52rem!important;flex-wrap:wrap;gap:.6rem}
 }
 @media(prefers-reduced-motion:reduce){
-  .ig-monogram-grid,.ig-dot,.viz-origin-glow,.viz-origin-pulse,.viz-decision-glow,.viz-particle.eligible,.ig-tagline-rotator::after,.ig-cock-dot,.viz-replay-rotor,.viz-criterion,.viz-evidence,.viz-form-doc>circle{animation:none}
+  .ig-monogram-grid,.ig-dot,.viz-origin-glow,.viz-origin-pulse,.viz-decision-glow,.viz-particle.eligible,.ig-tagline-rotator::after,.ig-cock-dot,.viz-replay-rotor,.viz-criterion,.viz-evidence{animation:none}
   .ig-dot{opacity:.85}
   .tl-cursor{transition:none}
   .viz-layer,.ig-hero,.ig-stage,.ig-cockpit,.ig-manifesto,.ig-stakeholders,.ig-bottom-bar,.ig-info-card{transition:none}
@@ -1078,7 +1074,6 @@ body.is-cockpit .ig-cockpit-viz .viz-layer *{
   body.is-mobile-play.is-playing .ig-viz .viz-layer.viz-active .viz-screen-root,
   body.is-mobile-play.is-playing .ig-viz .viz-layer.viz-active .viz-criterion,
   body.is-mobile-play.is-playing .ig-viz .viz-layer.viz-active .viz-evidence,
-  body.is-mobile-play.is-playing .ig-viz .viz-layer.viz-active .viz-form-doc,
   body.is-mobile-play.is-playing .ig-viz .viz-layer.viz-active .viz-replay-rotor,
   body.is-mobile-play.is-playing .ig-viz .viz-layer.viz-active .viz-decision-glow{
     animation-play-state:running!important;
@@ -1118,10 +1113,9 @@ body.is-cockpit .ig-cockpit-viz .viz-layer *{
     animation-fill-mode:forwards;
   }
   body.is-mobile-play.is-charging .ig-viz.viz-charged #vizProtocol  {animation:igChargeLight 1s ease 0s    forwards}
-  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizPopulation{animation:igChargeLight 1s ease .35s  forwards}
-  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizScreening {animation:igChargeLight 1s ease .7s   forwards}
-  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizForms     {animation:igChargeLight 1s ease 1.05s forwards}
-  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizDecision  {animation:igChargeLight 1s ease 1.4s  forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizEvidence  {animation:igChargeLight 1s ease .42s  forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizScreening {animation:igChargeLight 1s ease .84s  forwards}
+  body.is-mobile-play.is-charging .ig-viz.viz-charged #vizDecision  {animation:igChargeLight 1s ease 1.26s forwards}
   body.is-mobile-play.is-charging .ig-viz.viz-charged .tl-cursor{
     transition:none!important;
   }
@@ -1148,13 +1142,11 @@ body.is-playing .ig-cockpit{transition:none!important;opacity:0!important;pointe
 /* ── Caption transition: slower, smoother fade ── */
 .ig-caption{transition:opacity .32s cubic-bezier(.16,1,.3,1)!important;min-height:2.6em!important}
 
-/* ── Subtle pulse animations on screening criterion circles, forms evidence + status dots ── */
+/* ── Subtle pulse animations on screening criterion circles ── */
 .viz-criterion{animation:igCritPulse 5.2s ease-in-out infinite;will-change:opacity}
 @keyframes igCritPulse{0%,100%{opacity:.88}50%{opacity:1}}
 .viz-evidence{animation:igEvidencePulse 4.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center;will-change:opacity,transform}
 @keyframes igEvidencePulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}
-.viz-form-doc>circle{animation:igStatusPulse 3.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center;will-change:opacity,transform}
-@keyframes igStatusPulse{0%,100%{opacity:.78;transform:scale(1)}50%{opacity:1;transform:scale(1.22)}}
 
 /* ── Desktop walkthrough: more horizontal space, caption pinned just above viz ── */
 @media(min-width:741px){
@@ -1475,7 +1467,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 <section class="ig-stage" id="igStage" aria-label="Damaros walkthrough" aria-hidden="true">
   <p class="ig-caption" id="igCaption" aria-live="polite" aria-atomic="true"></p>
   <div class="ig-viz-wrap">
-    <svg class="ig-viz" id="igViz" viewBox="11 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Population, Screening, Forms, Replay">
+    <svg class="ig-viz" id="igViz" viewBox="11 0 768 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provenance graph: Protocol, Evidence, Screening, Replay">
       <g class="viz-layer" id="vizProtocol" opacity="0">
         <!-- Top protocol (88, 132) -->
         <circle class="viz-origin-glow" cx="88" cy="132" r="30"/>
@@ -1523,10 +1515,10 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           <circle cx="93" cy="273" r="1.1"/>
         </g>
       </g>
-      <g class="viz-layer" id="vizPopulation" opacity="0">
-        <line class="viz-conn-solid" x1="118" y1="200" x2="198" y2="200"/>
+      <g class="viz-layer" id="vizEvidence" opacity="0">
+        <line class="viz-conn-solid" x1="118" y1="200" x2="247" y2="200"/>
       </g>
-      <g class="viz-layer" id="vizScreening" opacity="0" transform="translate(-11 0)">
+      <g class="viz-layer" id="vizScreening" opacity="0" transform="translate(87 0)">
         <line class="viz-conn" x1="389" y1="188" x2="375" y2="157"/>
         <line class="viz-conn" x1="395" y1="190" x2="395" y2="158"/>
         <line class="viz-conn" x1="401" y1="188" x2="415" y2="157"/>
@@ -1552,44 +1544,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
         <line class="viz-conn" x1="422" y1="268" x2="430" y2="292"/>
         <circle class="viz-criterion pass" cx="358" cy="298" r="6"/>
         <circle class="viz-criterion fail" cx="432" cy="298" r="6"/>
-        <line class="viz-conn-solid" x1="437" y1="200" x2="505" y2="200"/>
-      </g>
-      <g class="viz-layer" id="vizForms" opacity="0" transform="translate(-16 0)">
-        <g class="viz-form-doc" transform="translate(548 158) rotate(-7)">
-          <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
-          <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
-          <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
-        </g>
-        <g class="viz-form-doc" transform="translate(548 200) rotate(2)">
-          <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
-          <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
-          <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <circle cx="9" cy="15" r="1.6" fill="rgba(250,204,21,.9)"/>
-        </g>
-        <g class="viz-form-doc" transform="translate(548 242) rotate(-4)">
-          <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
-          <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
-          <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-          <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
-        </g>
-        <circle class="viz-evidence" cx="524" cy="142" r="4"/>
-        <circle class="viz-evidence" cx="528" cy="165" r="3"/>
-        <circle class="viz-evidence" cx="522" cy="196" r="4"/>
-        <circle class="viz-evidence" cx="528" cy="220" r="3"/>
-        <circle class="viz-evidence" cx="524" cy="258" r="4"/>
+        <line class="viz-conn-solid" x1="437" y1="200" x2="560" y2="200"/>
       </g>
       <g class="viz-layer" id="vizDecision" opacity="1">
         <circle class="viz-decision-glow" cx="680" cy="168" r="29" opacity=".64"/>
@@ -1611,20 +1566,17 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       </g>
       <!-- Charge flash overlay rings (used during end-of-autoplay synthesis) -->
       <circle class="viz-charge-flash" cx="88" cy="200" r="24"/>
-      <circle class="viz-charge-flash" cx="236" cy="200" r="34"/>
-      <circle class="viz-charge-flash" cx="384" cy="200" r="38"/>
-      <circle class="viz-charge-flash" cx="532" cy="200" r="32"/>
+      <circle class="viz-charge-flash" cx="285" cy="200" r="34"/>
+      <circle class="viz-charge-flash" cx="482" cy="200" r="38"/>
       <circle class="viz-charge-flash" cx="680" cy="200" r="28"/>
       <g class="viz-timeline">
         <line class="tl-track" x1="70" y1="400" x2="698" y2="400"/>
         <circle class="tl-stop" cx="88" cy="400" r="3"/>
         <text class="tl-stop-lbl" x="88" y="416">Protocol</text>
-        <circle class="tl-stop" cx="236" cy="400" r="3"/>
-        <text class="tl-stop-lbl" x="236" y="416">Population</text>
-        <circle class="tl-stop" cx="384" cy="400" r="3"/>
-        <text class="tl-stop-lbl" x="384" y="416">Screening</text>
-        <circle class="tl-stop" cx="532" cy="400" r="3"/>
-        <text class="tl-stop-lbl" x="532" y="416">Forms</text>
+        <circle class="tl-stop" cx="285" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="285" y="416">Evidence</text>
+        <circle class="tl-stop" cx="482" cy="400" r="3"/>
+        <text class="tl-stop-lbl" x="482" y="416">Screening</text>
         <circle class="tl-stop" cx="680" cy="400" r="3"/>
         <text class="tl-stop-lbl" x="680" y="416">Replay</text>
         <circle class="tl-cursor" id="igTlCursor" cx="88" cy="400" r="5.5"/>
@@ -1698,10 +1650,10 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
             <circle cx="93" cy="273" r="1.1"/>
           </g>
         </g>
-        <g class="viz-layer" id="cvizPopulation" opacity="1">
-          <line class="viz-conn-solid" x1="118" y1="200" x2="198" y2="200"/>
+        <g class="viz-layer" id="cvizEvidence" opacity="1">
+          <line class="viz-conn-solid" x1="118" y1="200" x2="247" y2="200"/>
         </g>
-        <g class="viz-layer" id="cvizScreening" opacity="1" transform="translate(-11 0)">
+        <g class="viz-layer" id="cvizScreening" opacity="1" transform="translate(87 0)">
           <line class="viz-conn" x1="389" y1="188" x2="375" y2="157"/>
           <line class="viz-conn" x1="395" y1="190" x2="395" y2="158"/>
           <line class="viz-conn" x1="401" y1="188" x2="415" y2="157"/>
@@ -1727,44 +1679,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           <line class="viz-conn" x1="422" y1="268" x2="430" y2="292"/>
           <circle class="viz-criterion pass" cx="358" cy="298" r="6"/>
           <circle class="viz-criterion fail" cx="432" cy="298" r="6"/>
-          <line class="viz-conn-solid" x1="437" y1="200" x2="505" y2="200"/>
-        </g>
-        <g class="viz-layer" id="cvizForms" opacity="1" transform="translate(-16 0)">
-          <g class="viz-form-doc" transform="translate(548 158) rotate(-7)">
-            <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
-            <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
-            <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
-          </g>
-          <g class="viz-form-doc" transform="translate(548 200) rotate(2)">
-            <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
-            <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
-            <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <circle cx="9" cy="15" r="1.6" fill="rgba(250,204,21,.9)"/>
-          </g>
-          <g class="viz-form-doc" transform="translate(548 242) rotate(-4)">
-            <rect x="-13" y="-14" width="26" height="32" rx="1.5" fill="rgba(123,150,178,.18)" stroke="rgba(169,192,214,.55)" stroke-width=".9"/>
-            <line x1="-9" y1="-7" x2="9" y2="-7" stroke="rgba(169,192,214,.65)" stroke-width=".7"/>
-            <line x1="-9" y1="-3" x2="6" y2="-3" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="1" x2="8" y2="1" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="5" x2="4" y2="5" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="9" x2="7" y2="9" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <line x1="-9" y1="13" x2="3" y2="13" stroke="rgba(169,192,214,.45)" stroke-width=".6"/>
-            <circle cx="9" cy="15" r="1.6" fill="rgba(74,222,128,.9)"/>
-          </g>
-          <circle class="viz-evidence" cx="524" cy="142" r="4"/>
-          <circle class="viz-evidence" cx="528" cy="165" r="3"/>
-          <circle class="viz-evidence" cx="522" cy="196" r="4"/>
-          <circle class="viz-evidence" cx="528" cy="220" r="3"/>
-          <circle class="viz-evidence" cx="524" cy="258" r="4"/>
+          <line class="viz-conn-solid" x1="437" y1="200" x2="560" y2="200"/>
         </g>
         <g class="viz-layer" id="cvizDecision" opacity="1">
           <circle class="viz-decision-glow" cx="680" cy="168" r="29" opacity=".64"/>
@@ -1788,21 +1703,18 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
           <line class="tl-track" x1="70" y1="400" x2="698" y2="400"/>
           <circle class="tl-stop" cx="88" cy="400" r="3"/>
           <text class="tl-stop-lbl" x="88" y="416">Protocol</text>
-          <circle class="tl-stop" cx="236" cy="400" r="3"/>
-          <text class="tl-stop-lbl" x="236" y="416">Population</text>
-          <circle class="tl-stop" cx="384" cy="400" r="3"/>
-          <text class="tl-stop-lbl" x="384" y="416">Screening</text>
-          <circle class="tl-stop" cx="532" cy="400" r="3"/>
-          <text class="tl-stop-lbl" x="532" y="416">Forms</text>
+          <circle class="tl-stop" cx="285" cy="400" r="3"/>
+          <text class="tl-stop-lbl" x="285" y="416">Evidence</text>
+          <circle class="tl-stop" cx="482" cy="400" r="3"/>
+          <text class="tl-stop-lbl" x="482" y="416">Screening</text>
           <circle class="tl-stop" cx="680" cy="400" r="3"/>
           <text class="tl-stop-lbl" x="680" y="416">Replay</text>
         </g>
         <!-- Hot zones (transparent, focus outline disabled) -->
-        <rect class="viz-hotzone" data-stage="protocol"   x="14"  y="95"  width="160" height="220"/>
-        <rect class="viz-hotzone" data-stage="population" x="168" y="85"  width="155" height="240"/>
-        <rect class="viz-hotzone" data-stage="screening"  x="308" y="80"  width="148" height="270"/>
-        <rect class="viz-hotzone" data-stage="forms"      x="462" y="120" width="135" height="190"/>
-        <rect class="viz-hotzone" data-stage="replay"     x="615" y="145" width="135" height="140"/>
+        <rect class="viz-hotzone" data-stage="protocol"  x="14"  y="95"  width="172" height="220"/>
+        <rect class="viz-hotzone" data-stage="evidence"  x="187" y="85"  width="196" height="240"/>
+        <rect class="viz-hotzone" data-stage="screening" x="384" y="80"  width="196" height="270"/>
+        <rect class="viz-hotzone" data-stage="replay"    x="581" y="145" width="169" height="140"/>
       </svg>
     </div>
 
@@ -1832,8 +1744,8 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <h3 class="ig-card-title">Protocol requirements become executable logic.</h3>
       <p class="ig-card-body">Eligibility language locks into versioned trial logic on Trident, with one execution basis per site run via content-hashed, amendment-aware releases.</p>
     </div>
-    <div class="ig-info-card" data-stage="population" id="cardPopulation" role="region" aria-label="Population detail">
-      <div class="ig-card-label">02 · Population</div>
+    <div class="ig-info-card" data-stage="evidence" id="cardEvidence" role="region" aria-label="Evidence detail">
+      <div class="ig-card-label">02 · Evidence</div>
       <h3 class="ig-card-title">Site data becomes trial-ready evidence.</h3>
       <p class="ig-card-body">FHIR, exports, and governed files resolve to one evidence plane before screening, under site-approved access and tenant-isolated cohort sync.</p>
     </div>
@@ -1842,13 +1754,8 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
       <h3 class="ig-card-title">Eligibility resolves at criterion level.</h3>
       <p class="ig-card-body">The engine evaluates each patient on normalized facts, attaches evidence per criterion, and routes edge cases to coordinators. Deterministic, not generative.</p>
     </div>
-    <div class="ig-info-card" data-stage="forms" id="cardForms" role="region" aria-label="Forms detail">
-      <div class="ig-card-label">04 · Forms</div>
-      <h3 class="ig-card-title">Forms intelligence from sponsor packets.</h3>
-      <p class="ig-card-body">AI-assisted assembly maps sponsor CRFs, visit schedules, and source templates to screening evidence, under Luna governance for traceability, PHI gating, and coordinator review before site outputs ship.</p>
-    </div>
     <div class="ig-info-card" data-stage="replay" id="cardReplay" role="region" aria-label="Replay detail">
-      <div class="ig-card-label">05 · Replay</div>
+      <div class="ig-card-label">04 · Replay</div>
       <h3 class="ig-card-title">Every decision is auditable end to end.</h3>
       <p class="ig-card-body">Replay rebuilds protocol version, evidence, and execution context so QA and audit can reproduce what the site decided and why, without manual chart reconstruction.</p>
     </div>
@@ -1884,7 +1791,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   </div>
   <div class="ig-stake">
     <div class="ig-stake-aud">Clinical trial sites</div>
-    <p class="ig-stake-body">Protocol, population, screening, forms, and replay on one governed flow. Less operational drag. Defensible decisions.</p>
+    <p class="ig-stake-body">Protocol, evidence, screening, and replay on one governed flow. Less operational drag. Defensible decisions.</p>
   </div>
   <div class="ig-stake">
     <div class="ig-stake-aud">Research &amp; teaming partners</div>
@@ -1927,10 +1834,10 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 </div>
 <div class="damaros-callout"><strong>No shadow EHR.</strong> Damaros is not a secondary warehouse. Ingest ends in protocol-scoped screening artifacts. Epic remains system of record for longitudinal care.</div>
 <div class="damaros-callout"><strong>Outbound posture.</strong> What leaves the hospital boundary: screening classifications, criterion-level audit references, and operational telemetry. Not raw FHIR dumps or opportunistic bulk extracts for unrelated use.</div>
-<div class="damaros-callout"><strong>Operating model.</strong> Protocol → population → screening → forms → replay at cohort scale. Read-only, tenant-isolated, site-enabled access. Bulk export, when used, follows scheduled bounded cohort refresh, not transactional chart scraping. Only contract-mapped fields persist; everything else is discarded before evaluation.</div></section>
+<div class="damaros-callout"><strong>Operating model.</strong> Protocol → evidence → screening → replay at cohort scale. Read-only, tenant-isolated, site-enabled access. Bulk export, when used, follows scheduled bounded cohort refresh, not transactional chart scraping. Only contract-mapped fields persist; everything else is discarded before evaluation.</div></section>
 
 <section class="damaros-docs-section" id="docs-01"><div class="damaros-docs-section-label">01_PLATFORM_OVERVIEW</div><h2 class="damaros-docs-section-heading">Platform Overview</h2><div class="damaros-docs-body">
-<p>The operating chain is protocol → population → screening → forms → replay. Versioned protocol compiles to rules; FHIR sync (REST bundles and optional bulk export) materializes the cohort; screening records PASS, REVIEW, or FAIL per criterion; forms assemble site outputs; replay preserves evidence for coordinators, QA, and audit.</p>
+<p>The operating chain is protocol → evidence → screening → replay. Versioned protocol compiles to rules; FHIR sync (REST bundles and optional bulk export) materializes the cohort as governed evidence; screening records PASS, REVIEW, or FAIL per criterion; replay preserves the protocol version, evidence, and execution context for coordinators, QA, and audit.</p>
 <p>Production uses SMART on FHIR Backend Services: signed JWT exchanged for an access token (<code>client_credentials</code> + <code>private_key_jwt</code>, RFC 7523). Read-only for population and screening ingest. Tokens stay server-side in process memory, not in browsers or end-user SMART sessions. EHR launch SMART is a separate pattern and outside this submission unless explicitly scoped.</p>
 </div></section>
 
@@ -1941,7 +1848,7 @@ html,body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 <tr><td>PRIMARY_OAUTH_MODEL</td><td><code>client_credentials</code> + JWT client assertion to Epic token URL; PKCE does not apply</td></tr>
 <tr><td>USER_SMART_LAUNCH</td><td>Not used for population sync (FHIR cohort ingest) or screening ingest; out of scope for the Backend Services submission described here (repository contains a non-production reference stub only)</td></tr>
 <tr><td>FHIR_VERSION</td><td>R4</td></tr>
-<tr><td>USE_CASE</td><td>protocol → population → screening → forms → replay at population scale; deterministic eligibility on FHIR-native cohorts; replay and audit lineage; aligns with registry, cohort, and research execution patterns</td></tr>
+<tr><td>USE_CASE</td><td>protocol → evidence → screening → replay at population scale; deterministic eligibility on FHIR-native cohorts; replay and audit lineage; aligns with registry, cohort, and research execution patterns</td></tr>
 <tr><td>AUTH_STANDARD</td><td>SMART on FHIR Backend Services (RFC 7523)</td></tr>
 <tr><td>AUTH_METHOD</td><td>JWT client assertion (<code>urn:ietf:params:oauth:client-assertion-type:jwt-bearer</code>)</td></tr>
 <tr><td>JWT_ALGORITHM</td><td>RS384 (override via <code>DAMAROS_EPIC_JWT_ALGORITHM</code> if Epic requires)</td></tr>
@@ -2382,8 +2289,8 @@ spec:
     </section>
 
     <section class="damaros-docs-section" id="val-05">
-      <div class="damaros-docs-section-label">05_POPULATION_METRICS</div>
-      <h2 class="damaros-docs-section-heading">Population metrics.</h2>
+      <div class="damaros-docs-section-label">05_EVIDENCE_METRICS</div>
+      <h2 class="damaros-docs-section-heading">Evidence metrics.</h2>
       <div class="damaros-docs-body"><p>Measure time and effort to map site data into trial-ready evidence, including missing fields, stale evidence, conflicting records, data-quality issues, and source-lineage completeness.</p></div>
     </section>
 
@@ -2394,31 +2301,25 @@ spec:
     </section>
 
     <section class="damaros-docs-section" id="val-07">
-      <div class="damaros-docs-section-label">07_FORMS_METRICS</div>
-      <h2 class="damaros-docs-section-heading">Forms metrics.</h2>
-      <div class="damaros-docs-body"><p>Measure time to produce coordinator-facing artifacts: screening documentation, missing-field lists, source-documentation aids, schedule traces, and review-ready materials.</p></div>
-    </section>
-
-    <section class="damaros-docs-section" id="val-08">
-      <div class="damaros-docs-section-label">08_REPLAY_METRICS</div>
+      <div class="damaros-docs-section-label">07_REPLAY_METRICS</div>
       <h2 class="damaros-docs-section-heading">Replay metrics.</h2>
       <div class="damaros-docs-body"><p>Measure how quickly and completely Damaros can reconstruct the decision record: protocol version, evidence used, criterion outcome, human review, Trident release, and audit trail.</p></div>
     </section>
 
-    <section class="damaros-docs-section" id="val-09">
-      <div class="damaros-docs-section-label">09_EXECUTION_METRICS</div>
+    <section class="damaros-docs-section" id="val-08">
+      <div class="damaros-docs-section-label">08_EXECUTION_METRICS</div>
       <h2 class="damaros-docs-section-heading">Execution metrics.</h2>
-      <div class="damaros-docs-body"><p>Quantify workflow lift across Protocol, Population, Screening, Forms, and Replay: setup time, mapping effort, screening throughput, REVIEW resolution burden, artifact-generation time, and audit-reconstruction time. The validation claim is not patient matching alone; it is faster trial execution with clearer evidence and a reproducible record.</p></div>
+      <div class="damaros-docs-body"><p>Quantify workflow lift across Protocol, Evidence, Screening, and Replay: setup time, mapping effort, screening throughput, REVIEW resolution burden, and audit-reconstruction time. The validation claim is not patient matching alone; it is faster trial execution with clearer evidence and a reproducible record.</p></div>
     </section>
 
-    <section class="damaros-docs-section" id="val-10">
-      <div class="damaros-docs-section-label">10_REVIEW_DRIVERS</div>
+    <section class="damaros-docs-section" id="val-09">
+      <div class="damaros-docs-section-label">09_REVIEW_DRIVERS</div>
       <h2 class="damaros-docs-section-heading">REVIEW drivers.</h2>
       <div class="damaros-docs-body"><p>Classify unresolved work into useful categories: missing evidence, stale evidence, conflicting records, ambiguous values, unmapped fields, protocol ambiguity, investigator judgment, or standards gap.</p></div>
     </section>
 
-    <section class="damaros-docs-section" id="val-11">
-      <div class="damaros-docs-section-label">11_VALIDATION_OUTPUTS</div>
+    <section class="damaros-docs-section" id="val-10">
+      <div class="damaros-docs-section-label">10_VALIDATION_OUTPUTS</div>
       <h2 class="damaros-docs-section-heading">Validation outputs.</h2>
       <div class="damaros-docs-body">
         <p>The site receives a validation packet containing:</p>
@@ -2428,7 +2329,6 @@ spec:
           <li>mapping report</li>
           <li>screening outputs</li>
           <li>adjudication comparison where available</li>
-          <li>forms summary</li>
           <li>REVIEW drivers</li>
           <li>discrepancy categories</li>
           <li>execution metrics</li>
@@ -2437,26 +2337,26 @@ spec:
       </div>
     </section>
 
-    <section class="damaros-docs-section" id="val-12">
-      <div class="damaros-docs-section-label">12_DATA_PATHWAYS</div>
+    <section class="damaros-docs-section" id="val-11">
+      <div class="damaros-docs-section-label">11_DATA_PATHWAYS</div>
       <h2 class="damaros-docs-section-heading">Data pathways.</h2>
       <div class="damaros-docs-body"><p>Epic Backend Services uses read-only, site-approved FHIR access. Governed structured extract supports de-identified, limited-dataset, site-hosted, or hybrid workflows. Both pathways preserve tenant binding, evidence lineage, deterministic screening, human review boundaries, and replay.</p></div>
     </section>
 
-    <section class="damaros-docs-section" id="val-13">
-      <div class="damaros-docs-section-label">13_WHAT_THIS_DOES_NOT_CLAIM</div>
+    <section class="damaros-docs-section" id="val-12">
+      <div class="damaros-docs-section-label">12_WHAT_THIS_DOES_NOT_CLAIM</div>
       <h2 class="damaros-docs-section-heading">What this does not claim.</h2>
       <div class="damaros-docs-body"><p>Not FDA validation. Not autonomous enrollment. Not sponsor endorsement. Not replacement of coordinator or PI judgment. Not production EHR readiness by itself.</p></div>
     </section>
 
-    <section class="damaros-docs-section" id="val-14">
-      <div class="damaros-docs-section-label">14_NEXT_INSTITUTIONAL_STEP</div>
+    <section class="damaros-docs-section" id="val-13">
+      <div class="damaros-docs-section-label">13_NEXT_INSTITUTIONAL_STEP</div>
       <h2 class="damaros-docs-section-heading">Next institutional step.</h2>
-      <div class="damaros-docs-body"><p>Pick one closed protocol, confirm the cohort, choose the data pathway, document the baseline workflow, and run Damaros across Protocol, Population, Screening, Forms, and Replay.</p></div>
+      <div class="damaros-docs-body"><p>Pick one closed protocol, confirm the cohort, choose the data pathway, document the baseline workflow, and run Damaros across Protocol, Evidence, Screening, and Replay.</p></div>
     </section>
 
-    <section class="damaros-docs-section" id="val-15">
-      <div class="damaros-docs-section-label">15_CONTACT</div>
+    <section class="damaros-docs-section" id="val-14">
+      <div class="damaros-docs-section-label">14_CONTACT</div>
       <h2 class="damaros-docs-section-heading">Contact</h2>
       <div class="damaros-contact-block">
         <div>Website &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://damaros.ai">damaros.ai</a></div>
@@ -2476,25 +2376,23 @@ spec:
   // Homepage v3 - Provenance substrate (revised)
   // ================================================================
 
-  const igTimelineX = { protocol: 88, population: 236, screening: 384, forms: 532, replay: 680 };
+  const igTimelineX = { protocol: 88, evidence: 285, screening: 482, replay: 680 };
 
   const igAutoplayBeats = [
-    { stageId: "protocol",   caption: "Encode protocol requirements into executable logic.",            cursorX: igTimelineX.protocol,   ms: 2660 },
-    { stageId: "population", caption: "Unify fragmented site data into clear evidence.",               cursorX: igTimelineX.population, ms: 2700 },
-    { stageId: "screening",  caption: "Run criterion-level review across every patient.",              cursorX: igTimelineX.screening,  ms: 2720 },
-    { stageId: "forms",      caption: "Faster trial documentation with AI-assisted assembly.", cursorX: igTimelineX.forms,      ms: 2640 },
-    { stageId: "replay",     caption: "Rebuild any decision record for audit and QA.",                 cursorX: igTimelineX.replay, ms: 2600 },
-    { stageId: "_charge",    caption: "One execution engine. Criterion-level eligibility at institutional scale.", cursorX: igTimelineX.replay, ms: 2580, charge: true }
+    { stageId: "protocol",  caption: "Encode protocol requirements into executable logic.",            cursorX: igTimelineX.protocol,  ms: 2660 },
+    { stageId: "evidence",  caption: "Unify fragmented site data into clear evidence.",                cursorX: igTimelineX.evidence,  ms: 2700 },
+    { stageId: "screening", caption: "Run criterion-level review across every patient.",              cursorX: igTimelineX.screening, ms: 2720 },
+    { stageId: "replay",    caption: "Rebuild any decision record for audit and QA.",                 cursorX: igTimelineX.replay,    ms: 2600 },
+    { stageId: "_charge",   caption: "One execution engine. Criterion-level eligibility at institutional scale.", cursorX: igTimelineX.replay, ms: 2580, charge: true }
   ];
 
   // Mobile walkthrough: crop around each symbol and its timeline type label,
   // then sweep the SVG viewBox left-to-right before zooming back to the full chain.
   const igMobileStageCrops = {
-    protocol:   { x: -34, y: 68, w: 244, h: 366 },
-    population: { x: 112, y: 68, w: 248, h: 366 },
-    screening:  { x: 258, y: 68, w: 256, h: 366 },
-    forms:      { x: 414, y: 68, w: 246, h: 366 },
-    replay:     { x: 560, y: 68, w: 242, h: 366 }
+    protocol:  { x: -37, y: 68, w: 250, h: 366 },
+    evidence:  { x: 160, y: 68, w: 250, h: 366 },
+    screening: { x: 357, y: 68, w: 250, h: 366 },
+    replay:    { x: 555, y: 68, w: 250, h: 366 }
   };
 
   function _mobileStageViewBox(stageId) {
@@ -2504,20 +2402,18 @@ spec:
   }
 
   const igMobileViewBoxes = {
-    protocol:   _mobileStageViewBox("protocol"),
-    population: _mobileStageViewBox("population"),
-    screening:  _mobileStageViewBox("screening"),
-    forms:      _mobileStageViewBox("forms"),
-    replay:     _mobileStageViewBox("replay"),
-    full:       "11 0 768 450"
+    protocol:  _mobileStageViewBox("protocol"),
+    evidence:  _mobileStageViewBox("evidence"),
+    screening: _mobileStageViewBox("screening"),
+    replay:    _mobileStageViewBox("replay"),
+    full:      "11 0 768 450"
   };
 
   const igMobileHotzonePads = {
-    protocol:   { dx: -10, dy: -8, dw: 18, dh: 16 },
-    population: { dx: -8,  dy: -6, dw: 16, dh: 12 },
-    screening:  { dx: -8,  dy: -6, dw: 16, dh: 12 },
-    forms:      { dx: -8,  dy: -6, dw: 16, dh: 12 },
-    replay:     { dx: -8,  dy: -6, dw: 16, dh: 12 }
+    protocol:  { dx: -10, dy: -8, dw: 18, dh: 16 },
+    evidence:  { dx: -8,  dy: -6, dw: 16, dh: 12 },
+    screening: { dx: -8,  dy: -6, dw: 16, dh: 12 },
+    replay:    { dx: -8,  dy: -6, dw: 16, dh: 12 }
   };
   const igHotzoneBase = {};
 
@@ -2578,13 +2474,12 @@ spec:
   }
 
   const igChargeTimelineStops = [
-    { stageId: "protocol",   x: igTimelineX.protocol,   ms: 0 },
-    { stageId: "population", x: igTimelineX.population, ms: 350 },
-    { stageId: "screening",  x: igTimelineX.screening,  ms: 700 },
-    { stageId: "forms",      x: igTimelineX.forms,      ms: 1050 },
-    { stageId: "replay",     x: igTimelineX.replay,     ms: 1400 }
+    { stageId: "protocol",  x: igTimelineX.protocol,  ms: 0 },
+    { stageId: "evidence",  x: igTimelineX.evidence,  ms: 420 },
+    { stageId: "screening", x: igTimelineX.screening, ms: 840 },
+    { stageId: "replay",    x: igTimelineX.replay,    ms: 1260 }
   ];
-  const igChargeTimelineMs = 2400;
+  const igChargeTimelineMs = 2200;
   const igChargeSweepMs = igChargeTimelineStops[igChargeTimelineStops.length - 1].ms;
   const igChargeProtocolHoldMs = 320;
 
@@ -2714,18 +2609,15 @@ spec:
   }
 
   // Stagger pulse animations with random per-element delays so the screening criterion
-  // circles, forms evidence dots, and form-doc status dots feel organic instead of
-  // uniformly pulsing in lockstep. Negative delays start each animation already
-  // in-progress, so there's no synchronized "everything starts now" moment on load.
+  // circles and evidence dots feel organic instead of uniformly pulsing in lockstep.
+  // Negative delays start each animation already in-progress, so there's no synchronized
+  // "everything starts now" moment on load.
   function _randomizeVizPulses() {
     document.querySelectorAll(".viz-criterion").forEach(function (el) {
       el.style.animationDelay = (-Math.random() * 5.2).toFixed(2) + "s";
     });
     document.querySelectorAll(".viz-evidence").forEach(function (el) {
       el.style.animationDelay = (-Math.random() * 4.4).toFixed(2) + "s";
-    });
-    document.querySelectorAll(".viz-form-doc > circle").forEach(function (el) {
-      el.style.animationDelay = (-Math.random() * 3.8).toFixed(2) + "s";
     });
   }
 
@@ -2893,10 +2785,10 @@ spec:
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
-  function initPopulationParticles() {
+  function initEvidenceParticles() {
     const layers = [
-      document.getElementById("vizPopulation"),
-      document.getElementById("cvizPopulation")
+      document.getElementById("vizEvidence"),
+      document.getElementById("cvizEvidence")
     ];
     const eligibleSet = new Set([3, 7, 11, 14, 18, 22, 26, 31, 37, 42, 48, 55, 61]);
     const nearSet = new Set([5, 9, 13, 20, 28, 35, 44, 52, 58]);
@@ -2905,7 +2797,7 @@ spec:
       const rng = mulberry32(42);
       const frag = document.createDocumentFragment();
       for (let i = 0; i < 65; i++) {
-        const x = 171 + rng() * 130;
+        const x = 220 + rng() * 130;
         const y = 95 + rng() * 215;
         const r = 1.6 + rng() * 1.6;
         const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -2924,9 +2816,9 @@ spec:
 
   // ── Stage focus (main viz, used during autoplay) ──
   const vizLayerIds = {
-    main: { protocol: "vizProtocol", population: "vizPopulation", screening: "vizScreening", forms: "vizForms", replay: "vizDecision" }
+    main: { protocol: "vizProtocol", evidence: "vizEvidence", screening: "vizScreening", replay: "vizDecision" }
   };
-  const allStages = ["protocol", "population", "screening", "forms", "replay"];
+  const allStages = ["protocol", "evidence", "screening", "replay"];
 
   function setMainVizFocus(stageId) {
     // During autoplay, light up the active stage in sync with its caption.
@@ -3388,7 +3280,7 @@ spec:
     if (typeof themeMq.addEventListener === "function") themeMq.addEventListener("change", rebuildMonogramOnTheme);
     else if (typeof themeMq.addListener === "function") themeMq.addListener(rebuildMonogramOnTheme);
   })();
-  initPopulationParticles();
+  initEvidenceParticles();
   _randomizeVizPulses();
   updateHeroCue();
   _applyMobileHotzones(_isMobileLayout());

@@ -22,9 +22,8 @@ Adapted from Palantir's briefing register for Damaros product, docs, and cockpit
 | **Trident** | Trial knowledge that sharpens with releases and site runs; compounds into executable logic |
 | **Luna** | Governance harness for AI-assisted, traceable work |
 | **Protocol** | Eligibility language locked to Trident releases |
-| **Population** | Evidence plane before screening |
+| **Evidence** | Site data resolved into one trial-ready evidence plane before screening |
 | **Screening** | Deterministic PASS / REVIEW / FAIL per criterion |
-| **Forms** | Coordinator and sponsor artifacts from lineage |
 | **Replay** | Signed reconstruction of version, evidence, context |
 
 ## Hover card template (cockpit)
