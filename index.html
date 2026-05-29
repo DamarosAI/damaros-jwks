@@ -19,7 +19,7 @@
   body { overflow-x: hidden; }
   .wrap { max-width: 1480px; margin: 0 auto; padding: 0 clamp(1.1rem, 3.4vw, 2.6rem); }
 
-  /* monogram field — strong on the left, fading toward the animation (right) */
+  /* monogram field - strong on the left, fading toward the animation (right) */
   .mono-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
     -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 52%);
             mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 52%); }
@@ -29,13 +29,13 @@
   .mono-grid img { width: 112px; height: 112px; object-fit: contain; filter: var(--mono-filter); }
   @keyframes drift { 0%{transform:rotate(-8deg) translate3d(0,0,0)} 50%{transform:rotate(-8deg) translate3d(34px,-8px,0)} 100%{transform:rotate(-8deg) translate3d(0,0,0)} }
 
-  /* section selector — the execution spine, centred under the caption, dropped a little lower */
-  .spine { margin-top: 2.2rem; z-index: 5; display: flex; flex-direction: column; align-items: center; gap: .85rem; }
-  .spine-exec { position: relative; display: inline-flex; justify-content: center; gap: clamp(1.1rem, 2.3vw, 1.9rem); }
-  .spine-exec::before { content: ''; position: absolute; left: 7%; right: 7%; top: 5px; height: 1px;
+  /* section selector - the execution spine, centred under the caption, dropped a little lower */
+  .spine { margin-top: 2.5rem; z-index: 5; display: flex; flex-direction: column; align-items: stretch; gap: .8rem; }
+  .spine-exec { position: relative; display: flex; justify-content: space-between; }
+  .spine-exec::before { content: ''; position: absolute; left: 2rem; right: 2rem; top: 5px; height: 1px;
     background: linear-gradient(90deg, transparent, var(--bd) 16%, var(--bd) 84%, transparent); z-index: 0; }
   .enode { appearance: none; background: none; border: 0; cursor: pointer; position: relative; z-index: 1;
-    display: flex; flex-direction: column; align-items: center; gap: .42rem; flex: 0 0 auto; }
+    display: flex; flex-direction: column; align-items: center; gap: .42rem; flex: 0 0 auto; width: 4rem; }
   .edot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--bd-strong); background: var(--bg);
     transition: background var(--t) var(--ease), border-color var(--t) var(--ease), box-shadow var(--t) var(--ease), transform var(--t) var(--ease); }
   .enode .enum { font-family: var(--fm); font-size: .5rem; letter-spacing: .1em; color: var(--fg-3); transition: color var(--t) var(--ease); }
@@ -59,17 +59,17 @@
   #field { position: absolute; top: 0; bottom: 0; left: 40%; width: 60%; height: 100%; display: block; z-index: 1; }
 
   /* left column */
-  .hero-inner { position: absolute; left: clamp(1.2rem, 4vw, 3.4rem); top: 46%; transform: translateY(-50%); z-index: 5;
-    width: min(38%, 460px); display: flex; flex-direction: column; }
+  .hero-inner { position: absolute; left: clamp(1.2rem, 4vw, 3.4rem); top: 50%; transform: translateY(-50%); z-index: 5;
+    width: clamp(300px, 33vw, 440px); display: flex; flex-direction: column; }
   .wordmark { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--fh); font-weight: 700;
     font-size: clamp(3rem, 6.4vw, 5.4rem); line-height: .88; letter-spacing: -.015em; text-shadow: var(--glow); }
   .wordmark .dmx-dot { width: 11px; height: 11px; }
   .hero-eyebrow { margin-top: 1rem; font-family: var(--fm); font-size: .64rem; font-weight: 600; letter-spacing: .2em;
     text-transform: uppercase; color: var(--accent-2); }
-  .hero-tag { margin-top: .95rem; font-size: clamp(.96rem, 1.25vw, 1.1rem); line-height: 1.54; color: var(--fg-2); max-width: 40ch; }
+  .hero-tag { margin-top: .78rem; font-size: clamp(.96rem, 1.25vw, 1.1rem); line-height: 1.54; color: var(--fg-2); }
   .hero-tag b { color: var(--fg); font-weight: 500; }
 
-  /* pillar menu — drives the field */
+  /* pillar menu - drives the field */
   .pillars { margin-top: 2.1rem; display: flex; flex-direction: column; gap: 1.25rem; }
   .pgroup { display: flex; flex-direction: column; gap: .15rem; }
   .pg-label { font-family: var(--fm); font-size: .54rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
@@ -83,29 +83,29 @@
   .prow.active { color: var(--fg); border-left-color: var(--accent-2); }
   .prow.active .pn { color: var(--accent-2); }
 
-  /* caption — active pillar detail. Re-plays a digital phase-in on each pillar switch. */
-  .caption { margin-top: 1.05rem; max-width: 40ch; }
-  .caption.swap { animation: phaseIn .5s linear; }
-  /* shared glitch / phase-in — hard clip slices + jitter + flicker, settles fast (no bounce) */
-  @keyframes phaseIn {
-    0%   { opacity: 0; transform: translate3d(-6px,0,0); clip-path: inset(0 0 92% 0); }
-    18%  { opacity: 1; transform: translate3d(4px,0,0);  clip-path: inset(0 0 0 0); }
-    32%  { opacity: .25; transform: translate3d(-3px,0,0); clip-path: inset(58% 0 0 0); }
-    46%  { opacity: 1; transform: translate3d(2px,0,0);  clip-path: inset(0 0 36% 0); }
-    60%  { opacity: .6; transform: translate3d(-1px,0,0); clip-path: inset(22% 0 0 0); }
-    74%  { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
-    82%  { opacity: .85; }
-    100% { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+  /* caption - active pillar detail. Re-plays a digital phase-in on each pillar switch. */
+  .caption { margin-top: 1.7rem; }
+  /* caption - words ignite in a steel-blue wave (spreading activation, mirrors the network) then settle */
+  .ig { animation: ignite .5s var(--ease) both; animation-delay: var(--d, 0s); }
+  @keyframes ignite {
+    0%   { opacity: 0; color: var(--accent-2); text-shadow: 0 0 12px var(--accent-2), 0 0 7px var(--accent-2); }
+    45%  { opacity: 1; color: var(--accent-2); text-shadow: 0 0 9px var(--accent-2); }
+    100% { opacity: 1; color: inherit; text-shadow: none; }
   }
   .caption .crule { width: 24px; height: 2px; background: var(--accent-2); margin-bottom: .7rem; }
   .c-label { font-family: var(--fm); font-size: .56rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-2); }
   .c-title { font-family: var(--fh); font-weight: 600; font-size: clamp(1.25rem, 1.7vw, 1.65rem); letter-spacing: -.01em; line-height: 1.05; margin: .35rem 0 .4rem; height: 2.1em; }
-  .c-desc { font-size: clamp(.86rem, 1.05vw, .98rem); line-height: 1.52; color: var(--fg-2); margin: 0; height: 4.9em; }
+  .c-desc { font-size: clamp(.86rem, 1.05vw, .98rem); line-height: 1.52; color: var(--fg-2); margin: 0; height: 4.3em; }
 
-  /* scroll-reveal — same digital phase-in as the caption */
+  /* scroll-reveal - clean steel-blue glow-in (no blur), same family as the caption ignite */
   .reveal { opacity: 0; }
-  .reveal.in { animation: phaseIn .55s linear both; }
+  .reveal.in { animation: glowIn .6s var(--ease) both; }
   .reveal.s1.in { animation-delay: .12s; } .reveal.s2.in { animation-delay: .24s; } .reveal.s3.in { animation-delay: .36s; }
+  @keyframes glowIn {
+    0%   { opacity: 0; filter: drop-shadow(0 0 9px rgba(169,192,214,.55)); }
+    55%  { opacity: 1; filter: drop-shadow(0 0 6px rgba(169,192,214,.4)); }
+    100% { opacity: 1; filter: none; }
+  }
   .draw { width: 110px; height: 1px; background: var(--accent-2); opacity: .55; transform: scaleX(0); transform-origin: left;
     transition: transform .8s var(--ease) .1s; }
   .draw.in { transform: scaleX(1); }
@@ -154,6 +154,7 @@
   .stat .snum { font-family: var(--fh); font-weight: 700; font-size: clamp(2rem,4.5vw,3.2rem); line-height: 1; color: var(--accent-2); letter-spacing: -.02em; }
   .stat .slbl { font-size: .82rem; line-height: 1.45; color: var(--fg-2); }
   .story-turn { color: var(--fg); font-size: clamp(1.05rem,1.6vw,1.34rem); line-height: 1.55; max-width: 56ch; margin: 0 0 clamp(2.8rem,7vh,5rem); }
+  .story-turn em { font-style: normal; color: var(--accent-2); }
   .who .eyebrow { display: block; margin-bottom: 1.2rem; }
   .who-rows { display: flex; flex-direction: column; }
   .who-row { display: grid; grid-template-columns: 210px 1fr; gap: 1.4rem; padding: 1.1rem 0; border-top: 1px solid var(--bd-soft); }
@@ -199,6 +200,15 @@
   .botbar .bc a:hover { color: var(--fg); }
   .botbar .cp { justify-self: end; }
 
+  /* short desktop windows - compact the hero so the centred column always clears the bottom bar */
+  @media (min-width: 901px) and (max-height: 660px) {
+    .wordmark { font-size: clamp(2.6rem, 5.2vw, 3.8rem); }
+    .hero-tag { margin-top: .6rem; line-height: 1.46; }
+    .caption { margin-top: 1.1rem; }
+    .c-desc { height: 4em; }
+    .spine { margin-top: 1.5rem; gap: .65rem; }
+  }
+
   @media (max-width: 900px) {
     .hero { height: auto; min-height: 100svh; overflow: visible; display: flex; flex-direction: column; padding: 78px 0 92px; }
     .mono-bg { -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 24%, transparent 62%); mask-image: linear-gradient(180deg, #000 0%, #000 24%, transparent 62%); }
@@ -243,7 +253,6 @@
 
     <div class="hero-inner">
       <span class="wordmark">Damaros<span class="dmx-dot"></span></span>
-      <p class="hero-tag">Damaros is the <b>execution OS</b> for clinical trials inside the hospital. It compiles complex eligibility, resolves fragmented evidence, and screens every patient deterministically.</p>
 
       <div class="caption">
         <div class="crule"></div>
@@ -283,7 +292,7 @@
         <div class="stat"><span class="snum">&lt;5%</span><span class="slbl">of eligible patients are ever approached</span></div>
       </div>
 
-      <p class="story-turn reveal">As trial complexity, coordinator burden, and the pace of drug discovery accelerate, these gaps compound. Damaros is the substrate that scales execution to keep up, so a hospital can run trials at the pace of the technology driving them.</p>
+      <p class="story-turn reveal">As trial complexity, coordinator burden, and the pace of drug discovery accelerate, these gaps compound. Damaros is the <em>execution OS</em> for clinical trials, built to run inside the hospital, so a site can keep pace with the technology driving discovery.</p>
 
       <div class="who reveal">
         <span class="eyebrow">Built for everyone on the trial</span>
@@ -300,7 +309,7 @@
     <img class="finale-mono" src="assets/damaros-white-transparent.png" alt="" aria-hidden="true">
     <div class="finale-rule reveal"></div>
     <h2 class="reveal">Clinical trials, <em>rewired<span class="dmx-dot"></span></em></h2>
-    <a class="btn-primary reveal s2" href="/cdn-cgi/l/email-protection#0c6d62657e7968644c686d616d7e637f226d65337f796e66696f7831486d616d7e637f">Get in touch</a>
+    <a class="btn-primary reveal s2" href="/cdn-cgi/l/email-protection#2647484f5453424e6642474b4754495508474f195553444c4345521b62474b47544955">Get in touch</a>
   </section>
 </main>
 
@@ -316,7 +325,7 @@
   var grid = document.getElementById("monoGrid");
   for (var i = 0; i < 90; i++) { var im = document.createElement("img"); im.src = "assets/damaros-white-transparent.png"; im.alt = ""; grid.appendChild(im); }
 
-  /* geocache — full country name */
+  /* geocache - full country name */
   (function () {
     var el = document.getElementById("geo");
     var ac = new AbortController();
@@ -355,7 +364,9 @@
   /* canvas */
   var canvas = document.getElementById("field"), ctx = canvas.getContext("2d");
   var TOUCH = matchMedia("(hover: none), (pointer: coarse)").matches;
-  var DPR = Math.min(2, window.devicePixelRatio || 1), W = 0, H = 0, N = 120;
+  var SMALL = window.innerWidth <= 700;            /* phones: fewer + smaller dots */
+  var RSCALE = SMALL ? 0.66 : 1;
+  var DPR = Math.min(2, window.devicePixelRatio || 1), W = 0, H = 0, N = SMALL ? 84 : 120;
   var parts = [];
   for (var p = 0; p < N; p++) {
     var grp = p < N * 0.45 ? 0 : (p < N * 0.78 ? 1 : 2);
@@ -372,8 +383,16 @@
   }
 
   function computeTargets(id) {
-    var cx = W / 2, cy = H * 0.5, R = Math.min(W, H) * 0.4, pad = Math.min(W, H) * 0.12;
-    decor = { type: id, cx: cx, cy: cy, R: R, pad: pad };
+    /* On desktop the canvas overlaps the text column box; keep the formation entirely
+       to the RIGHT of the column (with a gap) so dots never overlap the copy at any width. */
+    var leftBound = 0;
+    if (window.innerWidth > 900) {
+      var hi = document.querySelector(".hero-inner");
+      if (hi) { var hr = hi.getBoundingClientRect(), cr = canvas.getBoundingClientRect(); leftBound = Math.max(0, (hr.right - cr.left) + 40); }
+    }
+    var availW = Math.max(80, W - leftBound);
+    var cx = leftBound + availW / 2, cy = H * 0.5, R = Math.min(availW, H) * 0.4, pad = Math.min(availW, H) * 0.12;
+    decor = { type: id, cx: cx, cy: cy, R: R, pad: pad, leftBound: leftBound, availW: availW };
     if (id === "trident") {
       parts.forEach(function (q, i) { var a = i * 2.39996, rr = Math.sqrt(i / N) * R * 1.02; q.tx = cx + Math.cos(a) * rr; q.ty = cy + Math.sin(a) * rr * 0.84; });
       decor.tneighbors = [];
@@ -417,14 +436,22 @@
         q.tx = c.x + Math.cos(a) * rr; q.ty = c.y + Math.sin(a) * rr * 0.9;
       });
     } else if (id === "replay") {
-      var amp = Math.min(W, H) * 0.11, teeth = 7;
-      parts.forEach(function (q, i) {
-        var fx = i / (N - 1);
-        q.tx = pad + fx * (W - 2 * pad);
-        var tri = Math.abs(((fx * teeth) % 1) * 2 - 1);   /* triangle wave 0..1 */
-        q.ty = cy + (tri * 2 - 1) * amp;
-      });
+      parts.forEach(function (q, i) { var fx = i / (N - 1); q.tx = leftBound + pad + fx * (availW - 2 * pad); q.ty = cy + (i % 2 === 0 ? -1 : 1) * R * 0.06; });
     }
+  }
+
+  /* build text as a wave of word-spans that ignite in sequence (spreading activation) */
+  function fillWave(el, text, start, step) {
+    el.textContent = "";
+    var words = String(text).split(" ");
+    for (var i = 0; i < words.length; i++) {
+      var s = document.createElement("span");
+      s.className = "ig"; s.textContent = words[i];
+      s.style.setProperty("--d", ((start + i) * step).toFixed(3) + "s");
+      el.appendChild(s);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    }
+    return start + words.length;
   }
 
   function setPillar(id, byUser) {
@@ -432,15 +459,14 @@
     current = id; morph = 0; computeTargets(id);
     [].slice.call(document.querySelectorAll(".enode, .srail")).forEach(function (b) { b.classList.toggle("active", b.dataset.id === id); });
     var P = PILLARS[id];
-    var cap = document.querySelector(".caption");
-    document.getElementById("cLabel").textContent = P.label;
-    document.getElementById("cTitle").textContent = P.title;
-    document.getElementById("cDesc").textContent = P.desc;
-    if (cap) { cap.classList.remove("swap"); void cap.offsetWidth; cap.classList.add("swap"); }
+    var step = 0.034, idx = 0;
+    idx = fillWave(document.getElementById("cLabel"), P.label, idx, step);
+    idx = fillWave(document.getElementById("cTitle"), P.title, idx, step);
+    fillWave(document.getElementById("cDesc"), P.desc, idx, step);
     if (byUser) autoPause = performance.now() + 11000;
   }
 
-  /* mouse (canvas coords) — pointer interactions are disabled entirely on touch devices */
+  /* mouse (canvas coords) - pointer interactions are disabled entirely on touch devices */
   var mouse = { x: -9999, y: -9999, inside: false };
   if (!TOUCH) {
     canvas.addEventListener("pointermove", function (ev) {
@@ -483,13 +509,12 @@
       var dir = hov ? -1 : 1;
       sweep += dir * dt * 0.16;
       if (sweep > 1) sweep -= 1; if (sweep < 0) sweep += 1;
-      px = pad + sweep * (W - 2 * pad);
+      px = (decor.leftBound || 0) + pad + sweep * ((decor.availW || W) - 2 * pad);
     }
 
     /* ---- decor ---- */
     ctx.save(); ctx.lineWidth = 1;
     if (decor.type === "trident") {
-      if (TOUCH) { for (var lt = 0; lt < N; lt++) if (parts[lt].lit) tact[lt] = 1; }
       if (hov) { var bi = -1, bd = 1e9; var tr = Math.max(18, Math.min(42, R * 0.17)); for (var ai = 0; ai < N; ai++) { var ddx = parts[ai].x - mx, ddy = parts[ai].y - my, dd = ddx * ddx + ddy * ddy; if (dd < bd) { bd = dd; bi = ai; } } if (bi >= 0 && bd < tr * tr) tact[bi] = 1; }
       if (decor.tneighbors) {
         var nxt = []; for (var ui = 0; ui < N; ui++) { var bv = (tact[ui] || 0) * 0.9; var nbs = decor.tneighbors[ui]; for (var ni = 0; ni < nbs.length; ni++) { var nv = (tact[nbs[ni]] || 0) * 0.8; if (nv > bv) bv = nv; } nxt[ui] = bv; } tact = nxt;
@@ -550,18 +575,16 @@
       if (current === "trident" && (tact[qi] || 0) > 0.05) { alpha = Math.min(1, alpha + tact[qi] * 0.6); rad += tact[qi] * 2.4; col = COL.accent2; }
       if (current === "evidence" && !q.ridge) { alpha *= 0.5; rad *= 0.82; }
       if (current === "evidence" && hov) { var dXe = Math.abs(q.x - mx); if (dXe < R * 0.1) { var be = 1 - dXe / (R * 0.1); alpha = Math.min(1, alpha + be * 0.55); rad += be * 1.8; col = COL.accent2; } }
-      if (current === "evidence" && TOUCH && q.ridge && q.lit) { alpha = Math.min(1, alpha + 0.5); rad += 1.7; col = COL.accent2; }
       if (current === "protocol" && hov) { var dl = Math.sqrt((q.x - mx) * (q.x - mx) + (q.y - my) * (q.y - my)); var lit = Math.max(0, 1 - dl / (R * 0.42)); if (lit > 0.4) { sq = true; bright = 1 + lit; rad = q.r + 0.8 + lit * 1.6; col = COL.accent2; } }
-      if (current === "protocol" && TOUCH && q.lit) { sq = true; bright = 1.7; rad = q.r + 2; col = COL.accent2; }
       if (current === "luna" && hov) { var dlu = Math.sqrt((q.x - mx) * (q.x - mx) + (q.y - my) * (q.y - my)); var b2 = Math.max(0, 1 - dlu / (R * 0.5)); alpha = Math.min(1, alpha + b2 * 0.5); rad += b2 * 1.6; }
-      if (current === "luna" && TOUCH && q.lit) { alpha = Math.min(1, alpha + 0.42); rad += 1.5; }
       if (current === "replay") { var done = q.tx <= px; alpha = done ? (0.5 + 0.5 * e) : 0.16; rad = q.r + (Math.abs(q.tx - px) < 16 ? 2.6 : 0.4); col = done ? COL.accent2 : COL.line; }
 
       var pulse = 0.55 + 0.45 * Math.sin(time * 2 + q.ph);
+      rad *= RSCALE;
       ctx.beginPath();
       if (sq) ctx.rect(q.x - rad, q.y - rad, rad * 2, rad * 2); else ctx.arc(q.x, q.y, rad, 0, 6.2832);
       ctx.fillStyle = col; ctx.globalAlpha = Math.min(1, alpha * (0.85 + 0.15 * pulse));
-      ctx.shadowBlur = 7 * pulse * e * bright; ctx.shadowColor = col; ctx.fill();
+      ctx.shadowBlur = 7 * pulse * e * bright * (SMALL ? 0.5 : 1); ctx.shadowColor = col; ctx.fill();
       ctx.shadowBlur = 0; ctx.globalAlpha = 1;
     });
     requestAnimationFrame(frame);
@@ -574,7 +597,7 @@
   window.addEventListener("resize", function () { layout.done = false; layout(); });
   new ResizeObserver(function () { layout(); }).observe(canvas);
 
-  /* scroll reveals — robust scroll check */
+  /* scroll reveals - robust scroll check */
   var revs = [].slice.call(document.querySelectorAll(".reveal, .draw"));
   function checkReveal() { var vh = window.innerHeight || 800; revs.forEach(function (el) { if (el.classList.contains("in")) return; if (el.getBoundingClientRect().top < vh * 0.86) el.classList.add("in"); }); }
   window.addEventListener("scroll", checkReveal, { passive: true });
