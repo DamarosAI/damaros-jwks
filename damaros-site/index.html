@@ -2,6 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deprecated: damaros-site/index.html</title>
+<meta http-equiv="refresh" content="0; url=/">
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    font-family: Arial, sans-serif;
+    background: #0b0b0f;
+    color: #f2f2f4;
+    padding: 24px;
+    text-align: center;
+  }
+  a { color: #9ecbff; }
+</style>
+</head>
+<body>
+  <main>
+    <h1>Deprecated page</h1>
+    <p>This legacy path has been deprecated.</p>
+    <p>Use the canonical site entry point: <a href="/">/index.html</a>.</p>
+  </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Damaros™</title>
 <link rel="icon" href="assets/damaros-favicon.png" type="image/png">
@@ -46,7 +76,7 @@
   .spine-sub { display: flex; justify-content: center; gap: 2rem; }
   .srail { appearance: none; background: none; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: .5rem;
     font-family: var(--fm); font-size: .62rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-3);
-    line-height: 1; padding: .14rem .08rem; transition: color var(--t) var(--ease); }
+    padding: .3rem .1rem; transition: color var(--t) var(--ease); }
   .srail .smark { width: 7px; height: 7px; border: 1px solid var(--bd-strong); transform: rotate(45deg); transition: background var(--t) var(--ease), border-color var(--t) var(--ease), box-shadow var(--t) var(--ease); }
   .srail:hover { color: var(--fg-2); } .srail:hover .smark { border-color: var(--accent-2); }
   .srail.active { color: var(--fg); }
@@ -257,13 +287,13 @@
         <div class="stat"><span class="snum">&lt;5%</span><span class="slbl">of eligible patients are ever approached</span></div>
       </div>
 
-      <p class="story-turn reveal">As trial complexity, coordinator burden, and the pace of drug discovery accelerate, these gaps compound. Damaros is the substrate that scales execution to keep up, so a hospital can run trials at the pace of the technology driving them.</p>
+      <p class="story-turn reveal">As trial complexity, coordinator burden, and the pace of drug discovery accelerate, these gaps compound. Damaros is the platform that scales execution to keep up, so a hospital can run trials at the pace of the technology driving them.</p>
 
       <div class="who reveal">
         <span class="eyebrow">Built for everyone on the trial</span>
         <div class="who-rows">
           <div class="who-row"><span class="wa">Sponsors &amp; CROs</span><p>Criterion-level execution and replay-ready evidence across every site and protocol, on one basis. Oversight becomes a query, not a fire drill.</p></div>
-          <div class="who-row"><span class="wa">Sites &amp; networks</span><p>Protocol, evidence, screening, and replay on a single substrate. Faster cycles, consistent decisions, records that reconstruct on demand.</p></div>
+          <div class="who-row"><span class="wa">Sites &amp; networks</span><p>Protocol, evidence, screening, and replay on a single platform. Faster cycles, consistent decisions, records that reconstruct on demand.</p></div>
           <div class="who-row"><span class="wa">Coordinators</span><p>Damaros normalizes dense eligibility and fragmented evidence, screens every patient deterministically, and surfaces the highest-leverage next action.</p></div>
         </div>
       </div>
@@ -274,7 +304,6 @@
     <img class="finale-mono" src="assets/damaros-white-transparent.png" alt="" aria-hidden="true">
     <div class="finale-rule reveal"></div>
     <h2 class="reveal">Clinical trials, <em>rewired<span class="dmx-dot"></span></em></h2>
-    <p class="reveal s1">Damaros binds complex protocol logic to governed evidence and deterministic screening, end to end, on one substrate.</p>
     <a class="btn-primary reveal s2" href="mailto:anirudh@damaros.ai?subject=Damaros">Get in touch</a>
   </section>
 </main>
@@ -410,16 +439,7 @@
 
   /* mouse (canvas coords) */
   var mouse = { x: -9999, y: -9999, inside: false };
-  var hoverShield = document.querySelector(".spine");
-  function inHoverShield(clientX, clientY) {
-    if (!hoverShield) return false;
-    var r = hoverShield.getBoundingClientRect();
-    var padX = 20, padTop = 10, padBottom = 22;
-    return clientX >= (r.left - padX) && clientX <= (r.right + padX) &&
-           clientY >= (r.top - padTop) && clientY <= (r.bottom + padBottom);
-  }
   canvas.addEventListener("pointermove", function (ev) {
-    if (inHoverShield(ev.clientX, ev.clientY)) { mouse.inside = false; mouse.x = -9999; mouse.y = -9999; return; }
     var r = canvas.getBoundingClientRect(); mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; mouse.inside = true;
     autoPause = performance.now() + 6500;
   });
