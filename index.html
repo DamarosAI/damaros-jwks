@@ -97,21 +97,13 @@
   .c-title { font-family: var(--fh); font-weight: 600; font-size: clamp(1.25rem, 1.7vw, 1.65rem); letter-spacing: -.01em; line-height: 1.05; margin: .35rem 0 .4rem; height: 2.1em; }
   .c-desc { font-size: clamp(.86rem, 1.05vw, .98rem); line-height: 1.52; color: var(--fg-2); margin: 0; height: 4.3em; }
 
-  /* scroll-reveal - cleaner lift + stagger for smoother scroll-through pacing */
-  .reveal { opacity: 0; transform: translate3d(0, 16px, 0) scale(.988); }
-  .reveal.in { animation: glowIn .72s var(--ease) both; animation-delay: var(--rv-delay, 0s); }
-  .reveal.s1.in { --rv-delay: .12s; } .reveal.s2.in { --rv-delay: .24s; } .reveal.s3.in { --rv-delay: .36s; }
-  @keyframes glowIn {
-    0%   { opacity: 0; transform: translate3d(0, 16px, 0) scale(.988); filter: drop-shadow(0 0 11px rgba(169,192,214,.55)); }
-    52%  { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: drop-shadow(0 0 7px rgba(169,192,214,.4)); }
-    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: none; }
-  }
+  /* sections are static; the header decode-scramble carries the entrance interest */
+  .reveal { opacity: 1; }
+  .reveal.in { animation: none; }
   .draw { width: 110px; height: 1px; background: var(--accent-2); opacity: .55; transform: scaleX(0); transform-origin: left;
     transition: transform .8s var(--ease) .1s; }
   .draw.in { transform: scaleX(1); }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal, .draw { transition: none; animation: none !important; opacity: 1; transform: none; filter: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .reveal, .draw { transition: none; opacity: 1; transform: none; } }
 
   /* ===== SECTIONS ===== */
   .band { position: relative; z-index: 1; padding: clamp(3.6rem, 11vh, 8.5rem) 0; border-top: 1px solid var(--bd-soft); }
@@ -233,7 +225,7 @@
   }
 </style>
 </head>
-<body>
+<body style="font-size: 26px">
 
 <template id="__bundler_thumbnail">
   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -294,14 +286,14 @@
         <div class="stat"><span class="snum">&lt;5%</span><span class="slbl">of eligible patients are ever approached</span></div>
       </div>
 
-      <p class="story-turn reveal">As trial complexity, coordinator burden, and the pace of drug discovery accelerate, these gaps compound. Damaros is the <em>execution OS</em> for clinical trials, built to run inside the hospital, so a site can keep pace with the technology driving discovery.</p>
+      <p class="story-turn reveal">As trial complexity, coordinator burden, and the pace of drug discovery accelerate, these gaps compound. Damaros is the <em>AI-native execution infrastructure</em> for clinical trials, built to run inside the hospital, so a site can keep pace with the technology driving discovery.</p>
 
       <div class="who reveal">
-        <span class="eyebrow">Built for everyone on the trial</span>
+        <span class="eyebrow" style="font-family: &quot;Chakra Petch&quot;">THE MODERN CLINICAL TRIAL SPINE</span>
         <div class="who-rows">
-          <div class="who-row"><span class="wa">Sponsors &amp; CROs</span><p>Criterion-level execution and replay-ready evidence across every site and protocol, on one basis. Oversight becomes a query, not a fire drill.</p></div>
-          <div class="who-row"><span class="wa">Sites &amp; networks</span><p>Protocol, evidence, screening, and replay on a single substrate. Faster cycles, consistent decisions, records that reconstruct on demand.</p></div>
-          <div class="who-row"><span class="wa">Coordinators</span><p>Damaros normalizes dense eligibility and fragmented evidence, screens every patient deterministically, and surfaces the highest-leverage next action.</p></div>
+          <div class="who-row"><span class="wa" style="font-size: 16px; text-align: left">Sponsors &amp; CROs</span><p>Criterion-level execution and replay-ready evidence across every site and protocol, on one basis. Oversight becomes a query, not a fire drill.</p></div>
+          <div class="who-row"><span class="wa" style="font-size: 16px">Sites &amp; networks</span><p>Protocol, evidence, screening, and replay on a single substrate. Faster cycles, consistent decisions, records that reconstruct on demand.</p></div>
+          <div class="who-row"><span class="wa" style="font-size: 16px">Coordinators</span><p>Damaros normalizes dense eligibility and fragmented evidence, screens every patient deterministically, and surfaces the highest-leverage next action.</p></div>
         </div>
       </div>
     </div>
@@ -311,7 +303,7 @@
     <img class="finale-mono" src="assets/damaros-white-transparent.png" alt="" aria-hidden="true">
     <div class="finale-rule reveal"></div>
     <h2 class="reveal">Clinical trials, <em>rewired<span class="dmx-dot"></span></em></h2>
-    <a class="btn-primary reveal s2" href="mailto:anirudh@damaros.ai" data-ignite="Get in touch">Get in touch</a>
+    <a class="btn-primary reveal s2" href="/cdn-cgi/l/email-protection#c8a9a6a1babdaca088aca9a5a9baa7bbe6a9a1f7bbbdaaa2adabbcf58ca9a5a9baa7bb">Get in touch</a>
   </section>
 </main>
 
@@ -321,7 +313,8 @@
   <span class="cp">© 2026 Damaros™</span>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="shared/scramble.js?v=3"></script>
+<script>
 (function () {
   /* monogram tiles */
   var grid = document.getElementById("monoGrid");
@@ -345,12 +338,12 @@
 
   /* pillars */
   var PILLARS = {
-    trident:   { color: "accent2", label: "Substrate / Trident",  title: "Protocol logic that compounds.", desc: "Complex inclusion and exclusion criteria become versioned, executable logic that sharpens with every release and holds across every site." },
-    luna:      { color: "luna",    label: "Substrate / Luna",     title: "Every model, harnessed.",        desc: "The harness clamped around every model. AI drafts the language-heavy work and never the verdict, and PHI never reaches a model." },
-    protocol:  { color: "locked",  label: "01 / Protocol",        title: "Complex eligibility, normalized.", desc: "Dense, ambiguous protocol inclusion and exclusion is compiled into one precise basis the entire trial executes against." },
-    evidence:  { color: "accent",  label: "02 / Evidence",        title: "Fragmented data, resolved.",     desc: "Messy multi-format site data is normalized onto a single trial-ready plane before a single patient is screened." },
-    screening: { color: "screening", label: "03 / Screening",     title: "Every patient, screened the same way.", desc: "Deterministic PASS, REVIEW, or FAIL at criterion level with evidence attached. The same inputs always give the same answer." },
-    replay:    { color: "accent2", label: "04 / Replay",          title: "Reproducible by default.",       desc: "Any decision reconstructs from version, evidence, and context into a signed bundle. No manual reconstruction, ever." }
+    trident:   { color: "accent2", label: "Substrate / Trident",  title: "Protocol logic that compounds.", emph: "compounds.", desc: "Complex inclusion and exclusion criteria become versioned, executable logic that sharpens with every release and holds across every site." },
+    luna:      { color: "luna",    label: "Substrate / Luna",     title: "Every model, harnessed.",        emph: "harnessed.", desc: "The harness clamped around every model. AI drafts the language-heavy work and never the verdict, and PHI never reaches a model." },
+    protocol:  { color: "locked",  label: "01 / Protocol",        title: "Complex eligibility, normalized.", emph: "normalized.", desc: "Dense, ambiguous protocol inclusion and exclusion is compiled into one precise basis the entire trial executes against." },
+    evidence:  { color: "accent",  label: "02 / Evidence",        title: "Fragmented data, resolved.",     emph: "resolved.", desc: "Messy multi-format site data is normalized onto a single trial-ready plane before a single patient is screened." },
+    screening: { color: "screening", label: "03 / Screening",     title: "Every patient, screened the same way.", emph: "the same way.", desc: "Deterministic PASS, REVIEW, or FAIL at criterion level with evidence attached. The same inputs always give the same answer." },
+    replay:    { color: "accent2", label: "04 / Replay",          title: "Reproducible by default.",       emph: "by default.", desc: "Any decision reconstructs from version, evidence, and context into a signed bundle. No manual reconstruction, ever." }
   };
   var ORDER = ["trident", "luna", "protocol", "evidence", "screening", "replay"];
 
@@ -455,27 +448,26 @@
     }
     return start + words.length;
   }
-  function igniteRevealText(root) {
-    var targets = [];
-    if (root && root.matches && root.matches("[data-ignite]")) targets.push(root);
-    if (root && root.querySelectorAll) targets = targets.concat([].slice.call(root.querySelectorAll("[data-ignite]")));
-    targets.forEach(function (el) {
-      if (el.dataset.ignited === "1") return;
-      var txt = el.getAttribute("data-ignite") || el.textContent.trim();
-      fillWave(el, txt, 0, 0.04);
-      el.dataset.ignited = "1";
-    });
-  }
 
   function setPillar(id, byUser) {
     if (!PILLARS[id]) return;
     current = id; morph = 0; computeTargets(id);
     [].slice.call(document.querySelectorAll(".enode, .srail")).forEach(function (b) { b.classList.toggle("active", b.dataset.id === id); });
     var P = PILLARS[id];
-    var step = 0.034, idx = 0;
-    idx = fillWave(document.getElementById("cLabel"), P.label, idx, step);
-    idx = fillWave(document.getElementById("cTitle"), P.title, idx, step);
-    fillWave(document.getElementById("cDesc"), P.desc, idx, step);
+    var lbl = document.getElementById("cLabel"), ttl = document.getElementById("cTitle");
+    lbl.textContent = P.label;                          /* label is static — never scrambles */
+    /* title: static prefix + scramble only the emphasis phrase */
+    ttl.textContent = "";
+    var emph = P.emph || "";
+    var prefix = (emph && P.title.slice(-emph.length) === emph) ? P.title.slice(0, -emph.length) : P.title;
+    if (prefix) ttl.appendChild(document.createTextNode(prefix));
+    if (emph) {
+      var es = document.createElement("span");
+      es.textContent = emph;
+      ttl.appendChild(es);
+      if (window.DMX_SC) DMX_SC.decode(es);
+    }
+    document.getElementById("cDesc").textContent = P.desc;   /* body is static — plain swap, no animation */
     if (byUser) autoPause = performance.now() + 11000;
   }
 
@@ -610,42 +602,12 @@
   window.addEventListener("resize", function () { layout.done = false; layout(); });
   new ResizeObserver(function () { layout(); }).observe(canvas);
 
-  /* scroll reveals - staggered, observer-driven reveal for smoother narrative flow */
+  /* scroll reveals - robust scroll check */
   var revs = [].slice.call(document.querySelectorAll(".reveal, .draw"));
-  revs.forEach(function (el, idx) {
-    if (el.classList.contains("draw")) return;
-    if (el.classList.contains("s1") || el.classList.contains("s2") || el.classList.contains("s3")) return;
-    var parent = el.closest(".story, .finale, .band, .cta-band") || document.body;
-    var siblings = [].slice.call(parent.querySelectorAll(".reveal:not(.s1):not(.s2):not(.s3)"));
-    var slot = Math.max(0, siblings.indexOf(el));
-    var d = Math.min(0.32, slot * 0.075 + (idx % 2 ? 0.02 : 0));
-    el.style.setProperty("--rv-delay", d.toFixed(3) + "s");
-  });
-  if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("in");
-        igniteRevealText(entry.target);
-        io.unobserve(entry.target);
-      });
-    }, { root: null, rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
-    revs.forEach(function (el) { io.observe(el); });
-  } else {
-    function checkReveal() {
-      var vh = window.innerHeight || 800;
-      revs.forEach(function (el) {
-        if (el.classList.contains("in")) return;
-        if (el.getBoundingClientRect().top < vh * 0.86) {
-          el.classList.add("in");
-          igniteRevealText(el);
-        }
-      });
-    }
-    window.addEventListener("scroll", checkReveal, { passive: true });
-    window.addEventListener("resize", checkReveal);
-    checkReveal();
-  }
+  function checkReveal() { var vh = window.innerHeight || 800; revs.forEach(function (el) { if (el.classList.contains("in")) return; if (el.getBoundingClientRect().top < vh * 0.86) el.classList.add("in"); }); }
+  window.addEventListener("scroll", checkReveal, { passive: true });
+  window.addEventListener("resize", checkReveal);
+  checkReveal();
 
   readColors(); layout(); setPillar("trident", false);
   requestAnimationFrame(frame);
