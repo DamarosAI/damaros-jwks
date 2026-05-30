@@ -13,21 +13,8 @@
 </script>
 <link rel="stylesheet" href="shared/damaros.css">
 <style>
-  [data-theme="dark"]  { --mono-op: .07;  --mono-filter: none; }
-  [data-theme="light"] { --mono-op: .038; --mono-filter: invert(1) brightness(.82); }
-
   body { overflow-x: hidden; }
   .wrap { max-width: 1480px; margin: 0 auto; padding: 0 clamp(1.1rem, 3.4vw, 2.6rem); }
-
-  /* monogram field - strong on the left, fading toward the animation (right) */
-  .mono-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 52%);
-            mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 52%); }
-  .mono-grid { position: absolute; top: -26%; left: -18%; width: 90%; height: 152%;
-    display: grid; grid-template-columns: repeat(auto-fill, 112px); grid-auto-rows: 112px; gap: 44px;
-    opacity: var(--mono-op); transform: rotate(-8deg); animation: drift 24s linear infinite; will-change: transform; }
-  .mono-grid img { width: 112px; height: 112px; object-fit: contain; filter: var(--mono-filter); }
-  @keyframes drift { 0%{transform:rotate(-8deg) translate3d(0,0,0)} 50%{transform:rotate(-8deg) translate3d(34px,-8px,0)} 100%{transform:rotate(-8deg) translate3d(0,0,0)} }
 
   /* section selector - the execution spine, centred under the caption, dropped a little lower */
   .spine { margin-top: 2.5rem; z-index: 5; display: flex; flex-direction: column; align-items: stretch; gap: .8rem; }
@@ -123,7 +110,7 @@
   .cta-band h2 { font-size: clamp(2.4rem, 6.4vw, 5rem); line-height: 1.0; text-shadow: var(--glow); }
   .cta-band p { color: var(--fg-2); margin: 1.2rem auto 0; max-width: 46ch; line-height: 1.6; }
   .cta-actions { margin-top: 2.2rem; display: inline-flex; gap: 1.6rem; align-items: center; flex-wrap: wrap; justify-content: center; }
-  .cta-actions .btn-primary { margin-top: 0; }
+  .cta-actions .dmx-cta--md { margin-top: 0; }
   .btn-ghost { font-family: var(--fm); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-3); border-bottom: 1px solid transparent; padding-bottom: 3px; transition: color var(--t) var(--ease), border-color var(--t) var(--ease); }
   .btn-ghost:hover { color: var(--fg); border-color: var(--accent); }
 
@@ -160,7 +147,7 @@
   .finale::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 62% 52% at 50% 46%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%); }
   .finale h2 { font-size: clamp(2.6rem,8vw,6rem); line-height: .95; letter-spacing: -.02em; text-shadow: var(--glow); }
   .finale p { color: var(--fg-2); margin: 1.4rem auto 0; max-width: 44ch; line-height: 1.6; }
-  .finale .btn-primary { margin-top: 2.2rem; }
+  .finale .dmx-cta--md { margin-top: 2.2rem; }
   .finale-mono { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-58%); width: clamp(220px, 34vw, 460px); opacity: .05; pointer-events: none; animation: finaleFloat 9s ease-in-out infinite; }
   [data-theme="light"] .finale-mono { filter: invert(1) brightness(.4); opacity: .07; }
   @keyframes finaleFloat { 0%,100% { transform: translate(-50%,-58%) rotate(-3deg); } 50% { transform: translate(-50%,-62%) rotate(3deg); } }
@@ -176,11 +163,6 @@
     .spine { padding: 0; }
     .chain { padding-left: 1.8rem; }
   }
-  .btn-primary { margin-top: 2rem; display: inline-flex; align-items: center; gap: .6rem; font-family: var(--fh); font-weight: 600;
-    letter-spacing: .06em; text-transform: uppercase; font-size: .76rem; padding: 1rem 1.7rem; border: 1px solid var(--bd-strong);
-    border-radius: 8px; color: var(--fg); background: var(--glass); transition: all var(--t) var(--ease); }
-  .btn-primary:hover { border-color: var(--accent); background: var(--accent); color: #000; box-shadow: var(--glow); }
-  [data-theme="light"] .btn-primary:hover { color: #fff; }
 
   /* ===== bottom bar ===== */
   .botbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: grid; grid-template-columns: 1fr auto 1fr;
@@ -193,7 +175,6 @@
   .botbar .bc a:hover { color: var(--fg); }
   .botbar .cp { justify-self: end; }
 
-  /* short desktop windows - compact the hero so the centred column always clears the bottom bar */
   @media (min-width: 901px) and (max-height: 660px) {
     .wordmark { font-size: clamp(2.6rem, 5.2vw, 3.8rem); }
     .hero-tag { margin-top: .6rem; line-height: 1.46; }
@@ -208,7 +189,7 @@
     .mono-grid { left: -8%; top: -8%; width: 116%; height: 128%; transform: rotate(-6deg);
       grid-template-columns: repeat(auto-fill, 92px); grid-auto-rows: 92px; gap: 34px; opacity: calc(var(--mono-op) * 1.35); }
     .mono-grid img { width: 92px; height: 92px; }
-    @keyframes drift { 0%{transform:rotate(-6deg) translate3d(0,0,0)} 50%{transform:rotate(-6deg) translate3d(0,-22px,0)} 100%{transform:rotate(-6deg) translate3d(0,0,0)} }
+    @keyframes monoDrift { 0%{transform:rotate(-6deg) translate3d(0,0,0)} 50%{transform:rotate(-6deg) translate3d(0,-22px,0)} 100%{transform:rotate(-6deg) translate3d(0,0,0)} }
     .hero-inner { display: contents; }
     .wordmark { order: 1; }
     .hero-tag { order: 2; max-width: none; }
@@ -218,6 +199,7 @@
     .spine { order: 5; margin-top: 1.7rem; }
     .stake { grid-template-columns: 1fr; }
   }
+
   @media (max-width: 560px) {
     .botbar { grid-template-columns: 1fr auto; }
     .botbar .cp { display: none; }
@@ -316,7 +298,7 @@
     <img class="finale-mono" src="assets/damaros-white-transparent.png" alt="" aria-hidden="true">
     <div class="finale-rule reveal"></div>
     <h2 class="reveal">Clinical trials, <em>rewired</em></h2>
-    <a class="btn-primary reveal s2" href="mailto:anirudh@damaros.ai?subject=Damaros">Get in touch</a>
+    <a class="dmx-cta dmx-cta--md reveal s2" href="mailto:anirudh@damaros.ai?subject=Damaros">Get in touch</a>
   </section>
 </main>
 

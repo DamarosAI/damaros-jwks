@@ -38,15 +38,8 @@
   .a-name { font-family: var(--fh); font-weight: 700; font-size: 1.3rem; letter-spacing: -.01em; }
   .a-role { font-family: var(--fm); font-size: .62rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-2); }
 
-  .a-linkedin {
-    display: inline-flex; align-items: center; gap: .6rem; flex: 0 0 auto;
-    font-family: var(--fh); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: .72rem;
-    padding: .82rem 1.3rem; border: 1px solid var(--bd-strong); border-radius: 8px;
-    color: var(--fg); background: var(--glass); transition: all var(--t) var(--ease);
-  }
-  .a-linkedin svg { width: 16px; height: 16px; display: block; }
-  .a-linkedin:hover { border-color: var(--accent); background: var(--accent); color: #000; box-shadow: var(--glow); }
-  [data-theme="light"] .a-linkedin:hover { color: #fff; }
+  .a-linkedin { flex: 0 0 auto; }
+  .a-linkedin svg { width: 16px; height: 16px; display: block; flex-shrink: 0; }
 
   .a-body { padding: clamp(1.6rem, 4vw, 2.6rem) clamp(1.4rem, 3.6vw, 2.4rem) clamp(1.8rem, 4vw, 2.6rem); }
   .a-body p { margin: 0 0 1.15rem; color: var(--fg-2); font-size: 1rem; line-height: 1.78; }
@@ -70,6 +63,11 @@
   @media (max-width: 560px) {
     .a-head { flex-direction: column; align-items: flex-start; }
     .a-linkedin { width: 100%; justify-content: center; }
+    .mono-bg { -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 24%, transparent 62%); mask-image: linear-gradient(180deg, #000 0%, #000 24%, transparent 62%); }
+    .mono-grid { left: -8%; top: -8%; width: 116%; height: 128%; transform: rotate(-6deg);
+      grid-template-columns: repeat(auto-fill, 92px); grid-auto-rows: 92px; gap: 34px; opacity: calc(var(--mono-op) * 1.35); }
+    .mono-grid img { width: 92px; height: 92px; }
+    @keyframes monoDrift { 0%{transform:rotate(-6deg) translate3d(0,0,0)} 50%{transform:rotate(-6deg) translate3d(0,-22px,0)} 100%{transform:rotate(-6deg) translate3d(0,0,0)} }
   }
 </style>
 </head>
@@ -82,6 +80,8 @@
   </div>
 </nav>
 
+<div class="mono-bg mono-bg--about" aria-hidden="true"><div class="mono-grid" id="monoGrid"></div></div>
+
 <div class="dmx-texture" aria-hidden="true"></div>
 
 <main class="about">
@@ -93,7 +93,7 @@
         <span class="a-name">Anirudh C. Nimmagadda</span>
         <span class="a-role">Founder &amp; CEO · MD/MSAI Candidate</span>
       </div>
-      <a class="a-linkedin" href="https://www.linkedin.com/in/acnimma/" target="_blank" rel="noopener noreferrer">
+      <a class="a-linkedin dmx-cta dmx-cta--sm" href="https://www.linkedin.com/in/acnimma/" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
         Connect on LinkedIn
       </a>
@@ -117,6 +117,19 @@
   <span>© 2026 Damaros™</span>
   <div class="fl"><a href="/">Home</a><a href="/docs/fhir">FHIR</a><a href="/privacy">Privacy</a></div>
 </footer>
+
+<script>
+(function () {
+  var grid = document.getElementById("monoGrid");
+  if (!grid) return;
+  for (var i = 0; i < 90; i++) {
+    var im = document.createElement("img");
+    im.src = "assets/damaros-white-transparent.png";
+    im.alt = "";
+    grid.appendChild(im);
+  }
+})();
+</script>
 
 </body>
 </html>
