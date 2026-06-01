@@ -158,9 +158,7 @@
   /* ===== convergence: "the gap" broken-signal animation ===== */
   .gap-scene {
     position: relative; margin: 0; height: clamp(250px, 35vh, 350px);
-    border: 1px solid var(--bd-soft); border-radius: 12px; overflow: hidden;
-    background: color-mix(in srgb, var(--bg-2) 78%, var(--accent) 22%);
-    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 5%, transparent);
+    background: transparent; border: 0; box-shadow: none; overflow: visible;
   }
   #gapField { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .gap-steps { position: absolute; left: 0; right: 0; bottom: clamp(1rem, 2.8vw, 1.5rem); z-index: 2; pointer-events: none; height: 1em; }
@@ -529,14 +527,6 @@
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
-    .gap-scene {
-      background: linear-gradient(180deg, #CCD6E2 0%, #B8C5D4 100%);
-      border-color: var(--bd);
-    }
-  }
-  [data-theme="light"] .gap-scene {
-    background: linear-gradient(180deg, #CCD6E2 0%, #B8C5D4 100%);
-    border-color: var(--bd);
   }
   [data-theme="light"] .botbar {
     background: linear-gradient(to top, var(--bg-1) 52%, color-mix(in srgb, var(--bg-1) 88%, transparent) 72%, transparent);
@@ -1286,7 +1276,15 @@
     RGB.green  = hexToRgb(g("--pass"))     || [74,222,128];
     RGB.purple = hexToRgb(g("--luna"))     || [192,132,252];
     var bg = hexToRgb(g("--bg")); LIGHT = bg ? (0.2126*bg[0]+0.7152*bg[1]+0.0722*bg[2]) > 140 : false;
+    if (LIGHT) {
+      RGB.red    = lerpC(RGB.red,    [168, 32,  58], 0.42);
+      RGB.amber  = lerpC(RGB.amber,  [154, 98,  8],  0.38);
+      RGB.green  = lerpC(RGB.green,  [18,  118, 68], 0.34);
+      RGB.purple = lerpC(RGB.purple, [98,  48,  152], 0.36);
+      RGB.blue   = lerpC(RGB.blue,   [32,  68,  102], 0.28);
+    }
   }
+  function vis(a) { return LIGHT ? Math.min(1, a * 1.34) : a; }
   function rgb(c, a) { return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (a<0?0:a>1?1:a) + ")"; }
   function lerpC(a, b, t) { t = t<0?0:t>1?1:t; return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
   function smooth(t) { t = t<0?0:t>1?1:t; return t*t*(3-2*t); }
@@ -1334,9 +1332,10 @@
 
   function dotAt(x, y, sz, c, a, glow) {
     if (a <= 0) return;
-    ctx.globalAlpha = a*0.13; ctx.fillStyle = rgb(c,1); ctx.beginPath(); ctx.arc(x, y, sz*3.0, 0, 6.2832); ctx.fill();
-    if (glow) { ctx.shadowBlur = glow * SFX; ctx.shadowColor = rgb(c,1); }
-    ctx.globalAlpha = Math.min(1, a*0.95); ctx.beginPath(); ctx.arc(x, y, sz*1.25, 0, 6.2832); ctx.fill();
+    a = vis(a);
+    ctx.globalAlpha = a * 0.16; ctx.fillStyle = rgb(c,1); ctx.beginPath(); ctx.arc(x, y, sz*3.0, 0, 6.2832); ctx.fill();
+    if (glow) { ctx.shadowBlur = glow * (LIGHT ? 1.15 : 1) * SFX; ctx.shadowColor = rgb(c,1); }
+    ctx.globalAlpha = Math.min(1, a * 0.98); ctx.beginPath(); ctx.arc(x, y, sz*1.25, 0, 6.2832); ctx.fill();
     ctx.shadowBlur = 0;
   }
 
@@ -1344,7 +1343,7 @@
   function drawProtocol(f, g, hi, time) {
     var sm = smooth(g), pc = lerpC(RGB.red, RGB.blue, g), b = f.box;
     if (g > 0.03) {
-      ctx.strokeStyle = rgb(RGB.blue,1); ctx.lineWidth = 1; ctx.globalAlpha = 0.16*sm;
+      ctx.strokeStyle = rgb(RGB.blue,1); ctx.lineWidth = 1; ctx.globalAlpha = vis(0.16*sm);
       for (var c = 0; c < b.cols; c++) { var x = b.x0 + c*b.gw/(b.cols-1); ctx.beginPath(); ctx.moveTo(x, b.y0); ctx.lineTo(x, b.y0+b.gh); ctx.stroke(); }
       for (var r = 0; r < b.rows; r++) { var y = b.y0 + r*b.gh/(b.rows-1); ctx.beginPath(); ctx.moveTo(b.x0, y); ctx.lineTo(b.x0+b.gw, y); ctx.stroke(); }
     }
@@ -1352,7 +1351,7 @@
       var jx = (1-g)*Math.cos(time*1.3+d.ph)*R*0.05, jy = (1-g)*Math.sin(time*1.6+d.ph)*R*0.05;
       var x = d.bx + (d.hx-d.bx)*sm + jx, y = d.by + (d.hy-d.by)*sm + jy;
       var on = hi*cl01((sm - d.seq)*3);
-      dotAt(x, y, 1.05+on*0.5, lerpC(pc, RGB.blue, hi), 0.7+0.26*g+on*0.4, on>0.2?8:0);
+      dotAt(x, y, 1.05+on*0.5, lerpC(pc, RGB.blue, hi), vis(0.7+0.26*g+on*0.4), on>0.2?(LIGHT?10:8):0);
     });
   }
 
@@ -1361,11 +1360,11 @@
     var ec = lerpC(RGB.amber, RGB.blue, g);
     function ridgePath(off, jit) { ctx.beginPath(); f.ridge.forEach(function (d, i) { var x = d.hx, y = d.hy + off + (jit?Math.sin(time*3+d.ph)*jit:0); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }); ctx.stroke(); }
     for (var k = -1; k <= 1; k += 2) {                 /* ghost ridges = the inconsistency, fade out as it governs */
-      var aa = (1-g)*0.42; if (aa > 0.01) { ctx.strokeStyle = rgb(ec,1); ctx.lineWidth = 1.1; ctx.globalAlpha = aa; ridgePath(k*R*0.16*(1-g) + Math.sin(time*2.2+k)*R*0.05*(1-g), R*0.04*(1-g)); }
+      var aa = vis((1-g)*0.42); if (aa > 0.01) { ctx.strokeStyle = rgb(ec,1); ctx.lineWidth = 1.1; ctx.globalAlpha = aa; ridgePath(k*R*0.16*(1-g) + Math.sin(time*2.2+k)*R*0.05*(1-g), R*0.04*(1-g)); }
     }
-    ctx.strokeStyle = rgb(ec,1); ctx.lineWidth = 1.3; ctx.globalAlpha = 0.28 + 0.5*g + hi*0.2; ctx.lineJoin = "round"; ridgePath(0, R*0.05*(1-g)); ctx.lineWidth = 1;
-    f.ridge.forEach(function (d) { var jy = Math.sin(time*3+d.ph)*R*0.05*(1-g); dotAt(d.hx, d.hy+jy, 1.0+hi*0.4, lerpC(ec, RGB.blue, hi), 0.62+0.3*g+hi*0.3, hi>0.3?8:0); });
-    f.fill.forEach(function (d) { var jx = (1-g)*Math.cos(time*1.4+d.ph)*R*0.06, jy = (1-g)*Math.sin(time*1.7+d.ph)*R*0.06; dotAt(d.hx+jx, d.hy+jy, 0.8, ec, 0.4+0.2*g, 0); });
+    ctx.strokeStyle = rgb(ec,1); ctx.lineWidth = 1.3; ctx.globalAlpha = vis(0.28 + 0.5*g + hi*0.2); ctx.lineJoin = "round"; ridgePath(0, R*0.05*(1-g)); ctx.lineWidth = 1;
+    f.ridge.forEach(function (d) { var jy = Math.sin(time*3+d.ph)*R*0.05*(1-g); dotAt(d.hx, d.hy+jy, 1.0+hi*0.4, lerpC(ec, RGB.blue, hi), vis(0.62+0.3*g+hi*0.3), hi>0.3?(LIGHT?10:8):0); });
+    f.fill.forEach(function (d) { var jx = (1-g)*Math.cos(time*1.4+d.ph)*R*0.06, jy = (1-g)*Math.sin(time*1.7+d.ph)*R*0.06; dotAt(d.hx+jx, d.hy+jy, 0.8, ec, vis(0.4+0.2*g), 0); });
   }
 
   /* ---- 03 SCREENING: discordant verdicts (green/amber/red, spinning) -> one governed verdict (blue, aligned) ---- */
@@ -1376,10 +1375,10 @@
       var cc = lerpC(verd[ci], RGB.blue, sm);
       var cy = c.y + (NY - c.y)*0.42*sm;
       var rad = R*0.3*(1.26 - 0.48*sm), spin = time*(0.5 - 0.38*sm)*(ci===1?1:-1)*(ci===2?1.12:1);
-      for (var kk = 0; kk < 2; kk++) { var fr = ((time*0.3 + kk/2) % 1); ctx.strokeStyle = rgb(cc,1); ctx.globalAlpha = (1-fr)*(0.1+0.2*g+0.2*hi); ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(c.x, cy, fr*rad*1.25, fr*rad*1.1, 0, 0, 6.2832); ctx.stroke(); }
+      for (var kk = 0; kk < 2; kk++) { var fr = ((time*0.3 + kk/2) % 1); ctx.strokeStyle = rgb(cc,1); ctx.globalAlpha = vis((1-fr)*(0.1+0.2*g+0.2*hi)); ctx.lineWidth = 1; ctx.beginPath(); ctx.ellipse(c.x, cy, fr*rad*1.25, fr*rad*1.1, 0, 0, 6.2832); ctx.stroke(); }
       f.dots.forEach(function (d) { if (d.ci !== ci) return;
         var ang = d.a0 + spin, x = c.x + Math.cos(ang)*rad*d.rr, y = cy + Math.sin(ang)*rad*0.9*d.rr;
-        dotAt(x, y, 0.95+hi*0.4, cc, 0.6+0.3*g+hi*0.3, (g>0.55||hi>0.3)?7:0);
+        dotAt(x, y, 0.95+hi*0.4, cc, vis(0.6+0.3*g+hi*0.3), (g>0.55||hi>0.3)?(LIGHT?9:7):0);
       });
     });
   }
@@ -1392,11 +1391,11 @@
     var hf = (time*0.32)%1, headX = f.cx - R + hf*2*R, env = Math.sin(hf*Math.PI);
 
     if (g < 0.9) {                                     /* broken: a gappy timeline that skips the unrecorded points */
-      ctx.strokeStyle = rgb(RGB.purple,1); ctx.lineWidth = 1; ctx.globalAlpha = (1-g)*0.32;
+      ctx.strokeStyle = rgb(RGB.purple,1); ctx.lineWidth = 1; ctx.globalAlpha = vis((1-g)*0.32);
       for (var s2 = 0; s2 < f.dots.length-1; s2++) { var d0 = f.dots[s2], d1 = f.dots[s2+1]; if (d0.miss || d1.miss) continue; ctx.beginPath(); ctx.moveTo(d0.hx, d0.hy); ctx.lineTo(d1.hx, d1.hy); ctx.stroke(); }
     }
     if (g > 0.05) {                                    /* governed: faint wave + a cursor that connects the dots L->R */
-      ctx.strokeStyle = rgb(RGB.blue,1); ctx.globalAlpha = 0.16*g; ctx.lineWidth = 1.2; ctx.lineJoin = "round"; ctx.beginPath();
+      ctx.strokeStyle = rgb(RGB.blue,1); ctx.globalAlpha = vis(0.16*g); ctx.lineWidth = 1.2; ctx.lineJoin = "round"; ctx.beginPath();
       for (var x = f.cx-R; x <= f.cx+R+0.1; x += 4) { var y = waveY(x); (x <= f.cx-R) ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
       ctx.stroke();
       ctx.strokeStyle = rgb(RGB.blue,1); ctx.lineWidth = 1.8; ctx.lineJoin = "round"; var trail = R;
