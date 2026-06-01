@@ -31,12 +31,13 @@
     var mode = canvas.dataset.mode;
     var ctx = canvas.getContext("2d");
     var TOUCH = matchMedia("(hover: none), (pointer: coarse)").matches;
-    var W = 0, H = 0, N = mode === "luna" ? (MOBILE ? 72 : 90) : 46, parts = [], tact = [], decor = {}, morph = 0;
+    var W = 0, H = 0, N = mode === "luna" ? (MOBILE ? 48 : 90) : (MOBILE ? 30 : 46), parts = [], tact = [], decor = {}, morph = 0;
     var mouse = { x: -9999, y: -9999, inside: false };
-    for (var i = 0; i < N; i++) parts.push({ x: 0, y: 0, tx: 0, ty: 0, r: 1.0 + Math.random() * 1.05, ph: Math.random() * 6.28, ring: 0 });
+    var dotBase = MOBILE ? 0.65 : 1.0, dotRange = MOBILE ? 0.4 : 1.05;
+    for (var i = 0; i < N; i++) parts.push({ x: 0, y: 0, tx: 0, ty: 0, r: dotBase + Math.random() * dotRange, ph: Math.random() * 6.28, ring: 0 });
 
     function compute() {
-      var cx = W * 0.5, cy = H * 0.5, R = Math.min(W, H) * 0.4;
+      var cx = W * 0.5, cy = H * 0.5, R = Math.min(W, H) * (MOBILE ? 0.32 : 0.4);
       decor = { cx: cx, cy: cy, R: R };
       if (mode === "trident") {
         parts.length = N;
@@ -95,7 +96,7 @@
     function render(now) {
       var time = now / 1000, e = easeInOut(morph);
       var cx = decor.cx, cy = decor.cy, R = decor.R;
-      var mx = mouse.x, my = mouse.y, hov = !TOUCH && mouse.inside;
+      var mx = mouse.x, my = mouse.y, hov = !MOBILE && !TOUCH && mouse.inside;
       ctx.clearRect(0, 0, W, H);
       ctx.save(); ctx.lineWidth = 1;
 
@@ -169,7 +170,7 @@
         q.x += (bx - q.x) * (0.08 + 0.12 * morph);
         q.y += (by - q.y) * (0.08 + 0.12 * morph);
 
-        var col = pcol, rad = q.r + e * 0.7, alpha = 0.45 + 0.5 * e, bright = 1;
+        var col = pcol, rad = q.r + e * (MOBILE ? 0.35 : 0.7), alpha = 0.45 + 0.5 * e, bright = 1;
         if (mode === "trident" && (tact[qi] || 0) > 0.05) {
           var ta = tact[qi];
           alpha = Math.min(1, alpha + ta * 0.42); rad += ta * 1.6; col = COL.accent2; bright = 1 + ta * 0.7;
