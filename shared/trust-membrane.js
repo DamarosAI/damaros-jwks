@@ -28,6 +28,7 @@
     C.line  = hexToRgb(g("--bd-strong"))|| [70,84,100];
     C.dim   = hexToRgb(g("--fg-3"))     || [120,134,150];
     C.fg    = hexToRgb(g("--fg-2"))     || [190,200,210];
+    C.purple= hexToRgb(g("--luna"))     || [192,132,252];
   }
   function rgb(c, a) { return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (a<0?0:a>1?1:a) + ")"; }
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -38,7 +39,7 @@
     var cyc = H * 0.44, sr = Math.max(8, Math.min(12, W * 0.016));
     // a few sponsors
     sponsors = [];
-    var SN = (W < 560) ? 2 : 3, ss = Math.min(H * 0.16, (H - coreHGuess()) * 0.4);
+    var SN = (W < 560) ? 4 : 5, ss = Math.min(H * 0.2, (H - coreHGuess()) * 0.46);
     for (var i = 0; i < SN; i++) { var fy = (SN === 1) ? 0 : (i / (SN - 1) * 2 - 1); sponsors.push({ x: W * 0.15, y: cyc + fy * ss, r: sr }); }
     core = { x: W * 0.5, y: cyc };
     coreW = Math.max(108, Math.min(168, W * 0.2)); coreH = Math.max(42, Math.min(58, H * 0.13));
@@ -57,7 +58,7 @@
 
   function build() {
     for (var s = 0; s < sites.length; s++) { sites[s].phi = []; for (var p = 0; p < 2; p++) sites[s].phi.push({ a: rnd(0, 6.28), rr: rnd(0.25, 0.6) * sites[s].r, sp: rnd(0.4, 0.9) * (Math.random() < 0.5 ? 1 : -1), ph: rnd(0, 6.28) }); }
-    tokens = []; var kinds = ["protocol", "packet", "protocol", "packet", "protocol", "packet"]; var KN = (W < 560) ? 6 : 10;
+    tokens = []; var kinds = ["spec", "packet", "amendment", "spec", "packet", "amendment"]; var KN = (W < 560) ? 6 : 10;
     for (var k = 0; k < KN; k++) tokens.push(newToken(kinds[k % kinds.length], rnd(0, 4)));
     probes = []; for (var q = 0; q < 3; q++) probes.push(newProbe(rnd(0, 3.4)));
   }
@@ -65,9 +66,9 @@
   function sponsorOf() { return sponsors[Math.floor(Math.random() * sponsors.length)]; }
   function newToken(kind, wait) {
     var st = siteOf(), sp = sponsorOf(), path;
-    if (kind === "protocol")     path = [ { x: sp.x, y: sp.y }, { x: core.x, y: core.y, dwell: 0.3 }, { x: st.x, y: st.y } ];  // sponsor deploys a protocol to a site
-    else if (kind === "packet")  path = [ { x: st.x, y: st.y }, { x: core.x, y: core.y, dwell: 0.3 }, { x: sp.x, y: sp.y } ];  // governed referral packet returns to a sponsor
-    else if (kind === "insight") path = [ { x: core.x, y: core.y }, { x: st.x, y: st.y } ];                                    // Damaros sends governed signals out to a site
+    if (kind === "spec")          path = [ { x: sp.x, y: sp.y }, { x: core.x, y: core.y, dwell: 0.3 }, { x: st.x, y: st.y } ];  // sponsor deploys protocols & amendments (specs) to a site
+    else if (kind === "packet")   path = [ { x: st.x, y: st.y }, { x: core.x, y: core.y, dwell: 0.3 }, { x: sp.x, y: sp.y } ];  // governed referral packet returns to a sponsor
+    else if (kind === "amendment")path = [ { x: core.x, y: core.y }, { x: st.x, y: st.y } ];                                    // Damaros propagates amendments out to a site
     else                         path = [ { x: core.x, y: core.y }, { x: sp.x, y: sp.y } ];                                    // Damaros sends analytics out to a sponsor
     return { kind: kind, path: path, seg: 0, t: 0, dwell: 0, wait: wait || 0 };
   }
@@ -96,7 +97,7 @@
     for (var s = 0; s < sites.length; s++) drawSite(sites[s], t);
     for (var p = 0; p < sponsors.length; p++) drawSponsor(sponsors[p]);
     drawCore(t);
-    label("Sponsors \u00b7 CROs \u00b7 Networks", sponsors[sponsors.length - 1].x, sponsors[sponsors.length - 1].y + sponsors[0].r + 15, C.fg, 8.5);
+    label("Sponsors \u00b7 CROs \u00b7 Networks", sponsors[sponsors.length - 1].x, sponsors[sponsors.length - 1].y + sponsors[0].r + 30, C.fg, 8.5);
     label("Sites", core.x + (W * 0.86 - core.x), H * 0.94, C.fg);
     drawTokens(t, dt);
     drawBeams(now, dt);
@@ -106,9 +107,14 @@
 
   function drawLinks() {
     ctx.lineWidth = 1; ctx.strokeStyle = rgb(C.line, 0.18); ctx.beginPath();
-    for (var p = 0; p < sponsors.length; p++) { var e = edgePoint(sponsors[p].x, sponsors[p].y); ctx.moveTo(e.x, e.y); ctx.lineTo(sponsors[p].x, sponsors[p].y); }
-    for (var s = 0; s < sites.length; s++) { var e2 = edgePoint(sites[s].x, sites[s].y); ctx.moveTo(e2.x, e2.y); ctx.lineTo(sites[s].x, sites[s].y); }
+    for (var p = 0; p < sponsors.length; p++) { var e = edgePoint(sponsors[p].x, sponsors[p].y), a = shortenTo(e, sponsors[p], sponsors[p].r + 5); ctx.moveTo(e.x, e.y); ctx.lineTo(a.x, a.y); }
+    for (var s = 0; s < sites.length; s++) { var e2 = edgePoint(sites[s].x, sites[s].y), a2 = shortenTo(e2, sites[s], sites[s].r + 6); ctx.moveTo(e2.x, e2.y); ctx.lineTo(a2.x, a2.y); }
     ctx.stroke();
+  }
+  // pull the line end back to a gap short of the node symbol so it never crowds it
+  function shortenTo(from, node, gap) {
+    var dx = node.x - from.x, dy = node.y - from.y, len = Math.hypot(dx, dy) || 1, d = Math.max(0, len - gap);
+    return { x: from.x + dx / len * d, y: from.y + dy / len * d };
   }
 
   function drawSponsor(n) { // no glow
@@ -147,7 +153,7 @@
         else pos = { x: a.x + dx * tk.t, y: a.y + dy * tk.t };
       }
       var fade = coreFade(pos.x, pos.y); if (fade <= 0.02) continue; // invisible inside / behind the wordmark
-      var col = tk.kind === "protocol" ? C.blue : C.green;
+      var col = tk.kind === "amendment" ? C.purple : (tk.kind === "packet" ? C.green : C.blue);
       dot(pos.x, pos.y, 2.1, col, 0.95 * fade, 10 * fade);
     }
   }
@@ -192,7 +198,7 @@
     ctx.clearRect(0, 0, W, H); drawLinks();
     for (var s = 0; s < sites.length; s++) drawSite(sites[s], 0);
     for (var p = 0; p < sponsors.length; p++) drawSponsor(sponsors[p]); drawCore(0);
-    label("Sponsors \u00b7 CROs \u00b7 Networks", sponsors[sponsors.length - 1].x, sponsors[sponsors.length - 1].y + sponsors[0].r + 15, C.fg, 8.5);
+    label("Sponsors \u00b7 CROs \u00b7 Networks", sponsors[sponsors.length - 1].x, sponsors[sponsors.length - 1].y + sponsors[0].r + 30, C.fg, 8.5);
     label("Sites", W * 0.86, H * 0.94, C.fg);
   }
   function start() { readColors(); layout(); if (REDUCED) { staticFrame(); return; } last = performance.now(); requestAnimationFrame(frame); }

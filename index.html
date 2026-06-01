@@ -229,6 +229,7 @@
   .queue-item b { color: var(--accent-2); font-weight: 600; margin-right: .35rem; }
   .validation-teaser { margin-top: 1.1rem; font-size: .88rem; color: var(--fg-2); }
   .validation-teaser a { color: var(--accent-2); }
+
   @media (max-width: 900px) {
     .spine-cards { grid-template-columns: repeat(2, 1fr); }
     .stats { grid-template-columns: repeat(2, 1fr); gap: 1.6rem 1.4rem; }
@@ -504,6 +505,7 @@
   .tb-leg .d-green { background: var(--locked); box-shadow: 0 0 7px color-mix(in srgb, var(--locked) 70%, transparent); }
   .tb-leg .d-value { background: var(--pass); box-shadow: 0 0 7px color-mix(in srgb, var(--pass) 70%, transparent); }
   .tb-leg .d-red { background: var(--fail); box-shadow: 0 0 7px color-mix(in srgb, var(--fail) 70%, transparent); }
+  .tb-leg .d-purple { background: var(--luna); box-shadow: 0 0 7px color-mix(in srgb, var(--luna) 70%, transparent); }
   @media (max-width: 560px) { .tb-leg { letter-spacing: .04em; } }
 </style>
 </head>
@@ -511,10 +513,10 @@
 
 <nav class="dmx-nav">
   <div class="dmx-nav-links">
-    <a class="dmx-nav-link" href="/" aria-current="true">HOME</a>
-    <a class="dmx-nav-link" href="/trust-boundary">TRUST</a>
+    <a class="dmx-nav-link" href="/" aria-current="true">Home</a>
+    <a class="dmx-nav-link" href="/trust-boundary">Trust</a>
     <a class="dmx-nav-link" href="/docs/fhir">FHIR</a>
-    <a class="dmx-nav-link" href="/about">ABOUT</a>
+    <a class="dmx-nav-link" href="/about">About</a>
   </div>
 </nav>
 
@@ -678,7 +680,8 @@
           <canvas id="tbField" aria-hidden="true"></canvas>
           <span class="tb-core" aria-hidden="true">Damaros<span class="dmx-dot"></span></span>
           <div class="tb-legend">
-            <span class="tb-leg"><i class="d-blue"></i>PROTOCOL</span>
+            <span class="tb-leg"><i class="d-blue"></i>DEPLOYMENTS</span>
+            <span class="tb-leg"><i class="d-purple"></i>AMENDMENTS</span>
             <span class="tb-leg"><i class="d-green"></i>SIGNALS</span>
             <span class="tb-leg"><i class="d-value"></i>YIELD</span>
             <span class="tb-leg"><i class="d-red"></i>PHI</span>
@@ -715,7 +718,7 @@
   <a class="pv" href="/privacy">Privacy</a>
 </div>
 
-<script src="/shared/geo-footer.js"></script>
+<script src="shared/geo-footer.js"></script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ============================================================
  * Damaros - terminal type-in reveal (inlined; self-contained).
@@ -817,7 +820,6 @@
   });
 })();
 </script>
-<script src="/shared/luna-rings.js"></script>
 <script>
 (function () {
   /* monogram tiles */
@@ -896,22 +898,7 @@
     var grp = p < N * 0.45 ? 0 : (p < N * 0.78 ? 1 : 2);
     parts.push({ x: Math.random(), y: Math.random(), tx: 0.5, ty: 0.5, r: 1.5 + Math.random() * 1.9, ph: Math.random() * 6.28, grp: grp, jx: Math.random() * 6.28, jy: Math.random() * 6.28, lit: Math.random() < 0.4 });
   }
-  var current = "protocol", morph = 0, decor = { type: "protocol" }, tact = [], lunaDots = [];
-
-  function buildLunaDots(cx, cy, R) {
-    var Luna = window.DamarosLuna;
-    var rings = Luna.ringSpec(R);
-    var dotR = (SMALL ? 0.42 : 0.52), dots = [];
-    for (var ri = 0; ri < rings.length; ri++) {
-      var ring = rings[ri];
-      var count = Luna.dotCount(ring, dotR);
-      for (var i = 0; i < count; i++) {
-        dots.push({ ring: ri, theta: (i / count) * 6.2832, x: cx, y: cy, r: dotR, ph: Math.random() * 6.28 });
-      }
-    }
-    decor.lunaRings = rings;
-    return dots;
-  }
+  var current = "protocol", morph = 0, decor = { type: "protocol" }, tact = [];
 
   function layout() {
     var rect = canvas.getBoundingClientRect();
@@ -944,9 +931,9 @@
       }
       for (var tz = 0; tz < N; tz++) tact[tz] = 0;
     } else if (id === "luna") {
-      var cyL = cy - 50; decor.cx = cx; decor.cy = cyL;
-      lunaDots = buildLunaDots(cx, cyL, R);
-      lunaDots.forEach(function (q) { q.x = cx; q.y = cyL; });
+      var cyL = cy - 50; decor.rings = [R * 0.5, R * 0.74, R * 0.98]; decor.cx = cx; decor.cy = cyL;
+      var lcnt = [0, 0, 0]; parts.forEach(function (q, i) { lcnt[i % 3]++; }); var lidx = [0, 0, 0];
+      parts.forEach(function (q, i) { var ring = i % 3, k = lidx[ring]++, a = (k / lcnt[ring]) * 6.2832 + ring * 0.4, rr = decor.rings[ring]; q.ring = ring; q.tx = cx + Math.cos(a) * rr; q.ty = cyL + Math.sin(a) * rr * 0.84; });
     } else if (id === "protocol") {
       var cols = Math.max(12, Math.min(18, Math.round(Math.sqrt(N * (W / H) * 1.2))));
       var rows = Math.ceil(N / cols); var gw = R * 2.1, gh = R * 0.95, x0 = cx - gw / 2, y0 = cy - gh / 2 - R * 0.08;
@@ -1065,7 +1052,7 @@
        above or below the visible dots. cy already carries each mode's offset. */
     var rx, ry, oy = 0;
     if (mode === "trident")        { rx = R * 1.08; ry = R * 0.94; }       /* phyllotaxis disk: rr→1.02R, vert ~0.86R */
-    else if (mode === "luna")      { rx = R * 1.14; ry = R * 0.26; }
+    else if (mode === "luna")      { rx = R * 1.04; ry = R * 0.9; }        /* outer ring 0.98R, vert ~0.82R */
     else if (mode === "protocol")  { rx = R * 1.12; ry = R * 0.62; oy = -R * 0.08; } /* lattice gw=2.1R, gh=0.95R */
     else if (mode === "evidence")  { rx = R * 1.14; ry = R * 0.84; oy = -R * 0.05; } /* apex→base spans ~1.14R */
     else if (mode === "screening") { rx = R * 1.1;  ry = R * 1.0;  oy = -R * 0.02; } /* 3 clusters spread wide + tall */
@@ -1121,6 +1108,8 @@
         } }
         ctx.lineWidth = 1; ctx.globalAlpha = 1;
       }
+    } else if (decor.type === "luna" && decor.rings) {
+      ctx.strokeStyle = COL.line; ctx.globalAlpha = e * 0.5; decor.rings.forEach(function (rr) { ctx.beginPath(); ctx.ellipse(cx, cy, rr, rr * 0.84, 0, 0, 6.2832); ctx.stroke(); });
     } else if (decor.type === "protocol" && decor.lattice) {
       ctx.strokeStyle = COL.line; ctx.globalAlpha = e * 0.45; var L = decor.lattice;
       for (var c2 = 0; c2 < L.cols; c2++) { var x = L.x0 + (L.cols <= 1 ? 0 : c2 * (L.gw / (L.cols - 1))); ctx.beginPath(); ctx.moveTo(x, L.y0); ctx.lineTo(x, L.y0 + L.gh); ctx.stroke(); }
@@ -1155,30 +1144,14 @@
     ctx.restore();
 
     /* ---- particles ---- */
-    if (current === "luna") {
-      var lunaRings = decor.lunaRings || [];
-      lunaDots.forEach(function (q) {
-        var ring = lunaRings[q.ring]; if (!ring) return;
-        var p = window.DamarosLuna.xy(ring, q.theta, time, cx, cy);
-        var bx = p.x, by = p.y;
-        if (hov) {
-          var dx = bx - mx, dy = by - my, d = Math.sqrt(dx * dx + dy * dy) || 1;
-          var rl = R * 0.55; if (d < rl) { var f3 = (1 - d / rl); f3 = f3 * f3 * 0.6; bx -= dx * f3; by -= dy * f3; }
-        }
-        q.x += (bx - q.x) * (0.08 + 0.12 * morph); q.y += (by - q.y) * (0.08 + 0.12 * morph);
-        var col = COL.luna, rad = q.r * RSCALE + e * 0.25, alpha = 0.5 + 0.45 * e, bright = 1;
-        if (hov) { var dlu = Math.sqrt((q.x - mx) * (q.x - mx) + (q.y - my) * (q.y - my)); var b2 = Math.max(0, 1 - dlu / (R * 0.5)); alpha = Math.min(1, alpha + b2 * 0.45); rad += b2 * 0.9; bright = 1 + b2 * 0.5; }
-        var pulse = 0.55 + 0.45 * Math.sin(time * 1.6 + q.ph);
-        ctx.beginPath(); ctx.arc(q.x, q.y, rad, 0, 6.2832);
-        ctx.fillStyle = col; ctx.globalAlpha = Math.min(1, alpha * (0.88 + 0.12 * pulse));
-        ctx.shadowBlur = 4 * pulse * e * bright * (SMALL ? 0.5 : 1); ctx.shadowColor = col; ctx.fill();
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1;
-      });
-    } else parts.forEach(function (q, qi) {
+    parts.forEach(function (q, qi) {
       var bx, by;
       if (current === "trident") {
         var angT = time * 0.05, oxT = q.tx - cx, oyT = q.ty - cy, caT = Math.cos(angT), saT = Math.sin(angT);
         bx = cx + oxT * caT - oyT * saT; by = cy + oxT * saT + oyT * caT;
+      } else if (current === "luna") {
+        var rd = (q.ring % 2 === 0) ? 1 : -1, angL = time * (0.03 + (q.ring || 0) * 0.018) * rd, oxL = q.tx - cx, oyL = q.ty - cy, caL = Math.cos(angL), saL = Math.sin(angL);
+        bx = cx + oxL * caL - oyL * saL; by = cy + oxL * saL + oyL * caL;
       } else if (current === "screening") {
         var spin = time * 0.05;                              /* calm, uniform rotation across all three clusters */
         bx = q.scx + Math.cos(q.sa + spin) * q.sr; by = q.scy + Math.sin(q.sa + spin) * q.sr * 0.9;
@@ -1195,6 +1168,7 @@
       if (hov) {
         var dx = bx - mx, dy = by - my, d = Math.sqrt(dx * dx + dy * dy) || 1;
         if (current === "screening") { var rs = R * 0.55; if (d < rs) { var f2 = (1 - d / rs) * 0.26; bx -= dx * f2; by -= dy * f2; } }
+        else if (current === "luna") { var rl = R * 0.55; if (d < rl) { var f3 = (1 - d / rl); f3 = f3 * f3 * 0.6; bx -= dx * f3; by -= dy * f3; } }
         else if (current === "evidence") { var re = R * 0.42; if (d < re) { var fe = (1 - d / re); fe = fe * fe; bx -= dx * fe * 0.5; by -= dy * fe * 0.5; } }
       }
       q.x += (bx - q.x) * (0.08 + 0.12 * morph); q.y += (by - q.y) * (0.08 + 0.12 * morph);
@@ -1205,6 +1179,7 @@
       if (current === "evidence" && !q.ridge) { alpha *= 0.5; rad *= 0.82; }
       if (current === "evidence" && hov) { var dXe = Math.abs(q.x - mx); if (dXe < R * 0.1) { var be = 1 - dXe / (R * 0.1); alpha = Math.min(1, alpha + be * 0.55); rad += be * 1.8; col = COL.accent2; } }
       if (current === "protocol" && hov) { var dl = Math.sqrt((q.x - mx) * (q.x - mx) + (q.y - my) * (q.y - my)); var lit = Math.max(0, 1 - dl / (R * 0.42)); if (lit > 0.4) { sq = true; bright = 1 + lit; rad = q.r + 0.8 + lit * 1.6; col = COL.accent2; } }
+      if (current === "luna" && hov) { var dlu = Math.sqrt((q.x - mx) * (q.x - mx) + (q.y - my) * (q.y - my)); var b2 = Math.max(0, 1 - dlu / (R * 0.5)); alpha = Math.min(1, alpha + b2 * 0.5); rad += b2 * 1.6; }
       if (current === "replay") { if (qi % Math.max(1, Math.round(N / 11)) !== 0) { alpha = 0; rad = 0; } else { var done = q.x <= px, near = Math.abs(q.x - px) < 16; alpha = done ? (0.6 + 0.4 * e) : 0.22; rad = q.r + (done ? 1.3 : 0.4) + (near ? 2.6 : 0); col = pcol; bright = 1 + (near ? 1.6 : (done ? 0.4 : 0)); } }
 
       var pulse = 0.55 + 0.45 * Math.sin(time * 2 + q.ph);
@@ -1438,154 +1413,8 @@
   if (document.readyState !== "loading") start(); else document.addEventListener("DOMContentLoaded", start);
 })();
 </script>
-<script src="shared/trust-membrane.js?v=7"></script>
-<script>
-/* ============================================================
- * Substrate minis - Trident & Luna, ported faithfully from the
- * hero #field engine. Each mini is locked to one mode, runs the
- * exact phyllotaxis/ring formations, spreading-activation synapses
- * (Trident) and counter-rotating elliptical rings (Luna). Pointer hover keeps
- * the hero interactions; a gentle auto-seed keeps the interaction
- * playing inside the loop even with no cursor.
- * ============================================================ */
-(function () {
-  var REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var canvases = [].slice.call(document.querySelectorAll("canvas.mini[data-mode]"));
-  if (!canvases.length) return;
-  var DPR = Math.min(2, window.devicePixelRatio || 1);
-  var COL = readCol();
-  function readCol() {
-    var cs = getComputedStyle(document.documentElement); function g(n){ return cs.getPropertyValue(n).trim(); }
-    return { accent2: g("--accent-2") || "#A9C0D6", luna: g("--luna") || "#C084FC", line: g("--bd") || "#2a3340" };
-  }
-  new MutationObserver(function(){ COL = readCol(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  var schemeMq = window.matchMedia("(prefers-color-scheme: light)");
-  var onScheme = function(){ COL = readCol(); };
-  if (schemeMq.addEventListener) schemeMq.addEventListener("change", onScheme); else if (schemeMq.addListener) schemeMq.addListener(onScheme);
-
-  function easeInOut(x){ return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
-
-  function make(canvas) {
-    var mode = canvas.dataset.mode; // "trident" | "luna"
-    var ctx = canvas.getContext("2d");
-    var TOUCH = matchMedia("(hover: none), (pointer: coarse)").matches;
-    var W = 0, H = 0, N = 46, parts = [], tact = [], decor = {}, morph = 0, lastSeed = 0;
-    var mouse = { x: -9999, y: -9999, inside: false };
-    for (var i = 0; i < N; i++) parts.push({ x: 0, y: 0, tx: 0, ty: 0, r: 1.0 + Math.random() * 1.05, ph: Math.random() * 6.28, ring: 0 });
-
-    function compute() {
-      var cx = W * 0.5, cy = H * 0.5, R = Math.min(W, H) * 0.4;
-      decor = { cx: cx, cy: cy, R: R };
-      if (mode === "trident") {
-        parts.forEach(function (q, i) { var a = i * 2.39996, rr = Math.sqrt(i / N) * R * 1.02; q.tx = cx + Math.cos(a) * rr; q.ty = cy + Math.sin(a) * rr * 0.84; });
-        decor.tneighbors = [];
-        for (var ti = 0; ti < N; ti++) {
-          var ds = [];
-          for (var tj = 0; tj < N; tj++) { if (ti === tj) continue; var ax = parts[ti].tx - parts[tj].tx, ay = parts[ti].ty - parts[tj].ty; ds.push([ax * ax + ay * ay, tj]); }
-          ds.sort(function (a, b) { return a[0] - b[0]; });
-          decor.tneighbors[ti] = [ds[0][1], ds[1][1], ds[2][1], ds[3][1]];
-        }
-        for (var tz = 0; tz < N; tz++) tact[tz] = 0;
-      } else {
-        var Luna = window.DamarosLuna;
-        decor.lunaRings = Luna.ringSpec(R);
-        parts.length = 0;
-        var dotR = 0.52;
-        decor.lunaRings.forEach(function (ring, ri) {
-          var count = Luna.dotCount(ring, dotR);
-          for (var li = 0; li < count; li++) {
-            parts.push({ ring: ri, theta: (li / count) * 6.2832, tx: cx, ty: cy, x: cx, y: cy, r: dotR, ph: Math.random() * 6.28 });
-          }
-        });
-      }
-    }
-    function layout() {
-      var r = canvas.getBoundingClientRect(); W = r.width; H = r.height; if (!W || !H) return;
-      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      compute();
-      if (!layout.done) {
-        if (mode === "luna") parts.forEach(function (q) { q.x = decor.cx; q.y = decor.cy; });
-        else parts.forEach(function (q) { q.x = q.tx; q.y = q.ty; });
-        layout.done = true;
-      }
-    }
-    if (!TOUCH) {
-      canvas.addEventListener("pointermove", function (ev) { var r = canvas.getBoundingClientRect(); mouse.x = ev.clientX - r.left; mouse.y = ev.clientY - r.top; mouse.inside = true; });
-      canvas.addEventListener("pointerleave", function () { mouse.inside = false; mouse.x = -9999; mouse.y = -9999; });
-    }
-
-    function render(now) {
-      var time = now / 1000, e = easeInOut(morph);
-      var cx = decor.cx, cy = decor.cy, R = decor.R;
-      var mx = mouse.x, my = mouse.y, hov = !TOUCH && mouse.inside;
-      ctx.clearRect(0, 0, W, H);
-      ctx.save(); ctx.lineWidth = 1;
-      if (mode === "trident") {
-        /* hover seeds activation near the cursor */
-        if (hov) { var tr = Math.max(14, R * 0.3); for (var ai = 0; ai < N; ai++) { var ddx = parts[ai].x - mx, ddy = parts[ai].y - my, dd = ddx * ddx + ddy * ddy; if (dd < tr * tr) { var sd = 1 - Math.sqrt(dd) / tr; var seed = 0.42 + 0.34 * sd; if (seed > (tact[ai] || 0)) tact[ai] = seed; } } }
-        /* hover seeds activation near the cursor (no idle auto-pulse - keeps it calm) */
-        var nxt = []; for (var ui = 0; ui < N; ui++) { var bv = (tact[ui] || 0) * 0.9; var nbs = decor.tneighbors[ui]; for (var ni = 0; ni < nbs.length; ni++) { var nv = (tact[nbs[ni]] || 0) * 0.8; if (nv > bv) bv = nv; } nxt[ui] = bv < 0.02 ? 0 : bv; } tact = nxt;
-        for (var ei = 0; ei < N; ei++) { var nb2 = decor.tneighbors[ei]; for (var ej = 0; ej < nb2.length; ej++) { var k2 = nb2[ej]; if (k2 < ei) continue;
-          var ae = tact[ei] || 0, ak = tact[k2] || 0, act = Math.max(ae, ak), fired = act > 0.06;
-          ctx.strokeStyle = fired ? COL.accent2 : COL.line; ctx.lineWidth = fired ? 1 + act * 0.55 : 1; ctx.globalAlpha = e * (0.05 + act * 0.4);
-          ctx.beginPath(); ctx.moveTo(parts[ei].x, parts[ei].y); ctx.lineTo(parts[k2].x, parts[k2].y); ctx.stroke();
-          if (act > 0.16) {
-            var hi = ae >= ak, sx = hi ? parts[ei].x : parts[k2].x, sy = hi ? parts[ei].y : parts[k2].y;
-            var dxp = (hi ? parts[k2].x : parts[ei].x) - sx, dyp = (hi ? parts[k2].y : parts[ei].y) - sy;
-            var eseed = ((ei * 73 + k2 * 131) % 97) / 97, fr = (time * 1.0 + eseed) % 1, env = Math.sin(fr * Math.PI);
-            ctx.globalAlpha = e * act * env * 0.9; ctx.fillStyle = COL.accent2;
-            ctx.beginPath(); ctx.arc(sx + dxp * fr, sy + dyp * fr, 1.3 + act * 1.4, 0, 6.2832); ctx.fill();
-          }
-        } }
-        ctx.lineWidth = 1; ctx.globalAlpha = 1;
-      }
-      ctx.restore();
-
-      var pcol = mode === "luna" ? COL.luna : COL.accent2;
-      parts.forEach(function (q, qi) {
-        var bx, by;
-        if (mode === "trident") {
-          var angT = time * 0.05, oxT = q.tx - cx, oyT = q.ty - cy, caT = Math.cos(angT), saT = Math.sin(angT);
-          bx = cx + oxT * caT - oyT * saT; by = cy + oxT * saT + oyT * caT;
-        } else {
-          var ring = decor.lunaRings[q.ring];
-          var lp = window.DamarosLuna.xy(ring, q.theta, time, cx, cy);
-          bx = lp.x; by = lp.y;
-        }
-        if (hov) {
-          var dx = bx - mx, dy = by - my, d = Math.sqrt(dx * dx + dy * dy) || 1;
-          if (mode === "luna") { var rl = R * 0.55; if (d < rl) { var f3 = (1 - d / rl); f3 = f3 * f3 * 0.6; bx -= dx * f3; by -= dy * f3; } }
-        }
-        q.x += (bx - q.x) * (0.08 + 0.12 * morph); q.y += (by - q.y) * (0.08 + 0.12 * morph);
-
-        var col = pcol, rad = (mode === "luna" ? q.r : q.r + e * 0.7), alpha = 0.45 + 0.5 * e, bright = 1;
-        if (mode === "trident" && (tact[qi] || 0) > 0.05) { var ta = tact[qi]; alpha = Math.min(1, alpha + ta * 0.42); rad += ta * 1.6; col = COL.accent2; bright = 1 + ta * 0.7; }
-        if (mode === "luna" && hov) { var dlu = Math.sqrt((q.x - mx) * (q.x - mx) + (q.y - my) * (q.y - my)); var b2 = Math.max(0, 1 - dlu / (R * 0.5)); alpha = Math.min(1, alpha + b2 * 0.45); rad += b2 * 0.7; bright = 1 + b2 * 0.4; }
-
-        var pulse = 0.55 + 0.45 * Math.sin(time * (mode === "luna" ? 1.6 : 2) + q.ph);
-        ctx.beginPath(); ctx.arc(q.x, q.y, rad, 0, 6.2832);
-        ctx.fillStyle = col; ctx.globalAlpha = Math.min(1, alpha * (0.88 + 0.12 * pulse));
-        ctx.shadowBlur = (mode === "luna" ? 3 : 6) * pulse * e * bright; ctx.shadowColor = col; ctx.fill();
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1;
-      });
-    }
-
-    var t0 = performance.now();
-    function frame(now) {
-      morph = Math.min(1, morph + Math.min(0.05, (now - t0) / 1000) * 1.6); t0 = now;
-      render(now);
-      requestAnimationFrame(frame);
-    }
-    layout();
-    var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { layout.done = false; layout(); }, 150); });
-    if (window.ResizeObserver) new ResizeObserver(function () { layout(); }).observe(canvas);
-    if (REDUCED) { morph = 1; render(performance.now()); }
-    else requestAnimationFrame(frame);
-  }
-
-  canvases.forEach(make);
-})();
-</script>
+<script src="shared/trust-membrane.js?v=9"></script>
+<script src="shared/trident-luna.js"></script>
 <script>
 /* keep the category-contrast line on a single row at any width */
 (function () {
