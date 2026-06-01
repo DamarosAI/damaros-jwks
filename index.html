@@ -12,6 +12,8 @@
 <script src="shared/theme-system.js"></script>
 <link rel="stylesheet" href="shared/damaros.css">
 <style>
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body { overflow-x: hidden; --botbar-h: 3.25rem; }
   .wrap { max-width: 1480px; margin: 0 auto; padding: 0 clamp(1.1rem, 3.4vw, 2.6rem); }
 
@@ -260,10 +262,10 @@
   /* ===== finale ===== */
   .finale { position: relative; z-index: 1; min-height: 78vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: clamp(4rem,12vh,8rem) clamp(1.1rem,4vw,2rem) clamp(5rem,12vh,8rem); overflow: hidden; }
   .finale::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 62% 52% at 50% 46%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%); }
-  .finale h2 { font-size: clamp(2.6rem,8vw,6rem); line-height: .95; letter-spacing: -.02em; text-shadow: var(--glow); }
-  .finale p { color: var(--fg-2); margin: 1.4rem auto 0; max-width: 44ch; line-height: 1.6; }
-  .finale .dmx-cta--md { margin-top: 2.2rem; }
-  .finale-mono { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-58%); width: clamp(220px, 34vw, 460px); opacity: .05; pointer-events: none; animation: finaleFloat 9s ease-in-out infinite; }
+  .finale h2 { position: relative; z-index: 2; font-size: clamp(2.6rem,8vw,6rem); line-height: .95; letter-spacing: -.02em; text-shadow: var(--glow); }
+  .finale p { position: relative; z-index: 2; color: var(--fg-2); margin: 1.4rem auto 0; max-width: 44ch; line-height: 1.6; }
+  .finale .dmx-cta--md { position: relative; z-index: 2; margin-top: 2.2rem; }
+  .finale-mono { position: absolute; z-index: 0; top: 50%; left: 50%; transform: translate(-50%,-58%); width: clamp(220px, 34vw, 460px); opacity: .05; pointer-events: none; animation: finaleFloat 9s ease-in-out infinite; }
   @media (prefers-color-scheme: light) {
     .finale-mono { filter: invert(1) brightness(.4); opacity: .07; }
   }
@@ -273,7 +275,12 @@
   @media (prefers-reduced-motion: reduce) { .finale-mono { animation: none; } }
   @media (max-width: 640px) { .who-row { grid-template-columns: 1fr; gap: .3rem; } }
   @media (max-width: 600px) {
-    .stats { grid-template-columns: 1fr; gap: 1.1rem; }
+    .stats { display: flex; gap: .75rem; grid-template-columns: none; margin-bottom: clamp(2rem,5vh,3rem);
+      overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      padding-bottom: .6rem; scrollbar-width: none; }
+    .stats::-webkit-scrollbar { display: none; }
+    .stat { flex: 0 0 64%; max-width: 15rem; scroll-snap-align: start; padding-top: .65rem; }
+    .stat .slbl { font-size: .76rem; }
     .caption { min-height: 0; }
     .c-title { min-height: 0; } .c-desc { min-height: 0; }
     .enode .elbl { font-size: .52rem; letter-spacing: .06em; }
@@ -503,7 +510,7 @@
   .sub-line { margin: clamp(1.6rem,4vh,2.4rem) 0 0; text-align: center; font-family: var(--fh); font-weight: 600;
     font-size: clamp(1.1rem,2.2vw,1.55rem); letter-spacing: -.01em; color: var(--fg); text-wrap: pretty; }
   .sub-line em { font-style: normal; color: var(--accent-2); }
-  @media (max-width: 760px) { .sub-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .sub-grid { grid-template-columns: 1fr; } .platform-bridge { display: none; } }
 
   /* ---- trust boundary: allowed vs not-allowed ---- */
   .boundary { margin: clamp(2.6rem,6vh,3.8rem) 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
@@ -535,8 +542,8 @@
   .tb-eyebrow-cta:hover { color: var(--fg); }
   .tb-eyebrow-cta:hover span { transform: translateX(3px); }
   .tb-core { position: absolute; left: 50%; top: 44%; transform: translate(-50%,-50%); z-index: 3; pointer-events: none;
-    display: inline-flex; align-items: center; gap: .14em;
-    font-family: var(--fh); font-weight: 600; font-size: clamp(.95rem,2.1vw,1.35rem); letter-spacing: -.01em; color: var(--fg);
+    display: inline-flex; align-items: center; gap: .14em; white-space: nowrap;
+    font-family: var(--fh); font-weight: 600; font-size: clamp(.78rem,2vw,1.35rem); letter-spacing: -.015em; color: var(--fg);
     text-shadow: 0 0 20px color-mix(in srgb, var(--accent-2) 35%, transparent); }
   .tb-core .dmx-dot { width: 5px; height: 5px; flex: none; align-self: center; margin: 0; }
   .tb-legend { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); z-index: 2;
@@ -633,22 +640,21 @@
         </div>
       </div>
 
-      <div class="gap-scene reveal" style="margin-top: clamp(2.8rem, 7vh, 4.4rem)">
-        <canvas id="gapField"></canvas>
-        <div class="gap-steps" aria-hidden="true">
-          <span style="left: 14%"><b>01</b>Protocol</span>
-          <span style="left: 38%"><b>02</b>Evidence</span>
-          <span style="left: 62%"><b>03</b>Screening</span>
-          <span style="left: 86%"><b>04</b>Replay</span>
-        </div>
-      </div>
-
       <!-- EXECUTION SPINE -->
-      <div class="spine-chain reveal" id="execution-chain">
+      <div class="spine-chain reveal" id="execution-chain" style="margin-top: clamp(2.8rem, 7vh, 4.4rem)">
         <header class="sec-head-block">
           <span class="eyebrow">EXECUTION WORKFLOW</span>
         </header>
-        <div class="spine-cards">
+        <div class="gap-scene reveal">
+          <canvas id="gapField"></canvas>
+          <div class="gap-steps" aria-hidden="true">
+            <span style="left: 14%"><b>01</b>Protocol</span>
+            <span style="left: 38%"><b>02</b>Evidence</span>
+            <span style="left: 62%"><b>03</b>Screening</span>
+            <span style="left: 86%"><b>04</b>Replay</span>
+          </div>
+        </div>
+        <div class="spine-cards" style="margin-top: clamp(1.4rem, 3.5vh, 2.2rem)">
           <div class="scard flow-in">
             <span class="sc-step">01</span>
             <span class="sc-n">Protocol</span>
@@ -689,7 +695,7 @@
             <div class="sub-body">
               <span class="sub-name">Trident</span>
               <span class="sub-tagline">Compounding protocol intelligence.</span>
-              <p>Transform dense protocol language into eligibility logic with evidence expectations that hold across every site. Every mapped criterion becomes reusable memory, so each protocol makes the network sharper.</p>
+              <p>Compiles dense protocol language into eligibility logic with clear evidence expectations. Every mapped criterion becomes reusable memory that sharpens the whole network.</p>
             </div>
           </article>
           <article class="sub-card luna flow-in">
@@ -697,7 +703,7 @@
             <div class="sub-body">
               <span class="sub-name">Luna</span>
               <span class="sub-tagline">Agentic operations harness.</span>
-              <p>Records AI origin, policy boundaries, provenance, and execution constraints. Agents scale operations on governed rails while the patient path stays deterministic, evidence-bound, and clinician-controlled.</p>
+              <p>Records AI origin, provenance, and policy boundaries. Agents scale operations on governed rails; the patient path stays deterministic and clinician-controlled.</p>
             </div>
           </article>
         </div>
@@ -711,7 +717,7 @@
         <!-- CATEGORY CONTRAST -->
         <div class="contrast-band platform-bridge reveal flow-in">
           <p class="cb-line" style="font-size: 26px">Turn trial execution into <em>command intelligence.</em></p>
-          <p>Clinic Node runs the trial where patients already receive care. Sponsor Console turns that execution into live operational intelligence. Together they give clinics and sponsors the same governed picture of what the protocol is doing in the field. Regulators are moving toward live oversight and faster learning. Damaros connects both sides before the enrollment report tells you what already broke.</p>
+          <p>Clinic Node runs the trial where care already happens. Sponsor Console turns that execution into live intelligence. Both sides read the same governed picture of the protocol in the field, while it runs, not after enrollment stalls.</p>
         </div>
         <div class="platform-cards sub-grid">
           <article class="sub-card platform-card flow-in">
@@ -757,10 +763,10 @@
           <span class="eyebrow">Who we serve</span>
         </header>
         <div class="who-cards">
-          <div class="wcard flow-in"><h3>Sponsors</h3><p>Governed execution intelligence across participating clinics: evidence gaps, REVIEW burden, Patient Signals, and protocol friction. Supports site operations, feasibility, and formally governed amendments.</p></div>
-          <div class="wcard flow-in"><h3>CROs</h3><p>Run deterministic review queues across community clinics, resolve bottlenecks, and standardize governed execution with permissioned sponsor visibility.</p></div>
-          <div class="wcard flow-in"><h3>Federal Networks</h3><p>Extend trial reach beyond academic centers with FedRAMP-oriented architecture, institutional oversight, and auditability built into execution.</p></div>
-          <div class="wcard flow-in"><h3>Sites &amp; Coordinators</h3><p>Run sponsor protocols locally, resolve REVIEW, confirm Patient Signals, and preserve evidence for replay.</p></div>
+          <div class="wcard flow-in"><h3>Sponsors</h3><p>Live protocol terrain across clinics: readiness, friction, Patient Signals, and where to amend.</p></div>
+          <div class="wcard flow-in"><h3>CROs</h3><p>Deterministic review queues across clinics, with permissioned sponsor visibility.</p></div>
+          <div class="wcard flow-in"><h3>Federal Networks</h3><p>Trial reach beyond academic centers, with FedRAMP-oriented oversight and audit built in.</p></div>
+          <div class="wcard flow-in"><h3>Sites &amp; Coordinators</h3><p>Run protocols locally, resolve REVIEW, confirm Patient Signals, preserve evidence for replay.</p></div>
         </div>
       </div>
 
@@ -1554,8 +1560,8 @@
   if (document.readyState !== "loading") start(); else document.addEventListener("DOMContentLoaded", start);
 })();
 </script>
-<script src="shared/trust-membrane.js?v=13"></script>
-<script src="shared/trident-luna.js?v=6"></script>
+<script src="shared/trust-membrane.js?v=14"></script>
+<script src="shared/trident-luna.js?v=7"></script>
 <script>
 /* keep the category-contrast line on a single row at any width */
 (function () {

@@ -45,7 +45,7 @@
     var SN = (W < 560) ? 4 : 5, ss = Math.min(H * 0.2, (H - coreHGuess()) * 0.46);
     for (var i = 0; i < SN; i++) { var fy = (SN === 1) ? 0 : (i / (SN - 1) * 2 - 1); sponsors.push({ x: W * 0.15, y: cyc + fy * ss, r: sr }); }
     core = { x: W * 0.5, y: cyc };
-    coreW = Math.max(108, Math.min(168, W * 0.2)); coreH = Math.max(42, Math.min(58, H * 0.13));
+    coreW = Math.max(74, Math.min(168, W * 0.22)); coreH = Math.max(36, Math.min(58, H * 0.12));
     // a bunch of sites
     var N = (W < 560) ? 6 : 9;
     sites = [];
