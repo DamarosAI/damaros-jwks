@@ -390,9 +390,6 @@
   /* ---- two-sided product architecture ---- */
   .product { margin: clamp(3rem,8vh,5rem) 0 0; width: 100%; }
   .platform-cards { margin: 0; }
-  .platform-card { position: relative; }
-  .platform-card .platform-accent { height: clamp(72px, 10vw, 96px); border-bottom: 1px solid var(--bd-soft);
-    background: radial-gradient(ellipse 85% 120% at 50% 115%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 72%); }
   .platform-card .sub-body { padding: clamp(1.2rem,2.4vw,1.6rem); }
   .platform-card .ps-tag { display: block; margin-bottom: .55rem; font-family: var(--fm); font-size: .56rem; font-weight: 600;
     letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
@@ -718,7 +715,6 @@
         </div>
         <div class="platform-cards sub-grid">
           <article class="sub-card platform-card flow-in">
-            <div class="platform-accent" aria-hidden="true"></div>
             <div class="sub-body">
               <span class="ps-tag">For sites and coordinators</span>
               <span class="sub-name">Clinic Node</span>
@@ -727,7 +723,6 @@
             </div>
           </article>
           <article class="sub-card platform-card flow-in">
-            <div class="platform-accent" aria-hidden="true"></div>
             <div class="sub-body">
               <span class="ps-tag">For sponsors and CROs</span>
               <span class="sub-name">Sponsor Console</span>
