@@ -45,17 +45,13 @@
       m.lastStep = 0; m.lastSeed = 0; m.prevNow = 0;
     } else {
       m.cx = cx; m.cy = m.H * 0.47; m.R = Math.min(m.W, m.H) * 0.4;
-      m.rings = [
-        { rx: m.R * 0.96, ry: m.R * 0.36, dir: 1,  speed: 0.042 },
-        { rx: m.R * 0.70, ry: m.R * 0.26, dir: -1, speed: 0.052 },
-        { rx: m.R * 0.46, ry: m.R * 0.17, dir: 1,  speed: 0.062 }
-      ];
+      var Luna = window.DamarosLuna;
+      m.rings = Luna.ringSpec(m.R);
       m.dots = [];
-      var dotR = 0.52, spacing = dotR * 2.05;
+      var dotR = 0.52;
       for (var ri = 0; ri < m.rings.length; ri++) {
         var ring = m.rings[ri];
-        var approx = Math.PI * (3 * (ring.rx + ring.ry) - Math.sqrt((3 * ring.rx + ring.ry) * (ring.rx + 3 * ring.ry)));
-        var count = Math.max(32, Math.round(approx / spacing));
+        var count = Luna.dotCount(ring, dotR);
         for (var j = 0; j < count; j++) {
           m.dots.push({ ring: ri, theta: (j / count) * 6.2832, ph: rnd(0, 6.28), size: dotR * rnd(0.94, 1.06) });
         }
@@ -118,16 +114,15 @@
   }
 
   function drawLuna(m, now) {
-    var ctx = m.ctx, C = m.C, t = now / 1000;
+    var ctx = m.ctx, C = m.C, t = now / 1000, Luna = window.DamarosLuna;
     ctx.clearRect(0, 0, m.W, m.H);
     for (var j = 0; j < m.dots.length; j++) {
       var d = m.dots[j], ring = m.rings[d.ring];
-      var a = d.theta + t * ring.speed * ring.dir;
-      var x = m.cx + Math.cos(a) * ring.rx, y = m.cy + Math.sin(a) * ring.ry;
+      var p = Luna.xy(ring, d.theta, t, m.cx, m.cy);
       var pl = 0.5 + 0.5 * Math.sin(t * 1.1 + d.ph);
       ctx.fillStyle = rgb(C.purple, 0.52 + 0.4 * pl);
       ctx.shadowColor = rgb(C.purple, 0.82); ctx.shadowBlur = 1.5 + pl * 1.8;
-      ctx.beginPath(); ctx.arc(x, y, d.size * (0.92 + 0.08 * pl), 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x, p.y, d.size * (0.92 + 0.08 * pl), 0, 6.2832); ctx.fill();
     }
     ctx.shadowBlur = 0;
   }

@@ -817,6 +817,7 @@
   });
 })();
 </script>
+<script src="/shared/luna-rings.js"></script>
 <script>
 (function () {
   /* monogram tiles */
@@ -898,16 +899,12 @@
   var current = "protocol", morph = 0, decor = { type: "protocol" }, tact = [], lunaDots = [];
 
   function buildLunaDots(cx, cy, R) {
-    var rings = [
-      { rx: R * 0.96, ry: R * 0.36, dir: 1,  speed: 0.042 },
-      { rx: R * 0.70, ry: R * 0.26, dir: -1, speed: 0.052 },
-      { rx: R * 0.46, ry: R * 0.17, dir: 1,  speed: 0.062 }
-    ];
-    var dotR = (SMALL ? 0.42 : 0.52), spacing = dotR * 2.05, dots = [];
+    var Luna = window.DamarosLuna;
+    var rings = Luna.ringSpec(R);
+    var dotR = (SMALL ? 0.42 : 0.52), dots = [];
     for (var ri = 0; ri < rings.length; ri++) {
       var ring = rings[ri];
-      var approx = Math.PI * (3 * (ring.rx + ring.ry) - Math.sqrt((3 * ring.rx + ring.ry) * (ring.rx + 3 * ring.ry)));
-      var count = Math.max(32, Math.round(approx / spacing));
+      var count = Luna.dotCount(ring, dotR);
       for (var i = 0; i < count; i++) {
         dots.push({ ring: ri, theta: (i / count) * 6.2832, x: cx, y: cy, r: dotR, ph: Math.random() * 6.28 });
       }
@@ -1068,7 +1065,7 @@
        above or below the visible dots. cy already carries each mode's offset. */
     var rx, ry, oy = 0;
     if (mode === "trident")        { rx = R * 1.08; ry = R * 0.94; }       /* phyllotaxis disk: rr→1.02R, vert ~0.86R */
-    else if (mode === "luna")      { rx = R * 1.02; ry = R * 0.42; }
+    else if (mode === "luna")      { rx = R * 1.14; ry = R * 0.26; }
     else if (mode === "protocol")  { rx = R * 1.12; ry = R * 0.62; oy = -R * 0.08; } /* lattice gw=2.1R, gh=0.95R */
     else if (mode === "evidence")  { rx = R * 1.14; ry = R * 0.84; oy = -R * 0.05; } /* apex→base spans ~1.14R */
     else if (mode === "screening") { rx = R * 1.1;  ry = R * 1.0;  oy = -R * 0.02; } /* 3 clusters spread wide + tall */
@@ -1162,8 +1159,8 @@
       var lunaRings = decor.lunaRings || [];
       lunaDots.forEach(function (q) {
         var ring = lunaRings[q.ring]; if (!ring) return;
-        var a = q.theta + time * ring.speed * ring.dir;
-        var bx = cx + Math.cos(a) * ring.rx, by = cy + Math.sin(a) * ring.ry;
+        var p = window.DamarosLuna.xy(ring, q.theta, time, cx, cy);
+        var bx = p.x, by = p.y;
         if (hov) {
           var dx = bx - mx, dy = by - my, d = Math.sqrt(dx * dx + dy * dy) || 1;
           var rl = R * 0.55; if (d < rl) { var f3 = (1 - d / rl); f3 = f3 * f3 * 0.6; bx -= dx * f3; by -= dy * f3; }
@@ -1490,16 +1487,12 @@
         }
         for (var tz = 0; tz < N; tz++) tact[tz] = 0;
       } else {
-        decor.lunaRings = [
-          { rx: R * 0.96, ry: R * 0.36, dir: 1,  speed: 0.042 },
-          { rx: R * 0.70, ry: R * 0.26, dir: -1, speed: 0.052 },
-          { rx: R * 0.46, ry: R * 0.17, dir: 1,  speed: 0.062 }
-        ];
+        var Luna = window.DamarosLuna;
+        decor.lunaRings = Luna.ringSpec(R);
         parts.length = 0;
-        var dotR = 0.52, spacing = dotR * 2.05;
+        var dotR = 0.52;
         decor.lunaRings.forEach(function (ring, ri) {
-          var approx = Math.PI * (3 * (ring.rx + ring.ry) - Math.sqrt((3 * ring.rx + ring.ry) * (ring.rx + 3 * ring.ry)));
-          var count = Math.max(32, Math.round(approx / spacing));
+          var count = Luna.dotCount(ring, dotR);
           for (var li = 0; li < count; li++) {
             parts.push({ ring: ri, theta: (li / count) * 6.2832, tx: cx, ty: cy, x: cx, y: cy, r: dotR, ph: Math.random() * 6.28 });
           }
@@ -1556,8 +1549,8 @@
           bx = cx + oxT * caT - oyT * saT; by = cy + oxT * saT + oyT * caT;
         } else {
           var ring = decor.lunaRings[q.ring];
-          var aL = q.theta + time * ring.speed * ring.dir;
-          bx = cx + Math.cos(aL) * ring.rx; by = cy + Math.sin(aL) * ring.ry;
+          var lp = window.DamarosLuna.xy(ring, q.theta, time, cx, cy);
+          bx = lp.x; by = lp.y;
         }
         if (hov) {
           var dx = bx - mx, dy = by - my, d = Math.sqrt(dx * dx + dy * dy) || 1;
