@@ -45,10 +45,21 @@
       m.lastStep = 0; m.lastSeed = 0; m.prevNow = 0;
     } else {
       m.cx = cx; m.cy = m.H * 0.47; m.R = Math.min(m.W, m.H) * 0.4;
-      m.rings = [m.R * 0.5, m.R * 0.74, m.R * 0.98];
+      m.rings = [
+        { rx: m.R * 0.96, ry: m.R * 0.36, dir: 1,  speed: 0.042 },
+        { rx: m.R * 0.70, ry: m.R * 0.26, dir: -1, speed: 0.052 },
+        { rx: m.R * 0.46, ry: m.R * 0.17, dir: 1,  speed: 0.062 }
+      ];
       m.dots = [];
-      var LN = Math.round(Math.min(108, Math.max(63, m.W * 0.22)));
-      for (var j = 0; j < LN; j++) { var ring = j % 3; m.dots.push({ a: j * 2.39996, ring: ring, rr: m.rings[ring], ph: rnd(0, 6.28), size: rnd(0.9, 1.9) }); }
+      var dotR = 0.52, spacing = dotR * 2.05;
+      for (var ri = 0; ri < m.rings.length; ri++) {
+        var ring = m.rings[ri];
+        var approx = Math.PI * (3 * (ring.rx + ring.ry) - Math.sqrt((3 * ring.rx + ring.ry) * (ring.rx + 3 * ring.ry)));
+        var count = Math.max(32, Math.round(approx / spacing));
+        for (var j = 0; j < count; j++) {
+          m.dots.push({ ring: ri, theta: (j / count) * 6.2832, ph: rnd(0, 6.28), size: dotR * rnd(0.94, 1.06) });
+        }
+      }
     }
   }
 
@@ -109,17 +120,14 @@
   function drawLuna(m, now) {
     var ctx = m.ctx, C = m.C, t = now / 1000;
     ctx.clearRect(0, 0, m.W, m.H);
-    // faint guide ellipses (the rings are really formed by the dots)
-    ctx.strokeStyle = rgb(C.line, 0.26); ctx.lineWidth = 1;
-    for (var r = 0; r < m.rings.length; r++) { ctx.beginPath(); ctx.ellipse(m.cx, m.cy, m.rings[r], m.rings[r] * 0.84, 0, 0, 6.2832); ctx.stroke(); }
-    // dense dotted rings, counter-rotating per ring, purple with glow
     for (var j = 0; j < m.dots.length; j++) {
-      var d = m.dots[j], dir = (d.ring % 2 === 0) ? 1 : -1, a = d.a + t * (0.05 + d.ring * 0.025) * dir;
-      var x = m.cx + Math.cos(a) * d.rr, y = m.cy + Math.sin(a) * d.rr * 0.84;
-      var pl = 0.5 + 0.5 * Math.sin(t * 1.5 + d.ph);
-      ctx.fillStyle = rgb(C.purple, 0.45 + 0.5 * pl);
-      ctx.shadowColor = rgb(C.purple, 0.9); ctx.shadowBlur = 4 + pl * 4;
-      ctx.beginPath(); ctx.arc(x, y, d.size * (0.82 + 0.28 * pl), 0, 6.2832); ctx.fill();
+      var d = m.dots[j], ring = m.rings[d.ring];
+      var a = d.theta + t * ring.speed * ring.dir;
+      var x = m.cx + Math.cos(a) * ring.rx, y = m.cy + Math.sin(a) * ring.ry;
+      var pl = 0.5 + 0.5 * Math.sin(t * 1.1 + d.ph);
+      ctx.fillStyle = rgb(C.purple, 0.52 + 0.4 * pl);
+      ctx.shadowColor = rgb(C.purple, 0.82); ctx.shadowBlur = 1.5 + pl * 1.8;
+      ctx.beginPath(); ctx.arc(x, y, d.size * (0.92 + 0.08 * pl), 0, 6.2832); ctx.fill();
     }
     ctx.shadowBlur = 0;
   }
