@@ -17,6 +17,7 @@
   .d-title { font-family: var(--fh); font-weight: 600; font-size: clamp(2rem, 4.8vw, 3.2rem); letter-spacing: -.015em; line-height: 1.02; max-width: 18ch; }
   .d-lead { color: var(--fg-2); font-size: clamp(1rem, 1.2vw, 1.06rem); line-height: 1.68; margin: 1.15rem 0 0; max-width: 62ch; }
   .d-lead strong { color: var(--fg); font-weight: 600; }
+  .doc-meta { margin-top: 1rem; font-family: var(--fm); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); line-height: 1.8; }
 
   .doctrine-strip { margin: clamp(1.8rem, 4vh, 2.6rem) 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--bd-soft); border: 1px solid var(--bd); border-radius: 12px; overflow: hidden; }
   .doctrine-cell { background: var(--panel); padding: 1rem 1.05rem; }
@@ -35,6 +36,14 @@
   .body p { margin: 0 0 .8rem; }
   .body p:last-child { margin-bottom: 0; }
   .body strong { color: var(--fg); font-weight: 600; }
+  .body code, .kv code { font-family: var(--fm); color: var(--accent-2); font-size: .85em; }
+
+  .kv { width: 100%; border-collapse: collapse; font-family: var(--fm); font-size: .8rem; margin-top: .6rem; }
+  .kv tr { border-bottom: 1px solid var(--bd-soft); }
+  .kv tr:last-child { border-bottom: 0; }
+  .kv td { padding: .62rem 0; vertical-align: top; line-height: 1.55; }
+  .kv td:first-child { width: 210px; padding-right: 1.2rem; color: var(--accent); opacity: .82; }
+  .kv td:last-child { color: var(--fg-2); }
 
   .dual { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.85rem, 2vw, 1.2rem); margin-top: .2rem; }
   .dual-card { border: 1px solid var(--bd); border-radius: 12px; background: var(--panel); padding: 1.15rem 1.2rem; box-shadow: var(--shadow-panel); }
@@ -79,6 +88,7 @@
     .doctrine-strip { grid-template-columns: repeat(2, 1fr); }
     .dual, .split-cards { grid-template-columns: 1fr; }
     .chain-mini { grid-template-columns: repeat(2, 1fr); }
+    .kv td:first-child { width: 130px; font-size: .72rem; }
   }
   @media (max-width: 480px) { .doctrine-strip, .chain-mini { grid-template-columns: 1fr; } }
 </style>
@@ -96,7 +106,11 @@
 <main class="docs">
   <div class="d-eyebrow">Trust doctrine</div>
   <h1 class="d-title">The model is not the system of record.</h1>
-  <p class="d-lead">Damaros is the operating system for decentralized clinical trials. Community clinics run as <strong>governed trial-access nodes</strong>: site-approved evidence in, deterministic screening, human review, replayable referral packet out. <strong>AI upstream. Determinism downstream. Replay always.</strong></p>
+  <p class="d-lead">This document describes how Damaros governs AI use, clinical data handling, eligibility execution, and audit reconstruction for decentralized trial-access deployments. It is written for security, compliance, clinical operations, and integration reviewers evaluating site, sponsor, or network diligence.</p>
+  <div class="doc-meta">
+    Audience: security · compliance · clinical ops · integration<br>
+    Last updated: May 2026 · Supplements customer BAA / DPA and deployment contracts
+  </div>
 
   <div class="doctrine-strip" aria-label="Non-negotiable trust lines">
     <div class="doctrine-cell"><span class="dc-k">Boundary</span><span class="dc-v">PHI never touches an LLM.</span></div>
@@ -110,11 +124,25 @@
   <div class="divider"></div>
 
   <section class="doc">
+    <div class="sec-label">00_SCOPE</div>
+    <h2 class="sec-head">Document scope</h2>
+    <div class="body">
+      <p>Damaros is the operating system for decentralized clinical trials. Community clinics run as <strong>governed trial-access nodes</strong>: site-approved evidence in, deterministic screening, human review, replayable referral packet out.</p>
+      <p>This page states platform-level trust boundaries. Contract-specific retention, subprocessors, incident response SLAs, and jurisdiction terms live in the executed BAA or DPA for each deployment. Technical wire-level integration detail lives in the <a href="/docs/fhir">FHIR integration reference</a>.</p>
+    </div>
+    <table class="kv">
+      <tr><td>IN_SCOPE</td><td>AI boundaries, eligibility execution, human review, replay, visibility tiers, validation posture, deployment controls</td></tr>
+      <tr><td>OUT_OF_SCOPE</td><td>Customer-specific network diagrams, production client IDs, signing key material, internal source layout</td></tr>
+      <tr><td>CLAIM_BOUNDARY</td><td>Execution integrity and auditability only. No clinical efficacy claims. No regulatory clearance claims unless formally granted in writing.</td></tr>
+    </table>
+  </section>
+
+  <section class="doc">
     <div class="sec-label">01_AI_SURFACE</div>
-    <h2 class="sec-head">What AI may touch</h2>
+    <h2 class="sec-head">Permitted and prohibited AI surface</h2>
     <div class="dual">
       <div class="dual-card allow">
-        <h3>Permitted</h3>
+        <h3>Permitted upstream</h3>
         <ul class="bullets">
           <li>Non-PHI protocol text, amendments, and sponsor documents.</li>
           <li>Criterion structuring, ambiguity detection, and mapping suggestions via <strong>Trident</strong>.</li>
@@ -123,7 +151,7 @@
         </ul>
       </div>
       <div class="dual-card deny">
-        <h3>Prohibited</h3>
+        <h3>Prohibited on patient path</h3>
         <ul class="bullets">
           <li>PHI-bearing patient evidence parsing on the screening path.</li>
           <li>Eligibility verdict issuance, adjudication, or replay reconstruction by model output.</li>
@@ -132,25 +160,46 @@
         </ul>
       </div>
     </div>
-    <div class="callout"><strong>Hard boundary.</strong> PHI never touches an LLM on the eligibility path. Optional external requests never serialize patient identifiers or cohort-linked fields.</div>
+    <div class="callout"><strong>Hard boundary.</strong> PHI never touches an LLM on the eligibility path. Optional external requests never serialize patient identifiers, MRNs, cohort-linked clinical fields, or free-text narrative into any AI-assisted path.</div>
+    <table class="kv" style="margin-top:1.1rem">
+      <tr><td>ENFORCEMENT</td><td>Screening pipeline accepts normalized protocol-scoped facts only. Luna stamps AI origin and policy scope before downstream use. Default egress denies patient-identifiable transmission to third-party assistance endpoints for screening.</td></tr>
+      <tr><td>FAILURE_MODE</td><td>If required evidence is missing or ambiguous, output is REVIEW or FAIL with rationale. The system does not infer eligibility from a model guess.</td></tr>
+    </table>
   </section>
 
   <section class="doc">
     <div class="sec-label">02_EXECUTION_SPINE</div>
     <h2 class="sec-head">Protocol to referral, one governed chain</h2>
     <div class="body">
-      <p>Every clinic node runs the same execution spine sponsors deploy. Versioned protocol logic binds to site-approved evidence, screens deterministically, routes REVIEW work, and ships a replayable referral packet.</p>
+      <p>Every clinic node runs the same execution spine sponsors deploy. Versioned protocol logic binds to site-approved evidence, screens deterministically, routes REVIEW work, captures human adjudication, and ships a replayable referral packet.</p>
     </div>
     <div class="chain-mini">
-      <div class="chain-step"><span class="cs-n">01</span><span class="cs-t">Protocol lock</span><p class="cs-d">Trident compiles language into executable eligibility structure.</p></div>
-      <div class="chain-step"><span class="cs-n">02</span><span class="cs-t">Evidence admission</span><p class="cs-d">FHIR cohort sync and approved sources enter with lineage.</p></div>
-      <div class="chain-step"><span class="cs-n">03</span><span class="cs-t">Deterministic screening</span><p class="cs-d">Same inputs, same rule: PASS, REVIEW, or FAIL per criterion.</p></div>
-      <div class="chain-step"><span class="cs-n">04</span><span class="cs-t">Replay</span><p class="cs-d">Protocol version, evidence snapshot, reviewers, and packet hash.</p></div>
+      <div class="chain-step"><span class="cs-n">01</span><span class="cs-t">Protocol lock</span><p class="cs-d">Trident compiles language into versioned, executable eligibility structure. Amendments create a new protocol version; prior runs remain tied to the version that executed.</p></div>
+      <div class="chain-step"><span class="cs-n">02</span><span class="cs-t">Evidence admission</span><p class="cs-d">FHIR cohort sync and approved sources enter with lineage, retrieval timestamps, and resource references. Only contract-mapped fields persist for evaluation.</p></div>
+      <div class="chain-step"><span class="cs-n">03</span><span class="cs-t">Deterministic screening</span><p class="cs-d">Same protocol version, same evidence snapshot, same <code>evaluation_as_of</code>: same criterion outcomes. PASS, REVIEW, or FAIL per criterion with attached evidence references.</p></div>
+      <div class="chain-step"><span class="cs-n">04</span><span class="cs-t">Replay</span><p class="cs-d">Protocol version, evidence snapshot, engine run, reviewers, adjudication state, and referral packet hash reconstruct under audit.</p></div>
     </div>
+    <table class="kv" style="margin-top:1.1rem">
+      <tr><td>IMMUTABILITY</td><td>Screening runs and locked protocol versions are append-only once written. Corrections occur through new runs or explicit adjudication records, not silent overwrite.</td></tr>
+      <tr><td>VERDICT_SEMANTICS</td><td><strong>PASS:</strong> criterion satisfied on admitted evidence. <strong>REVIEW:</strong> missing, conflicting, or human-judgment-required evidence. <strong>FAIL:</strong> criterion not satisfied on admitted evidence.</td></tr>
+    </table>
   </section>
 
   <section class="doc">
-    <div class="sec-label">03_TWO_SIDED_VISIBILITY</div>
+    <div class="sec-label">03_HUMAN_REVIEW</div>
+    <h2 class="sec-head">Human review before referral</h2>
+    <div class="body">
+      <p>Deterministic screening surfaces REVIEW worklists for coordinators and investigators. Human adjudication captures who reviewed, what changed, and when. Clinician confirmation precedes referral packet issuance.</p>
+    </div>
+    <ul class="bullets">
+      <li>REVIEW queues group patients by blocker type: missing labs, ambiguous criteria, stale evidence, protocol amendment drift.</li>
+      <li>Adjudication records attach to the replay bundle. Sponsor views see de-identified load and completion signals, not raw chart content.</li>
+      <li>Referral readiness requires explicit site confirmation. The platform does not auto-refer from engine output alone.</li>
+    </ul>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">04_TWO_SIDED_VISIBILITY</div>
     <h2 class="sec-head">Sites get worklists. Networks get truth.</h2>
     <div class="split-cards">
       <article class="scard">
@@ -164,39 +213,69 @@
         <p>Permissioned, de-identified execution visibility: protocol deployment, clinic readiness, REVIEW load, referral packet status, and replay completeness across decentralized nodes.</p>
       </article>
     </div>
-    <div class="callout em"><strong>Sponsor visibility boundary.</strong> Sponsor, CRO, and federal-network views are permissioned and de-identified by default. Site-approved outputs surface as execution signals and replay artifacts, not raw PHI payloads.</div>
+    <table class="kv" style="margin-top:1.1rem">
+      <tr><td>ACCESS_MODEL</td><td>Role-based access with organization and trial scope. Coordinator, investigator, QA, and sponsor roles see only permitted views for their scope.</td></tr>
+      <tr><td>SPONSOR_DEFAULT</td><td>De-identified execution signals and replay artifact metadata. No raw PHI payloads in sponsor or CRO consoles by default.</td></tr>
+      <tr><td>SESSIONS</td><td>Web sessions are time-bound and attributable. Administrative and export actions are RBAC-gated.</td></tr>
+    </table>
+    <div class="callout em"><strong>Sponsor visibility boundary.</strong> Site-approved outputs surface as execution signals and replay artifacts, not longitudinal chart exports.</div>
   </section>
 
   <section class="doc">
-    <div class="sec-label">04_TRIDENT_AND_LUNA</div>
+    <div class="sec-label">05_REPLAY_BUNDLE</div>
+    <h2 class="sec-head">What replay reconstructs</h2>
+    <div class="body">
+      <p>A replay bundle is the institution-defensible artifact sponsors, CROs, QA, and auditors use to reconstruct a decision. It is not a model transcript.</p>
+    </div>
+    <ul class="bullets">
+      <li>Locked protocol version ID and engine version.</li>
+      <li>Evidence snapshot references: FHIR resource IDs, retrieval timestamps, cohort membership at sync time.</li>
+      <li>Criterion-level outcomes with PASS, REVIEW, or FAIL, rationale, and evidence pointers.</li>
+      <li>Human adjudication history: reviewer identity, timestamps, and state transitions.</li>
+      <li>Referral packet status, confirmation actor, and integrity hash.</li>
+      <li><code>evaluation_as_of</code> timestamp fixing the temporal basis for time-sensitive criteria.</li>
+    </ul>
+    <div class="callout"><strong>Citation vs replay.</strong> A citation shows what a model read. Replay reconstructs the decision the institution made under locked rules and admitted evidence.</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">06_TRIDENT_AND_LUNA</div>
     <h2 class="sec-head">AI substrate with enforced separation</h2>
     <ul class="bullets">
       <li><strong>Trident</strong> compiles protocol language into executable eligibility structure. It sharpens with every protocol release and site run. It never issues a patient verdict.</li>
       <li><strong>Luna</strong> records AI origin, policy boundaries, provenance, and execution constraints. AI drafts language-heavy work upstream. Luna stamps what crossed the boundary and what did not.</li>
+      <li>Trident output is versioned and reviewable before lock. Locked protocol logic is what the deterministic engine executes.</li>
+      <li>Luna audit entries cover optional AI-assisted tasks outside screening: drafts, suggestions, operator support. They do not replace criterion outcomes.</li>
     </ul>
   </section>
 
   <section class="doc">
-    <div class="sec-label">05_CITATION_VS_REPLAY</div>
-    <h2 class="sec-head">Why replay beats citation</h2>
-    <div class="body">
-      <p>A citation shows what a model read. Replay reconstructs the decision an institution made: locked protocol version, admitted evidence, criterion outcomes, human adjudication, and referral packet state.</p>
-      <p>Sponsors, CROs, and federal research networks need decisions that reconstruct under scrutiny across community sites. Regulated AI does not scale through opacity. It scales through replay.</p>
-    </div>
+    <div class="sec-label">07_DATA_AND_DEPLOYMENT</div>
+    <h2 class="sec-head">Data classification and deployment boundary</h2>
+    <table class="kv">
+      <tr><td>PHI</td><td>Processed inside the institution-approved deployment boundary with tenant isolation per contract. Governed by executed BAA or DPA.</td></tr>
+      <tr><td>EXECUTION_RECORDS</td><td>Criterion outcomes, evidence references, adjudication, replay lineage. Retained per deployment architecture and contract.</td></tr>
+      <tr><td>TELEMETRY</td><td>Structured logs favor stable identifiers: request id, org id, trial id, non-PHI codes. Free-text clinical narrative excluded from default templates.</td></tr>
+      <tr><td>NOT_A_SHADOW_EHR</td><td>Ingest ends in protocol-scoped screening artifacts. The EHR remains system of record for longitudinal care.</td></tr>
+      <tr><td>NETWORK</td><td>Deny-by-default egress with explicit allowlists for Epic FHIR, OIDC, in-cluster data stores, and DNS. See FHIR reference for wire detail.</td></tr>
+      <tr><td>ENCRYPTION</td><td>TLS in transit. Encryption at rest per deployment architecture and customer agreement.</td></tr>
+    </table>
+    <a class="cross-link" href="/docs/fhir">FHIR, OAuth, JWKS, and scope specification <span aria-hidden="true">&rarr;</span></a>
   </section>
 
   <section class="doc">
-    <div class="sec-label">06_INTEGRATION_POSTURE</div>
-    <h2 class="sec-head">Enterprise trust extends to the wire</h2>
-    <div class="body">
-      <p>Clinic nodes integrate with Epic through SMART on FHIR Backend Services: signed JWT client assertions, public JWKS discovery, read-only cohort access, and server-side token handling. Signing keys live in secret stores. JWKS documents publish public material only. Private keys never appear in git, browser bundles, or JWKS JSON.</p>
-      <p>Helm deployments ship deny-by-default egress <code>NetworkPolicy</code> with explicit allowlists for Epic FHIR, OIDC, in-cluster data stores, and DNS. The trust boundary is architectural, not aspirational.</p>
-    </div>
-    <a class="cross-link" href="/docs/fhir">Full FHIR, OAuth, and JWKS specification <span aria-hidden="true">&rarr;</span></a>
+    <div class="sec-label">08_AUDIENCE_CONTROLS</div>
+    <h2 class="sec-head">Buyer and operator expectations</h2>
+    <table class="kv">
+      <tr><td>Sponsors</td><td>Permissioned execution truth across decentralized nodes, protocol friction visibility, replay credibility, referral packet status</td></tr>
+      <tr><td>CROs</td><td>Cross-site REVIEW burden visibility, referral packet consistency, deterministic outputs suitable for QA sampling</td></tr>
+      <tr><td>Federal networks</td><td>Governed expansion beyond elite centers with traceable oversight and replayable audit artifacts</td></tr>
+      <tr><td>Sites</td><td>Deterministic screening, evidence readiness queues, human-adjudication capture, clinician-confirmed referral</td></tr>
+    </table>
   </section>
 
   <section class="doc">
-    <div class="sec-label">07_CATEGORY</div>
+    <div class="sec-label">09_CATEGORY</div>
     <h2 class="sec-head">Discovery vs governed access</h2>
     <div class="foil">
       <p>Others validate AI-assisted trial discovery. Damaros builds the <em>governed execution layer</em> sponsors, CROs, and research networks need to operationalize and defend those decisions across community clinics. Discovery suggests. Governed execution proves.</p>
@@ -204,15 +283,30 @@
   </section>
 
   <section class="doc">
-    <div class="sec-label">08_VALIDATION</div>
-    <h2 class="sec-head">Validation dimensions</h2>
+    <div class="sec-label">10_VALIDATION</div>
+    <h2 class="sec-head">Validation dimensions and cutover posture</h2>
+    <div class="body">
+      <p>Validation measures execution integrity, not clinical efficacy. The same Protocol → Evidence → Screening → Replay chain runs in validation and production so retrospective evidence carries forward to cutover.</p>
+    </div>
     <ul class="bullets">
-      <li>Criterion-level agreement, false PASS, false FAIL.</li>
-      <li>REVIEW burden and missing-evidence drivers.</li>
+      <li>Criterion-level agreement, false PASS, false FAIL against adjudicated reference sets.</li>
+      <li>REVIEW burden and missing-evidence drivers by criterion and site.</li>
       <li>Evidence-lineage completeness and replay completeness.</li>
-      <li>Adjudication deltas and run reproducibility for fixed protocol, cohort, and <code>evaluation_as_of</code>.</li>
+      <li>Adjudication deltas between runs for fixed protocol, cohort, and <code>evaluation_as_of</code>.</li>
+      <li>Run reproducibility: re-execution on the same snapshot produces identical criterion outcomes.</li>
     </ul>
-    <div class="callout">Validation covers execution integrity, not clinical efficacy claims. The same execution chain runs validation and production so evidence carries forward to cutover.</div>
+    <div class="callout">Production cutover is a credential and environment swap, not a workflow rebuild. Sandbox and production credentials, JWKS URLs, and signing keys remain isolated.</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">11_RELATED_DOCUMENTS</div>
+    <h2 class="sec-head">Related documents</h2>
+    <ul class="bullets">
+      <li><a href="/docs/fhir">Enterprise FHIR integration reference</a> (OAuth, JWKS, scopes, sync, security)</li>
+      <li><a href="/docs/privacy">Platform privacy and data handling</a></li>
+      <li><a href="/privacy">Public website privacy notice</a></li>
+      <li>Customer BAA / DPA and deployment security addendum (provided under contract)</li>
+    </ul>
   </section>
 </main>
 
