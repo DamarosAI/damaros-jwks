@@ -137,8 +137,8 @@
   .story-inner { position: relative; max-width: 920px; margin: 0 auto; padding: 0 clamp(1.1rem,4vw,2.6rem); }
   .story-lede { margin-bottom: clamp(2.8rem,7vh,5rem); }
   .story-lede .eyebrow { display: block; margin-bottom: 1rem; }
-  .story-lede h2 { font-size: clamp(2rem,5vw,3.6rem); line-height: 1.02; max-width: 20ch; }
-  .story-lede h2 em { font-style: normal; color: var(--accent-2); }
+  .story-lede h2 { font-size: clamp(1.9rem,4vw,3rem); line-height: 1.04; text-wrap: pretty; }
+  .story-lede h2 em { font-style: normal; color: var(--accent-2); display: inline-block; }
   .story-lede p { margin-top: 1.4rem; color: var(--fg-2); font-size: clamp(1rem,1.4vw,1.16rem); line-height: 1.65; max-width: 60ch; }
   .chain { list-style: none; margin: 0 0 clamp(2.8rem,7vh,5rem); padding: 0 0 0 2.4rem; position: relative; display: flex; flex-direction: column; gap: clamp(1.5rem,4vh,2.6rem); }
   .chain::before { content: ''; position: absolute; left: 5px; top: 12px; bottom: 12px; width: 1px; background: linear-gradient(var(--accent-2), var(--bd) 55%, transparent); opacity: .5; }
@@ -167,7 +167,7 @@
     font-size: clamp(.46rem, 1vw, .56rem); font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
     color: color-mix(in srgb, var(--fail) 80%, var(--fg-3)); }
   .gap-note { margin: clamp(1.5rem, 4vh, 2.3rem) 0 0; color: var(--fg);
-    font-size: clamp(1.05rem, 1.45vw, 1.25rem); font-weight: 500; line-height: 1.5; max-width: 60ch; text-wrap: pretty; }
+    font-size: clamp(1.05rem, 1.45vw, 1.25rem); font-weight: 500; line-height: 1.5; max-width: none; text-wrap: pretty; }
   .who .eyebrow { display: block; margin-bottom: 1.2rem; }
   .who-cards { margin: 1.8rem 0 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--bd-soft); border: 1px solid var(--bd-soft); border-radius: 12px; overflow: hidden; }
   .wcard { background: var(--bg); padding: 1.6rem 1.4rem 1.5rem; display: flex; flex-direction: column; transition: background var(--t) var(--ease); }
@@ -207,15 +207,15 @@
 
   /* ===== convergence: who-it-serves declarative header ===== */
   .who-head { margin-bottom: clamp(1.7rem, 4vh, 2.5rem); }
-  .who-head .eyebrow { display: block; margin-bottom: .95rem; }
-  .who-head h2 { font-family: var(--fh); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.7rem);
-    line-height: 1.03; letter-spacing: -.015em; max-width: 17ch; }
-  .who-head h2 em { font-style: normal; color: var(--accent-2); }
+  .who-head .eyebrow { display: block; margin-bottom: .95rem; font-size: .74rem; letter-spacing: .2em; color: var(--accent-2); }
+  .who-head h2 { font-family: var(--fh); font-weight: 600; font-size: clamp(1.6rem, 3vw, 2.4rem);
+    line-height: 1.05; letter-spacing: -.015em; text-wrap: pretty; }
+  .who-head h2 em { font-style: normal; color: var(--accent-2); display: inline-block; }
 
   /* ===== convergence: stat source footnotes ===== */
   .stat .ssrc { font-family: var(--fm); font-size: .54rem; font-weight: 600; letter-spacing: .1em;
     text-transform: uppercase; color: var(--fg-3); margin-top: .35rem; }
-  .stats-lede { display: block; margin-bottom: 1.5rem; }
+  .stats-lede { display: block; margin-bottom: 1.5rem; font-size: .74rem; letter-spacing: .2em; color: var(--accent-2); }
   .six-qs { margin: clamp(2.4rem, 6vh, 3.6rem) 0 0; padding: clamp(1.5rem, 4vw, 2.1rem) clamp(1.5rem, 4vw, 2.4rem); border: 1px solid var(--bd-soft); border-radius: 12px; background: var(--chip-bg); }
   .six-qs h3 { font-size: clamp(1.2rem, 2.4vw, 1.8rem); margin: 0 0 1rem; line-height: 1.1; }
   .six-qs ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .52rem; color: var(--fg-2); font-size: .92rem; line-height: 1.58; }
@@ -266,15 +266,14 @@
   }
 
   /* ===== bottom bar ===== */
-  .botbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: grid; grid-template-columns: 1fr auto auto 1fr;
-    align-items: center; gap: 1rem; padding: .75rem clamp(1.1rem, 3.4vw, 2.6rem); font-family: var(--fm); font-size: .58rem;
+  .botbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: flex; align-items: center; gap: 1.2rem;
+    padding: .75rem clamp(1.1rem, 3.4vw, 2.6rem); font-family: var(--fm); font-size: .58rem;
     letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3);
     background: linear-gradient(transparent, var(--bg) 46%); }
-  .botbar .geo { justify-self: start; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .botbar .geo { margin-right: auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .botbar .geo.pending { opacity: .45; }
-  .botbar .bc { justify-self: center; display: inline-flex; gap: 1.2rem; }
-  .botbar .bc a:hover { color: var(--fg); }
-  .botbar .cp { justify-self: end; }
+  .botbar .pv { color: var(--fg-3); transition: color var(--t) var(--ease); }
+  .botbar .pv:hover { color: var(--fg); }
 
   @media (min-width: 901px) and (max-height: 760px) {
     .hero-inner { top: clamp(74px, 11vh, 104px); transform: none; }
@@ -313,7 +312,6 @@
   }
 
   @media (max-width: 560px) {
-    .botbar { grid-template-columns: 1fr auto; }
     .botbar .cp { display: none; }
   }
 
@@ -324,6 +322,196 @@
      (works even if shared/scramble.js or an older shared/damaros.css is deployed) */
   .dmx-w { display: inline-block; }          /* keeps a phrase a single item inside inline-flex contexts */
   .dmx-c.pre { visibility: hidden; }         /* not yet typed - space reserved, nothing shifts */
+
+  /* ============================================================
+   * POLISH LAYER — institution-grade hierarchy + section rhythm.
+   * Appended last so it wins cleanly over base rules above.
+   * ============================================================ */
+
+  /* hero: calm, legible, one clear ladder */
+  .hero-tag { color: var(--fg-2); }
+  .hero-trust { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1.25rem;
+    font-family: var(--fh); font-weight: 600; font-size: clamp(1rem, 1.18vw, 1.22rem); letter-spacing: -.01em; color: var(--fg); }
+  .hero-trust .trust-mark { width: 9px; height: 9px; flex: none; border-radius: 50%;
+    background: var(--locked); box-shadow: 0 0 12px color-mix(in srgb, var(--locked) 75%, transparent); }
+  .hero-doctrine { margin-top: .85rem; color: var(--accent-2); letter-spacing: .14em; }
+
+  /* shared section header for story blocks */
+  .sec-head-block { margin: 0 0 clamp(1.5rem, 4vh, 2.3rem); }
+  .sec-head-block .eyebrow { display: block; margin-bottom: .9rem; font-size: .74rem; letter-spacing: .2em; color: var(--accent-2); }
+  .sec-head-block h2 { font-family: var(--fh); font-weight: 600; font-size: clamp(1.55rem, 2.9vw, 2.25rem);
+    line-height: 1.05; letter-spacing: -.015em; text-wrap: pretty; }
+  .sec-head-block h2 em { font-style: normal; color: var(--accent-2); display: inline-block; }
+  .sec-head-block p { margin: 1rem 0 0; color: var(--fg-2); font-size: clamp(.96rem,1.2vw,1.06rem); line-height: 1.62; max-width: 60ch; }
+  .tb-doctrine { font-family: var(--fb); font-weight: 500; font-size: clamp(1rem,1.5vw,1.2rem); letter-spacing: -.005em; color: var(--fg-2); }
+  .tb-doctrine em { font-style: normal; color: var(--accent-2); }
+
+  /* ---- category-contrast statement band ---- */
+  .contrast-band { margin: clamp(2.4rem,6vh,3.6rem) 0 0; padding: clamp(1.8rem,4.5vw,2.6rem) clamp(1.8rem,4.5vw,2.8rem);
+    border: 1px solid var(--bd); border-radius: 14px; background: var(--panel); box-shadow: var(--shadow-panel); }
+  .contrast-band .cb-line { font-family: var(--fh); font-weight: 600; font-size: clamp(1.45rem,2.7vw,2.05rem);
+    line-height: 1.12; letter-spacing: -.015em; margin: 0; white-space: nowrap; }
+  .contrast-band .cb-line em { font-style: normal; color: var(--accent-2); }
+  .contrast-band p { margin: 1rem 0 0; color: var(--fg-2); font-size: clamp(.94rem,1.1vw,1.02rem); line-height: 1.62; max-width: 70ch; }
+
+  /* ---- two-sided product architecture ---- */
+  .product { margin: clamp(3rem,8vh,5rem) 0 0; }
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem,2.4vw,1.6rem); position: relative; }
+  .product-grid::before { content: ''; position: absolute; top: 14%; bottom: 14%; left: 50%; width: 1px;
+    background: linear-gradient(transparent, var(--bd-strong), transparent); transform: translateX(-50%); z-index: 2; }
+  .psurface { background: var(--panel); border: 1px solid var(--bd); border-radius: 14px;
+    padding: clamp(1.5rem,3vw,2.1rem); display: flex; flex-direction: column; box-shadow: var(--shadow-panel);
+    transition: border-color var(--t) var(--ease), transform var(--t) var(--ease); }
+  .psurface:hover { border-color: var(--bd-strong); transform: translateY(-2px); }
+  .ps-top { display: flex; flex-direction: column; gap: .55rem; padding-bottom: 1.1rem; margin-bottom: 1.1rem; border-bottom: 1px solid var(--bd-soft); }
+  .ps-tag { font-family: var(--fm); font-size: .56rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  .ps-top h3 { font-size: clamp(1.4rem,2.6vw,1.9rem); letter-spacing: -.01em; }
+  .ps-headline { margin: .85rem 0 0; font-family: var(--fh); font-weight: 600; font-size: clamp(1.02rem,1.5vw,1.28rem);
+    letter-spacing: -.01em; line-height: 1.2; color: var(--accent-2); text-wrap: pretty; }
+  .ps-lede { margin: .7rem 0 0; color: var(--fg-2); font-size: clamp(.92rem,1.15vw,1rem); line-height: 1.6; }
+  .ps-flow { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: 1.2rem; }
+  .ps-flow .ps-step { font-family: var(--fm); font-size: .72rem; letter-spacing: .02em; color: var(--fg); white-space: nowrap;
+    padding: .42rem .65rem; border: 1px solid var(--bd-soft); border-radius: 7px; background: color-mix(in srgb, var(--accent-2) 5%, transparent); }
+  .ps-flow .ps-arrow { color: var(--accent-2); font-size: .72rem; opacity: .65; }
+  .ps-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.2rem; }
+  .ps-chips .ps-chip { font-family: var(--fm); font-size: .72rem; letter-spacing: .02em; color: var(--fg-2); white-space: nowrap;
+    padding: .42rem .65rem; border: 1px solid var(--bd-soft); border-radius: 7px; }
+  .ps-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .1rem; }
+  .ps-list li { display: flex; align-items: center; gap: .7rem; padding: .6rem 0; border-top: 1px solid var(--bd-soft);
+    font-family: var(--fm); font-size: .82rem; letter-spacing: .02em; color: var(--fg); }
+  .ps-list li::before { content: ''; width: 6px; height: 6px; flex: none; transform: rotate(45deg);
+    border: 1px solid var(--accent-2); background: color-mix(in srgb, var(--accent-2) 30%, transparent); }
+  .ps-foot { margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--bd-soft);
+    font-family: var(--fh); font-weight: 600; font-size: .98rem; color: var(--fg-2); }
+  .product-line { text-align: center; margin: clamp(1.8rem,4vh,2.6rem) 0 0; font-family: var(--fh); font-weight: 600;
+    font-size: clamp(1.2rem,2.4vw,1.7rem); letter-spacing: -.01em; color: var(--fg); }
+  .product-line em { font-style: normal; color: var(--accent-2); }
+  .access-line { margin: clamp(1.8rem,4.5vh,2.8rem) auto 0; max-width: 70ch; text-align: center; text-wrap: pretty; }
+  .access-line .al-1 { display: block; font-family: var(--fh); font-weight: 600; font-size: clamp(1.18rem,2.3vw,1.65rem);
+    letter-spacing: -.015em; line-height: 1.2; color: var(--fg); }
+  .access-line .al-2 { display: block; margin-top: .45rem; font-family: var(--fh); font-weight: 600; font-size: clamp(1.18rem,2.3vw,1.65rem);
+    letter-spacing: -.015em; line-height: 1.28; color: var(--fg-2); }
+  .access-line em { font-style: normal; color: var(--accent-2); }
+  @media (max-width: 760px) { .product-grid { grid-template-columns: 1fr; } .product-grid::before { display: none; } }
+
+  /* ---- execution spine: command chain ---- */
+  .spine-chain { margin: clamp(2.2rem,5vh,3rem) 0 0; }
+  .spine-cards { position: relative; }
+  .scard { position: relative; padding-top: 2rem; }
+  .scard .sc-n { color: var(--accent-2); }
+  .scard .sc-step { position: absolute; top: 1.1rem; right: 1.2rem; font-family: var(--fm); font-weight: 700;
+    font-size: 1.5rem; line-height: 1; color: var(--bd-strong); letter-spacing: -.02em; }
+
+  /* ---- REVIEW worklist as operational table ---- */
+  .worklist { margin: clamp(2.6rem,6vh,3.8rem) 0 0; border: 1px solid var(--bd); border-radius: 14px;
+    background: var(--panel); overflow: hidden; box-shadow: var(--shadow-panel); }
+  .wl-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .6rem;
+    padding: clamp(1.3rem,3vw,1.7rem) clamp(1.4rem,3.4vw,2rem) 1.1rem; border-bottom: 1px solid var(--bd-soft); }
+  .wl-head h3 { font-size: clamp(1.25rem,2.4vw,1.7rem); line-height: 1.08; }
+  .wl-head .wl-meta { font-family: var(--fm); font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--fg-3); }
+  .wl-cols { display: grid; grid-template-columns: 64px 1fr auto; gap: 1rem; padding: .7rem clamp(1.4rem,3.4vw,2rem);
+    font-family: var(--fm); font-size: .56rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--fg-3); border-bottom: 1px solid var(--bd-soft); }
+  .wl-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 1rem; align-items: center;
+    padding: .95rem clamp(1.4rem,3.4vw,2rem); border-bottom: 1px solid var(--bd-soft);
+    transition: background var(--t) var(--ease); }
+  .wl-row:last-child { border-bottom: 0; }
+  .wl-row:hover { background: color-mix(in srgb, var(--review) 6%, transparent); }
+  .wl-row .wl-count { font-family: var(--fh); font-weight: 700; font-size: 1.5rem; color: var(--review); line-height: 1; letter-spacing: -.02em; }
+  .wl-row .wl-blocker { font-family: var(--fm); font-size: .86rem; letter-spacing: .02em; color: var(--fg); }
+  .wl-foot { padding: 1.1rem clamp(1.4rem,3.4vw,2rem); font-family: var(--fh); font-weight: 600; color: var(--fg-2); font-size: .98rem; }
+  @media (max-width: 560px) { .wl-cols { display: none; } .wl-row { grid-template-columns: 48px 1fr; } .wl-row .chip { grid-column: 2; justify-self: start; } }
+
+  /* ---- replayable referral packet: the moat artifact ---- */
+  .packet-block { margin: clamp(2.8rem,7vh,4.2rem) 0 0; display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(1.6rem,4vw,3rem); align-items: center; }
+  .packet-copy h2 { font-family: var(--fh); font-weight: 600; font-size: clamp(1.55rem,3vw,2.25rem); line-height: 1.07; letter-spacing: -.015em; text-wrap: pretty; }
+  .packet-copy h2 em { font-style: normal; color: var(--accent-2); display: inline-block; }
+  .packet-copy p { margin: 1.2rem 0 0; color: var(--fg-2); font-size: clamp(.96rem,1.2vw,1.06rem); line-height: 1.64; max-width: 52ch; }
+  .packet-copy .pc-contrast { margin-top: 1.5rem; padding-left: 1.1rem; border-left: 2px solid var(--accent-2);
+    font-family: var(--fh); font-weight: 500; color: var(--fg); font-size: clamp(1rem,1.3vw,1.14rem); line-height: 1.45; }
+  .packet { border: 1px solid var(--bd-strong); border-radius: 12px; background: var(--panel-solid);
+    box-shadow: var(--shadow-panel), var(--glow); overflow: hidden; }
+  .packet-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: .85rem 1.1rem; background: color-mix(in srgb, var(--accent) 9%, transparent); border-bottom: 1px solid var(--bd); }
+  .packet-bar .pb-id { font-family: var(--fm); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-2); }
+  .packet-rows { padding: .4rem 0; }
+  .pkt-row { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center;
+    padding: .62rem 1.1rem; border-bottom: 1px solid var(--bd-soft); }
+  .pkt-row:last-child { border-bottom: 0; }
+  .pkt-row .pk-k { font-family: var(--fm); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); }
+  .pkt-row .pk-v { font-family: var(--fm); font-size: .76rem; letter-spacing: .02em; color: var(--fg); text-align: right; }
+  .pkt-row .pk-v.mono-hash { color: var(--accent-2); font-size: .68rem; }
+  .packet-sign { display: flex; align-items: center; gap: .6rem; padding: .85rem 1.1rem;
+    border-top: 1px solid var(--bd); background: color-mix(in srgb, var(--pass) 7%, transparent); }
+  .packet-sign .ps-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pass); box-shadow: 0 0 10px color-mix(in srgb, var(--pass) 70%, transparent); }
+  .packet-sign .ps-txt { font-family: var(--fm); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--pass); }
+  @media (max-width: 820px) { .packet-block { grid-template-columns: 1fr; } }
+
+  /* ---- AI substrate: Trident & Luna ---- */
+  .substrate { margin: clamp(2.8rem,7vh,4.2rem) 0 0; }
+  .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem,2.4vw,1.6rem); }
+  .sub-card { background: var(--panel); border: 1px solid var(--bd); border-radius: 14px; overflow: hidden;
+    box-shadow: var(--shadow-panel); display: flex; flex-direction: column;
+    transition: border-color var(--t) var(--ease), transform var(--t) var(--ease); }
+  .sub-card:hover { border-color: var(--bd-strong); transform: translateY(-2px); }
+  .sub-card .mini { display: block; width: 100%; height: clamp(150px, 21vw, 196px);
+    background: transparent; border-bottom: 1px solid var(--bd-soft); }
+  .sub-body { padding: clamp(1.2rem,2.4vw,1.6rem); }
+  .sub-name { display: block; font-family: var(--fh); font-weight: 600; font-size: clamp(1.3rem,2.4vw,1.7rem); letter-spacing: -.01em; color: var(--accent-2); }
+  .sub-card.luna .sub-name { color: var(--accent-2); }
+  .sub-tagline { display: block; margin: .3rem 0 .9rem; font-family: var(--fh); font-weight: 500;
+    font-size: clamp(.98rem,1.35vw,1.16rem); line-height: 1.3; letter-spacing: -.01em; color: var(--fg); text-transform: none; }
+  .sub-body p { margin: 0; color: var(--fg-2); font-size: clamp(.9rem,1.1vw,1rem); line-height: 1.6; }
+  .sub-line { margin: clamp(1.6rem,4vh,2.4rem) 0 0; text-align: center; font-family: var(--fh); font-weight: 600;
+    font-size: clamp(1.1rem,2.2vw,1.55rem); letter-spacing: -.01em; color: var(--fg); text-wrap: pretty; }
+  .sub-line em { font-style: normal; color: var(--accent-2); }
+  @media (max-width: 760px) { .sub-grid { grid-template-columns: 1fr; } }
+
+  /* ---- trust boundary: allowed vs not-allowed ---- */
+  .boundary { margin: clamp(2.6rem,6vh,3.8rem) 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--bd-soft); border: 1px solid var(--bd-soft); border-radius: 14px; overflow: hidden; }
+  .bcol { background: var(--bg); padding: clamp(1.5rem,3.2vw,2.1rem); display: flex; flex-direction: column; }
+  .bcol.allow { background: color-mix(in srgb, var(--pass) 5%, var(--bg)); }
+  .bcol.deny { background: color-mix(in srgb, var(--fail) 5%, var(--bg)); }
+  .bcol .b-tag { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--fm); font-size: .58rem;
+    font-weight: 600; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 1rem; }
+  .bcol.allow .b-tag { color: var(--pass); }
+  .bcol.deny .b-tag { color: var(--fail); }
+  .bcol .b-tag::before { content: ''; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; }
+  .bcol ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .05rem; }
+  .bcol li { padding: .7rem 0; border-top: 1px solid var(--bd-soft); font-size: .92rem; line-height: 1.5; color: var(--fg-2); }
+  .bcol li:first-child { border-top: 0; }
+  .boundary-foot { margin-top: clamp(1.4rem,3.2vh,2rem); display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: center; gap: 1rem 1.6rem; }
+  .boundary-foot .bf-line { font-family: var(--fh); font-weight: 600; font-size: clamp(1.05rem,1.7vw,1.34rem); letter-spacing: -.01em; color: var(--fg); }
+  .boundary-foot .bf-line em { font-style: normal; color: var(--accent-2); }
+  @media (max-width: 640px) { .boundary { grid-template-columns: 1fr; } }
+
+  /* ---- trust boundary: floating network-architecture animation ---- */
+  .tb-stage { position: relative; margin: clamp(2rem,5vh,3rem) 0 0; height: clamp(420px, 50vw, 520px);
+    background: transparent; border: 0; box-shadow: none; }
+  .tb-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .tb-eyebrow-cta { display: inline-flex; align-items: center; gap: .4rem; text-decoration: none;
+    transition: color var(--t) var(--ease); }
+  .tb-eyebrow-cta span { transition: transform var(--t) var(--ease); }
+  .tb-eyebrow-cta:hover { color: var(--fg); }
+  .tb-eyebrow-cta:hover span { transform: translateX(3px); }
+  .tb-core { position: absolute; left: 50%; top: 44%; transform: translate(-50%,-50%); z-index: 3; pointer-events: none;
+    display: inline-flex; align-items: center; gap: .14em;
+    font-family: var(--fh); font-weight: 600; font-size: clamp(.95rem,2.1vw,1.35rem); letter-spacing: -.01em; color: var(--fg);
+    text-shadow: 0 0 20px color-mix(in srgb, var(--accent-2) 35%, transparent); }
+  .tb-core .dmx-dot { width: 5px; height: 5px; flex: none; align-self: center; margin: 0; }
+  .tb-legend { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%); z-index: 2;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(.5rem, 1.6vw, 1.1rem); max-width: 100%; }
+  .tb-leg { display: inline-flex; align-items: center; gap: .4rem; font-family: var(--fm); font-size: clamp(.42rem, 1.15vw, .56rem);
+    font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--fg-3); white-space: nowrap; }
+  .tb-leg i { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .tb-leg .d-blue { background: var(--accent-2); box-shadow: 0 0 7px color-mix(in srgb, var(--accent-2) 70%, transparent); }
+  .tb-leg .d-green { background: var(--locked); box-shadow: 0 0 7px color-mix(in srgb, var(--locked) 70%, transparent); }
+  .tb-leg .d-value { background: var(--pass); box-shadow: 0 0 7px color-mix(in srgb, var(--pass) 70%, transparent); }
+  .tb-leg .d-red { background: var(--fail); box-shadow: 0 0 7px color-mix(in srgb, var(--fail) 70%, transparent); }
+  @media (max-width: 560px) { .tb-leg { letter-spacing: .04em; } }
 </style>
 </head>
 <body style="font-size: 26px">
@@ -334,6 +522,7 @@
     <a class="dmx-nav-link" href="/trust-boundary">Trust Boundary</a>
     <a class="dmx-nav-link" href="/replay">Replay</a>
     <a class="dmx-nav-link" href="/validation">Validation</a>
+    <a class="dmx-nav-link" href="/docs/fhir">FHIR</a>
     <a class="dmx-nav-link" href="/about">About</a>
   </div>
 </nav>
@@ -358,27 +547,9 @@
 
     <div class="hero-inner">
       <span class="wordmark">Damaros<span class="dmx-dot" style="margin: 36px 1px 0px -7px"></span></span>
-      <p class="eyebrow" style="margin: 1rem 0 0 2px;">Governed clinical trial execution</p>
-      <p class="hero-cat" style="margin: 16px 0 0 2px">The governed access layer for decentralized clinical trials.</p>
-      <p class="hero-subline" style="margin-left: 2px">Clinical trial execution without black-box patient AI.</p>
-      <p class="hero-tag" style="margin: 12px 0px 15px 2px">Damaros turns community clinics into governed trial-access nodes, using locked protocols, site-approved evidence, deterministic screening, REVIEW worklists, and replayable referral packets. PHI never touches an LLM.</p>
-      <p class="hero-anchor" style="margin-left: 2px">PHI never touches an LLM.</p>
-      <p class="eyebrow hero-doctrine" style="margin-left: 2px">AI upstream. Determinism downstream. Human review before referral. Replay always.</p>
-      <p class="hero-anchor" style="margin-left: 2px">The model is not the system of record.</p>
-      <span class="chip locked hero-chip" style="margin-left: 2px">NO LLM ON THE PHI PATH</span>
-      <div class="hero-actions" style="margin-left:2px">
-        <a class="dmx-cta dmx-cta--sm" href="#execution-chain">View the execution chain</a>
-        <a class="h-ref" href="/trust-boundary">Read the trust boundary →</a>
-      </div>
-
-      <div class="caption" style="margin: 26px 0px 0px 2px">
-        <div class="crule"></div>
-        <div class="c-label" id="cLabel"></div>
-        <div class="c-body" id="cBody">
-          <h2 class="c-title" id="cTitle"></h2>
-          <p class="c-desc" id="cDesc"></p>
-        </div>
-        <a class="dmx-cta dmx-cta--sm caption-cta" href="/cdn-cgi/l/email-protection#25444b4c5750414d6541444844574a560b444c1a5650474f4046511861444844574a560017155344494c4144514c4a4b0017155244494e514d574a50424d">Request a walkthrough</a>
+      <p class="hero-tag" style="margin: 24px 0px 0 2px">Damaros™ is the operating system for decentralized clinical trials. It runs community clinics as governed trial-access nodes across specialties.</p>
+      <div class="hero-actions" style="margin: 30px 0 0 2px">
+        <a class="dmx-cta dmx-cta--sm" href="/cdn-cgi/l/email-protection#25444b4c5750414d6541444844574a560b444c1a5650474f4046511861444844574a560017155344494c4144514c4a4b0017155244494e514d574a50424d">Request a walkthrough</a>
       </div>
     </div>
 
@@ -401,8 +572,8 @@
   <section class="story">
     <div class="story-inner">
       <header class="story-lede reveal flow-in" style="margin-bottom: clamp(1.7rem, 4vh, 2.5rem)">
-        <span class="eyebrow">Market truth</span>
-        <h2>Academic centers have trial infrastructure. <em>Community clinics have patients.</em></h2>
+        <span class="eyebrow">The access gap</span>
+        <h2>Care moved to the community. <em>Trials didn't follow.</em></h2>
       </header>
 
       <div class="gap-scene reveal">
@@ -415,163 +586,154 @@
         </div>
       </div>
 
-      <p class="gap-note reveal">Damaros turns community clinics into governed trial-access nodes, so decentralized trial access can run on one governed execution spine.</p>
+      <p class="gap-note reveal">We need to run trials where patients already are. Damaros™ is that infrastructure.</p>
 
-      <p class="story-turn reveal" style="margin-top: clamp(2.2rem, 5.5vh, 3.4rem)">Hospitals and community clinics are execution environments. Sponsors, CROs, and federal networks are economic buyers.</p>
-
-      <div class="disambig reveal flow-in">
-        <h3 style="font-size: 24px">Matching is discovery. <em>Damaros is governed access.</em></h3>
-        <p>Discovery can identify candidates. Governed access operationalizes sponsor-deployed protocol decisions with deterministic screening, human review, and replayable referral packets.</p>
-      </div>
-
-      <div class="spine-cards reveal" id="execution-chain">
-        <div class="scard flow-in">
-          <span class="sc-n">01 · Protocol</span>
-          <h3>Execution basis</h3>
-          <p class="sc-op">Dense, ambiguous inclusion and exclusion is compiled into one precise basis the whole trial executes against.</p>
-          <p class="sc-trust">Versioned protocol logic. Trident turns criteria into reviewable, executable rules.</p>
-        </div>
-        <div class="scard flow-in">
-          <span class="sc-n">02 · Evidence</span>
-          <h3>Sourced clarity</h3>
-          <p class="sc-op">FHIR, labs, notes, and exports collapse into one evidence plane before any patient is screened. Actionable insights not mess. </p>
-          <p class="sc-trust">Source, timestamp, and criterion-level lineage preserved.</p>
-        </div>
-        <div class="scard flow-in">
-          <span class="sc-n">03 · Screening</span>
-          <h3>Governed verdicts</h3>
-          <p class="sc-op">Every patient is evaluated PASS, REVIEW, or FAIL at criterion level, with evidence attached.</p>
-          <p class="sc-trust">No LLM eligibility verdicts over PHI. Human review stays explicit. Same inputs, same answer.</p>
-        </div>
-        <div class="scard flow-in">
-          <span class="sc-n">04 · Replay</span>
-          <h3><a href="/replay">Site memory</a></h3>
-          <p class="sc-op">Any decision reconstructs from protocol version, evidence snapshot, engine run, and adjudication history.</p>
-          <p class="sc-trust">QA, sponsor oversight, and audit become queryable, not forensic.</p>
+      <div class="reveal flow-in" style="margin-top: clamp(2.8rem, 7vh, 4.4rem)">
+        <span class="eyebrow stats-lede">The landscape</span>
+        <div class="stats">
+          <div class="stat"><span class="snum">2024</span><span class="slbl">FDA finalized guidance for trials with decentralized elements</span><span class="ssrc">FDA Federal Register</span></div>
+          <div class="stat"><span class="snum">1,000+</span><span class="slbl">NCORP community affiliates supporting U.S. oncology research access</span><span class="ssrc">NCI NCORP</span></div>
+          <div class="stat"><span class="snum">~80%</span><span class="slbl">of U.S. cancer care occurs in non-academic community settings</span><span class="ssrc">JCO Oncol Pract / JCO Glob Oncol</span></div>
+          <div class="stat"><span class="snum">16,000+</span><span class="slbl">trials analyzed show a decade-long rise in protocol complexity</span><span class="ssrc">NPJ Digit Med</span></div>
         </div>
       </div>
 
-      <div class="disambig reveal flow-in">
-        <h3 style="font-size: 24px">Clinic Node + <em>Sponsor Access Console.</em></h3>
-        <p><strong>Clinic Node</strong> screens against sponsor-deployed protocols and surfaces review-ready patients for clinic-confirmed referral. <strong>Sponsor Access Console</strong> provides permissioned, de-identified execution visibility across governed trial-access nodes.</p>
-        <p style="margin-top:.7rem">Clinics get trial-access infrastructure. Sponsors get permissioned, evidence-ready reach.</p>
-        <p style="margin-top:.4rem">Sites get worklists. Networks get truth.</p>
+      <!-- CATEGORY CONTRAST -->
+      <div class="contrast-band reveal flow-in">
+        <p class="cb-line" style="font-size: 26px">Not trial matching. Not a workflow tool. Governed infrastructure.</p>
+        <p>No patient scoring, no records mined for candidates. Sponsor-approved protocol logic runs deterministically, with clinician review and replayability. Discovery suggests. Governed execution proves.</p>
       </div>
 
-      <div class="stake reveal flow-in">
-        <div class="stake-col">
-          <span class="sa">Layer 1</span>
-          <h3>Discovery</h3>
-          <p>Which patient might match which trial. Valuable and crowded, not where Damaros competes.</p>
-        </div>
-        <div class="stake-col">
-          <span class="sa">Layer 2</span>
-          <h3>Execution</h3>
-          <p>Locked protocol plus site-approved evidence becomes deterministic PASS, REVIEW, and FAIL at criterion level.</p>
-        </div>
-        <div class="stake-col">
-          <span class="sa">Layer 3</span>
-          <h3>Institutional memory</h3>
-          <p>Every protocol run, review action, and adjudication compounds into replayable network execution memory.</p>
-        </div>
-      </div>
-
-      <div class="six-qs reveal flow-in">
-        <span class="eyebrow">The execution ledger</span>
-        <h3>Six questions every institution must answer.</h3>
-        <ol>
-          <li>What protocol version was locked?</li>
-          <li>What evidence was admitted?</li>
-          <li>Which criterion passed, failed, or required review?</li>
-          <li>Who adjudicated uncertainty?</li>
-          <li>What changed?</li>
-          <li>Can the decision be replayed?</li>
-        </ol>
-        <p>Damaros answers all six by construction. That is the difference between a model output and an execution record.</p>
-      </div>
-
-      <div class="disambig reveal flow-in">
-        <h3 style="font-size: 24px">Replayable referral packet, <em>not citation theater.</em></h3>
-        <p>A citation shows what a model read. Replay reconstructs the decision an institution made. Every packet includes locked protocol version, admitted evidence, criterion outcomes, REVIEW actions, and referral confirmation history.</p>
-      </div>
-
-      <div class="review-queue reveal flow-in">
-        <h3>REVIEW is not failure. REVIEW is the worklist.</h3>
-        <p>Evidence Readiness Queue, coordinator-ready at shift start.</p>
-        <div class="queue-grid">
-          <div class="queue-item"><b>17</b>blocked by missing ECOG</div>
-          <div class="queue-item"><b>9</b>blocked by stale creatinine</div>
-          <div class="queue-item"><b>6</b>blocked by unresolved EGFR status</div>
-          <div class="queue-item"><b>4</b>blocked by prior-therapy ambiguity</div>
-        </div>
-        <p style="margin-top:1rem;font-family:var(--fh);font-weight:600;color:var(--fg)">Sites get worklists. Networks get truth.</p>
-      </div>
-
-      <div class="disambig reveal flow-in">
-        <span class="eyebrow">Trust boundary</span>
-        <h3 style="font-size: 24px">The model is <em>not</em> the system of record.</h3>
-        <p>Damaros uses AI upstream, on non-PHI protocol and document logic. It never issues eligibility verdicts over PHI. The patient-path chain stays deterministic, evidence-bound, human-reviewed, and replayable. Governance is what lets clinical AI scale. Regulated AI does not scale through opacity, it scales through replay.</p>
-      </div>
-
-      <div class="stake reveal flow-in">
-        <span class="eyebrow" style="grid-column: 1 / -1; margin: 1.2rem 1.4rem 0;">The model is not the system of record</span>
-        <div class="stake-col">
-          <span class="sa">AI is permitted</span>
-          <h3>Upstream intelligence</h3>
-          <p>Criterion structuring, ambiguity detection, mapping suggestions, protocol intelligence, and governed narration on non-PHI inputs.</p>
-        </div>
-        <div class="stake-col">
-          <span class="sa">AI is not permitted</span>
-          <h3>Patient-path verdicts</h3>
-          <p>No PHI parsing, no eligibility verdicts, no adjudication, no replay reconstruction, and no model as audit source of truth.</p>
-        </div>
-        <div class="stake-col">
-          <span class="sa">Doctrine</span>
-          <h3>Trust by construction</h3>
-          <p>AI upstream. Determinism downstream. Replay across the network. <a href="/trust-boundary">Read the trust boundary</a>.</p>
+      <!-- TWO-SIDED PRODUCT -->
+      <div class="product reveal">
+        <header class="sec-head-block">
+          <span class="eyebrow">Platform</span>
+        </header>
+        <div class="product-grid">
+          <article class="psurface flow-in">
+            <div class="ps-top"><span class="ps-tag">For sites and coordinators</span><h3>Clinic Node</h3></div>
+            <p class="ps-headline">Community trial access starts here.</p>
+            <p class="ps-lede">Execution infrastructure that turns trusted local clinics into governed trial-access nodes: site-approved evidence in, deterministic screening, REVIEW resolution, clinician confirmation, replayable referral packet out.</p>
+            <div class="ps-foot">Clinics expand operations. Patients find therapeutic options faster.</div>
+          </article>
+          <article class="psurface flow-in">
+            <div class="ps-top"><span class="ps-tag">For sponsors and CROs</span><h3>Sponsor Console</h3></div>
+            <p class="ps-headline">Streamlined decentralized access.</p>
+            <p class="ps-lede">A permissioned network view across governed clinic nodes: protocol deployment, clinic readiness, evidence-ready signals, REVIEW load, referral packet status, and replay completeness.</p>
+            <div class="ps-foot">Sponsors get permissioned, evidence-ready reach.</div>
+          </article>
         </div>
       </div>
 
-      <div class="who reveal" style="margin-top: clamp(2.8rem, 7vh, 4.4rem)">
+      <!-- EXECUTION SPINE -->
+      <div class="spine-chain reveal" id="execution-chain">
+        <header class="sec-head-block">
+          <span class="eyebrow">EXECUTION WORKFLOW</span>
+        </header>
+        <div class="spine-cards">
+          <div class="scard flow-in">
+            <span class="sc-step">01</span>
+            <span class="sc-n">Protocol</span>
+            <h3>Lock the criterion</h3>
+            <p class="sc-op">Dense, ambiguous inclusion and exclusion is compiled into one precise basis the whole trial executes against.</p>
+            <p class="sc-trust">Versioned protocol logic. Trident turns criteria into reviewable, executable rules.</p>
+          </div>
+          <div class="scard flow-in">
+            <span class="sc-step">02</span>
+            <span class="sc-n">Evidence</span>
+            <h3>Source clarity</h3>
+            <p class="sc-op">FHIR, labs, notes, and exports collapse into one evidence plane before any patient is screened.</p>
+            <p class="sc-trust">Source, timestamp, and criterion-level lineage preserved.</p>
+          </div>
+          <div class="scard flow-in">
+            <span class="sc-step">03</span>
+            <span class="sc-n">Screening</span>
+            <h3>Engine verdicts</h3>
+            <p class="sc-op">Every patient is evaluated PASS, REVIEW, or FAIL at criterion level, with evidence attached.</p>
+            <p class="sc-trust">No LLM eligibility verdicts over PHI. Same inputs, same answer.</p>
+          </div>
+          <div class="scard flow-in">
+            <span class="sc-step">04</span>
+            <span class="sc-n">Replay</span>
+            <h3>Always auditable</h3>
+            <p class="sc-op">Any decision reconstructs from protocol version, evidence snapshot, engine run, and adjudication history.</p>
+            <p class="sc-trust">QA, sponsor oversight, and audit become queryable, not forensic.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPLAYABLE REFERRAL PACKET -->
+      <!-- AI SUBSTRATE: TRIDENT & LUNA -->
+      <div class="substrate reveal flow-in" style="margin-top: clamp(2.8rem,7vh,4.2rem)">
+        <header class="sec-head-block">
+          <span class="eyebrow">THE SUBSTRATE</span>
+          <h2>AI is harnessed, <em>never trusted blindly.</em></h2>
+        </header>
+        <div class="sub-grid">
+          <article class="sub-card flow-in">
+            <canvas class="mini" data-mode="trident" aria-hidden="true"></canvas>
+            <div class="sub-body">
+              <span class="sub-name">Trident</span>
+              <span class="sub-tagline">Protocol intelligence that compounds.</span>
+              <p>Compiles dense protocol language into versioned, executable eligibility logic: evidence expectations and trial-ready mappings that sharpen every release and hold across every site.</p>
+            </div>
+          </article>
+          <article class="sub-card luna flow-in">
+            <canvas class="mini" data-mode="luna" aria-hidden="true"></canvas>
+            <div class="sub-body">
+              <span class="sub-name">Luna</span>
+              <span class="sub-tagline">AI governance harness.</span>
+              <p>Records AI origin, policy boundaries, provenance, and execution constraints. AI drafts the language-heavy work, never the verdict, and PHI never reaches a model.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- TRUST BOUNDARY -->
+      <div class="reveal flow-in" style="margin-top: clamp(3rem,8vh,5rem)">
+        <header class="sec-head-block">
+          <a class="eyebrow tb-eyebrow-cta" href="/trust-boundary">Trust boundary <span aria-hidden="true">&rarr;</span></a>
+          <h2>Governance, built into the <em>infrastructure.</em></h2>
+        </header>
+        <div class="tb-stage reveal flow-in" id="tbStage">
+          <canvas id="tbField" aria-hidden="true"></canvas>
+          <span class="tb-core" aria-hidden="true">Damaros<span class="dmx-dot"></span></span>
+          <div class="tb-legend">
+            <span class="tb-leg"><i class="d-blue"></i>PROTOCOL</span>
+            <span class="tb-leg"><i class="d-green"></i>SIGNALS</span>
+            <span class="tb-leg"><i class="d-value"></i>YIELD</span>
+            <span class="tb-leg"><i class="d-red"></i>PHI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="who reveal" style="margin-top: clamp(3rem, 8vh, 5rem)">
         <header class="who-head">
-          <span class="eyebrow">Who it serves</span>
-          <h2 style="width: 750px">Built for <em>buyers and operators of decentralized trial access.</em></h2>
+          <span class="eyebrow">Who we serve</span>
         </header>
         <div class="who-cards">
           <div class="wcard flow-in"><h3>Sponsors</h3><p>Inspect permissioned, de-identified execution truth: protocol friction points, evidence blockers, and clinic readiness across decentralized nodes.</p></div>
           <div class="wcard flow-in"><h3>CROs</h3><p>Operate review queues across community clinics with deterministic outputs and replayable referral packets.</p></div>
-          <div class="wcard flow-in"><h3>Federal networks</h3><p>Expand trial reach outside elite research centers while preserving institutional oversight and auditability.</p></div>
-          <div class="wcard flow-in"><h3>Sites and coordinators</h3><p>Screen against sponsor-deployed protocols, surface review-ready patients, and confirm referral with evidence lineage intact.</p></div>
+          <div class="wcard flow-in"><h3>Federal Networks</h3><p>Expand trial reach outside elite research centers with a FedRAMP-oriented architecture that preserves institutional oversight and auditability.</p></div>
+          <div class="wcard flow-in"><h3>Sites &amp; Coordinators</h3><p>Screen against sponsor-deployed protocols, surface review-ready patients, and confirm referral with evidence lineage intact.</p></div>
         </div>
       </div>
 
-      <div class="reveal flow-in" style="margin-top: clamp(2.8rem, 7vh, 4.4rem)">
-        <span class="eyebrow stats-lede">Category-creation metrics</span>
-        <div class="stats">
-          <div class="stat"><span class="snum">2024</span><span class="slbl">FDA finalized guidance for trials with decentralized elements</span><span class="ssrc">FDA Federal Register</span></div>
-          <div class="stat"><span class="snum">1,000+</span><span class="slbl">NCORP community affiliates supporting U.S. oncology research access</span><span class="ssrc">NCI NCORP</span></div>
-          <div class="stat"><span class="snum">Up to 80%</span><span class="slbl">of U.S. cancer care occurs in non-academic community settings</span><span class="ssrc">JCO Oncol Pract / JCO Glob Oncol</span></div>
-          <div class="stat"><span class="snum">16,000+</span><span class="slbl">trials analyzed show a decade-long rise in protocol complexity</span><span class="ssrc">NPJ Digit Med</span></div>
-        </div>
-        <p class="validation-teaser">Built for validation before deployment. <a href="/validation">See the network validation dossier approach →</a></p>
-      </div>
     </div>
   </section>
 
   <section class="finale">
     <img class="finale-mono" src="assets/damaros-white-transparent.png" alt="" aria-hidden="true">
     <div class="finale-rule reveal"></div>
-    <h2 class="reveal flow-in">Community trial access, <em>governed.</em></h2>
-    <p class="reveal flow-in">Community trial access, governed from protocol to referral.</p>
+    <h2 class="reveal flow-in" style="font-size: 72px">Clinical trials, <em>rewired.</em></h2>
     <a class="dmx-cta dmx-cta--md reveal s2" href="/cdn-cgi/l/email-protection#7d1c13140f0819153d191c101c0f120e531c14420e081f17181e0940391c101c0f120e584f4d0b1c1114191c09141213584f4d0a1c111609150f12081a15">GET IN TOUCH</a>
   </section>
 </main>
 
 <div class="botbar">
   <span class="geo pending" id="geo">Locating</span>
-  <span class="bc"><a href="/">Home</a><a href="/trust-boundary">Trust Boundary</a><a href="/replay">Replay</a><a href="/validation">Validation</a><a href="/docs/fhir">FHIR</a><a href="/privacy">Privacy</a><a href="/about">About</a></span>
-  <span class="tagline">Damaros governs trial execution from protocol to replay.</span>
   <span class="cp">© 2026 Damaros™</span>
+  <a class="pv" href="/privacy">Privacy</a>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -699,7 +861,7 @@
 
   /* pillars */
   var PILLARS = {
-    trident:   { color: "accent2", label: "Substrate / Trident",  title: "Compounding protocol intelligence.", emph: "", desc: "Trident compiles protocol language into executable eligibility structure: versioned logic, evidence expectations, and trial-ready mappings that sharpen with every release and hold across every site." },
+    trident:   { color: "accent2", label: "Substrate / Trident",  title: "Protocol intelligence that compounds.", emph: "", desc: "Trident compiles protocol language into executable eligibility structure: versioned logic, evidence expectations, and trial-ready mappings that sharpen with every release and hold across every site." },
     luna:      { color: "luna",    label: "Substrate / Luna",     title: "Governance harness at runtime.",        emph: "", desc: "Luna records AI origin, policy boundaries, provenance, and execution constraints. AI drafts the language-heavy work and never the verdict, and PHI never reaches a model." },
     protocol:  { color: "locked",  label: "01 / Protocol",        title: "Complex eligibility, normalized.", emph: "normalized.", desc: "Dense, ambiguous protocol inclusion and exclusion is compiled into one precise basis the entire trial executes against." },
     evidence:  { color: "accent",  label: "02 / Evidence",        title: "Fragmented data, resolved.",     emph: "resolved.", desc: "FHIR, exports, spreadsheets, labs, notes, and registry fragments collapse into one governed evidence plane before Damaros screens a single patient." },
@@ -810,7 +972,15 @@
       var cols = Math.max(12, Math.min(18, Math.round(Math.sqrt(N * (W / H) * 1.2))));
       var rows = Math.ceil(N / cols); var gw = R * 2.1, gh = R * 0.95, x0 = cx - gw / 2, y0 = cy - gh / 2 - R * 0.08;
       decor.lattice = { x0: x0, y0: y0, gw: gw, gh: gh, cols: cols, rows: rows };
-      parts.forEach(function (q, i) { var col = i % cols, row = Math.floor(i / cols); q.tx = x0 + (cols <= 1 ? 0 : col * (gw / (cols - 1))); q.ty = y0 + (rows <= 1 ? gh / 2 : row * (gh / (rows - 1))); });
+      var lastCount = N - (rows - 1) * cols;                 /* center the final partial row so the lattice never looks ragged */
+      var colStep = cols <= 1 ? 0 : gw / (cols - 1);
+      parts.forEach(function (q, i) {
+        var col = i % cols, row = Math.floor(i / cols);
+        var rowCount = (row === rows - 1) ? lastCount : cols;
+        var rowStartX = x0 + (cols - rowCount) / 2 * colStep;
+        q.tx = rowCount <= 1 ? cx : rowStartX + col * colStep;
+        q.ty = y0 + (rows <= 1 ? gh / 2 : row * (gh / (rows - 1)));
+      });
     } else if (id === "evidence") {
       var hb = R * 1.06, apexY = cy - R * 0.62, baseY = cy + R * 0.52, RIDGE = 46, HH = baseY - apexY;
       var PROF = [[-1,0],[-0.9,0.1],[-0.78,0.34],[-0.66,0.51],[-0.53,0.66],[-0.38,0.79],[-0.26,0.87],[-0.13,0.95],[-0.02,1.0],[0.1,0.97],[0.22,0.89],[0.38,0.77],[0.57,0.64],[0.73,0.48],[0.87,0.33],[0.95,0.2],[1,0.08]];
@@ -860,20 +1030,22 @@
     [].slice.call(document.querySelectorAll(".enode, .srail")).forEach(function (b) { b.classList.toggle("active", b.dataset.id === id); });
     var P = PILLARS[id];
     var lbl = document.getElementById("cLabel"), ttl = document.getElementById("cTitle");
-    lbl.textContent = P.label;                          /* label is static - never scrambles */
-    /* title: static prefix + scramble only the emphasis phrase */
-    ttl.textContent = "";
-    var emph = P.emph || "";
-    var prefix = (emph && P.title.slice(-emph.length) === emph) ? P.title.slice(0, -emph.length) : P.title;
-    if (prefix) ttl.appendChild(document.createTextNode(prefix));
-    if (emph) {
-      var es = document.createElement("span");
-      es.textContent = emph;
-      ttl.appendChild(es);
+    if (lbl && ttl) {                                   /* caption is optional - canvas still drives without it */
+      lbl.textContent = P.label;                        /* label is static - never scrambles */
+      /* title: static prefix + scramble only the emphasis phrase */
+      ttl.textContent = "";
+      var emph = P.emph || "";
+      var prefix = (emph && P.title.slice(-emph.length) === emph) ? P.title.slice(0, -emph.length) : P.title;
+      if (prefix) ttl.appendChild(document.createTextNode(prefix));
+      if (emph) {
+        var es = document.createElement("span");
+        es.textContent = emph;
+        ttl.appendChild(es);
+      }
+      var dsc = document.getElementById("cDesc"); if (dsc) dsc.textContent = P.desc;
+      var capB = document.getElementById("cBody");
+      [lbl, capB].forEach(function (el) { if (!el) return; el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
     }
-    document.getElementById("cDesc").textContent = P.desc;
-    var capB = document.getElementById("cBody");
-    [lbl, capB].forEach(function (el) { if (!el) return; el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
     if (byUser) autoPause = performance.now() + 11000;
   }
 
@@ -967,8 +1139,8 @@
     } else if (decor.type === "screening" && decor.centers) {
       // gravity wells (red strongest) + radial lines
       decor.centers.forEach(function (c, ci) {
-        var cc = [COL.pass, COL.review, COL.fail][ci], rings = ci === 2 ? 3 : 2;
-        for (var k2 = 0; k2 < rings; k2++) { var fr2 = ((time * (ci === 2 ? 0.5 : 0.34) + k2 / rings) % 1); var rr2 = fr2 * R * 0.5 * (ci === 2 ? 1.32 : 1); ctx.strokeStyle = cc; ctx.globalAlpha = (1 - fr2) * (ci === 2 ? 0.44 : 0.2) * e; ctx.beginPath(); ctx.ellipse(c.x, c.y, rr2, rr2 * 0.9, 0, 0, 6.2832); ctx.stroke(); }
+        var cc = [COL.pass, COL.review, COL.fail][ci], rings = 2;
+        for (var k2 = 0; k2 < rings; k2++) { var fr2 = ((time * 0.2 + k2 / rings) % 1); var rr2 = fr2 * R * 0.5; ctx.strokeStyle = cc; ctx.globalAlpha = (1 - fr2) * 0.24 * e; ctx.beginPath(); ctx.ellipse(c.x, c.y, rr2, rr2 * 0.9, 0, 0, 6.2832); ctx.stroke(); }
       });
       ctx.strokeStyle = COL.line; ctx.globalAlpha = e * 0.22; parts.forEach(function (q) { var c = decor.centers[q.grp]; ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(q.x, q.y); ctx.stroke(); });
     } else if (decor.type === "replay") {
@@ -1000,11 +1172,13 @@
         var rd = (q.ring % 2 === 0) ? 1 : -1, angL = time * (0.03 + (q.ring || 0) * 0.018) * rd, oxL = q.tx - cx, oyL = q.ty - cy, caL = Math.cos(angL), saL = Math.sin(angL);
         bx = cx + oxL * caL - oyL * saL; by = cy + oxL * saL + oyL * caL;
       } else if (current === "screening") {
-        var spin = time * 0.12 * (q.grp === 2 ? 1.5 : 1);
-        var rEff = q.grp === 2 ? q.sr * (0.6 + 0.4 * (0.5 + 0.5 * Math.sin(time * 0.9 + q.ph))) : q.sr;
-        bx = q.scx + Math.cos(q.sa + spin) * rEff; by = q.scy + Math.sin(q.sa + spin) * rEff * 0.9;
+        var spin = time * 0.05;                              /* calm, uniform rotation across all three clusters */
+        bx = q.scx + Math.cos(q.sa + spin) * q.sr; by = q.scy + Math.sin(q.sa + spin) * q.sr * 0.9;
       } else if (current === "replay") {
         bx = q.tx; by = rvWaveY(q.tx);
+      } else if (current === "protocol") {
+        bx = q.tx + Math.cos(time * 0.4 + q.jx) * 1.0 * (1 - e * 0.7);
+        by = q.ty + Math.sin(time * 0.5 + q.jy) * 1.0 * (1 - e * 0.7);
       } else {
         bx = q.tx + Math.cos(time * 0.5 + q.jx) * 2.4 * (1 - e * 0.7);
         by = q.ty + Math.sin(time * 0.6 + q.jy) * 2.4 * (1 - e * 0.7);
@@ -1256,6 +1430,24 @@
   var mq = window.matchMedia && matchMedia("(prefers-color-scheme: light)");
   if (mq && mq.addEventListener) mq.addEventListener("change", function () { readColors(); if (REDUCED) staticFrame(); });
   if (document.readyState !== "loading") start(); else document.addEventListener("DOMContentLoaded", start);
+})();
+</script>
+<script src="shared/trust-membrane.js?v=6"></script>
+<script src="shared/trident-luna.js?v=6"></script>
+<script>
+/* keep the category-contrast line on a single row at any width */
+(function () {
+  var el = document.querySelector(".cb-line"); if (!el) return;
+  function fit() {
+    el.style.fontSize = "";
+    var size = parseFloat(getComputedStyle(el).fontSize), guard = 0;
+    el.style.whiteSpace = "nowrap";
+    while (el.scrollWidth > el.clientWidth + 0.5 && size > 8 && guard < 240) { size -= 0.5; el.style.fontSize = size + "px"; guard++; }
+  }
+  window.addEventListener("resize", fit);
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(fit);
+  if (document.readyState !== "loading") fit(); else document.addEventListener("DOMContentLoaded", fit);
+  setTimeout(fit, 300);
 })();
 </script>
 </body>
