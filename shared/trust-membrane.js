@@ -53,7 +53,8 @@
     for (var s = 0; s < N; s++) {
       var fy2 = (N === 1) ? 0.5 : s / (N - 1);
       var col = (s % 2 === 0) ? 0.82 : 0.9;
-      sites.push({ x: W * (W < 560 ? 0.84 : col), y: top + fy2 * (bot - top), r: Math.max(6, Math.min(10, Math.min(W, H) * 0.022)), phi: [] });
+      var yOff = (N >= 7 && s === N - 3) ? -H * 0.034 : 0;
+      sites.push({ x: W * (W < 560 ? 0.84 : col), y: top + fy2 * (bot - top) + yOff, r: Math.max(6, Math.min(10, Math.min(W, H) * 0.022)), phi: [] });
     }
     build();
   }
