@@ -50,7 +50,7 @@
     // a bunch of sites
     var N = (W < 560) ? 4 : 9;
     sites = [];
-    var top = H * (W < 560 ? 0.30 : 0.12), bot = H * (W < 560 ? 0.70 : 0.88);
+    var top = H * (W < 560 ? 0.24 : 0.12), bot = H * (W < 560 ? 0.64 : 0.88);
     for (var s = 0; s < N; s++) {
       var fy2 = (N === 1) ? 0.5 : s / (N - 1);
       var col = (s % 2 === 0) ? 0.82 : 0.9;
