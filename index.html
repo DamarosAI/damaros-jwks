@@ -14,7 +14,10 @@
 <style>
   html { scroll-behavior: smooth; scroll-padding-top: 64px; -webkit-text-size-adjust: 100%; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-  body { overflow-x: hidden; --botbar-h: 3.25rem; }
+  body { overflow-x: hidden; --botbar-h: 3.25rem; -webkit-font-smoothing: antialiased; }
+  @supports (content-visibility: auto) {
+    .story-inner > * { content-visibility: auto; contain-intrinsic-size: auto 480px; }
+  }
   .wrap { max-width: 1480px; margin: 0 auto; padding: 0 clamp(1.1rem, 3.4vw, 2.6rem); }
 
   /* ===== section selector - primary platform nav, anchored UNDER the animation =====
@@ -22,7 +25,7 @@
      execution row (Protocol/Evidence/Screening/Replay) and the Trident/Luna buttons. */
   .spine { position: absolute; left: clamp(1rem, 3vw, 2.4rem); right: clamp(1rem, 3vw, 2.4rem); bottom: calc(var(--botbar-h, 3.25rem) + 3.85rem);
     z-index: 6; display: flex; flex-direction: column; align-items: center; gap: .95rem; }
-  .spine-exec { position: relative; display: flex; justify-content: space-between; width: 100%; max-width: 660px; will-change: transform; }
+  .spine-exec { position: relative; display: flex; justify-content: space-between; width: 100%; max-width: 660px; }
   .spine-exec::before { content: ''; position: absolute; left: 2.7rem; right: 2.7rem; top: calc(.5rem + 7px); height: 1px;
     background: linear-gradient(90deg, transparent, var(--bd) 16%, var(--bd) 84%, transparent); z-index: 0; }
   .enode { appearance: none; background: none; border: 0; cursor: pointer; position: relative; z-index: 1;
@@ -81,8 +84,8 @@
   .hero-scroll-arrow { width: 12px; height: 12px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
     transform: rotate(45deg); animation: heroScrollCue 1.85s ease-in-out infinite; }
   @keyframes heroScrollCue {
-    0%, 100% { opacity: .32; transform: rotate(45deg) translateY(0); }
-    50% { opacity: 1; transform: rotate(45deg) translateY(5px); }
+    0%, 100% { opacity: .32; transform: rotate(45deg) translate3d(0, 0, 0); }
+    50% { opacity: 1; transform: rotate(45deg) translate3d(0, 5px, 0); }
   }
   @media (prefers-reduced-motion: reduce) { .hero-scroll-arrow { animation: none; opacity: .72; } }
 
@@ -104,7 +107,7 @@
   .caption { margin-top: clamp(1.6rem, 3vh, 2.2rem); }
   /* caption - clean fade on each pillar change (no typewriter) */
   .c-label, .c-body { animation: capFade .42s var(--ease) both; }
-  @keyframes capFade { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+  @keyframes capFade { from { opacity: 0; transform: translate3d(0, 7px, 0); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .c-label, .c-body { animation: none; } }
   .caption .crule { width: 30px; height: 2px; background: var(--accent-2); margin-bottom: .9rem; }
   .c-label { font-family: var(--fm); font-size: .58rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-2); margin-bottom: .6rem; }
@@ -112,17 +115,17 @@
   .c-title { font-family: var(--fh); font-weight: 600; font-size: clamp(1.3rem, 1.78vw, 1.72rem); letter-spacing: -.01em; line-height: 1.08; margin: 0 0 1.05rem; }
   .c-desc { font-size: clamp(.9rem, 1.05vw, 1rem); line-height: 1.62; color: var(--fg-2); margin: 0; }
 
-  /* sections are static; the header decode-scramble carries the entrance interest */
+  /* scroll reveals — compositor-friendly; IO-driven in anim-governor.js */
   .reveal { opacity: 1; }
   .reveal.in { animation: none; }
-  .flow-in { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+  .flow-in { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity .62s var(--ease), transform .62s var(--ease); }
   .flow-in.in { opacity: 1; transform: none; }
-  .spine-cards .flow-in:nth-child(2), .who-cards .flow-in:nth-child(2), .platform-cards .flow-in:nth-child(2) { transition-delay: .09s; }
-  .spine-cards .flow-in:nth-child(3), .who-cards .flow-in:nth-child(3) { transition-delay: .18s; }
-  .spine-cards .flow-in:nth-child(4), .who-cards .flow-in:nth-child(4) { transition-delay: .27s; }
-  .draw { width: 110px; height: 1px; background: var(--accent-2); opacity: .55; transform: scaleX(0); transform-origin: left;
-    transition: transform .8s var(--ease) .1s; }
-  .draw.in { transform: scaleX(1); }
+  .spine-cards .flow-in:nth-child(2), .who-cards .flow-in:nth-child(2), .platform-cards .flow-in:nth-child(2) { transition-delay: .08s; }
+  .spine-cards .flow-in:nth-child(3), .who-cards .flow-in:nth-child(3) { transition-delay: .16s; }
+  .spine-cards .flow-in:nth-child(4), .who-cards .flow-in:nth-child(4) { transition-delay: .24s; }
+  .draw { width: 110px; height: 1px; background: var(--accent-2); opacity: .55; transform: scale3d(0, 1, 1); transform-origin: left;
+    transition: transform .72s var(--ease) .08s; }
+  .draw.in { transform: scale3d(1, 1, 1); }
   @media (prefers-reduced-motion: reduce) { .reveal, .draw, .flow-in { transition: none; opacity: 1; transform: none; } }
 
   /* ===== SECTIONS ===== */
@@ -148,7 +151,7 @@
   .btn-ghost:hover { color: var(--fg); border-color: var(--accent); }
 
   /* ===== continuous story ===== */
-  .story { position: relative; z-index: 1; padding: clamp(4rem,12vh,9rem) 0 clamp(2.5rem,7vh,5rem); }
+  .story { position: relative; z-index: 1; padding: clamp(4rem,12vh,9rem) 0 clamp(2.5rem,7vh,5rem); scroll-margin-top: 64px; }
   .story-inner { position: relative; max-width: 920px; margin: 0 auto; padding: 0 clamp(1.1rem,4vw,2.6rem); }
   .story-lede { margin-bottom: clamp(2.8rem,7vh,5rem); text-align: left; }
   .story-lede .eyebrow { display: block; margin-bottom: 1rem; text-align: left; }
@@ -352,7 +355,11 @@
     .caption { position: relative; left: auto; bottom: auto; width: auto; order: 5; margin-top: 1.25rem; }
     .c-title, .c-desc { height: auto; }
     .stake { grid-template-columns: 1fr; }
-    .flow-in, .draw { opacity: 1; transform: none; transition: none; }
+    /* mobile: lighter fade-only entrances — no vertical shift during scroll */
+    .flow-in { opacity: 0; transform: none; transition: opacity .42s var(--ease); }
+    .flow-in.in { opacity: 1; }
+    .draw { opacity: 0; transform: none; transition: opacity .38s var(--ease); }
+    .draw.in { opacity: .55; }
     .sub-card .mini { pointer-events: none; touch-action: none; }
     .hero-scroll { position: relative; left: auto; bottom: auto; transform: none; order: 6; width: 100%; margin-top: 0; padding: .55rem 0 .1rem; flex-shrink: 0; }
   }
@@ -501,8 +508,11 @@
   .sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem,2.4vw,1.6rem); }
   .sub-card { background: var(--panel); border: 1px solid var(--bd); border-radius: 14px; overflow: hidden;
     box-shadow: var(--shadow-panel); display: flex; flex-direction: column;
-    transition: border-color var(--t) var(--ease), transform var(--t) var(--ease); }
-  .sub-card:hover { border-color: var(--bd-strong); transform: translateY(-2px); }
+    transition: border-color var(--t) var(--ease); }
+  @media (hover: hover) {
+    .sub-card { transition: border-color var(--t) var(--ease), transform var(--t) var(--ease); }
+    .sub-card:hover { border-color: var(--bd-strong); transform: translate3d(0, -2px, 0); }
+  }
   .sub-card .mini { display: block; width: 100%; height: clamp(150px, 21vw, 196px);
     background: transparent; border-bottom: 1px solid var(--bd-soft); }
   .sub-body { padding: clamp(1.2rem,2.4vw,1.6rem); }
@@ -597,6 +607,7 @@
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-padding: .25rem;
+      scroll-snap-stop: always;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -628,7 +639,8 @@
     .stat .slbl { font-size: .82rem; }
 
     /* honor the entrance fade per-card without a left-shift that fights scroll */
-    .spine-cards .flow-in, .who-cards .flow-in { transform: none; }
+    .spine-cards .flow-in, .who-cards .flow-in, .stats > .stat { transform: none; opacity: 0; transition: opacity .38s var(--ease); }
+    .spine-cards .flow-in.in, .who-cards .flow-in.in, .stats > .stat.in { opacity: 1; }
   }
 </style>
 </head>
@@ -867,7 +879,7 @@
 </div>
 
 <script src="shared/geo-footer.js"></script>
-<script src="shared/anim-governor.js?v=2"></script>
+<script src="shared/anim-governor.js?v=3"></script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ============================================================
  * Damaros - terminal type-in reveal (inlined; self-contained).
@@ -974,7 +986,17 @@
 (function () {
   /* monogram tiles */
   var grid = document.getElementById("monoGrid");
-  for (var i = 0; i < 90; i++) { var im = document.createElement("img"); im.src = "assets/damaros-white-transparent.png"; im.alt = ""; grid.appendChild(im); }
+  if (grid) {
+    var monoCount = (window.DamarosAnim && DamarosAnim.isMobile()) || matchMedia("(hover: none), (pointer: coarse)").matches || window.innerWidth <= 900 ? 42 : 72;
+    for (var i = 0; i < monoCount; i++) {
+      var im = document.createElement("img");
+      im.src = "assets/damaros-white-transparent.png";
+      im.alt = "";
+      im.loading = "lazy";
+      im.decoding = "async";
+      grid.appendChild(im);
+    }
+  }
 
   /* execution spine — single source for hero pillars + story cards */
   var SPINE_STEPS = [
@@ -1399,14 +1421,18 @@
   var heroWrap = document.querySelector(".wrap");
   if (heroWrap) new ResizeObserver(sizeHeroCat).observe(heroWrap);
 
-  /* scroll reveals - skip on mobile for smoother scrolling */
-  var revs = [].slice.call(document.querySelectorAll(".reveal, .draw, .flow-in"));
-  if (MOBILE) revs.forEach(function (el) { el.classList.add("in"); });
-  else {
-    function checkReveal() { var vh = window.innerHeight || 800; revs.forEach(function (el) { if (el.classList.contains("in")) return; if (el.getBoundingClientRect().top < vh * 0.86) el.classList.add("in"); }); }
-    window.addEventListener("scroll", checkReveal, { passive: true });
-    window.addEventListener("resize", checkReveal);
-    checkReveal();
+  /* scroll reveals — IntersectionObserver (mobile + desktop) */
+  if (window.DamarosAnim && DamarosAnim.revealOnScroll) {
+    DamarosAnim.revealOnScroll({ reduced: REDUCED, mobile: MOBILE });
+  } else {
+    var revs = [].slice.call(document.querySelectorAll(".reveal, .draw, .flow-in"));
+    if (REDUCED || MOBILE) revs.forEach(function (el) { el.classList.add("in"); });
+    else {
+      function checkReveal() { var vh = window.innerHeight || 800; revs.forEach(function (el) { if (el.classList.contains("in")) return; if (el.getBoundingClientRect().top < vh * 0.86) el.classList.add("in"); }); }
+      window.addEventListener("scroll", checkReveal, { passive: true });
+      window.addEventListener("resize", checkReveal);
+      checkReveal();
+    }
   }
 
   function bootHero() {
@@ -1701,9 +1727,16 @@
   cue.addEventListener("click", function (e) {
     e.preventDefault();
     var target = document.getElementById("story");
-    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (target) target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   });
-  function syncCue() { cue.classList.toggle("is-hidden", window.scrollY > 56); }
+  var cueTick = 0;
+  function syncCue() {
+    if (cueTick) return;
+    cueTick = requestAnimationFrame(function () {
+      cueTick = 0;
+      cue.classList.toggle("is-hidden", window.scrollY > 56);
+    });
+  }
   window.addEventListener("scroll", syncCue, { passive: true });
   syncCue();
 })();
