@@ -19,10 +19,12 @@
   --fb: 'Sohne', system-ui, sans-serif;   /* body */
   --fm: 'Sohne', system-ui, sans-serif;   /* labels / UI register */
   /* Science Gothic reads heavy at standard CSS semibold/bold — remap via wght axis */
-  --fh-w-display: 324;
-  --fh-w-med: 380;
-  --fh-w: 400;
-  --fh-w-strong: 440;
+  --fh-w-display: 324;   /* wordmark only */
+  --fh-w-med: 330;
+  --fh-w: 340;
+  --fh-w-strong: 355;
+  --fh-ls: -.006em;
+  --fh-lh: 1.12;
 
   --ease: cubic-bezier(.16,1,.3,1);
   --t-fast: 140ms;
@@ -279,7 +281,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent-2);
 }
 .mono { font-family: var(--fm); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
-h1,h2,h3 { font-family: var(--fh); font-weight: var(--fh-w); letter-spacing: -.01em; line-height: 1.04; margin: 0; }
+h1,h2,h3 { font-family: var(--fh); font-weight: var(--fh-w); letter-spacing: var(--fh-ls); line-height: var(--fh-lh); margin: 0; }
 
 /* ---- shared chrome: top nav ---- */
 .dmx-nav {
@@ -354,7 +356,7 @@ h1,h2,h3 { font-family: var(--fh); font-weight: var(--fh-w); letter-spacing: -.0
 .dmx-cta {
   position: relative; isolation: isolate;
   display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
-  font-family: var(--fh); font-weight: var(--fh-w); letter-spacing: .06em; text-transform: uppercase;
+  font-family: var(--fm); font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
   border-radius: 8px; color: var(--cta-color); text-decoration: none;
   border: 1px solid var(--cta-border);
   background: var(--cta-bg);
