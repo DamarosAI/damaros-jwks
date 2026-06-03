@@ -1,7 +1,7 @@
 /* ============================================================
  * Damaros — shared design tokens + base.
  * Steel-on-black operator console DNA. Dark + light parity.
- * Type: Chakra Petch (display) · Space Grotesk (UI + mono register).
+ * Type: Sohne (display) · TT Commons Mono (body + UI register).
  *
  * THEME MODEL (robust, JS-optional):
  *   1. :root carries the DARK tokens as the default.
@@ -11,10 +11,13 @@
  *      theme-system.js never sets data-theme; it only clears stale pins.
  * ============================================================ */
 
+@import url("sohne.css");
+@import url("tt-commons-mono.css");
+
 :root {
-  --fh: 'Chakra Petch', system-ui, sans-serif;   /* display / headings */
-  --fb: 'Space Grotesk', system-ui, sans-serif;  /* body */
-  --fm: 'Space Grotesk', ui-monospace, monospace;/* "data" register (tabular) */
+  --fh: 'Sohne', system-ui, sans-serif;   /* display / headings */
+  --fb: 'TT Commons Mono', ui-monospace, monospace;  /* body */
+  --fm: 'TT Commons Mono', ui-monospace, monospace;  /* labels / data register */
 
   --ease: cubic-bezier(.16,1,.3,1);
   --t-fast: 140ms;
@@ -283,8 +286,6 @@ h1,h2,h3 { font-family: var(--fh); font-weight: 600; letter-spacing: -.01em; lin
   border-bottom: 1px solid var(--bd-soft);
 }
 .dmx-brand { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--fh); font-weight: 700; font-size: 1.18rem; letter-spacing: -.01em; }
-.dmx-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 70%, transparent); animation: dmxBlink 2.2s ease-in-out infinite; }
-@keyframes dmxBlink { 0%,100%{opacity:1} 50%{opacity:.25} }
 .dmx-nav-links { display: flex; align-items: center; gap: clamp(.6rem,2vw,1.6rem); }
 .dmx-nav-link {
   font-family: var(--fm); font-size: .6rem; font-weight: 500; letter-spacing: .16em;

@@ -1,0 +1,36 @@
+/* TT Commons Mono (TypeType) — self-hosted web cuts. Drop licensed .woff2 into assets/fonts/tt-commons-mono/ */
+@font-face {
+  font-family: 'TT Commons Mono';
+  src: local('TT Commons Mono Light'), url('../assets/fonts/tt-commons-mono/TTCommonsMono-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Commons Mono';
+  src: local('TT Commons Mono Regular'), url('../assets/fonts/tt-commons-mono/TTCommonsMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Commons Mono';
+  src: local('TT Commons Mono Medium'), url('../assets/fonts/tt-commons-mono/TTCommonsMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Commons Mono';
+  src: local('TT Commons Mono DemiBold'), url('../assets/fonts/tt-commons-mono/TTCommonsMono-DemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Commons Mono';
+  src: local('TT Commons Mono Bold'), url('../assets/fonts/tt-commons-mono/TTCommonsMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
