@@ -244,6 +244,9 @@ body.world-ready #world { opacity: 1; }
 .ps-half:hover { border-color: rgba(169, 192, 214, .42); box-shadow: 0 14px 40px rgba(5, 7, 11, .5); transform: translateY(-2px); }
 .ps-half--luna { border-color: color-mix(in srgb, var(--luna) 32%, rgba(169, 192, 214, .22)); }
 .ps-half--luna:hover { border-color: var(--luna); box-shadow: 0 14px 40px color-mix(in srgb, var(--luna) 18%, rgba(5, 7, 11, .55)); }
+/* Trident — a green hairline outline, mirroring Luna's violet edge (its field fires green) */
+.ps-half--trident { border-color: color-mix(in srgb, var(--ok) 34%, rgba(169, 192, 214, .22)); }
+.ps-half--trident:hover { border-color: var(--ok); box-shadow: 0 14px 40px color-mix(in srgb, var(--ok) 18%, rgba(5, 7, 11, .55)); }
 .ps-half-head h3 {
   margin: .15rem 0 0; font-family: var(--fh); font-weight: 700;
   font-size: clamp(1.6rem, 2.8vw, 2.15rem); letter-spacing: -.03em; color: var(--cold);

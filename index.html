@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="shared/hanken-grotesk.css">
 <link rel="stylesheet" href="shared/journey.css?v=reset46">
 <link rel="stylesheet" href="shared/terrain.css?v=reset40">
-<link rel="stylesheet" href="shared/sections.css?v=31">
+<link rel="stylesheet" href="shared/sections.css?v=32">
 <script type="importmap">
 { "imports": { "three": "./assets/vendor/three/three.module.js", "three/addons/": "./assets/vendor/three/addons/" } }
 </script>
@@ -101,7 +101,7 @@
       <p class="cap-subhead cap-line" data-from="0">Reasoning that scales. <em>Proof that holds.</em></p>
 
       <div class="ps-split cap-line" data-from="0" data-hswipe>
-        <div class="ps-half">
+        <div class="ps-half ps-half--trident">
           <div class="ps-half-head">
             <span class="ps-tag">Semantics</span>
             <h3>Trident</h3>
@@ -250,15 +250,18 @@
     wire(document.querySelector('.ps-half:not(.ps-half--luna)'), '.nn-edge, .nn-dot', 'is-live');
     wire(document.querySelector('.ps-half--luna'), '.luna-ring', 'is-live');
 
-    /* auto-run each section's animations as soon as it becomes the active station */
-    [].forEach.call(document.querySelectorAll('[data-cap]'), function (cap) {
-      var panels = [].slice.call(cap.querySelectorAll('.ti-node, .ti-sponsor, .ps-half'));
-      if (!panels.length) return;
-      new MutationObserver(function () {
-        var on = cap.classList.contains('cap--active');
-        panels.forEach(function (p) { if (on) { if (p._hOn) p._hOn(); } else if (p._hOff) p._hOff(); });
-      }).observe(cap, { attributes: true, attributeFilter: ['class'] });
-    });
+    /* touch only: auto-run each section's animations when it becomes the active station.
+       on desktop the fields stay idle until the cursor hovers Trident / Luna / Node / Sponsor. */
+    if (TOUCH) {
+      [].forEach.call(document.querySelectorAll('[data-cap]'), function (cap) {
+        var panels = [].slice.call(cap.querySelectorAll('.ti-node, .ti-sponsor, .ps-half'));
+        if (!panels.length) return;
+        new MutationObserver(function () {
+          var on = cap.classList.contains('cap--active');
+          panels.forEach(function (p) { if (on) { if (p._hOn) p._hOn(); } else if (p._hOff) p._hOff(); });
+        }).observe(cap, { attributes: true, attributeFilter: ['class'] });
+      });
+    }
 
     /* mobile: two-panel sections become a horizontal swipe carousel with indicator dots */
     if (TOUCH) {
@@ -330,6 +333,6 @@
 </script>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="shared/cap-intro.js?v=2"></script>
 <script src="shared/cta-dock.js?v=5"></script>
-<script type="module" src="shared/space.js?v=reset45"></script>
+<script type="module" src="shared/space.js?v=reset46"></script>
 </body>
 </html>
