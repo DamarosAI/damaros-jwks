@@ -233,7 +233,7 @@ body[data-station="9"] .brand-motif img{ --mo:.13; --flare:.58; }
 /* SPLIT — headline block beside the stacked cards block; kicker stays above the cards */
 .cap--split{ width:min(68rem,calc(100vw - 2 * var(--page-gutter))); max-width:min(68rem,calc(100vw - 2 * var(--page-gutter))); text-align:left;
   display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  column-gap:clamp(1.6rem,4.6vw,4rem); align-items:center; }
+  column-gap:clamp(1.6rem,4.6vw,4rem); align-items:start; }
 .cap--split .cap-head{ grid-column:1; }
 .cap--split .cap-cards{ grid-column:2; margin-top:0; }
 .cap--split .cap-lead{ max-width:none; margin-left:0; margin-right:0; white-space:nowrap; text-wrap:nowrap;
