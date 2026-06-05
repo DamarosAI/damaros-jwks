@@ -1,7 +1,7 @@
 /* ============================================================
  * Damaros — shared design tokens + base.
  * Steel-on-black operator console DNA. Dark + light parity.
- * Type: IBM Plex Sans (display) · Inter (body + UI).
+ * Type: Archivo (display) · Hanken Grotesk (body + UI). Neo-grotesque pair.
  *
  * THEME MODEL (robust, JS-optional):
  *   1. :root carries the DARK tokens as the default.
@@ -11,18 +11,18 @@
  *      theme-system.js never sets data-theme; it only clears stale pins.
  * ============================================================ */
 
-@import url("ibm-plex-sans.css");
-@import url("inter.css");
+@import url("archivo.css");
+@import url("hanken-grotesk.css");
 
 :root {
-  --fh: 'IBM Plex Sans', system-ui, sans-serif;   /* logo / headings */
-  --fb: 'Inter', system-ui, sans-serif;          /* body */
-  --fm: 'Inter', system-ui, sans-serif;          /* labels / UI */
-  /* display register — medium default, regular for secondary lines */
-  --fh-w-display: 500;
-  --fh-w: 500;
-  --fh-w-sub: 400;
-  --fh-w-strong: 600;
+  --fh: 'Archivo', system-ui, sans-serif;        /* display / headings / wordmark */
+  --fb: 'Hanken Grotesk', system-ui, sans-serif; /* body */
+  --fm: 'Hanken Grotesk', system-ui, sans-serif; /* labels / UI (tabular-nums for data) */
+  /* display register — Archivo carries weight; headings semibold, wordmark bold */
+  --fh-w-display: 700;
+  --fh-w: 600;
+  --fh-w-sub: 500;
+  --fh-w-strong: 700;
   --fh-ls: -.02em;
   --fh-lh: 1.08;
   /* body register */

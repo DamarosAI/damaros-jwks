@@ -194,7 +194,7 @@
   }
 
   function label(txt, x, y, col, size) {
-    ctx.font = "600 " + (size || 9.5) + 'px "Space Grotesk", ui-monospace, monospace';
+    ctx.font = "600 " + (size || 9.5) + 'px "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif';
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.save(); ctx.letterSpacing = MOBILE ? "0.4px" : "1.2px";
     // keep the centered caption fully inside the canvas so it never clips at an edge

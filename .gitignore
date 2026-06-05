@@ -1,0 +1,10 @@
+# tooling / QA output
+.playwright-mcp/
+.claude/
+
+# local QA screenshot artifacts (auto-shot.mjs and ad-hoc captures write PNGs to the repo root)
+/*.png
+
+# OS cruft
+.DS_Store
+Thumbs.db
