@@ -274,9 +274,19 @@ scene.background = new THREE.Color(MOBILE ? '#101a28' : '#0a121b');   // match t
 // scene.add(cloud);
 
 // shared world clock + eased state (one source the world materials animate from)
-const W = { uTime: { value: 0 }, uSection: { value: 0 }, uHue: { value: COL.steel.clone() }, uReveal: { value: 0 }, uProvenance: { value: 0 }, uHover: { value: 0 }, uFinal: { value: 0 }, uSoft: { value: 0 } };   // uSoft: extra line feather during transitions (0 at rest)
+function viewportFillBoost() {
+  const ar = innerWidth / innerHeight;
+  let fill = MOBILE ? 0.72 : 0.1;
+  if (ar < 0.78) fill = Math.max(fill, clamp((0.84 - ar) / 0.42, 0, 1));
+  return fill;
+}
+function syncViewport() { W.uViewport.value.set(innerWidth / innerHeight, viewportFillBoost()); }
+
+const W = { uTime: { value: 0 }, uSection: { value: 0 }, uHue: { value: COL.steel.clone() }, uReveal: { value: 0 }, uProvenance: { value: 0 }, uHover: { value: 0 }, uFinal: { value: 0 }, uSoft: { value: 0 }, uViewport: { value: new THREE.Vector2(innerWidth / innerHeight, viewportFillBoost()) } };   // uViewport: aspect + bottom-fill boost for tall/mobile viewports
+syncViewport();
 const W_PROV = [0.06, 0.10, 0.30, 0.12, 0.55, 0.14, 0.95, 0.20, 0.24, 0.34];
-const SEG_X = SOFT ? 70 : (MOBILE ? 96 : 176), SEG_Y = SOFT ? 74 : (MOBILE ? 99 : 184);   // denser desktop mesh -> smoother contour curves; SEG_Y scaled with the deeper plane (keeps visible density)
+const SEG_X = SOFT ? 70 : (MOBILE ? 104 : 176), SEG_Y = SOFT ? 74 : (MOBILE ? 118 : 184);   // mobile: denser mesh so wireframe fills portrait bottoms
+const PLANE_D = MOBILE ? 520 : 440;
 const NODE_N = SOFT ? 90 : (MOBILE ? 160 : 300);   // fewer distant nodes — quieter, darker background
 const FILAMENTS = !SOFT;
 
@@ -297,10 +307,11 @@ scene.add(deepLayer, midLayer);
 
 // DEEP — one curved topology terrain plane (grid + contour lines + grain)
 function makeDeepTerrain() {
-  const g = new THREE.PlaneGeometry(420, 440, SEG_X, SEG_Y); g.rotateX(-Math.PI * 0.5);   // deeper plane: the near edge now overshoots far past the camera so the bottom never runs out of terrain
+  const g = new THREE.PlaneGeometry(420, PLANE_D, SEG_X, SEG_Y); g.rotateX(-Math.PI * 0.5);   // deeper plane: the near edge overshoots toward the camera so the bottom never runs out of terrain
   // the terrain BECOMES each instrument as uSection eases (triangular weights = pop-free crossfade)
   const vert = SNOISE + `
-    uniform float uTime, uSection, uHover, uFinal; varying vec3 vWorld; varying float vFog, vH, vRidge;
+    uniform float uTime, uSection, uHover, uFinal; uniform vec2 uViewport;
+    varying vec3 vWorld; varying float vFog, vH, vRidge, vFill;
     float secW(float s, float k){ return clamp(1.0 - abs(s-k), 0.0, 1.0); }
     void main(){
       vec3 p = position;
@@ -326,9 +337,14 @@ function makeDeepTerrain() {
       { float radf = length(p.xz); float surge = sin(radf*0.05 - uTime*0.9)*2.0 + sin(uTime*0.5 + radf*0.02)*1.2; h = mix(h, bowl*0.7 + s1*2.0 + surge*(0.45+0.55*uFinal), wFin); }
       // CARD HOVER — the topology breathes upward and ripples while a sub-block is hovered (leaned-in interaction)
       if (uHover > 0.001){ float radh = length(p.xz); h += (sin(radh*0.06 - uTime*1.7)*1.7 + exp(-radh*radh*0.00018)*2.8) * uHover; }
-      // near apron: the plane now overshoots toward the camera; flatten that overshoot so it always fills the
-      // bottom of the frame during flights / parallax (instead of black). Visible range (p.z <= ~135) untouched.
-      float apron = smoothstep(135.0, 215.0, p.z); h = mix(h, h * 0.25 - 3.0, apron);
+      // near apron: flatten overshoot toward camera so wireframe fills the bottom of tall/mobile viewports
+      float fill = clamp(uViewport.y + clamp(0.80 - uViewport.x, 0.0, 0.38) * 1.35, 0.0, 1.0);
+      float apronLo = mix(135.0, 108.0, fill);
+      float apronHi = mix(215.0, 282.0, fill);
+      float apronStr = mix(1.0, 0.26, fill);
+      float apron = smoothstep(apronLo, apronHi, p.z) * apronStr;
+      h = mix(h, h * mix(0.25, 0.54, fill) - mix(3.0, 0.45, fill), apron);
+      vFill = fill;
       vH = h; p.y -= 26.0; p.y += h;
       vec4 mv = modelViewMatrix * vec4(p,1.0); vWorld = p; vFog = clamp((-mv.z-60.0)/220.0,0.0,1.0);
       gl_Position = projectionMatrix * mv;
@@ -340,7 +356,7 @@ function makeDeepTerrain() {
   const gFog = MOBILE ? 0.84 : 0.92, gRevA = MOBILE ? 0.38 : 0.25, gRevB = MOBILE ? 0.62 : 0.75;
   const frag = `
     precision highp float; uniform float uTime, uReveal, uSection, uProv, uFinal, uSoft; uniform vec3 uHue, uOk, uAmber, uBreach, uLuna;
-    varying vec3 vWorld; varying float vFog, vH, vRidge;
+    varying vec3 vWorld; varying float vFog, vH, vRidge, vFill;
     float secW(float s, float k){ return clamp(1.0 - abs(s-k), 0.0, 1.0); }
     float hash21(vec2 p){ p=fract(p*vec2(123.34,345.45)); p+=dot(p,p+34.345); return fract(p.x*p.y); }
     float grain(vec2 uv){ float g=0.0,amp=0.5; vec2 q=uv; for(int i=0;i<${GO};i++){ g+=(hash21(floor(q))-0.5)*amp; q*=2.03; amp*=0.5; } return g; }
@@ -371,15 +387,16 @@ function makeDeepTerrain() {
       vec3 lineHue = uHue;                              // stone blue everywhere — no per-section state tint on lines
       float contrast = 1.0 + wTri*0.8;                  // trident: lines punch harder
       vec3 col = base + lineHue*lines*contrast*(${gLineL}+${gLineH}*uReveal) + gr;
-      col *= (1.0 - vFog*${gFog});
-      float a = (${gAlphaB} + lines*${gAlphaL})*(1.0 - vFog)*(${gRevA}+${gRevB}*uReveal);
+      float fogK = vFog * mix(${gFog}, ${MOBILE ? '0.68' : '0.86'}, vFill * 0.9);
+      col *= (1.0 - fogK);
+      float a = (${gAlphaB} + lines*${gAlphaL})*(1.0 - fogK)*(${gRevA}+${gRevB}*uReveal);
       col *= 1.0 + uFinal*0.85;          // FINAL: glow everything for the closing frame
       a   *= 1.0 + uFinal*0.55;
       col *= ${MOBILE ? '1.16' : '1.0'};
       a   *= ${MOBILE ? '1.12' : '1.0'};
       gl_FragColor = vec4(col, a);
     }`;
-  const m = new THREE.ShaderMaterial({ uniforms: { uTime: W.uTime, uReveal: W.uReveal, uHue: W.uHue, uSection: W.uSection, uProv: W.uProvenance, uHover: W.uHover, uFinal: W.uFinal, uSoft: W.uSoft, uOk: { value: COL.ok.clone() }, uAmber: { value: COL.amber.clone() }, uBreach: { value: COL.breach.clone() }, uLuna: { value: COL.luna.clone() } }, vertexShader: vert, fragmentShader: frag, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending });
+  const m = new THREE.ShaderMaterial({ uniforms: { uTime: W.uTime, uReveal: W.uReveal, uHue: W.uHue, uSection: W.uSection, uProv: W.uProvenance, uHover: W.uHover, uFinal: W.uFinal, uSoft: W.uSoft, uViewport: W.uViewport, uOk: { value: COL.ok.clone() }, uAmber: { value: COL.amber.clone() }, uBreach: { value: COL.breach.clone() }, uLuna: { value: COL.luna.clone() } }, vertexShader: vert, fragmentShader: frag, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending });
   const mesh = new THREE.Mesh(g, m); mesh.renderOrder = -8; return mesh;
 }
 
@@ -425,33 +442,38 @@ deepLayer.add(makeDeepTerrain());
 
 // ATMOSPHERE HAZE (depth dust) PURGED — no faint floating points anywhere in the field now; the terrain carries all depth.
 
-// FAR STARFIELD — crisp, dim pinpoints set deep in the upper sky for depth (NOT field dust: far, fixed, tiny, no glow/bloom).
-(function () {
-  const sn = SOFT ? 200 : (MOBILE ? 320 : 520);
-  const sp = new Float32Array(sn * 3), sr = new Float32Array(sn);
-  for (let i = 0; i < sn; i++) { const [x, y, z] = onSphere(150 + Math.random() * 24), k = i * 3; sp[k] = x; sp[k + 1] = Math.abs(y) * 0.8 + 10; sp[k + 2] = z; sr[i] = Math.random(); }
-  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(sp, 3)); g.setAttribute('aRnd', new THREE.BufferAttribute(sr, 1));
+// STAR LAYERS — populated pinpoints with independent random pulse (near + deep shell)
+const STAR_VERT = (alphaExpr, bigSz, smSz) => `attribute float aRnd, aPhase, aRate; uniform float uTime; varying float vA;
+  void main(){
+    vec4 mv = modelViewMatrix * vec4(position,1.0);
+    gl_Position = projectionMatrix * mv;
+    float pulse = 0.50 + 0.50 * sin(uTime * aRate + aPhase);
+    float flicker = 0.82 + 0.18 * sin(uTime * (aRate * 2.35 + 0.55) + aPhase * 4.2);
+    vA = (${alphaExpr}) * pulse * flicker;
+    float sz = aRnd > 0.9 ? ${bigSz} : ${smSz};
+    gl_PointSize = sz * (260.0 / max(1.0, -mv.z));
+  }`;
+const STAR_FRAG = 'precision highp float; varying float vA; void main(){ vec2 uv = gl_PointCoord - 0.5; if (dot(uv,uv) > 0.25) discard; gl_FragColor = vec4(vec3(0.82,0.88,0.96), vA); }';
+function addStarShell(sn, r0, r1, yMul, yOff, alphaExpr, bigSz, smSz) {
+  const sp = new Float32Array(sn * 3), sr = new Float32Array(sn), sph = new Float32Array(sn), srt = new Float32Array(sn);
+  for (let i = 0; i < sn; i++) {
+    const [x, y, z] = onSphere(r0 + Math.random() * r1), k = i * 3;
+    sp[k] = x; sp[k + 1] = Math.abs(y) * yMul + yOff; sp[k + 2] = z;
+    sr[i] = Math.random(); sph[i] = Math.random() * TAU; srt[i] = 0.4 + Math.random() * 2.2;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+  g.setAttribute('aRnd', new THREE.BufferAttribute(sr, 1));
+  g.setAttribute('aPhase', new THREE.BufferAttribute(sph, 1));
+  g.setAttribute('aRate', new THREE.BufferAttribute(srt, 1));
   const m = new THREE.ShaderMaterial({
     uniforms: { uTime: W.uTime }, transparent: true, depthWrite: false, depthTest: false, blending: THREE.NormalBlending,
-    vertexShader: `attribute float aRnd; uniform float uTime; varying float vA; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); gl_Position = projectionMatrix * mv; float tw = 0.78 + 0.22*sin(uTime*0.4 + aRnd*40.0); vA = (${MOBILE ? '0.30 + aRnd*0.44' : '0.14 + aRnd*0.34'}) * tw; gl_PointSize = aRnd > 0.9 ? ${MOBILE ? '2.2' : '1.7'} : ${MOBILE ? '1.35' : '1.0'}; }`,
-    fragmentShader: 'precision highp float; varying float vA; void main(){ vec2 uv = gl_PointCoord - 0.5; if (dot(uv,uv) > 0.25) discard; gl_FragColor = vec4(vec3(0.80,0.86,0.94), vA); }'
+    vertexShader: STAR_VERT(alphaExpr, bigSz, smSz), fragmentShader: STAR_FRAG
   });
-  const stars = new THREE.Points(g, m); stars.renderOrder = -9; scene.add(stars);
-})();
-
-// FAR STAR SHELL — a second, deeper, dimmer layer set behind the near stars for parallax DEPTH above the terrain (no glow, no bloom).
-(function () {
-  const sn = SOFT ? 120 : (MOBILE ? 200 : 340);
-  const sp = new Float32Array(sn * 3), sr = new Float32Array(sn);
-  for (let i = 0; i < sn; i++) { const [x, y, z] = onSphere(205 + Math.random() * 42), k = i * 3; sp[k] = x; sp[k + 1] = Math.abs(y) * 0.92 + 16; sp[k + 2] = z; sr[i] = Math.random(); }
-  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(sp, 3)); g.setAttribute('aRnd', new THREE.BufferAttribute(sr, 1));
-  const m = new THREE.ShaderMaterial({
-    uniforms: { uTime: W.uTime }, transparent: true, depthWrite: false, depthTest: false, blending: THREE.NormalBlending,
-    vertexShader: `attribute float aRnd; uniform float uTime; varying float vA; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); gl_Position = projectionMatrix * mv; float tw = 0.82 + 0.18*sin(uTime*0.3 + aRnd*50.0); vA = (${MOBILE ? '0.16 + aRnd*0.28' : '0.06 + aRnd*0.16'}) * tw; gl_PointSize = aRnd > 0.92 ? ${MOBILE ? '1.6' : '1.3'} : ${MOBILE ? '1.2' : '1.0'}; }`,
-    fragmentShader: 'precision highp float; varying float vA; void main(){ vec2 uv = gl_PointCoord - 0.5; if (dot(uv,uv) > 0.25) discard; gl_FragColor = vec4(vec3(0.74,0.80,0.90), vA); }'
-  });
-  const farStars = new THREE.Points(g, m); farStars.renderOrder = -9; scene.add(farStars);
-})();
+  const pts = new THREE.Points(g, m); pts.renderOrder = -9; scene.add(pts);
+}
+addStarShell(SOFT ? 240 : (MOBILE ? 560 : 700), 150, 28, 0.82, 10, MOBILE ? '0.44 + aRnd*0.54' : '0.22 + aRnd*0.44', MOBILE ? '2.4' : '1.9', MOBILE ? '1.45' : '1.15');
+addStarShell(SOFT ? 150 : (MOBILE ? 360 : 540), 205, 48, 0.94, 16, MOBILE ? '0.26 + aRnd*0.38' : '0.12 + aRnd*0.26', MOBILE ? '1.75' : '1.45', MOBILE ? '1.3' : '1.05');
 
 // (Evidence trust-boundary membrane removed in the hard reset)
 
@@ -574,7 +596,8 @@ function frame() {
   else { camAz.v = dampAngle(camAz.v, AZ[target], 2.0, dt); camEl.v = damp(camEl.v, EL[target], 2.0, dt); camDist.set(DIST[target]); camDist.step(dt); dampV(lookCur, LOOK0, 2.4, dt); }
   const el = camEl.v, az = camAz.v, dist = camDist.x, ce = Math.cos(el);
   camera.position.set(Math.sin(az) * ce * dist, Math.sin(el) * dist, Math.cos(az) * ce * dist);
-  camera.fov = damp(camera.fov, flying ? 53.5 : 52.0, 3.0, dt); camera.updateProjectionMatrix();
+  const fovRest = MOBILE ? 56.5 : 52.0, fovFly = MOBILE ? 58.5 : 53.5;
+  camera.fov = damp(camera.fov, flying ? fovFly : fovRest, 3.0, dt); camera.updateProjectionMatrix();
   _camPar.x = damp(_camPar.x, ptrHas && !REDUCED ? pointer.x : 0, 3.5, dt); _camPar.y = damp(_camPar.y, ptrHas && !REDUCED ? pointer.y : 0, 3.5, dt);
   if (!REDUCED) {
     camera.position.x += Math.sin(t * 0.12) * 0.8; camera.position.y += Math.sin(t * 0.16) * 0.5;
@@ -648,7 +671,7 @@ function frame() {
 /* ============================================================
  * Wiring
  * ============================================================ */
-addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); if (composer) composer.setSize(innerWidth, innerHeight); if (bloomPass) bloomPass.setSize(innerWidth, innerHeight); });
+addEventListener('resize', () => { syncViewport(); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); if (composer) composer.setSize(innerWidth, innerHeight); if (bloomPass) bloomPass.setSize(innerWidth, innerHeight); });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && running) { last = performance.now(); requestAnimationFrame(frame); } });
 if (!MOBILE) { addEventListener('pointermove', (e) => { if (e.pointerType === 'touch') { ptrHas = false; return; } pointer.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ptrHas = true; }, { passive: true }); addEventListener('blur', () => { ptrHas = false; }); }
 addEventListener('keydown', (e) => { const k = e.key; if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'd'].includes(k)) { next(); e.preventDefault(); } else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'a'].includes(k)) { prev(); e.preventDefault(); } else if (k === 'Home') go(0); else if (k === 'End') go(NS - 1); });
