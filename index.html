@@ -231,7 +231,8 @@
         panel.classList.add(stateClass);
       }
       function off() { panel.classList.remove(stateClass); if (opts.leave) opts.leave(); }
-      if (TOUCH) trigger.addEventListener('click', function () { on(); clearTimeout(lt); lt = setTimeout(off, opts.touchMs || 2600); });
+      panel._hOn = on; panel._hOff = off;
+      if (TOUCH) trigger.addEventListener('click', on);
       else { trigger.addEventListener('pointerenter', on); trigger.addEventListener('pointerleave', off); }
     }
 
@@ -256,6 +257,7 @@
         split.addEventListener('scroll', function () {
           var idx = Math.round(split.scrollLeft / Math.max(1, split.clientWidth));
           [].forEach.call(dots.children, function (dd, i) { dd.className = i === idx ? 'on' : ''; });
+          [].forEach.call(split.children, function (p, i) { if (i === idx) { if (p._hOn) p._hOn(); } else { if (p._hOff) p._hOff(); } });
         }, { passive: true });
       });
     }
