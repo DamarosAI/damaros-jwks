@@ -384,7 +384,7 @@ body.world-ready #world { opacity: 1; }
   .es-stage-cards .cap-box-b, .ti-half .cap-box-b, .ps-half .cap-box-b { font-size: clamp(.78rem, 3.4vw, .84rem); margin-top: clamp(.38rem, 1.6vw, .48rem); }
 
   /* mobile panel switcher — mirrors the Execution Spine rail (tap a node to switch panels) */
-  .hswipe-nav { position: relative; display: grid; grid-auto-flow: column; justify-content: center; gap: clamp(1.3rem, 7vw, 2.8rem); width: fit-content; max-width: 100%; margin: clamp(.45rem, 1.8vh, .7rem) auto 0; }
+  .hswipe-nav { position: relative; display: grid; grid-auto-flow: column; justify-content: center; gap: clamp(1.3rem, 7vw, 2.8rem); width: fit-content; max-width: 100%; margin: clamp(.75rem, 2.6vh, 1.05rem) auto 0; }
   .hswipe-nav::before { content: ""; position: absolute; left: 14%; right: 14%; top: 9px; height: 2px; background: rgba(169, 192, 214, .18); }
   .hswipe-node { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .hswipe-node .d { width: 13px; height: 13px; transform: rotate(45deg); border: 1.5px solid rgba(169, 192, 214, .5); background: rgba(169, 192, 214, .06); transition: background .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease), transform .35s var(--ease); }
