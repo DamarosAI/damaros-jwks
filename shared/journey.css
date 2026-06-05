@@ -150,7 +150,7 @@ canvas.cv{ position:absolute; inset:0; width:100%; height:100%; display:block; z
 .cap--center.cap--end .cap-title{ position:absolute; left:50%; top:50%; margin:0; z-index:1;
   font-size:clamp(2.1rem,5.2vw,4.2rem); line-height:1.06; letter-spacing:-.03em; text-wrap:balance; max-width:18ch;
   transform:translate(-50%,-50%); }
-.cap--center.cap--end .cap-title em{ font-style:normal; color:var(--steel); }
+.cap--end [data-type] .rc.in:nth-last-child(-n+8){ color:var(--steel); }
 .cap--center.cap--end .j-cta-row{ position:absolute; left:50%; top:calc(50% + clamp(1.7rem,4.8vw,2.6rem));
   transform:translateX(-50%); margin:clamp(.75rem,2vh,1.2rem) 0 0; }
 .j-cta-dock-slot{ display:inline-block; width:clamp(7.4rem,26vw,10.5rem); height:clamp(2rem,6.8vw,2.85rem);
@@ -160,6 +160,8 @@ body[data-station="9"] .cap--end{ opacity:1; }
 body[data-station="9"] .cap--end.cap--active .cap-title{ transform:translate(-50%,-50%); }
 body[data-station="9"] .cap--end.cap--active .j-cta-row{ transform:translateX(-50%); }
 body.end-hold .cap--end .cap-line{ opacity:0 !important; transform:translateY(14px) !important; pointer-events:none; }
+body.end-hold .cap--end [data-type]{ opacity:0 !important; }
+body.end-hold .cap--end [data-type] .rc{ opacity:0 !important; filter:none !important; }
 /* page CTA — glass fill so the monogram reads through (navbar CTA stays solid until docked) */
 .j-top .j-cta.is-docked,
 .cap--end .j-btn{ color:var(--cold); background:rgba(169,192,214,.34); border-color:rgba(169,192,214,.5);

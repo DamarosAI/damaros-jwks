@@ -205,4 +205,6 @@
     clearTimeout(rt);
     rt = setTimeout(function () { layoutAll(true); }, 160);
   });
+
+  window.DamarosCapIntro = { kick: kick };
 })();

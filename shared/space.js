@@ -559,7 +559,19 @@ const caps = [...document.querySelectorAll('[data-cap]')];
 const counterEl = document.querySelector('[data-counter]');
 const progEl = document.querySelector('[data-deck-progress]');
 const dots = [...document.querySelectorAll('[data-dot]')];   // stone-blue diamond station nav (click to skip around)
-function setCaps(idx) { caps.forEach((b, i) => { const on = i === idx; b.querySelectorAll('.cap-line').forEach((l) => l.classList.toggle('on', on)); b.classList.toggle('cap--active', on); }); }
+function setCaps(idx) {
+  caps.forEach((b, i) => {
+    const on = i === idx;
+    const end = b.classList.contains('cap--end');
+    b.classList.toggle('cap--active', on);
+    if (end && on && !REDUCED) b.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
+    else b.querySelectorAll('.cap-line').forEach((l) => l.classList.toggle('on', on));
+  });
+}
+function revealEndCap() {
+  setCaps(9);
+  window.DamarosCapIntro?.kick?.();
+}
 const END_HOLD_MS = REDUCED ? 500 : 2000;
 let endHoldTimer = null;
 function clearEndHold() { clearTimeout(endHoldTimer); endHoldTimer = null; document.body.classList.remove('end-hold'); }
@@ -570,7 +582,7 @@ function arriveAt(idx) {
     clearTimeout(endHoldTimer);
     endHoldTimer = setTimeout(() => {
       document.body.classList.remove('end-hold');
-      setCaps(9);
+      revealEndCap();
       endHoldTimer = null;
     }, END_HOLD_MS);
     return;
