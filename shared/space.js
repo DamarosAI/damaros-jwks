@@ -284,6 +284,7 @@ function syncViewport() { W.uViewport.value.set(innerWidth / innerHeight, viewpo
 
 const W = { uTime: { value: 0 }, uSection: { value: 0 }, uHue: { value: COL.steel.clone() }, uReveal: { value: 0 }, uProvenance: { value: 0 }, uHover: { value: 0 }, uFinal: { value: 0 }, uSoft: { value: 0 }, uViewport: { value: new THREE.Vector2(innerWidth / innerHeight, viewportFillBoost()) } };   // uViewport: aspect + bottom-fill boost for tall/mobile viewports
 syncViewport();
+W.uBurst = { value: 0 };   // star-twinkle burst (Node hover) — shared by both star shells
 const W_PROV = [0.06, 0.10, 0.30, 0.12, 0.55, 0.14, 0.95, 0.20, 0.24, 0.34];
 const SEG_X = SOFT ? 70 : (MOBILE ? 104 : 176), SEG_Y = SOFT ? 74 : (MOBILE ? 118 : 184);   // mobile: denser mesh so wireframe fills portrait bottoms
 const PLANE_D = MOBILE ? 520 : 440;
@@ -442,14 +443,19 @@ deepLayer.add(makeDeepTerrain());
 // ATMOSPHERE HAZE (depth dust) PURGED — no faint floating points anywhere in the field now; the terrain carries all depth.
 
 // STAR LAYERS — populated pinpoints with independent random pulse (near + deep shell)
-const STAR_VERT = (alphaExpr, bigSz, smSz) => `attribute float aRnd, aPhase, aRate; uniform float uTime; varying float vA;
+const STAR_VERT = (alphaExpr, bigSz, smSz) => `attribute float aRnd, aPhase, aRate; uniform float uTime, uBurst; varying float vA;
   void main(){
     vec4 mv = modelViewMatrix * vec4(position,1.0);
     gl_Position = projectionMatrix * mv;
     float pulse = 0.50 + 0.50 * sin(uTime * aRate + aPhase);
     float flicker = 0.82 + 0.18 * sin(uTime * (aRate * 2.35 + 0.55) + aPhase * 4.2);
-    vA = (${alphaExpr}) * pulse * flicker;
+    float base = (${alphaExpr}) * pulse * flicker;
+    // a quiet reserve of dim stars (aRnd<0.34) that only SPARKLE IN when a burst is summoned (Node hover)
+    float dormant = step(aRnd, 0.34);
+    float spark = 0.5 + 0.5 * sin(uTime * (3.0 + aRnd * 7.0) + aPhase * 9.0);
+    vA = base * (1.0 + uBurst * 0.5) + uBurst * dormant * spark * (0.55 + aRnd);
     float sz = aRnd > 0.9 ? ${bigSz} : ${smSz};
+    sz *= 1.0 + uBurst * (0.45 + dormant * 0.85);
     gl_PointSize = sz * (260.0 / max(1.0, -mv.z));
   }`;
 const STAR_FRAG = 'precision highp float; varying float vA; void main(){ vec2 uv = gl_PointCoord - 0.5; if (dot(uv,uv) > 0.25) discard; gl_FragColor = vec4(vec3(0.82,0.88,0.96), vA); }';
@@ -466,13 +472,13 @@ function addStarShell(sn, r0, r1, yMul, yOff, alphaExpr, bigSz, smSz) {
   g.setAttribute('aPhase', new THREE.BufferAttribute(sph, 1));
   g.setAttribute('aRate', new THREE.BufferAttribute(srt, 1));
   const m = new THREE.ShaderMaterial({
-    uniforms: { uTime: W.uTime }, transparent: true, depthWrite: false, depthTest: false, blending: THREE.NormalBlending,
+    uniforms: { uTime: W.uTime, uBurst: W.uBurst }, transparent: true, depthWrite: false, depthTest: false, blending: THREE.NormalBlending,
     vertexShader: STAR_VERT(alphaExpr, bigSz, smSz), fragmentShader: STAR_FRAG
   });
   const pts = new THREE.Points(g, m); pts.renderOrder = -9; scene.add(pts);
 }
-addStarShell(SOFT ? 240 : (MOBILE ? 560 : 700), 150, 28, 0.82, 10, MOBILE ? '0.44 + aRnd*0.54' : '0.22 + aRnd*0.44', MOBILE ? '2.4' : '1.9', MOBILE ? '1.45' : '1.15');
-addStarShell(SOFT ? 150 : (MOBILE ? 360 : 540), 205, 48, 0.94, 16, MOBILE ? '0.26 + aRnd*0.38' : '0.12 + aRnd*0.26', MOBILE ? '1.75' : '1.45', MOBILE ? '1.3' : '1.05');
+addStarShell(SOFT ? 320 : (MOBILE ? 760 : 1100), 150, 28, 0.82, 10, MOBILE ? '0.44 + aRnd*0.54' : '0.22 + aRnd*0.44', MOBILE ? '2.4' : '1.9', MOBILE ? '1.45' : '1.15');
+addStarShell(SOFT ? 220 : (MOBILE ? 520 : 840), 205, 48, 0.94, 16, MOBILE ? '0.26 + aRnd*0.38' : '0.12 + aRnd*0.26', MOBILE ? '1.75' : '1.45', MOBILE ? '1.3' : '1.05');
 
 // (Evidence trust-boundary membrane removed in the hard reset)
 
@@ -532,6 +538,7 @@ if (BLOOM) {
  * Navigation + morph (wall-clock so it never runs in slow-motion)
  * ============================================================ */
 let cur = 0, target = 0, flying = false, morphStart = performance.now() - 9999, frames = 0;
+let starBurstT = 0;   // Node-hover star-burst target (the loop eases W.uBurst toward this)
 const MORPH_MS = 1700;
 let morphMs = MORPH_MS, flightAssemble = 1;   // per-flight: skips reconfigure faster + compress harder through a shared core
 const pointer = new THREE.Vector2(0, 0); let ptrHas = false;
@@ -549,24 +556,65 @@ function go(i) {
   toArr.set(SHAPES[i]); subArr.set(SUB[i]); geo.attributes.position.needsUpdate = true; geo.attributes.aTo.needsUpdate = true; geo.attributes.aSub.needsUpdate = true;
   uniforms.uMorph.value = 0; morphStart = performance.now(); target = i; flying = true; camDist.set(DIST[i]);
   if (i === 9 && !REDUCED) document.body.classList.add('end-hold'); else clearEndHold();
-  setCaps(-1);
+  const tgtCap = capForVantage(i);
+  if (tgtCap && tgtCap === activeCapEl) updateFacets(tgtCap, i);   // same combined section → swap facet in place (keep title, no re-scramble)
+  else setCaps(-1);                                               // crossing into a different section → clear copy during the flight
 }
-function next() { go((flying ? target : cur) + 1); }
-function prev() { go((flying ? target : cur) - 1); }
+const SEQ = [0, 1, 2, 3, 4, 5, 7, 9];   // reachable vantages in order (Luna/6 + Console/8 fold into their section's single stop)
+function seqStep(dir) { const s = flying ? target : cur; let i = SEQ.indexOf(s); if (i < 0) { i = 0; for (let k = 0; k < SEQ.length; k++) if (SEQ[k] <= s) i = k; } return SEQ[Math.max(0, Math.min(SEQ.length - 1, i + dir))]; }
+function next() { go(seqStep(1)); }
+function prev() { go(seqStep(-1)); }
+function starBurst(v) { starBurstT = clamp(v, 0, 1.4); }   // Node hover → a few more stars twinkle in
 
 /* ---------- captions + nav UI ---------- */
 const caps = [...document.querySelectorAll('[data-cap]')];
 const counterEl = document.querySelector('[data-counter]');
 const progEl = document.querySelector('[data-deck-progress]');
-const dots = [...document.querySelectorAll('[data-dot]')];   // stone-blue diamond station nav (click to skip around)
+const dots = [...document.querySelectorAll('[data-dot]')];   // 5-stop diamond nav (click to skip around)
+
+/* ---- station grouping: 10 engine vantages collapse into 5 navigable stops ----
+   each combined section spans several vantages; the camera/terrain still fly to the
+   exact vantage, but the journey reads as one stop with internal facets. */
+const GROUPS = [[0], [1, 2, 3, 4], [5], [7], [9]];
+function groupOf(v) { for (let g = 0; g < GROUPS.length; g++) if (GROUPS[g].indexOf(v) >= 0) return g; return 0; }
+
+let activeCapEl = null;
+function capForVantage(v) {
+  if (v < 0) return null;
+  for (let i = 0; i < caps.length; i++) {
+    const r = caps[i].dataset.capRange;
+    if (r) { const a = +r.split('-')[0], b = +r.split('-')[1]; if (v >= a && v <= b) return caps[i]; }
+    else if (+caps[i].dataset.cap === v) return caps[i];
+  }
+  return null;
+}
+/* update a combined section's internal state (rail nodes, conduit fill, active facet
+   panel, half emphasis, facet counter) WITHOUT re-mounting the cap (no title re-scramble) */
+function updateFacets(cap, idx) {
+  if (!cap) return;
+  const facets = [...cap.querySelectorAll('[data-facet]')];
+  facets.forEach((f) => f.classList.toggle('facet--active', +f.dataset.facet === idx));
+  cap.querySelectorAll('[data-rail]').forEach((n) => { const v = +n.dataset.rail; n.classList.toggle('is-active', v === idx); n.classList.toggle('is-done', v < idx); });
+  const fill = cap.querySelector('[data-rail-fill]'), r = cap.dataset.capRange;
+  if (fill && r) { const a = +r.split('-')[0], b = +r.split('-')[1]; fill.style.transform = 'scaleX(' + ((idx - a) / Math.max(1, b - a)).toFixed(3) + ')'; }
+  cap.querySelectorAll('[data-half]').forEach((h) => h.classList.toggle('is-emph', +h.dataset.half === idx));
+  const leadEl = cap.querySelector('[data-facet-lead]'), leadSrc = cap.querySelector('[data-rail="' + idx + '"]');
+  if (leadEl && leadSrc && leadSrc.dataset.lead != null) leadEl.innerHTML = leadSrc.dataset.lead;
+  const pos = facets.map((f) => +f.dataset.facet).indexOf(idx), countEl = cap.querySelector('[data-facet-count]');
+  if (countEl && pos >= 0) countEl.textContent = ('0' + (pos + 1)).slice(-2) + ' / ' + ('0' + facets.length).slice(-2);
+}
 function setCaps(idx) {
-  caps.forEach((b, i) => {
-    const on = i === idx;
-    const end = b.classList.contains('cap--end');
-    b.classList.toggle('cap--active', on);
-    if (end && on && !REDUCED) b.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
-    else b.querySelectorAll('.cap-line').forEach((l) => l.classList.toggle('on', on));
-  });
+  const tgt = capForVantage(idx);
+  if (activeCapEl && activeCapEl !== tgt) { activeCapEl.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on')); activeCapEl.classList.remove('cap--active'); activeCapEl = null; }
+  if (!tgt) return;
+  tgt.classList.add('cap--active');
+  activeCapEl = tgt;
+  updateFacets(tgt, idx);
+  // simple (non-faceted) caps keep the original cap-line reveal behaviour
+  if (!tgt.querySelector('[data-facet]')) {
+    if (tgt.classList.contains('cap--end') && !REDUCED) tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
+    else tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.add('on'));
+  }
 }
 function revealEndCap() { setCaps(9); }
 const END_HOLD_MS = REDUCED ? 500 : 1500;
@@ -587,7 +635,7 @@ function arriveAt(idx) {
   clearEndHold();
   setCaps(idx);
 }
-function syncUI() { const shown = flying ? target : cur; if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (shown + 1)).slice(-2) + ' / ' + ('0' + NS).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(shown / (NS - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === shown); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = shown <= 0 && !flying; if (bn) bn.disabled = shown >= NS - 1 && !flying; }
+function syncUI() { const shown = flying ? target : cur; const g = groupOf(shown); if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (g + 1)).slice(-2) + ' / ' + ('0' + GROUPS.length).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(g / (GROUPS.length - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === g); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = shown <= 0 && !flying; if (bn) bn.disabled = shown >= NS - 1 && !flying; }
 
 /* ---------- micro-interactions ---------- */
 // arrow hover → directional current
@@ -612,6 +660,7 @@ function frame() {
   if (!running) return;
   const now = performance.now(), dt = Math.min((now - last) / 1000, 0.05); last = now; const t = (now - t0) / 1000; frames++;
   uniforms.uTime.value = t; W.uTime.value = t;
+  W.uBurst.value = damp(W.uBurst.value, starBurstT, 4, dt);   // ease the star-twinkle burst in / out
 
   // morph (wall-clock) + settle taper
   const mp = REDUCED ? 1 : clamp((now - morphStart) / morphMs, 0, 1); uniforms.uMorph.value = mp;
@@ -693,7 +742,9 @@ function frame() {
   }
 
   if (composer) composer.render(); else renderer.render(scene, camera);
-  syncUI(); firstFrame = true; requestAnimationFrame(frame);
+  syncUI(); firstFrame = true;
+  if (frames === 2) document.body.classList.add('world-ready');   // fade the canvas in once a couple of clean frames have painted
+  requestAnimationFrame(frame);
 }
 
 /* ============================================================
@@ -705,12 +756,12 @@ if (!MOBILE) { addEventListener('pointermove', (e) => { if (e.pointerType === 't
 addEventListener('keydown', (e) => { const k = e.key; if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'd'].includes(k)) { next(); e.preventDefault(); } else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'a'].includes(k)) { prev(); e.preventDefault(); } else if (k === 'Home') go(0); else if (k === 'End') go(NS - 1); });
 let wAcc = 0, wLock = 0;
 addEventListener('wheel', (e) => { const now = performance.now(); if (now < wLock || flying) return; wAcc += e.deltaY; if (Math.abs(wAcc) > 60) { (wAcc > 0 ? next : prev)(); wAcc = 0; wLock = now + 700; } }, { passive: true });
-let tx0 = 0, ty0 = 0, tracking = false;
-addEventListener('touchstart', (e) => { if (!e.touches[0]) return; tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tracking = true; }, { passive: true });
-addEventListener('touchend', (e) => { if (!tracking || !e.changedTouches[0]) return; tracking = false; const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) (dx < 0 ? next : prev)(); else if (Math.abs(dy) > 60) (dy < 0 ? next : prev)(); }, { passive: true });
+let tx0 = 0, ty0 = 0, tracking = false, tHSwipe = false;
+addEventListener('touchstart', (e) => { if (!e.touches[0]) return; tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tracking = true; tHSwipe = !!(e.target && e.target.closest && e.target.closest('[data-hswipe]')); }, { passive: true });
+addEventListener('touchend', (e) => { if (!tracking || !e.changedTouches[0]) return; tracking = false; const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (tHSwipe) return; (dx < 0 ? next : prev)(); } else if (Math.abs(dy) > 60) (dy < 0 ? next : prev)(); }, { passive: true });
 document.querySelector('[data-prev]')?.addEventListener('click', prev);
 document.querySelector('[data-next]')?.addEventListener('click', next);
-dots.forEach((d, i) => d.addEventListener('click', () => go(i)));   // diamond nav → jump to any station
+dots.forEach((d) => d.addEventListener('click', () => go(+d.dataset.go)));   // 5-stop diamond nav → jump to a stop's first vantage
 /* ---------- typography micro-interactions → subtle topology response ----------
    Key words / state chips / the Trident phrase nudge the topology hue + brightness
    while hovered, then settle back. Background-level only; disabled for reduced-motion. */
@@ -757,10 +808,11 @@ setCaps(-1);   // drum logo + topology only for the opening beat — hero copy l
 try { renderer.compile(scene, camera); } catch (e) { /* older three builds */ }
 warmed = true;
 requestAnimationFrame(frame);
+setTimeout(function () { document.body.classList.add('world-ready'); }, 800);   // safety net: reveal the canvas even if rAF is throttled at load
 const INTRO_MS = REDUCED ? 500 : 2000;
 setTimeout(() => {
   document.body.classList.remove('intro-hold');
   document.documentElement.classList.remove('intro-hold');
   setCaps(0);
 }, INTRO_MS);
-window.DamarosSpace = { go, next, prev, state: () => ({ cur, target, flying, frames }) };
+window.DamarosSpace = { go, next, prev, starBurst, state: () => ({ cur, target, flying, frames }) };
