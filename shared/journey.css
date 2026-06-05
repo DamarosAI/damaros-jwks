@@ -58,6 +58,12 @@ body.intro-hold .brand-motif img{
 @media (prefers-reduced-motion: reduce){
   body.intro-hold .brand-motif img{ --mo:.28; --flare:.58; --glow:.5; filter:none; }
 }
+/* closing beat: monogram + topology only, then headline + CTA (mirrors intro-hold) */
+body.end-hold[data-station="9"] .brand-motif img{
+  --mo:.34; --flare:.72; --glow:.62;
+  filter:brightness(1.22) drop-shadow(0 0 32px rgba(169,192,214,.48));
+  transition:opacity .8s var(--ease), filter .8s var(--ease);
+}
 
 /* aberration overlay — fixed refraction layer above scenes, below captions/chrome */
 #fxo{ position:fixed; inset:0; z-index:2; pointer-events:none; }

@@ -372,7 +372,6 @@ function makeDeepTerrain() {
       gf = mix(gf, vec2(0.045), wCons);                 // console: evidence-like (a hair wider)
       gf = mix(gf, vec2(0.044), wRepl);                 // replay: evidence-like (rings stay readable)
       vec2 gw = vWorld.xz;
-      gw.x += vRidge * sign(vWorld.x) * 3.0;            // evidence: lines refract across the boundary
       float rad = length(vWorld.xz); float ang = atan(vWorld.z, vWorld.x);
       gw = mix(gw, vec2(rad, ang*6.0), wRepl);          // replay: polar rings + spokes
       float gx = gridLine(gw.x*gf.x, 0.012), gz = gridLine(gw.y*gf.y, 0.012);
@@ -548,7 +547,9 @@ function go(i) {
   const uM = uniforms.uMorph.value;
   for (let p = 0; p < N; p++) { const stg = rndArr[p] * 0.26, mL = clamp((uM - stg) / (1 - stg), 0, 1), me = smoother(mL), k = p * 3; posArr[k] += (toArr[k] - posArr[k]) * me; posArr[k + 1] += (toArr[k + 1] - posArr[k + 1]) * me; posArr[k + 2] += (toArr[k + 2] - posArr[k + 2]) * me; }
   toArr.set(SHAPES[i]); subArr.set(SUB[i]); geo.attributes.position.needsUpdate = true; geo.attributes.aTo.needsUpdate = true; geo.attributes.aSub.needsUpdate = true;
-  uniforms.uMorph.value = 0; morphStart = performance.now(); target = i; flying = true; camDist.set(DIST[i]); if (i !== 9) clearEndHold(); setCaps(-1);
+  uniforms.uMorph.value = 0; morphStart = performance.now(); target = i; flying = true; camDist.set(DIST[i]);
+  if (i === 9 && !REDUCED) document.body.classList.add('end-hold'); else clearEndHold();
+  setCaps(-1);
 }
 function next() { go((flying ? target : cur) + 1); }
 function prev() { go((flying ? target : cur) - 1); }
@@ -563,13 +564,18 @@ const END_HOLD_MS = REDUCED ? 500 : 2000;
 let endHoldTimer = null;
 function clearEndHold() { clearTimeout(endHoldTimer); endHoldTimer = null; document.body.classList.remove('end-hold'); }
 function arriveAt(idx) {
-  clearEndHold();
   if (idx === 9 && !REDUCED) {
     document.body.classList.add('end-hold');
-    setCaps(9);
-    endHoldTimer = setTimeout(() => { document.body.classList.remove('end-hold'); endHoldTimer = null; }, END_HOLD_MS);
+    setCaps(-1);
+    clearTimeout(endHoldTimer);
+    endHoldTimer = setTimeout(() => {
+      document.body.classList.remove('end-hold');
+      setCaps(9);
+      endHoldTimer = null;
+    }, END_HOLD_MS);
     return;
   }
+  clearEndHold();
   setCaps(idx);
 }
 function syncUI() { const shown = flying ? target : cur; if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (shown + 1)).slice(-2) + ' / ' + ('0' + NS).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(shown / (NS - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === shown); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = shown <= 0 && !flying; if (bn) bn.disabled = shown >= NS - 1 && !flying; }
