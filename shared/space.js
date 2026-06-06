@@ -337,7 +337,7 @@ function makeDeepTerrain() {
       // FINAL — the closing climax: a rising, surging field that builds with uFinal
       { float radf = length(p.xz); float surge = sin(radf*0.05 - uTime*0.9)*2.0 + sin(uTime*0.5 + radf*0.02)*1.2; h = mix(h, bowl*0.7 + s1*2.0 + surge*(0.45+0.55*uFinal), wFin); }
       // CARD HOVER — the topology breathes upward and ripples while a sub-block is hovered (leaned-in interaction)
-      if (uHover > 0.001){ float radh = length(p.xz); h += (sin(radh*0.06 - uTime*1.7)*1.7 + exp(-radh*radh*0.00018)*2.8) * uHover; }
+      if (uHover > 0.001){ float radh = length(p.xz); h += (sin(radh*0.09 - uTime*1.4)*0.75 + exp(-radh*radh*0.00028)*1.05) * uHover; }
       // near apron: flatten overshoot toward camera so wireframe fills the bottom of tall/mobile viewports
       float fill = clamp(uViewport.y + clamp(0.80 - uViewport.x, 0.0, 0.38) * 1.35, 0.0, 1.0);
       float apronLo = mix(135.0, 108.0, fill);
@@ -353,8 +353,8 @@ function makeDeepTerrain() {
   const GO = (MOBILE || SOFT) ? 1 : 2;
   const gGrid = MOBILE ? 0.56 : 0.42, gCont = MOBILE ? 0.76 : 0.6;
   const gLineL = MOBILE ? 0.48 : 0.35, gLineH = MOBILE ? 0.52 : 0.65;
-  const gAlphaB = MOBILE ? 0.12 : 0.08, gAlphaL = MOBILE ? 0.82 : 0.7;
-  const gFog = MOBILE ? 0.84 : 0.92, gRevA = MOBILE ? 0.38 : 0.25, gRevB = MOBILE ? 0.62 : 0.75;
+  const gAlphaB = MOBILE ? 0.07 : 0.05, gAlphaL = MOBILE ? 0.52 : 0.42;
+  const gFog = MOBILE ? 0.88 : 0.94, gRevA = MOBILE ? 0.26 : 0.18, gRevB = MOBILE ? 0.44 : 0.52;
   const frag = `
     precision highp float; uniform float uTime, uReveal, uSection, uProv, uFinal, uSoft; uniform vec3 uHue, uOk, uAmber, uBreach, uLuna;
     varying vec3 vWorld; varying float vFog, vH, vRidge, vFill;
@@ -548,6 +548,7 @@ function go(i) {
   // transition character by jump distance: adjacent = full cinematic morph; skip = faster "system reconfiguration"
   const fromS = flying ? target : cur, jump = Math.abs(i - fromS);
   morphMs = jump >= 3 ? 650 : (jump === 2 ? 750 : 850);
+  armNavLock(morphMs + (REDUCED ? 120 : 320));
   flightAssemble = (fromS === 0 && i === 1) ? 2.1 : (1.0 + Math.min(Math.max(jump - 1, 0), 8) * 0.16);   // compress through a shared core on skips; lightspeed into Protocol
   // snapshot the CURRENT interpolated positions into the 'from' buffer (seamless continuation).
   // MUST mirror the shader's per-particle stagger + smootherstep exactly.
@@ -634,6 +635,11 @@ function arriveAt(idx) {
   }
   clearEndHold();
   setCaps(idx);
+  if (MOBILE) {
+    const cap = capForVantage(idx);
+    const hs = cap && cap.querySelector('[data-hswipe]');
+    if (hs && hs.children.length > 1) requestAnimationFrame(() => hswipeGo(hs, 0));
+  }
 }
 function syncUI() { const shown = flying ? target : cur; const g = groupOf(shown); if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (g + 1)).slice(-2) + ' / ' + ('0' + GROUPS.length).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(g / (GROUPS.length - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === g); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = shown <= 0 && !flying; if (bn) bn.disabled = shown >= NS - 1 && !flying; }
 
@@ -754,11 +760,101 @@ addEventListener('resize', () => { syncViewport(); camera.aspect = innerWidth / 
 document.addEventListener('visibilitychange', () => { if (!document.hidden && running) { last = performance.now(); requestAnimationFrame(frame); } });
 if (!MOBILE) { addEventListener('pointermove', (e) => { if (e.pointerType === 'touch') { ptrHas = false; return; } pointer.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ptrHas = true; }, { passive: true }); addEventListener('blur', () => { ptrHas = false; }); }
 addEventListener('keydown', (e) => { const k = e.key; if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'd'].includes(k)) { next(); e.preventDefault(); } else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'a'].includes(k)) { prev(); e.preventDefault(); } else if (k === 'Home') go(0); else if (k === 'End') go(NS - 1); });
-let wAcc = 0, wLock = 0;
-addEventListener('wheel', (e) => { const now = performance.now(); if (now < wLock || flying) return; wAcc += e.deltaY; if (Math.abs(wAcc) > 60) { (wAcc > 0 ? next : prev)(); wAcc = 0; wLock = now + 700; } }, { passive: true });
-let tx0 = 0, ty0 = 0, tracking = false, tHSwipe = false;
-addEventListener('touchstart', (e) => { if (!e.touches[0]) return; tx0 = e.touches[0].clientX; ty0 = e.touches[0].clientY; tracking = true; tHSwipe = !!(e.target && e.target.closest && e.target.closest('[data-hswipe]')); }, { passive: true });
-addEventListener('touchend', (e) => { if (!tracking || !e.changedTouches[0]) return; tracking = false; const dx = e.changedTouches[0].clientX - tx0, dy = e.changedTouches[0].clientY - ty0; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (tHSwipe) return; (dx < 0 ? next : prev)(); } else if (Math.abs(dy) > 60) (dy < 0 ? next : prev)(); }, { passive: true });
+/* ---------- pane-locked navigation: one stop at a time, resistance, subsection carousels first ---------- */
+const NAV = { lockUntil: 0, acc: 0, accDir: 0, THRESH: MOBILE ? 145 : 125, LOCK_MS: MOBILE ? 1050 : 920, H_LOCK_MS: MOBILE ? 680 : 560 };
+function navLocked() { return flying || performance.now() < NAV.lockUntil; }
+function armNavLock(ms) { NAV.lockUntil = performance.now() + (ms == null ? NAV.LOCK_MS : ms); NAV.acc = 0; NAV.accDir = 0; }
+function activeHSwipeEl() {
+  const cap = capForVantage(flying ? target : cur);
+  if (!cap) return null;
+  const el = cap.querySelector('[data-hswipe]');
+  return el && el.children.length > 1 ? el : null;
+}
+function hswipeIdx(el) {
+  const w = Math.max(1, el.clientWidth);
+  return Math.max(0, Math.min(el.children.length - 1, Math.round(el.scrollLeft / w)));
+}
+function syncHSwipeNav(el, idx) {
+  const nav = el.nextElementSibling;
+  if (!nav || !nav.classList.contains('hswipe-nav')) return;
+  [].forEach.call(nav.children, (b, i) => b.classList.toggle('on', i === idx));
+  const panel = el.children[idx];
+  if (panel) {
+    panel._hOn && panel._hOn();
+    [].forEach.call(el.children, (p, i) => { if (i !== idx && p._hOff) p._hOff(); });
+  }
+}
+function hswipeGo(el, idx) {
+  const panel = el.children[idx];
+  if (!panel) return;
+  el.scrollTo({ left: panel.offsetLeft, behavior: REDUCED ? 'auto' : 'smooth' });
+  syncHSwipeNav(el, idx);
+}
+function snapHSwipe(el) {
+  if (!el || el.children.length < 2) return;
+  hswipeGo(el, hswipeIdx(el));
+}
+function navStep(dir) {
+  if (navLocked()) return false;
+  if (MOBILE) {
+    const hs = activeHSwipeEl();
+    if (hs) {
+      const idx = hswipeIdx(hs), last = hs.children.length - 1;
+      if (dir > 0 && idx < last) { hswipeGo(hs, idx + 1); armNavLock(NAV.H_LOCK_MS); return true; }
+      if (dir < 0 && idx > 0) { hswipeGo(hs, idx - 1); armNavLock(NAV.H_LOCK_MS); return true; }
+    }
+  }
+  if (dir > 0) next(); else prev();
+  armNavLock();
+  return true;
+}
+function feedNav(delta, dir) {
+  if (!delta) return;
+  if (navLocked()) { NAV.acc *= 0.9; return; }
+  if (dir && dir !== NAV.accDir) { NAV.acc = 0; NAV.accDir = dir; }
+  NAV.acc += delta;
+  if (Math.abs(NAV.acc) >= NAV.THRESH) navStep(NAV.acc > 0 ? 1 : -1);
+}
+[].forEach.call(document.querySelectorAll('[data-hswipe]'), (split) => {
+  if (split.children.length < 2) return;
+  const snap = () => snapHSwipe(split);
+  split.addEventListener('scrollend', snap, { passive: true });
+  split.addEventListener('scroll', () => { clearTimeout(split._snapT); split._snapT = setTimeout(snap, 120); }, { passive: true });
+});
+addEventListener('wheel', (e) => {
+  if (document.body.classList.contains('intro-hold')) return;
+  if (e.target && e.target.closest && e.target.closest('[data-hswipe]') && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.8) return;
+  const dy = e.deltaY;
+  if (!dy) return;
+  feedNav(dy, dy > 0 ? 1 : -1);
+}, { passive: true });
+let tStart = null, tAcc = 0, tDir = 0, tOnHSwipe = false;
+addEventListener('touchstart', (e) => {
+  if (!e.touches[0]) return;
+  tStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  tAcc = 0; tDir = 0;
+  tOnHSwipe = !!(e.target && e.target.closest && e.target.closest('[data-hswipe]'));
+}, { passive: true });
+addEventListener('touchmove', (e) => {
+  if (!tStart || !e.touches[0] || tOnHSwipe) return;
+  const dy = tStart.y - e.touches[0].clientY, dx = e.touches[0].clientX - tStart.x;
+  if (Math.abs(dx) > Math.abs(dy) * 1.25) return;
+  if (Math.abs(dy) < 6) return;
+  const dir = dy > 0 ? 1 : -1;
+  if (dir !== tDir) { tAcc = 0; tDir = dir; }
+  tAcc = dy;
+}, { passive: true });
+addEventListener('touchend', (e) => {
+  if (!tStart || !e.changedTouches[0]) return;
+  const dx = e.changedTouches[0].clientX - tStart.x, dy = tStart.y - e.changedTouches[0].clientY;
+  const onHSwipe = tOnHSwipe;
+  tStart = null; tOnHSwipe = false;
+  if (onHSwipe) return;
+  if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.2) return;
+  const pull = Math.abs(tAcc) >= (MOBILE ? 62 : 58) ? tAcc : dy;
+  if (Math.abs(pull) >= (MOBILE ? 62 : 58)) navStep(pull > 0 ? 1 : -1);
+  tAcc = 0; tDir = 0;
+}, { passive: true });
 document.querySelector('[data-prev]')?.addEventListener('click', prev);
 document.querySelector('[data-next]')?.addEventListener('click', next);
 dots.forEach((d) => d.addEventListener('click', () => go(+d.dataset.go)));   // 5-stop diamond nav → jump to a stop's first vantage

@@ -377,12 +377,13 @@ body.world-ready #world { opacity: 1; }
   .es-grid, .ti-split, .ps-split {
     grid-template-columns: none; display: flex; flex-wrap: nowrap;
     gap: clamp(.75rem, 4.2vw, 1.1rem); overflow-x: auto; overflow-y: visible;
-    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    scroll-snap-type: x mandatory; scroll-snap-stop: always; overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none; touch-action: pan-x pinch-zoom;
     margin-top: clamp(.85rem, 2.6vh, 1.25rem);
   }
   .es-grid::-webkit-scrollbar, .ti-split::-webkit-scrollbar, .ps-split::-webkit-scrollbar { display: none; }
   .es-stage-card, .ti-half, .ps-half {
-    flex: 0 0 100%; scroll-snap-align: center; gap: clamp(.65rem, 3vw, .85rem);
+    flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; gap: clamp(.65rem, 3vw, .85rem);
     padding: clamp(.82rem, 3.6vw, 1.1rem) clamp(.88rem, 3.8vw, 1.15rem);
   }
 
