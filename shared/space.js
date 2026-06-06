@@ -526,7 +526,7 @@ if (BLOOM) {
 /* ============================================================
  * Navigation + morph (wall-clock so it never runs in slow-motion)
  * ============================================================ */
-let cur = 0, target = 0, flying = false, morphStart = performance.now() - 9999, frames = 0;
+let cur = 0, target = 0, flying = false, morphStart = performance.now() - 9999, frames = 0, navDir = 0;
 let starBurstT = 0;   // Node-hover star-burst target (the loop eases W.uBurst toward this)
 const MORPH_MS = 850;
 let morphMs = MORPH_MS, flightAssemble = 1;   // per-flight: skips reconfigure faster + compress harder through a shared core
@@ -538,6 +538,8 @@ function go(i) {
   if (i === target && !flying) return;
   // transition character by jump distance: adjacent = full cinematic morph; skip = faster "system reconfiguration"
   const fromS = flying ? target : cur, jump = Math.abs(i - fromS);
+  const fromSeq = seqIndex(fromS), toSeq = seqIndex(i);
+  navDir = toSeq > fromSeq ? 1 : toSeq < fromSeq ? -1 : navDir;
   morphMs = jump >= 3 ? 650 : (jump === 2 ? 750 : 850);
   armNavLock(morphMs + (REDUCED ? 120 : 320));
   flightAssemble = (fromS === 0 && i === 1) ? 2.1 : (1.0 + Math.min(Math.max(jump - 1, 0), 8) * 0.16);   // compress through a shared core on skips; lightspeed into Protocol
@@ -553,7 +555,32 @@ function go(i) {
   else setCaps(-1);                                               // crossing into a different section → clear copy during the flight
 }
 const SEQ = [0, 1, 5, 7, 9];   // reachable vantages in order — Execution Spine (1) now shows all four stages at once, so 2/3/4 are no longer separate stops; Luna/6 + Console/8 fold in too
-function seqStep(dir) { const s = flying ? target : cur; let i = SEQ.indexOf(s); if (i < 0) { i = 0; for (let k = 0; k < SEQ.length; k++) if (SEQ[k] <= s) i = k; } return SEQ[Math.max(0, Math.min(SEQ.length - 1, i + dir))]; }
+function seqIndex(v) { let i = SEQ.indexOf(v); if (i < 0) { i = 0; for (let k = 0; k < SEQ.length; k++) if (SEQ[k] <= v) i = k; } return i; }
+function seqStep(dir) { return SEQ[Math.max(0, Math.min(SEQ.length - 1, seqIndex(flying ? target : cur) + dir))]; }
+function syncSubsectionPanels(cap, idx) {
+  if (!cap) return;
+  const panels = [...cap.querySelectorAll('.ps-half, .ti-half')];
+  panels.forEach((p, i) => { if (i === idx) { if (p._hOn) p._hOn(); } else if (p._hOff) p._hOff(); });
+  const split = cap.querySelector('.ti-split');
+  if (split && panels.length > 1) {
+    split.classList.add('has-emph');
+    panels.forEach((p, i) => p.classList.toggle('is-emph', i === idx));
+  }
+}
+function landSubsection(cap, backward) {
+  if (!cap) return;
+  const hs = cap.querySelector('[data-hswipe]');
+  if (!hs || hs.children.length < 2) return;
+  const idx = backward ? hs.children.length - 1 : 0;
+  requestAnimationFrame(() => {
+    hs._hswipeCommitted = null;
+    hswipeGo(hs, idx);
+    if (!MOBILE || hs.scrollWidth <= hs.clientWidth) commitHSwipe(hs, idx);
+    syncSubsectionPanels(cap, idx);
+    const panel = hs.children[idx];
+    if (panel && !MOBILE) panel.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' });
+  });
+}
 function next() { go(seqStep(1)); }
 function prev() { go(seqStep(-1)); }
 function starBurst(v) { starBurstT = clamp(v, 0, 1.4); }   // Node hover → a few more stars twinkle in
@@ -626,11 +653,7 @@ function arriveAt(idx) {
   }
   clearEndHold();
   setCaps(idx);
-  if (MOBILE) {
-    const cap = capForVantage(idx);
-    const hs = cap && cap.querySelector('[data-hswipe]');
-    if (hs && hs.children.length > 1) requestAnimationFrame(() => { hs._hswipeCommitted = null; hswipeGo(hs, 0); });
-  }
+  landSubsection(capForVantage(idx), navDir < 0);
 }
 function sectionRevealLocked() {
   const intro = window.DamarosCapIntro;
