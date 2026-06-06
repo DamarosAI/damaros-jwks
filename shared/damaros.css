@@ -335,12 +335,26 @@ strong, b { font-weight: var(--fb-w-strong); }
 }
 .dmx-nav-link:hover, .dmx-nav-link[aria-current="true"] { color: var(--fg); }
 .dmx-nav-link:hover { background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.dmx-nav-cta {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-family: var(--fb); font-size: .64rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: #0a0e14; background: var(--accent-2); border: 1px solid var(--accent-2); border-radius: 10px;
+  padding: .62rem 1.15rem; min-height: 2.25rem; text-decoration: none;
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), background var(--t) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.dmx-nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px color-mix(in srgb, var(--accent-2) 35%, transparent);
+  background: color-mix(in srgb, var(--accent-2) 88%, #fff);
+}
 /* narrow phones: keep the wordmark + tabs on one line without crowding */
 @media (max-width: 560px) {
   .dmx-brand { font-size: 1rem; }
   .dmx-back { font-size: .56rem; letter-spacing: .1em; gap: .26rem; }
   .dmx-nav-links { gap: .7rem; }
   .dmx-nav-link { font-size: .56rem; letter-spacing: .12em; padding: .48rem .72rem; min-height: 2.1rem; }
+  .dmx-nav-cta { font-size: .56rem; padding: .5rem .82rem; letter-spacing: .12em; min-height: 2.1rem; }
 }
 
 /* theme toggle */
