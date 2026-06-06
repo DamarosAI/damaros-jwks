@@ -80,7 +80,7 @@
     <a class="dmx-back" href="/"><span class="dmx-back-arrow" aria-hidden="true">←</span> Go back</a>
   </div>
   <div class="dmx-nav-links">
-    <a class="dmx-nav-link" href="/trust-boundary">TRUST</a>
+    <a class="dmx-nav-link" href="/runtime.html">RUNTIME</a>
     <a class="dmx-nav-link" href="/docs/fhir" aria-current="true">FHIR</a>
     <a class="dmx-nav-link" href="/about">ABOUT</a>
   </div>
@@ -91,7 +91,7 @@
   <h1 class="d-title">Enterprise integration reference</h1>
   <p class="d-lead">This document describes how Damaros clinic nodes integrate with Epic through SMART on FHIR Backend Services: OAuth client assertions, public JWKS discovery, read-only cohort access, data minimization, and deterministic execution on governed evidence. Written for hospital integration teams, security reviewers, and sponsor diligence.</p>
 
-  <a class="cross-link" href="/trust-boundary">Trust boundary doctrine <span aria-hidden="true">&rarr;</span></a>
+  <a class="cross-link" href="/runtime.html">Damaros Runtime <span aria-hidden="true">&rarr;</span></a>
 
   <div class="divider"></div>
 
@@ -104,7 +104,7 @@
     <table class="kv">
       <tr><td>IN_SCOPE</td><td>OAuth flow, JWT assertions, JWKS URLs and rotation, FHIR scopes, sync model, data minimization, network egress, replay provenance</td></tr>
       <tr><td>OUT_OF_SCOPE</td><td>Customer Epic client IDs, private signing PEM, internal service topology, hospital-specific firewall rules</td></tr>
-      <tr><td>TRUST_DOCTRINE</td><td>Eligibility verdicts are deterministic. PHI never reaches an LLM. See <a href="/trust-boundary">trust boundary</a>.</td></tr>
+      <tr><td>RUNTIME</td><td>Eligibility verdicts are deterministic. PHI never reaches an LLM. See <a href="/runtime.html">Damaros Runtime</a>.</td></tr>
     </table>
   </section>
 
@@ -289,7 +289,7 @@ grant_type=client_credentials
       <li><strong>PHI never reaches an LLM.</strong> Criterion PASS / REVIEW / FAIL comes only from the deterministic engine on ingested FHIR. No patient identifiers or cohort-linked fields are serialized into any optional external request path.</li>
       <li>Helm deployments ship deny-by-default API egress <code>NetworkPolicy</code> with explicit CIDR allowlists for Epic FHIR, OIDC, in-cluster Postgres/Redis, and DNS.</li>
       <li>Screening outputs are criterion-level PASS, REVIEW, or FAIL with evidence references, never an ungrounded generative verdict.</li>
-      <li>Sponsor and CRO visibility stays permissioned and de-identified by default. See the <a href="/trust-boundary">trust boundary</a> for the full visibility model.</li>
+      <li>Sponsor and CRO visibility stays permissioned and de-identified by default. See <a href="/runtime.html">Damaros Runtime</a> for the full visibility model.</li>
     </ul>
   </section>
 
@@ -353,7 +353,7 @@ grant_type=client_credentials
     <div class="sec-label">13_RELATED_DOCUMENTS</div>
     <h2 class="sec-head">Related documents</h2>
     <ul class="bullets">
-      <li><a href="/trust-boundary">Trust boundary doctrine</a></li>
+      <li><a href="/runtime.html">Damaros Runtime</a></li>
       <li><a href="/docs/privacy">Platform privacy and data handling</a></li>
       <li><a href="/privacy">Public website privacy notice</a> (covers public JWKS hosting)</li>
       <li>Customer BAA / DPA and deployment security addendum (provided under contract)</li>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Damaros · Runtime</title>
+<link rel="icon" href="assets/damaros-favicon.png" type="image/png">
+<script src="shared/theme-system.js"></script>
+<link rel="stylesheet" href="shared/damaros.css">
+<style>
+  .docs { max-width: 1040px; margin: 0 auto; padding: calc(60px + clamp(2.8rem, 7vh, 4rem)) clamp(1.1rem, 4vw, 2.4rem) 6rem; position: relative; z-index: 1; }
+  .d-eyebrow { font-family: var(--fm); font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-2); margin-bottom: .7rem; }
+  .d-title { font-family: var(--fh); font-weight: var(--fh-w); font-size: var(--fs-xl); letter-spacing: var(--fh-ls); line-height: var(--fh-lh); max-width: 16ch; }
+  .d-lead { color: var(--fg-2); font-family: var(--fb); font-size: var(--fs-sm); font-weight: var(--fb-w); line-height: var(--fb-lh); margin: 1.15rem 0 0; max-width: 68ch; }
+  .d-lead strong { color: var(--fg); font-weight: 600; }
+  .cross-link { display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.4rem; font-family: var(--fm); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-2); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color var(--t) var(--ease), border-color var(--t) var(--ease); }
+  .cross-link:hover { color: var(--fg); border-color: var(--accent); }
+  .divider { height: 1px; background: var(--bd-soft); margin: clamp(2.4rem, 5vh, 3.2rem) 0; }
+  section.doc { margin-bottom: clamp(2rem, 4vh, 2.8rem); scroll-margin-top: 80px; }
+  .sec-label { font-family: var(--fm); font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); opacity: .7; margin-bottom: .5rem; }
+  .sec-label::before { content: '// '; }
+  .sec-head { font-family: var(--fh); font-weight: var(--fh-w); font-size: var(--fs-base); letter-spacing: var(--fh-ls); padding-bottom: .55rem; border-bottom: 1px solid var(--bd-soft); margin: 0 0 1rem; }
+  .body { color: var(--fg-2); font-family: var(--fb); font-size: var(--fs-base); font-weight: var(--fb-w); line-height: var(--fb-lh); }
+  .body p { margin: 0 0 .8rem; } .body p:last-child { margin-bottom: 0; }
+  .body strong { color: var(--fg); font-weight: 600; }
+  .body code, .kv code { font-family: var(--fm); color: var(--accent-2); font-size: .85em; }
+  .body a { color: var(--accent-2); }
+  .kv { width: 100%; border-collapse: collapse; font-family: var(--fm); font-size: .8rem; margin-top: .6rem; }
+  .kv tr { border-bottom: 1px solid var(--bd-soft); }
+  .kv tr:last-child { border-bottom: 0; }
+  .kv td { padding: .62rem 0; vertical-align: top; line-height: 1.55; }
+  .kv td:first-child { width: 220px; padding-right: 1.2rem; color: var(--accent); opacity: .82; }
+  .kv td:last-child { color: var(--fg-2); }
+  .dual { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.85rem, 2vw, 1.2rem); margin-top: .2rem; }
+  .dual-card { border: 1px solid var(--bd); border-radius: 12px; background: var(--panel); padding: 1.15rem 1.2rem; box-shadow: var(--shadow-panel); }
+  .dual-card.allow { border-top: 2px solid var(--pass); }
+  .dual-card.deny { border-top: 2px solid var(--fail); }
+  .dual-card h3 { font-family: var(--fm); font-size: .58rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; margin: 0 0 .85rem; }
+  .dual-card.allow h3 { color: var(--pass); }
+  .dual-card.deny h3 { color: var(--fail); }
+  .bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .55rem; color: var(--fg-2); font-size: .88rem; line-height: 1.58; }
+  .bullets li { padding-left: 1rem; position: relative; }
+  .bullets li::before { content: '>'; position: absolute; left: 0; color: var(--accent); font-family: var(--fm); }
+  .bullets strong { color: var(--fg); }
+  .chain-mini { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--bd-soft); border: 1px solid var(--bd-soft); border-radius: 10px; overflow: hidden; margin-top: 1rem; }
+  .chain-step { background: var(--chip-bg); padding: .85rem .75rem; }
+  .chain-step .cs-n { font-family: var(--fm); font-size: .52rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-2); }
+  .chain-step .cs-t { display: block; margin-top: .35rem; font-family: var(--fh); font-weight: var(--fh-w-sub); font-size: .82rem; color: var(--fg); letter-spacing: var(--fh-ls); line-height: 1.25; }
+  .chain-step .cs-d { margin: .4rem 0 0; font-size: .74rem; line-height: 1.48; color: var(--fg-3); }
+  .split-cards { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(.85rem, 2vw, 1.2rem); margin-top: .2rem; }
+  .scard { border: 1px solid var(--bd); border-radius: 12px; background: var(--panel); padding: 1.2rem 1.25rem; }
+  .scard .sc-tag { font-family: var(--fm); font-size: .54rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+  .scard h3 { font-size: 1.05rem; margin: .5rem 0 .55rem; letter-spacing: -.01em; font-family: var(--fh); }
+  .scard p { margin: 0; color: var(--fg-2); font-size: .86rem; line-height: 1.6; }
+  .deploy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(.85rem, 2vw, 1.2rem); margin-top: .2rem; }
+  .callout { margin: 1.1rem 0 0; padding: .85rem 1.15rem; border-left: 2px solid var(--bd-strong); background: var(--chip-bg); color: var(--fg-2); font-family: var(--fm); font-size: .76rem; line-height: 1.65; border-radius: 0 6px 6px 0; }
+  .callout strong { color: var(--fg); }
+  .callout.em { border-left-color: var(--accent-2); }
+  .foil { border: 1px solid var(--bd); border-radius: 12px; padding: 1.15rem 1.25rem; background: var(--panel); margin-top: .2rem; box-shadow: var(--shadow-panel); }
+  .foil p { margin: 0; color: var(--fg-2); font-size: .92rem; line-height: 1.68; }
+  .foil em { font-style: normal; color: var(--accent-2); font-weight: 600; }
+  footer { border-top: 1px solid var(--bd-soft); padding: 2.2rem clamp(1.1rem,4vw,2.4rem); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; font-family: var(--fm); font-size: .6rem; letter-spacing: .1em; color: var(--fg-3); max-width: 1040px; margin: 0 auto; text-transform: uppercase; }
+  footer .geo { justify-self: start; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  footer .geo.pending { opacity: .45; }
+  footer .cp { justify-self: center; }
+  footer a { justify-self: end; color: var(--fg-3); text-decoration: none; }
+  footer a:hover { color: var(--fg); }
+  @media (max-width: 900px) { .chain-mini { grid-template-columns: repeat(2, 1fr); } .deploy-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 820px) { .dual, .split-cards { grid-template-columns: 1fr; } .kv td:first-child { width: 130px; font-size: .72rem; } }
+  @media (max-width: 480px) { .chain-mini { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav class="dmx-nav">
+  <div class="dmx-nav-start">
+    <a class="dmx-brand" href="/" aria-label="Damaros">Damaros<sup>™</sup></a>
+    <a class="dmx-back" href="/"><span class="dmx-back-arrow" aria-hidden="true">←</span> Go back</a>
+  </div>
+  <div class="dmx-nav-links">
+    <a class="dmx-nav-link" href="/runtime.html" aria-current="true">RUNTIME</a>
+    <a class="dmx-nav-link" href="/docs/fhir">FHIR</a>
+    <a class="dmx-nav-link" href="/about">ABOUT</a>
+  </div>
+</nav>
+
+<main class="docs">
+  <div class="d-eyebrow">Execution fabric</div>
+  <h1 class="d-title">Damaros Runtime</h1>
+  <p class="d-lead"><strong>Governed cloud execution for distributed clinical trials.</strong> Damaros Runtime is the execution fabric beneath Node, Console, Trident, Luna, Forge, Router, the deterministic engine, and Replay.</p>
+  <p class="d-lead">The homepage tells the story: protocol intent becomes governed execution. Runtime explains how that execution is actually carried, governed, replayed, and defended.</p>
+  <p class="d-lead">Every consequential action in Damaros becomes a <strong>run</strong>: protocol compile, evidence sync, deterministic screening, REVIEW routing, human adjudication, Replay reconstruction, or governed agent task.</p>
+
+  <div class="foil" style="margin-top:1.4rem">
+    <p>A run is not a chat. It is not a dashboard refresh. It is not a model answer. It is a typed execution event with versioned inputs, policy scope, actor identity, output state, provenance, and replay linkage. Damaros does not ask institutions to trust AI. It asks them to <em>inspect the run.</em></p>
+  </div>
+
+  <a class="cross-link" href="/docs/fhir">Enterprise FHIR, JWT, and JWKS reference <span aria-hidden="true">&rarr;</span></a>
+  <div class="divider"></div>
+
+  <section class="doc">
+    <div class="sec-label">01_WHY</div>
+    <h2 class="sec-head">Why Runtime exists</h2>
+    <div class="body">
+      <p>Clinical trials have systems of record. They do not have a system of execution.</p>
+      <p>CTMS records trial activity. EDC captures trial data. eTMF stores essential documents. EHRs preserve longitudinal care. Spreadsheets and emails hold the missing operational truth.</p>
+      <p>But the highest-friction moment in distributed trials still happens manually: <strong>Does this patient, at this site, under this protocol version, with this evidence snapshot, survive the actual criteria?</strong> That decision is rebuilt from fragments. Damaros turns it into governed execution.</p>
+    </div>
+    <ul class="bullets" style="margin-top:1rem">
+      <li>Protocol becomes logic.</li>
+      <li>Evidence becomes inspectable.</li>
+      <li>Screening becomes deterministic.</li>
+      <li>REVIEW becomes accountable.</li>
+      <li>Replay becomes proof.</li>
+    </ul>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">02_RUN_MODEL</div>
+    <h2 class="sec-head">Run model</h2>
+    <div class="body"><p>The run is the atomic unit of Damaros. Every run carries a manifest.</p></div>
+    <table class="kv">
+      <tr><td>RUN_ID</td><td>Unique identifier for the execution event.</td></tr>
+      <tr><td>RUN_TYPE</td><td>Protocol compile, evidence sync, screening, review, replay, agent task, export, validation, or cutover check.</td></tr>
+      <tr><td>TENANT / ORG / TRIAL / SITE</td><td>The scope in which the run occurred.</td></tr>
+      <tr><td>ACTOR</td><td>Human user, service principal, system worker, or governed agent.</td></tr>
+      <tr><td>INPUT_MANIFEST</td><td>Protocol version, evidence snapshot, cohort snapshot, task contract, source references, or configuration inputs.</td></tr>
+      <tr><td>OUTPUT_MANIFEST</td><td>Criterion states, REVIEW queue, evidence artifact, Replay bundle, Console signal, mapping suggestion, or export artifact.</td></tr>
+      <tr><td>POLICY_SCOPE</td><td>The access, PHI, egress, model, and review policy governing the run.</td></tr>
+      <tr><td>VERSIONING</td><td>Protocol version, engine version, Trident artifact version, Luna task version, connector version, and prompt/template version where applicable.</td></tr>
+      <tr><td>REPLAY_LINKAGE</td><td>The chain needed to reconstruct what happened.</td></tr>
+    </table>
+    <div class="callout em"><strong>Core primitive.</strong> This is what makes the homepage language real.</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">03_GOVERNED_CHAIN</div>
+    <h2 class="sec-head">The governed run chain</h2>
+    <div class="body"><p>Protocol → Evidence → Screening → Review → Replay. The homepage says “From sponsor to audit. One governed chain.” Runtime explains that chain as actual system behavior.</p></div>
+    <div class="chain-mini">
+      <div class="chain-step"><span class="cs-n">01</span><span class="cs-t">Protocol compile</span><p class="cs-d"><strong>Trident</strong> structures protocol language into executable eligibility logic and evidence expectations. Surfaces criterion structure, temporal windows, lab thresholds, mapping candidates, ambiguity flags, and amendment deltas. Trident does not screen patients or issue eligibility verdicts.</p></div>
+      <div class="chain-step"><span class="cs-n">02</span><span class="cs-t">Evidence sync</span><p class="cs-d"><strong>Forge</strong> and <strong>Node</strong> admit site-approved evidence. FHIR R4, Epic Backend Services, Cerner/Oracle Health FHIR, bulk FHIR where approved, REDCap, CSV/TSV/Excel, warehouse extracts, pathology and lab tables, site-approved file drops. Output is a protocol-scoped evidence snapshot, not a shadow chart.</p></div>
+      <div class="chain-step"><span class="cs-n">03</span><span class="cs-t">Screening</span><p class="cs-d">The deterministic engine evaluates locked protocol logic against an admitted evidence snapshot. Same protocol version, same evidence snapshot, same engine version, same <code>evaluation_as_of</code>, same outcome. AI can assist upstream. The engine governs the decision state.</p></div>
+      <div class="chain-step"><span class="cs-n">04</span><span class="cs-t">Review</span><p class="cs-d"><strong>Router</strong> owns uncertainty. REVIEW is emitted when evidence is missing, stale, conflicting, ambiguous, unmapped, or judgment-dependent. Records reviewer identity, role, timestamp, criterion state, adjudication action, rationale, and Replay linkage. REVIEW is not failure — it is Damaros refusing to fabricate certainty.</p></div>
+      <div class="chain-step"><span class="cs-n">05</span><span class="cs-t">Replay</span><p class="cs-d">Replay reconstructs protocol version, Trident compile lineage, evidence snapshot, screening run, engine version, criterion outcomes, REVIEW events, human adjudication, authorization, artifact hash, export lineage, and AI-origin metadata where relevant. Not a report, PDF, or model transcript.</p></div>
+    </div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">04_AI_BOUNDARY</div>
+    <h2 class="sec-head">AI boundary</h2>
+    <div class="body"><p><strong>Agents accelerate. Humans decide. The engine governs.</strong> Luna governs agent task runs through explicit task contracts.</p></div>
+    <table class="kv" style="margin-top:.8rem">
+      <tr><td>TASK_CONTRACT</td><td>Allowed inputs, forbidden inputs, PHI policy, model/provider policy, tool permissions, network permissions, output schema, human review requirement, retention policy, downstream eligibility, Replay binding, failure behavior.</td></tr>
+    </table>
+    <div class="dual" style="margin-top:1.1rem">
+      <div class="dual-card allow">
+        <h3>Permitted AI surfaces</h3>
+        <ul class="bullets">
+          <li>Protocol structuring and ambiguity detection</li>
+          <li>Mapping suggestions and evidence expectation drafting</li>
+          <li>REVIEW explanation support and operator support</li>
+          <li>Packet assembly, Console summaries, monitoring preparation</li>
+          <li>Deviation candidate surfacing, when scoped</li>
+        </ul>
+      </div>
+      <div class="dual-card deny">
+        <h3>Prohibited AI surfaces</h3>
+        <ul class="bullets">
+          <li>LLM-issued eligibility verdicts</li>
+          <li>Model adjudication of patient status</li>
+          <li>Model-generated source of truth</li>
+          <li>Ungoverned PHI serialization</li>
+          <li>Sponsor-facing raw patient evidence by default</li>
+          <li>Autonomous referral or protocol deviation classification without human review</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout em"><strong>The line:</strong> Damaros is agentic before the decision boundary and deterministic at the decision boundary.</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">05_EVIDENCE</div>
+    <h2 class="sec-head">Evidence boundary</h2>
+    <div class="body">
+      <p>Patient evidence stays protocol-scoped. Damaros is read-only by default, does not request write scopes initially, omits Binary, keeps DocumentReference metadata only, excludes narrative content from deterministic screening, and PHI never reaches an LLM.</p>
+      <p><strong>Damaros does not become a second EHR.</strong> Evidence enters as protocol-scoped execution material:</p>
+    </div>
+    <ul class="bullets" style="margin-top:.6rem">
+      <li>Who is in the cohort; what source system was queried; what resource was retrieved</li>
+      <li>What field was mapped; what unit was normalized; what evidence is fresh, stale, missing, or unmapped</li>
+      <li>What criterion it supports; what Replay can reconstruct</li>
+    </ul>
+    <div class="callout">That is the difference between “data integration” and “execution infrastructure.”</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">06_NODE</div>
+    <h2 class="sec-head">Node boundary — site-governed execution</h2>
+    <div class="body"><p><strong>Node</strong> is where patient evidence is admitted, screened, reviewed, and confirmed. The clinic holds the reins.</p></div>
+    <div class="dual" style="margin-top:.8rem">
+      <div class="dual-card allow">
+        <h3>Node controls</h3>
+        <ul class="bullets">
+          <li>Site-approved evidence sources and local users/roles</li>
+          <li>REVIEW adjudication and clinician confirmation</li>
+          <li>Local evidence visibility and artifact release</li>
+          <li>Sponsor-safe signal emission</li>
+        </ul>
+      </div>
+      <div class="dual-card deny">
+        <h3>Node does not</h3>
+        <ul class="bullets">
+          <li>Turn the site into a sponsor-controlled endpoint</li>
+          <li>Expose raw chart browsing by default</li>
+          <li>Replace clinician judgment or auto-refer from engine output</li>
+          <li>Send PHI to LLMs on the eligibility path</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout em">Node gives the protocol contact with reality while preserving local control.</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">07_CONSOLE</div>
+    <h2 class="sec-head">Console boundary — sponsor command without patient-data exposure</h2>
+    <div class="body"><p><strong>Console</strong> receives permissioned, de-identified execution signals — not raw PHI by default.</p></div>
+    <ul class="bullets" style="margin-top:.6rem">
+      <li>Site readiness, protocol deployment state, evidence gaps, REVIEW burden</li>
+      <li>Criterion friction, screening throughput, Replay completeness, artifact status</li>
+      <li>Amendment pressure and cross-node execution patterns</li>
+    </ul>
+    <table class="kv" style="margin-top:1rem">
+      <tr><td>SPONSOR_VISIBILITY</td><td>Permissioned, de-identified by default, trial-scoped, site-governed where required, artifact-gated where required, contract-bound.</td></tr>
+    </table>
+    <div class="callout em"><strong>The line:</strong> Console gives sponsors command over execution, not ownership of the patient chart.</div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">08_DEPLOYMENT</div>
+    <h2 class="sec-head">Deployment models</h2>
+    <div class="body"><p>Runs in Damaros Cloud, your cloud, or inside the institution boundary. <strong>The run model stays the same. The boundary changes.</strong></p></div>
+    <div class="deploy-grid">
+      <article class="scard">
+        <span class="sc-tag">Model A</span>
+        <h3>Damaros Cloud tenant</h3>
+        <p>For early pilots, sponsor demos, retrospective validation, and deployments where Damaros-hosted execution is approved. Isolated tenant, tenant-scoped run store, Node and Console access, Trident compile runs, Luna task governance, Replay bundles, structured audit logs, integration configuration, environment separation.</p>
+      </article>
+      <article class="scard">
+        <span class="sc-tag">Model B</span>
+        <h3>Dedicated customer cloud</h3>
+        <p>Damaros deployed into the customer’s AWS, Azure, or GCP account. Best for health systems, large sponsor networks, academic medical centers, strict infrastructure review, expanded validation, federal-adjacent posture. Customer controls VPC, identity provider, key management, logging, egress, backup, retention, and security monitoring.</p>
+      </article>
+      <article class="scard">
+        <span class="sc-tag">Model C</span>
+        <h3>Institution-hosted Node</h3>
+        <p>Node runs inside the institution-approved boundary. Best for strict PHI control, hospital security review, site-hosted validation, no-external-PHI deployments, and research networks with local data governance. Damaros Cloud can receive approved metadata, de-identified execution signals, and Replay artifact status depending on contract.</p>
+      </article>
+      <article class="scard">
+        <span class="sc-tag">Model D</span>
+        <h3>Restricted egress / air-gapped</h3>
+        <p>For federal networks, defense-adjacent deployments, VA/DHA-style posture, or highly controlled research environments. Deny-by-default egress, explicit allowlists, no public model calls, local-only task execution where approved, private package registries, customer-managed keys, manual artifact promotion, offline validation packs.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">09_SECURITY</div>
+    <h2 class="sec-head">Security and observability</h2>
+    <div class="body"><p>Every run is attributable. Server-side secrets, TLS, JWKS endpoints with public key material only, private PEM never in logs or public JSON, structured logs with non-PHI identifiers, time-bound sessions, RBAC, and retention by BAA/DPA.</p></div>
+    <ul class="bullets" style="margin-top:.6rem">
+      <li>Tenant isolation, RBAC, organization/trial/site scope, service-principal scoping</li>
+      <li>OIDC / SAML where applicable; JWKS / OAuth where applicable; TLS; encryption at rest</li>
+      <li>Deny-by-default egress; structured non-PHI logs; PHI-excluding default telemetry</li>
+      <li>Admin action audit, export logging, run manifest storage, Replay linkage</li>
+      <li>Sandbox / production separation, key rotation discipline, customer-specific retention</li>
+    </ul>
+    <table class="kv" style="margin-top:1rem">
+      <tr><td>OBSERVABILITY</td><td>Run status, connector health, sync failure, mapping failure, REVIEW queue age, engine reproducibility checks, Replay completeness, blocked egress attempts, blocked PHI-to-agent attempts, export events, admin actions.</td></tr>
+    </table>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">10_VALIDATION</div>
+    <h2 class="sec-head">Validation</h2>
+    <div class="body">
+      <p><strong>Execution integrity, not clinical efficacy.</strong> Validation and production share the same eligibility engine, protocol compiler, and Replay model. Cutover is a credential/environment swap rather than a workflow rebuild.</p>
+    </div>
+    <ul class="bullets" style="margin-top:.6rem">
+      <li>Protocol compile traceability, criterion mapping agreement, FHIR/resource coverage</li>
+      <li>Evidence lineage completeness, screening agreement against adjudicated reference sets</li>
+      <li>False PASS, false FAIL, REVIEW burden, missing-evidence drivers</li>
+      <li>Run reproducibility, Replay completeness, PHI boundary enforcement, AI-origin stamping</li>
+      <li>Sandbox-to-production cutover, JWKS rotation drill, scope coverage review</li>
+    </ul>
+    <div class="callout em"><strong>We validate the execution chain. We do not claim clinical efficacy.</strong></div>
+  </section>
+
+  <section class="doc">
+    <div class="sec-label">11_RELATED</div>
+    <h2 class="sec-head">Related documents</h2>
+    <ul class="bullets">
+      <li><a href="/docs/fhir">Enterprise FHIR integration reference</a> (OAuth, JWKS, scopes, sync, security)</li>
+      <li><a href="/docs/privacy">Platform privacy and data handling</a></li>
+      <li><a href="/privacy">Public website privacy notice</a></li>
+      <li>Customer BAA / DPA and deployment security addendum (provided under contract)</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <span class="geo pending" id="geo">Locating</span>
+  <span class="cp">© 2026 Damaros™</span>
+  <a href="/privacy">Privacy</a>
+</footer>
+<script src="/shared/geo-footer.js"></script>
+</body>
+</html>
