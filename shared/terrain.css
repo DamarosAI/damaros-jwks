@@ -100,11 +100,29 @@ body.deck-nav-locked .deck-nav { pointer-events: none; opacity: .55; }
   animation: deckhint 1.2s var(--ease) 2.5s forwards; }
 @keyframes deckhint { to { opacity: 0; } }
 
-/* minimal legal access — Privacy stays reachable without breaking the terminal frame */
-.deck-legal { position: fixed; right: var(--page-gutter); bottom: clamp(1rem, 3.2vh, 1.7rem); z-index: 22;
+/* minimal legal access — Privacy sits bottom-left on the footer bar */
+.deck-legal { position: fixed; left: var(--page-gutter); bottom: clamp(1rem, 3.2vh, 1.7rem); z-index: 22;
   font-family: var(--fb); font-size: .56rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
   color: var(--dim); opacity: .55; pointer-events: auto; transition: color .15s var(--ease), opacity .15s var(--ease); }
 .deck-legal:hover { color: var(--steel); opacity: 1; }
+
+/* mobile wayfinding — bottom-right, above Privacy */
+.deck-swipe { display: none; }
+.deck-swipe__label {
+  font-family: var(--fb); font-size: .56rem; font-weight: 600; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--dim); opacity: .62; white-space: nowrap;
+}
+.deck-swipe__arrow {
+  display: block; width: 1px; height: 13px; margin: 0 auto .38rem;
+  background: linear-gradient(to top, transparent, var(--steel));
+  opacity: .72; position: relative;
+}
+.deck-swipe__arrow::before {
+  content: ""; position: absolute; top: 0; left: 50%;
+  width: 5px; height: 5px; margin-left: -2.5px;
+  border-top: 1px solid var(--steel); border-left: 1px solid var(--steel);
+  transform: rotate(45deg); transform-origin: center;
+}
 
 /* ---------------- responsive ---------------- */
 @media (max-width: 820px) {
@@ -115,11 +133,18 @@ body.deck-nav-locked .deck-nav { pointer-events: none; opacity: .55; }
   .deck-dot { gap: .42rem; }
   .deck-dot--label { padding: clamp(.36rem, 1.5vw, .5rem) clamp(.42rem, 2vw, .72rem); }
   .deck-label { font-size: clamp(.5rem, 2.2vw, .62rem); letter-spacing: .06em; }
+  .deck-hint { display: none; }
+  .deck-swipe {
+    display: flex; flex-direction: column; align-items: center;
+    position: fixed; right: var(--page-gutter); z-index: 22; pointer-events: none;
+    bottom: clamp(2.35rem, 5.8vh, 3.15rem);
+    animation: deckhint 1.2s var(--ease) 2.5s forwards;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .deck-caps .cap, .deck-caps .cap-line { transition: none; }
-  .deck-hint { animation: none; opacity: .4; }
+  .deck-hint, .deck-swipe { animation: none; opacity: .4; }
   .deck-mark, .deck-arrow::before { transition: none; }
 }
 @media (hover: none) {

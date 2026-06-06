@@ -44,11 +44,13 @@ body.intro-hold .j-top,
 body.intro-hold .deck-nav,
 body.intro-hold .deck-progress,
 body.intro-hold .deck-hint,
+body.intro-hold .deck-swipe,
 body.intro-hold .deck-legal{ opacity:0; pointer-events:none; transition:opacity .3s var(--ease); }
 body:not(.intro-hold) .j-top,
 body:not(.intro-hold) .deck-nav,
 body:not(.intro-hold) .deck-progress,
 body:not(.intro-hold) .deck-hint,
+body:not(.intro-hold) .deck-swipe{ opacity:1; pointer-events:none; }
 body:not(.intro-hold) .deck-legal{ opacity:1; pointer-events:auto; }
 body.intro-hold .brand-motif img{
   --mo:.34; --flare:.72; --glow:.62;
