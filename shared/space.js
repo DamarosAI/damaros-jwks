@@ -560,7 +560,8 @@ function seqStep(dir) { return SEQ[Math.max(0, Math.min(SEQ.length - 1, seqIndex
 function syncSubsectionPanels(cap, idx) {
   if (!cap) return;
   const panels = [...cap.querySelectorAll('.ps-half, .ti-half')];
-  panels.forEach((p, i) => { if (i === idx) { if (p._hOn) p._hOn(); } else if (p._hOff) p._hOff(); });
+  if (MOBILE) panels.forEach((p, i) => { if (i === idx) { if (p._hOn) p._hOn(); } else if (p._hOff) p._hOff(); });
+  else panels.forEach((p) => { if (p._hOff) p._hOff(); });   // desktop: hover-only — clear stale is-live on land
   const split = cap.querySelector('.ti-split');
   if (split && panels.length > 1) {
     split.classList.add('has-emph');
@@ -852,8 +853,10 @@ function commitHSwipe(el, idx) {
   }
   const panel = el.children[idx];
   if (panel) {
-    panel._hOn && panel._hOn();
-    [].forEach.call(el.children, (p, i) => { if (i !== idx && p._hOff) p._hOff(); });
+    if (MOBILE) {
+      panel._hOn && panel._hOn();
+      [].forEach.call(el.children, (p, i) => { if (i !== idx && p._hOff) p._hOff(); });
+    } else [].forEach.call(el.children, (p) => { if (p._hOff) p._hOff(); });
   }
 }
 function settleHSwipe(el) {
