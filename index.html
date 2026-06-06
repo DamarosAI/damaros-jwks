@@ -272,6 +272,8 @@
       var trigger = opts.trigger || panel, lt;
       var cells = [].slice.call(panel.querySelectorAll(cellSel));
       function on() {
+        if (panel._hLive) return;
+        panel._hLive = true;
         randTiming(cells);
         if (opts.flag) {
           cells.forEach(function (c) { c.classList.remove('ti-cell--ok', 'ti-cell--review', 'ti-cell--fail'); });
@@ -284,11 +286,18 @@
         if (opts.enter) opts.enter();
         panel.classList.add(stateClass);
       }
-      function off() { panel.classList.remove(stateClass); if (opts.leave) opts.leave(); }
+      function off() {
+        if (!panel._hLive) return;
+        panel._hLive = false;
+        panel.classList.remove(stateClass);
+        if (opts.leave) opts.leave();
+      }
       panel._hOn = on; panel._hOff = off;
+      wiredPanels.push(panel);
       if (TOUCH) trigger.addEventListener('click', on);
-      else { trigger.addEventListener('pointerenter', on); trigger.addEventListener('pointerleave', off); }
     }
+
+    var wiredPanels = [];
 
     var trident = document.querySelector('.ps-neural');
     if (trident) buildNeural(trident);
@@ -318,6 +327,37 @@
         c.style.setProperty('--dur', rnd(1.6, 3.2).toFixed(2) + 's');
       });
     } });
+
+    /* desktop: sync card animations to pointer position (no fresh hover required) */
+    function syncPanelHover() {
+      if (TOUCH) return;
+      var cap = document.querySelector('.cap.cap--active');
+      if (!cap) { wiredPanels.forEach(function (p) { if (p._hOff) p._hOff(); }); return; }
+      var panels = [].slice.call(cap.querySelectorAll('.ti-node, .ti-sponsor, .ps-half')).filter(function (p) { return p._hOn; });
+      var over = null;
+      panels.forEach(function (p) { if (p.matches(':hover')) over = p; });
+      if (!over && ptr.ok) {
+        var hit = document.elementFromPoint(ptr.x, ptr.y);
+        panels.forEach(function (p) { if (p === hit || (hit && p.contains(hit))) over = p; });
+      }
+      if (!over && !ptr.ok) { panels.forEach(function (p) { if (p._hOff) p._hOff(); }); return; }
+      panels.forEach(function (p) { if (p === over) p._hOn(); else if (p._hOff) p._hOff(); });
+    }
+    var ptr = { x: 0, y: 0, ok: false };
+    if (!TOUCH) {
+      document.addEventListener('pointermove', function (e) {
+        if (e.pointerType === 'touch') return;
+        ptr.x = e.clientX; ptr.y = e.clientY; ptr.ok = true;
+        syncPanelHover();
+      }, { passive: true });
+      document.addEventListener('pointerleave', function () { ptr.ok = false; syncPanelHover(); });
+      window.addEventListener('blur', function () { ptr.ok = false; syncPanelHover(); });
+      [].forEach.call(document.querySelectorAll('[data-cap]'), function (cap) {
+        new MutationObserver(function () { requestAnimationFrame(syncPanelHover); }).observe(cap, { attributes: true, attributeFilter: ['class'] });
+      });
+      window.DamarosPanels = { syncHover: syncPanelHover };
+      requestAnimationFrame(syncPanelHover);
+    }
 
     /* touch only: auto-run each section's animations when it becomes the active station.
        on desktop the fields stay idle until the cursor hovers Trident / Luna / Node / Sponsor. */
@@ -466,6 +506,6 @@
 </script>
 <script src="shared/cap-intro.js?v=5"></script>
 <script src="shared/cta-dock.js?v=6"></script>
-<script type="module" src="shared/space.js?v=reset55"></script>
+<script type="module" src="shared/space.js?v=reset56"></script>
 </body>
 </html>

@@ -564,7 +564,10 @@ function syncSubsectionPanels(cap, idx) {
   if (!cap) return;
   const panels = [...cap.querySelectorAll('.ps-half, .ti-half')];
   if (MOBILE) panels.forEach((p, i) => { if (i === idx) { if (p._hOn) p._hOn(); } else if (p._hOff) p._hOff(); });
-  else panels.forEach((p) => { if (p._hOff) p._hOff(); });   // desktop: hover-only — clear stale is-live on land
+  else {
+    panels.forEach((p) => { if (p._hOff) p._hOff(); });
+    if (window.DamarosPanels?.syncHover) requestAnimationFrame(() => window.DamarosPanels.syncHover());
+  }
   const split = cap.querySelector('.ti-split');
   if (split && panels.length > 1) {
     split.classList.add('has-emph');
@@ -638,6 +641,7 @@ function setCaps(idx) {
     if (tgt.classList.contains('cap--end') && !REDUCED) tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
     else tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.add('on'));
   }
+  if (!MOBILE && window.DamarosPanels?.syncHover) requestAnimationFrame(() => window.DamarosPanels.syncHover());
 }
 function revealEndCap() { setCaps(9); }
 const END_HOLD_MS = REDUCED ? 250 : 450;
