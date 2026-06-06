@@ -8,6 +8,11 @@
 html, body { height: 100%; }
 body { overflow: hidden; }                 /* the journey is stepped, not scrolled */
 
+/* no scroll/swipe/travel until the active section has fully revealed */
+body.deck-nav-locked [data-hswipe],
+body.deck-nav-locked .hswipe-nav { touch-action: none; pointer-events: none; }
+body.deck-nav-locked .deck-nav { pointer-events: none; opacity: .55; }
+
 /* the landscape canvas */
 .deck { position: fixed; inset: 0; }
 #world { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; }

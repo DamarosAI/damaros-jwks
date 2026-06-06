@@ -92,8 +92,10 @@
     });
   }
 
+  var revealUntil = 0;
   if (RM) {
     caps.forEach(function (cap) { fit(cap); setState(cap, 'shown'); });
+    window.DamarosCapIntro = { kick: function () {}, revealDuration: function () { return 0; }, get revealUntil() { return 0; } };
     return;
   }
 
@@ -105,6 +107,28 @@
   var REF_LAST_LOCK = START_DELAY + MIN_SCRAMBLE + 6 * STAGGER; // when "Damaros" fully resolves
   var REF_DONE = START_DELAY + MIN_SCRAMBLE + (7 - 2) * STAGGER + LOCK_DUR * 0.4; // tagline float-in beat
   var FLOAT_STAGGER = 48;
+  var LINE_SETTLE = 380;   // cap-line opacity/transform transition must finish before travel unlocks
+
+  function revealDuration(cap) {
+    if (RM || !cap) return 0;
+    var t = cap.querySelector('[data-type]');
+    var lines = [].slice.call(cap.querySelectorAll('.cap-line'));
+    var others = lines.filter(function (el) { return el !== t && !(t && el.contains(t)); });
+    var headlineMs = 0;
+    if (t) {
+      var chars = [].slice.call(t.querySelectorAll('.rc'));
+      var n = Math.max(chars.length, 1);
+      var stagger = n <= 1 ? 0 : (REF_LAST_LOCK - START_DELAY - MIN_SCRAMBLE) / (n - 1);
+      headlineMs = START_DELAY + MIN_SCRAMBLE + Math.max(0, n - 2) * stagger + LOCK_DUR * 0.4;
+    }
+    var floatMs = others.length ? (others.length - 1) * FLOAT_STAGGER : 0;
+    return headlineMs + floatMs + LINE_SETTLE;
+  }
+
+  function armReveal(cap) {
+    revealUntil = performance.now() + revealDuration(cap);
+  }
+  revealUntil = performance.now() + 6000;   // locked until hero arms on first activate
 
   function randCh(ch) {
     if (ch >= 'A' && ch <= 'Z') return String.fromCharCode(65 + (Math.random() * 26 | 0));
@@ -123,6 +147,7 @@
     if (active === cap) return;
     active = cap;
     clearTimers();
+    armReveal(cap);
 
     var t = cap.querySelector('[data-type]');
     var lines = [].slice.call(cap.querySelectorAll('.cap-line'));
@@ -209,5 +234,5 @@
     rt = setTimeout(function () { layoutAll(true); }, 160);
   });
 
-  window.DamarosCapIntro = { kick: kick };
+  window.DamarosCapIntro = { kick: kick, revealDuration: revealDuration, get revealUntil() { return revealUntil; } };
 })();

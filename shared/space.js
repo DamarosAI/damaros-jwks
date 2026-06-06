@@ -533,7 +533,9 @@ let morphMs = MORPH_MS, flightAssemble = 1;   // per-flight: skips reconfigure f
 const pointer = new THREE.Vector2(0, 0); let ptrHas = false;
 
 function go(i) {
-  i = Math.max(0, Math.min(NS - 1, Math.round(i))); if (i === target && !flying) return;
+  i = Math.max(0, Math.min(NS - 1, Math.round(i)));
+  if (navLocked()) return;
+  if (i === target && !flying) return;
   // transition character by jump distance: adjacent = full cinematic morph; skip = faster "system reconfiguration"
   const fromS = flying ? target : cur, jump = Math.abs(i - fromS);
   morphMs = jump >= 3 ? 650 : (jump === 2 ? 750 : 850);
@@ -630,7 +632,12 @@ function arriveAt(idx) {
     if (hs && hs.children.length > 1) requestAnimationFrame(() => hswipeGo(hs, 0));
   }
 }
-function syncUI() { const shown = flying ? target : cur; const g = groupOf(shown); if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (g + 1)).slice(-2) + ' / ' + ('0' + GROUPS.length).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(g / (GROUPS.length - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === g); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = shown <= 0 && !flying; if (bn) bn.disabled = shown >= NS - 1 && !flying; }
+function sectionRevealLocked() {
+  const intro = window.DamarosCapIntro;
+  return intro && intro.revealUntil != null && performance.now() < intro.revealUntil;
+}
+function syncNavLockClass() { document.body.classList.toggle('deck-nav-locked', navLocked()); }
+function syncUI() { const shown = flying ? target : cur; const g = groupOf(shown); if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (g + 1)).slice(-2) + ' / ' + ('0' + GROUPS.length).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(g / (GROUPS.length - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === g); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = navLocked() || (shown <= 0 && !flying); if (bn) bn.disabled = navLocked() || (shown >= NS - 1 && !flying); syncNavLockClass(); }
 
 /* ---------- micro-interactions ---------- */
 // arrow hover → directional current
@@ -751,10 +758,23 @@ function frame() {
 addEventListener('resize', () => { syncViewport(); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); if (composer) composer.setSize(innerWidth, innerHeight); if (bloomPass) bloomPass.setSize(innerWidth, innerHeight); });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && running) { last = performance.now(); requestAnimationFrame(frame); } });
 if (!MOBILE) { addEventListener('pointermove', (e) => { if (e.pointerType === 'touch') { ptrHas = false; return; } pointer.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ptrHas = true; }, { passive: true }); addEventListener('blur', () => { ptrHas = false; }); }
-addEventListener('keydown', (e) => { const k = e.key; if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'd'].includes(k)) { next(); e.preventDefault(); } else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'a'].includes(k)) { prev(); e.preventDefault(); } else if (k === 'Home') go(0); else if (k === 'End') go(NS - 1); });
+addEventListener('keydown', (e) => {
+  if (navLocked()) return;
+  const k = e.key;
+  if (['ArrowRight', 'ArrowDown', ' ', 'PageDown', 'd'].includes(k)) { next(); e.preventDefault(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'a'].includes(k)) { prev(); e.preventDefault(); }
+  else if (k === 'Home') go(0);
+  else if (k === 'End') go(NS - 1);
+});
 /* ---------- pane-locked navigation: one stop at a time, resistance, subsection carousels first ---------- */
 const NAV = { lockUntil: 0, acc: 0, accDir: 0, THRESH: MOBILE ? 145 : 125, LOCK_MS: MOBILE ? 1050 : 920, H_LOCK_MS: MOBILE ? 680 : 560 };
-function navLocked() { return flying || performance.now() < NAV.lockUntil; }
+function navLocked() {
+  return flying
+    || document.body.classList.contains('intro-hold')
+    || document.body.classList.contains('end-hold')
+    || sectionRevealLocked()
+    || performance.now() < NAV.lockUntil;
+}
 function armNavLock(ms) { NAV.lockUntil = performance.now() + (ms == null ? NAV.LOCK_MS : ms); NAV.acc = 0; NAV.accDir = 0; }
 function activeHSwipeEl() {
   const cap = capForVantage(flying ? target : cur);
@@ -814,7 +834,7 @@ function feedNav(delta, dir) {
   split.addEventListener('scroll', () => { clearTimeout(split._snapT); split._snapT = setTimeout(snap, 120); }, { passive: true });
 });
 addEventListener('wheel', (e) => {
-  if (document.body.classList.contains('intro-hold')) return;
+  if (navLocked()) return;
   if (e.target && e.target.closest && e.target.closest('[data-hswipe]') && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.8) return;
   const dy = e.deltaY;
   if (!dy) return;
@@ -822,7 +842,7 @@ addEventListener('wheel', (e) => {
 }, { passive: true });
 let tStart = null, tAcc = 0, tDir = 0, tOnHSwipe = false;
 addEventListener('touchstart', (e) => {
-  if (!e.touches[0]) return;
+  if (!e.touches[0] || navLocked()) return;
   tStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   tAcc = 0; tDir = 0;
   tOnHSwipe = !!(e.target && e.target.closest && e.target.closest('[data-hswipe]'));
@@ -891,6 +911,7 @@ if (!MOBILE && !REDUCED) {
 { const hint = document.querySelector('[data-hint]'); if (hint) hint.textContent = matchMedia('(hover: none),(pointer: coarse)').matches ? 'Swipe to travel' : 'Scroll to travel'; }
 
 syncUI();
+syncNavLockClass();
 setCaps(-1);   // drum logo + topology only for the opening beat — hero copy lands after INTRO_MS
 // warm the GPU before the first visible frame: precompile scene shaders so weaker devices don't stall on the reveal
 try { renderer.compile(scene, camera); } catch (e) { /* older three builds */ }
