@@ -394,6 +394,10 @@ strong, b { font-weight: var(--fb-w-strong); }
   -webkit-mask-image: linear-gradient(135deg, #000 0%, #000 30%, transparent 62%);
           mask-image: linear-gradient(135deg, #000 0%, #000 30%, transparent 62%);
 }
+.mono-bg--docs {
+  -webkit-mask-image: radial-gradient(ellipse at 44% 40%, #000 0%, #000 26%, transparent 66%);
+          mask-image: radial-gradient(ellipse at 44% 40%, #000 0%, #000 26%, transparent 66%);
+}
 
 /* ---- metallic glass CTA ---- */
 .dmx-cta {
