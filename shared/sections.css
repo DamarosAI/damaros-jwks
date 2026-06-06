@@ -320,6 +320,91 @@ body.world-ready #world { opacity: 1; }
 @keyframes lunaCCW { to { transform: rotate(-360deg) translateZ(0); } }
 
 /* ============================================================
+ * OPERATIONS MESH  (Forge · Router)
+ * Two agents in the Platform-Substrate grammar: Forge assembles raw evidence
+ * (amber → green artifact); Router triages REVIEW into pass / review / fail.
+ * ============================================================ */
+/* Forge — a cool cyan structure→proof edge (dim evidence forged into a bright artifact) */
+.ps-half--forge { --ps-ring: color-mix(in srgb, oklch(0.82 0.13 208) 34%, rgba(169, 192, 214, .24)); }
+@media (hover: hover) and (pointer: fine) {
+  .ps-half--forge:hover {
+    --ps-ring: oklch(0.84 0.13 208);
+    box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px color-mix(in srgb, oklch(0.82 0.13 208) 16%, rgba(5, 7, 11, .55));
+  }
+}
+/* Router — an amber hairline edge (it governs REVIEW triage) */
+.ps-half--router { --ps-ring: color-mix(in srgb, var(--amber) 34%, rgba(169, 192, 214, .22)); }
+@media (hover: hover) and (pointer: fine) {
+  .ps-half--router:hover {
+    --ps-ring: var(--amber);
+    box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px color-mix(in srgb, var(--amber) 18%, rgba(5, 7, 11, .55));
+  }
+}
+
+.fg-svg, .rt-svg {
+  width: 100%; height: 100%; overflow: visible;
+  shape-rendering: geometricPrecision;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+}
+
+/* FORGE — dim fragments converge along drawn edges and resolve into a bright
+   artifact that blooms cool cyan (structure → proof). Each element runs on its
+   own re-rolled random clock (calm, never in lockstep). */
+.fg-frag { fill: rgba(169, 192, 214, .22); }
+.fg-edge {
+  stroke: transparent; stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.fg-bar { fill: rgba(169, 192, 214, .06); stroke: rgba(169, 192, 214, .22); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ps-half--forge.is-live .fg-frag { animation: fgFrag var(--dur, 3.2s) var(--ease) var(--d, 0s) infinite; }
+.ps-half--forge.is-live .fg-edge { animation: fgEdge var(--dur, 3.2s) var(--ease) var(--d, 0s) infinite; }
+.ps-half--forge.is-live .fg-bar { animation: fgBar var(--dur, 3.4s) var(--ease) var(--d, 0s) infinite; }
+@keyframes fgFrag {
+  0%, 100% { fill: rgba(169, 192, 214, .2); }
+  34%, 52% { fill: var(--cold); }
+}
+@keyframes fgEdge {
+  0%, 100% { stroke: transparent; stroke-opacity: 0; }
+  40%, 60% { stroke: color-mix(in srgb, var(--steel) 68%, oklch(0.82 0.13 208)); stroke-opacity: .62; }
+}
+@keyframes fgBar {
+  0%, 100% { fill: rgba(169, 192, 214, .06); stroke: rgba(169, 192, 214, .22); }
+  46% { fill: color-mix(in srgb, var(--cold) 26%, transparent); stroke: var(--cold); }
+  82% { fill: color-mix(in srgb, oklch(0.82 0.13 208) 42%, transparent); stroke: oklch(0.87 0.13 208); }
+}
+
+/* ROUTER — the trunk pulses steel; each lane + terminal resolves to its triage state */
+.rt-trunk, .rt-lane { stroke: rgba(169, 192, 214, .2); stroke-width: 1.4; fill: none; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.rt-node { fill: rgba(169, 192, 214, .14); stroke: rgba(169, 192, 214, .28); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.rt-in { fill: rgba(169, 192, 214, .5); }
+.ps-half--router.is-live .rt-trunk { animation: rtTrunk var(--dur, 1.4s) var(--ease) var(--d, 0s) infinite; }
+.ps-half--router.is-live .rt-lane { animation: rtLaneOk var(--dur, 1.4s) var(--ease) var(--d, 0s) infinite; }
+.ps-half--router.is-live .rt-node { animation: rtNodeOk var(--dur, 1.4s) var(--ease) var(--d, 0s) infinite; }
+.ps-half--router.is-live .rt-lane--review { animation-name: rtLaneReview; }
+.ps-half--router.is-live .rt-lane--fail { animation-name: rtLaneFail; }
+.ps-half--router.is-live .rt-node--review { animation-name: rtNodeReview; }
+.ps-half--router.is-live .rt-node--fail { animation-name: rtNodeFail; }
+@keyframes rtTrunk {
+  0%, 100% { stroke: rgba(169, 192, 214, .2); }
+  40% { stroke: var(--steel); stroke-opacity: 1; }
+}
+@keyframes rtLaneOk { 0%, 100% { stroke: rgba(169, 192, 214, .18); } 50% { stroke: var(--ok); stroke-opacity: 1; } }
+@keyframes rtLaneReview { 0%, 100% { stroke: rgba(169, 192, 214, .18); } 50% { stroke: var(--amber); stroke-opacity: 1; } }
+@keyframes rtLaneFail { 0%, 100% { stroke: rgba(169, 192, 214, .18); } 50% { stroke: var(--breach); stroke-opacity: 1; } }
+@keyframes rtNodeOk {
+  0%, 100% { fill: rgba(169, 192, 214, .14); stroke: rgba(169, 192, 214, .28); box-shadow: none; }
+  50% { fill: color-mix(in srgb, var(--ok) 50%, transparent); stroke: var(--ok); }
+}
+@keyframes rtNodeReview {
+  0%, 100% { fill: rgba(169, 192, 214, .14); stroke: rgba(169, 192, 214, .28); }
+  50% { fill: color-mix(in srgb, var(--amber) 50%, transparent); stroke: var(--amber); }
+}
+@keyframes rtNodeFail {
+  0%, 100% { fill: rgba(169, 192, 214, .14); stroke: rgba(169, 192, 214, .28); }
+  50% { fill: color-mix(in srgb, var(--breach) 50%, transparent); stroke: var(--breach); }
+}
+
+/* ============================================================
  * COMPACT SYMBOL — the live field parks at the TOP-RIGHT of each panel head
  * (Platform Substrate + Trial Intelligence), capped to the head's own height
  * so it never out-sizes the title + subhead. Same treatment, mobile + desktop.
@@ -408,6 +493,8 @@ body.world-ready #world { opacity: 1; }
   .ps-half.is-live { box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px rgba(5, 7, 11, .5); }
   .ps-half--luna.is-live { --ps-ring: var(--luna); box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px color-mix(in srgb, var(--luna) 18%, rgba(5, 7, 11, .55)); }
   .ps-half--trident.is-live { --ps-ring: var(--ok); box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px color-mix(in srgb, var(--ok) 18%, rgba(5, 7, 11, .55)); }
+  .ps-half--forge.is-live { --ps-ring: oklch(0.84 0.13 208); box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px color-mix(in srgb, oklch(0.82 0.13 208) 16%, rgba(5, 7, 11, .55)); }
+  .ps-half--router.is-live { --ps-ring: var(--amber); box-shadow: inset 0 0 0 1px var(--ps-ring), 0 14px 40px color-mix(in srgb, var(--amber) 18%, rgba(5, 7, 11, .55)); }
 
   /* compact internals so one panel fits the viewport */
   .cap.ps, .cap.ti { --viz-h: clamp(51px, 9.9vw, 70px); --viz-w: clamp(81px, 20.9vw, 114px); }
@@ -433,7 +520,9 @@ body.world-ready #world { opacity: 1; }
   .ti-half, .ti-cell, .ti-sq, .ps-half { transition: none; }
   .ti-node.is-firing .ti-sq, .ti-node.is-firing .ti-sq::after,
   .ti-sponsor.is-reading .ti-cell,
-  .ps-half.is-live .nn-edge, .ps-half.is-live .nn-dot, .luna-ring { animation: none; }
+  .ps-half.is-live .nn-edge, .ps-half.is-live .nn-dot, .luna-ring,
+  .ps-half--forge.is-live .fg-frag, .ps-half--forge.is-live .fg-edge, .ps-half--forge.is-live .fg-bar,
+  .ps-half--router.is-live .rt-trunk, .ps-half--router.is-live .rt-lane, .ps-half--router.is-live .rt-node { animation: none; }
   .es-facet { opacity: 1; visibility: visible; position: static; }
   .es-facet:not(.facet--active) { display: none; }
 }

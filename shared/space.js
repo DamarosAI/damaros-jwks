@@ -286,7 +286,7 @@ const W = { uTime: { value: 0 }, uSection: { value: 0 }, uHue: { value: COL.stee
 syncViewport();
 W.uBurst = { value: 0 };   // star-twinkle burst (Node hover) — shared by both star shells
 const W_PROV = [0.06, 0.10, 0.30, 0.12, 0.55, 0.14, 0.95, 0.20, 0.24, 0.34];
-const TERRAIN_PROV = [W_PROV[0], W_PROV[1], W_PROV[5], W_PROV[7], W_PROV[9]];   // 5 deck stops only — home · spine · substrate · intel · closer
+const TERRAIN_PROV = [W_PROV[0], W_PROV[1], W_PROV[5], W_PROV[6], W_PROV[7], W_PROV[9]];   // 6 deck stops — home · spine · engine · mesh · intel · closer
 const SEG_X = SOFT ? 70 : (MOBILE ? 88 : 176), SEG_Y = SOFT ? 74 : (MOBILE ? 100 : 184);   // mobile: lighter mesh for smoother fps
 const PLANE_D = MOBILE ? 520 : 440;
 const NODE_N = SOFT ? 90 : (MOBILE ? 160 : 300);   // fewer distant nodes — quieter, darker background
@@ -321,12 +321,14 @@ function makeDeepTerrain() {
       float s1 = snoise(vec3(p.x*0.010, p.z*0.010, uTime*0.015));
       float s2 = snoise(vec3(p.x*0.026+4.0, p.z*0.022-2.0, uTime*0.022));
       float h = bowl + s1*7.0 + s2*3.0;
-      float wSpine=secW(uSection,1.0), wSub=secW(uSection,2.0), wIntel=secW(uSection,3.0), wClose=secW(uSection,4.0);
+      float wSpine=secW(uSection,1.0), wSub=secW(uSection,2.0), wMesh=secW(uSection,3.0), wIntel=secW(uSection,4.0), wClose=secW(uSection,5.0);
       vRidge = 0.0;
       // SPINE — vertical strata (unified execution spine)
       { float ridgeX = sin(p.x*0.05)*4.5; float flatZ = mix(h, bowl + s1*7.0*0.3, 0.85); h = mix(h, mix(flatZ, ridgeX, 0.5), wSpine); }
       // SUBSTRATE — calibration: flatten the swells
       h = mix(h, bowl + s1*1.5, wSub);
+      // MESH — an interlocking operational weave: two crossing diagonal ridge sets that drift
+      { float weave = sin((p.x+p.z)*0.075 + uTime*0.25)*2.3 + sin((p.x-p.z)*0.072 - uTime*0.20)*2.3; h = mix(h, bowl*0.55 + s1*1.4 + weave, wMesh); }
       // INTEL — lift toward camera + tighten
       { float local = h*0.45 + sin(p.x*0.12)*0.6 + cos(p.z*0.12)*0.6; h = mix(h, local + 4.0, wIntel); }
       // CLOSER — rising, surging field
@@ -360,10 +362,11 @@ function makeDeepTerrain() {
     // edge (even head-on in the foreground where fwidth is tiny) -> kills the hard edges on every topology line
     float gridLine(float c, float w){ float d=abs(fract(c)-0.5); float aa=fwidth(c)+1e-4; float hw=max(w, aa*0.5); float soft=aa*4.5+0.022+uSoft; return 1.0-smoothstep(hw*0.5, hw+soft, d); }
     void main(){
-      float wSpine=secW(uSection,1.0), wSub=secW(uSection,2.0), wIntel=secW(uSection,3.0), wClose=secW(uSection,4.0);
+      float wSpine=secW(uSection,1.0), wSub=secW(uSection,2.0), wMesh=secW(uSection,3.0), wIntel=secW(uSection,4.0), wClose=secW(uSection,5.0);
       vec2 gf = vec2(0.05);
       gf = mix(gf, vec2(0.060,0.050), wSpine);
       gf = mix(gf, vec2(0.055), wSub);
+      gf = mix(gf, vec2(0.066), wMesh);
       gf = mix(gf, vec2(0.058), wIntel);
       vec2 gw = vWorld.xz;
       float gx = gridLine(gw.x*gf.x, 0.0096), gz = gridLine(gw.y*gf.y, 0.0096);
@@ -554,7 +557,7 @@ function go(i) {
   if (tgtCap && tgtCap === activeCapEl) updateFacets(tgtCap, i);   // same combined section → swap facet in place (keep title, no re-scramble)
   else setCaps(-1);                                               // crossing into a different section → clear copy during the flight
 }
-const SEQ = [0, 1, 5, 7, 9];   // reachable vantages in order — Execution Spine (1) now shows all four stages at once, so 2/3/4 are no longer separate stops; Luna/6 + Console/8 fold in too
+const SEQ = [0, 1, 5, 6, 7, 9];   // reachable vantages in order — Operations Mesh (6) sits between Logic Engine (5) and Trial Intelligence (7)
 function seqIndex(v) { let i = SEQ.indexOf(v); if (i < 0) { i = 0; for (let k = 0; k < SEQ.length; k++) if (SEQ[k] <= v) i = k; } return i; }
 function seqStep(dir) { return SEQ[Math.max(0, Math.min(SEQ.length - 1, seqIndex(flying ? target : cur) + dir))]; }
 function syncSubsectionPanels(cap, idx) {
@@ -595,7 +598,7 @@ const dots = [...document.querySelectorAll('[data-dot]')];   // 5-stop diamond n
 /* ---- station grouping: 10 engine vantages collapse into 5 navigable stops ----
    each combined section spans several vantages; the camera/terrain still fly to the
    exact vantage, but the journey reads as one stop with internal facets. */
-const GROUPS = [[0], [1], [5], [7], [9]];
+const GROUPS = [[0], [1], [5], [6], [7], [9]];
 function groupOf(v) { for (let g = 0; g < GROUPS.length; g++) if (GROUPS[g].indexOf(v) >= 0) return g; return 0; }
 
 let activeCapEl = null;
