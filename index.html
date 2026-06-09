@@ -253,17 +253,16 @@
 .ti-coexist .co-line{ font-family:var(--fh); font-weight:600; font-size:clamp(1rem,1.5vw,1.32rem);
   letter-spacing:-.012em; color:var(--steel); line-height:1.24; text-wrap:balance; }
 .ti-coexist .co-line em{ font-style:normal; color:var(--cold); }
-.ti-coexist .co-deploy{ margin:.55rem auto 0; max-width:64ch; font-family:var(--fb); font-weight:400;
-  font-size:clamp(.68rem,.82vw,.78rem); line-height:1.45; color:rgba(232,236,240,.48); }
-.ti-coexist .co-deploy em{ font-style:normal; color:rgba(232,236,240,.78); }
+.ti-coexist .co-deploy{ margin:0 auto; max-width:58ch; font-family:var(--fh); font-weight:600;
+  font-size:clamp(.82rem,.95vw,.92rem); line-height:1.35; letter-spacing:-.01em; color:var(--steel); text-wrap:balance; }
+.ti-coexist .co-deploy em{ font-style:normal; color:var(--cold); }
 .cap.ti .ti-title sup.ti-tm{ font-size:.28em; color:var(--steel); position:relative; top:-0.55em; letter-spacing:0; font-weight:400; line-height:0; }
 .cap.ti .ti-title .ti-title-suffix{ font-weight:700; }
 @media (min-width:821px){ .cap.ti .ti-title{ white-space:nowrap; } }
 @media (max-width:820px){ .cap.ti .ti-title{ font-size:clamp(1.55rem,7.2vw,2.15rem); letter-spacing:-.03em; } }
 @media (min-width:821px){
   .ti-coexist{ margin-top:min(1.2rem,1.9vh); }
-  .ti-coexist .co-line{ font-size:min(1.3rem,2.4vh); }
-  .ti-coexist .co-deploy{ font-size:min(.86rem,1.6vh); margin-top:min(.55rem,1vh); }
+  .ti-coexist .co-deploy{ font-size:min(.92rem,1.7vh); }
 }
 @media (min-width:821px) and (max-height:730px){ .ti-coexist .co-deploy{ display:none; } }
 @media (min-width:821px) and (max-height:640px){ .ti-coexist{ display:none; } }
@@ -275,7 +274,7 @@
   .gcard:nth-child(odd){ border-left:0; }
   .gcard:nth-child(even){ border-left:1px solid rgba(169,192,214,.1); }
   .gdesc{ display:none; }
-  .ti-coexist .co-line{ font-size:clamp(.95rem,4.6vw,1.15rem); }
+  .ti-coexist .co-deploy{ font-size:clamp(.88rem,4vw,1.05rem); }
 }
 
 /* ============================================================
@@ -535,8 +534,7 @@
       </div>
 
       <div class="ti-coexist cap-line" data-from="0">
-        <p class="co-line">Care becomes trial infrastructure. <em>Research moves where care lives.</em></p>
-        <p class="co-deploy">Cloud, dedicated cloud, institution-hosted, or restricted-egress — the Network deploys where trust requires.</p>
+        <p class="co-deploy">Cloud, dedicated, institution-hosted, or air-gapped for federal and zero-trust environments.</p>
       </div>
     </div>
     <!-- 09 FINAL -->
