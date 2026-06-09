@@ -149,7 +149,7 @@ body.world-ready #world { opacity: 1; }
 /* ---- NODE visual: a small cluster of community sites that pulse green from the hub ---- */
 .ti-node-viz {
   display: flex; align-items: center; justify-content: center; gap: clamp(9px, 1.65vw, 15px);
-  height: clamp(106px, 15.4vh, 139px); margin: .2rem 0;
+  margin: .2rem 0;
 }
 .ti-sq {
   position: relative; border: 1.5px solid rgba(169, 192, 214, .4); border-radius: 9px;
@@ -388,7 +388,7 @@ body.world-ready #world { opacity: 1; }
 .luna-svg { width: 100%; height: 100%; }
 .ti-topline .ti-matrix { gap: 4px; }
 /* compact node-site cluster — small enough to live in the header corner */
-.ti-topline .ti-node-viz { gap: 4px; }
+.ti-topline .ti-node-viz { gap: 4px; width: var(--viz-w, clamp(97px, 11vw, 128px)); max-width: var(--viz-w, clamp(97px, 11vw, 128px)); justify-content: flex-end; }
 .ti-topline .ti-sq--s { width: 17px; height: 17px; border-radius: 4px; }
 .ti-topline .ti-sq--m { width: 24px; height: 24px; border-radius: 6px; }
 .ti-topline .ti-sq--l { width: 31px; height: 31px; border-radius: 8px; }
@@ -441,7 +441,7 @@ body.world-ready #world { opacity: 1; }
     grid-template-columns: none; display: flex; flex-wrap: nowrap;
     gap: clamp(.75rem, 4.2vw, 1.1rem); overflow-x: auto; overflow-y: visible;
     scroll-snap-type: x mandatory; scroll-snap-stop: always; overscroll-behavior-x: contain;
-    -webkit-overflow-scrolling: touch; scrollbar-width: none; touch-action: pan-x pinch-zoom;
+    scroll-padding-inline: 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; touch-action: pan-x pinch-zoom;
     margin-top: clamp(.85rem, 2.6vh, 1.25rem);
   }
   .es-grid::-webkit-scrollbar, .ti-split::-webkit-scrollbar, .ps-split::-webkit-scrollbar, .gap-grid::-webkit-scrollbar { display: none; }
@@ -463,6 +463,12 @@ body.world-ready #world { opacity: 1; }
   .es-stage-cards .cap-box, .ti-half .cap-box, .ps-half .cap-box { padding: clamp(.72rem, 3.2vw, .95rem) clamp(.82rem, 3.5vw, 1.05rem); }
   .es-stage-cards .cap-box-h, .ti-half .cap-box-h, .ps-half .cap-box-h { font-size: clamp(.82rem, 3.6vw, .88rem); }
   .es-stage-cards .cap-box-b, .ti-half .cap-box-b, .ps-half .cap-box-b { font-size: clamp(.78rem, 3.4vw, .84rem); margin-top: clamp(.38rem, 1.6vw, .48rem); }
+  .ti-node .ti-cards .cap-box + .cap-box { display: none; }
+  .ti-topline .ti-sq--s { width: 14px; height: 14px; border-radius: 3px; }
+  .ti-topline .ti-sq--m { width: 19px; height: 19px; border-radius: 5px; }
+  .ti-topline .ti-sq--l { width: 24px; height: 24px; border-radius: 6px; }
+  .cap.ti .ti-coexist { margin-top: clamp(.45rem, 1.2vh, .65rem); }
+  .cap.ti .ti-coexist .co-deploy { font-size: clamp(.62rem, 2.7vw, .72rem); line-height: 1.28; }
 
   /* mobile panel switcher — disabled; swipe-only carousels */
   .hswipe-nav { display: none !important; }

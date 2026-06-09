@@ -100,16 +100,6 @@ body.deck-nav-locked .deck-nav { pointer-events: none; opacity: .55; }
   animation: deckhint 1.2s var(--ease) 2.5s forwards; }
 @keyframes deckhint { to { opacity: 0; } }
 
-/* minimal legal access — Privacy only on home landing, bottom-left */
-.deck-legal {
-  position: fixed; left: var(--page-gutter); bottom: clamp(1rem, 3.2vh, 1.7rem); z-index: 22;
-  font-family: var(--fb); font-size: .56rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
-  color: var(--dim); opacity: 0; visibility: hidden; pointer-events: none;
-  transition: color .15s var(--ease), opacity .25s var(--ease), visibility .25s var(--ease);
-}
-body.deck-on-home:not(.intro-hold) .deck-legal { opacity: .55; visibility: visible; pointer-events: auto; }
-.deck-legal:hover { color: var(--steel); opacity: 1; }
-
 /* mobile wayfinding — bottom-right */
 .deck-swipe { display: none; }
 .deck-swipe__label {

@@ -582,10 +582,9 @@ function landSubsection(cap, backward) {
   requestAnimationFrame(() => {
     hs._hswipeCommitted = null;
     hswipeGo(hs, idx);
-    if (!MOBILE || hs.scrollWidth <= hs.clientWidth) commitHSwipe(hs, idx);
+    if (REDUCED) commitHSwipe(hs, idx);
+    else setTimeout(() => settleHSwipe(hs), MOBILE ? 120 : 80);
     syncSubsectionPanels(cap, idx);
-    const panel = hs.children[idx];
-    if (panel && !MOBILE) panel.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' });
   });
 }
 function next() { go(seqStep(1)); }
@@ -871,6 +870,9 @@ function commitHSwipe(el, idx) {
       [].forEach.call(el.children, (p, i) => { if (i !== idx && p._hOff) p._hOff(); });
     } else [].forEach.call(el.children, (p) => { if (p._hOff) p._hOff(); });
   }
+  const cap = el.closest('[data-cap]');
+  if (cap) syncSubsectionPanels(cap, idx);
+  if (typeof window.DamarosCapFit === 'function') requestAnimationFrame(() => window.DamarosCapFit());
 }
 function settleHSwipe(el) {
   if (!el || el.children.length < 2) return;
@@ -879,10 +881,9 @@ function settleHSwipe(el) {
   if (!panel) return;
   const target = panel.offsetLeft;
   const drift = Math.abs(el.scrollLeft - target);
-  if (drift > 3) {
-    const instant = REDUCED || drift <= 48;
-    el.scrollTo({ left: target, behavior: instant ? 'auto' : 'smooth' });
-    if (instant) commitHSwipe(el, idx);
+  if (drift > 2) {
+    el.scrollTo({ left: target, behavior: REDUCED || drift > 96 ? 'auto' : 'smooth' });
+    if (REDUCED || drift <= 96) commitHSwipe(el, idx);
     return;
   }
   commitHSwipe(el, idx);
@@ -922,7 +923,7 @@ function wireHSwipes() {
     commitHSwipe(split, split._hswipeCommitted);
     const settle = () => settleHSwipe(split);
     split.addEventListener('scrollend', settle, { passive: true });
-    split.addEventListener('scroll', () => { clearTimeout(split._settleT); split._settleT = setTimeout(settle, 140); }, { passive: true });
+    split.addEventListener('scroll', () => { clearTimeout(split._settleT); split._settleT = setTimeout(settle, MOBILE ? 90 : 140); }, { passive: true });
   });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireHSwipes);
@@ -934,16 +935,22 @@ addEventListener('wheel', (e) => {
   if (!dy) return;
   feedNav(dy, dy > 0 ? 1 : -1);
 }, { passive: true });
-let tStart = null, tAcc = 0, tDir = 0, tOnHSwipe = false;
+let tStart = null, tAcc = 0, tDir = 0, tHoriz = false, tOnHSwipe = false;
 addEventListener('touchstart', (e) => {
   if (!e.touches[0] || navLocked()) return;
   tStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  tAcc = 0; tDir = 0;
-  tOnHSwipe = !!(e.target && e.target.closest && e.target.closest('[data-hswipe]'));
+  tAcc = 0; tDir = 0; tHoriz = false; tOnHSwipe = false;
 }, { passive: true });
 addEventListener('touchmove', (e) => {
-  if (!tStart || !e.touches[0] || tOnHSwipe) return;
+  if (!tStart || !e.touches[0]) return;
   const dy = tStart.y - e.touches[0].clientY, dx = e.touches[0].clientX - tStart.x;
+  const hsEl = e.target && e.target.closest && e.target.closest('[data-hswipe]');
+  if (hsEl && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.05) {
+    tHoriz = true;
+    tOnHSwipe = true;
+    return;
+  }
+  if (tHoriz || tOnHSwipe) return;
   if (Math.abs(dx) > Math.abs(dy) * 1.25) return;
   if (Math.abs(dy) < 6) return;
   const dir = dy > 0 ? 1 : -1;
@@ -953,8 +960,8 @@ addEventListener('touchmove', (e) => {
 addEventListener('touchend', (e) => {
   if (!tStart || !e.changedTouches[0]) return;
   const dx = e.changedTouches[0].clientX - tStart.x, dy = tStart.y - e.changedTouches[0].clientY;
-  const onHSwipe = tOnHSwipe;
-  tStart = null; tOnHSwipe = false;
+  const onHSwipe = tHoriz || tOnHSwipe;
+  tStart = null; tHoriz = false; tOnHSwipe = false;
   if (onHSwipe) return;
   if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.2) return;
   const pull = Math.abs(tAcc) >= (MOBILE ? 62 : 58) ? tAcc : dy;
