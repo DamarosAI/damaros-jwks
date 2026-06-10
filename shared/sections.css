@@ -321,7 +321,7 @@ body.world-ready #world { opacity: 1; }
 .ps-half--forge.is-live .fg-bar { animation: fgBar var(--dur, 3.4s) var(--ease) var(--d, 0s) infinite; }
 @keyframes fgFrag {
   0%, 100% { fill: rgba(169, 192, 214, .2); }
-  34%, 52% { fill: var(--cold); }
+  40%, 60% { fill: color-mix(in srgb, var(--steel) 68%, oklch(0.82 0.13 208)); }
 }
 @keyframes fgEdge {
   0%, 100% { stroke: transparent; stroke-opacity: 0; }

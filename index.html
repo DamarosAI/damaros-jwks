@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="shared/hanken-grotesk.css">
 <link rel="stylesheet" href="shared/journey.css?v=reset53">
 <link rel="stylesheet" href="shared/terrain.css?v=reset48">
-<link rel="stylesheet" href="shared/sections.css?v=42">
+<link rel="stylesheet" href="shared/sections.css?v=43">
 <style id="reposition-2026">
 /* ============================================================
  * 2026 repositioning, consolidated, info-dense stations.
@@ -693,7 +693,20 @@
     wire(document.querySelector('.ps-half--luna'), '.luna-ring', 'is-live');
     var forgePanel = document.querySelector('.ps-half--forge');
     wire(forgePanel, '.fg-frag, .fg-edge, .fg-bar', 'is-live', { enter: function () {
-      [].forEach.call(forgePanel.querySelectorAll('.fg-frag, .fg-edge, .fg-bar'), function (c) {
+      var pairs = {};
+      [].forEach.call(forgePanel.querySelectorAll('.fg-frag, .fg-edge'), function (c) {
+        var k = c.getAttribute('data-fg');
+        if (!pairs[k]) pairs[k] = [];
+        pairs[k].push(c);
+      });
+      Object.keys(pairs).forEach(function (k) {
+        var d = rnd(0, 1.6).toFixed(2) + 's', dur = rnd(2.6, 4.4).toFixed(2) + 's';
+        pairs[k].forEach(function (c) {
+          c.style.setProperty('--d', d);
+          c.style.setProperty('--dur', dur);
+        });
+      });
+      [].forEach.call(forgePanel.querySelectorAll('.fg-bar'), function (c) {
         c.style.setProperty('--d', rnd(0, 1.6).toFixed(2) + 's');
         c.style.setProperty('--dur', rnd(2.6, 4.4).toFixed(2) + 's');
       });
@@ -825,7 +838,7 @@
     frags.forEach(function (f, i) {
       var l = document.createElementNS(NS, 'line');
       l.setAttribute('x1', f.x); l.setAttribute('y1', f.y); l.setAttribute('x2', anchorX); l.setAttribute('y2', barY(boxOf[i]));
-      l.setAttribute('class', 'fg-edge'); l.style.setProperty('--i', i); svg.appendChild(l);
+      l.setAttribute('class', 'fg-edge'); l.setAttribute('data-fg', i); l.style.setProperty('--i', i); svg.appendChild(l);
     });
     // the artifact bars (resolve top-to-bottom, last in the wave)
     for (var r = 0; r < ROWS; r++) {
@@ -836,7 +849,7 @@
     // fragment dots, drawn last so they sit above the edges
     frags.forEach(function (f, i) {
       var ci = document.createElementNS(NS, 'circle');
-      ci.setAttribute('cx', f.x); ci.setAttribute('cy', f.y); ci.setAttribute('r', '3.1'); ci.setAttribute('class', 'fg-frag'); ci.style.setProperty('--i', i);
+      ci.setAttribute('cx', f.x); ci.setAttribute('cy', f.y); ci.setAttribute('r', '3.1'); ci.setAttribute('class', 'fg-frag'); ci.setAttribute('data-fg', i); ci.style.setProperty('--i', i);
       svg.appendChild(ci);
     });
     host.appendChild(svg);
