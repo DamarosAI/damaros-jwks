@@ -75,8 +75,6 @@
   --shadow-panel: 0 0 0 1px rgba(4,8,14,.5), 0 18px 48px rgba(0,0,0,.34);
   --glow: 0 0 42px rgba(123,150,178,.14);
 
-  --mono-op: .07;
-  --mono-filter: none;
   --cta-shine: rgba(255,255,255,.16);
   --cta-shine-strong: rgba(255,255,255,.35);
   --cta-inset-dark: rgba(0,0,0,.14);
@@ -151,56 +149,6 @@ strong, b { font-weight: var(--fb-w-strong); }
 .chip.locked { color: var(--locked); border-color: color-mix(in srgb, var(--locked) 42%, transparent); background: color-mix(in srgb, var(--locked) 10%, transparent); }
 .chip.luna   { color: var(--luna);   border-color: color-mix(in srgb, var(--luna) 42%, transparent);   background: color-mix(in srgb, var(--luna) 10%, transparent); }
 
-/* ---- monogram field ---- */
-.mono-bg {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 52%);
-          mask-image: linear-gradient(90deg, #000 0%, #000 22%, transparent 52%);
-}
-.mono-grid {
-  position: absolute; top: -26%; left: -18%; width: 90%; height: 152%;
-  display: grid; grid-template-columns: repeat(auto-fill, 112px); grid-auto-rows: 112px; gap: 44px;
-  opacity: var(--mono-op); transform: rotate(-8deg); animation: monoDrift 24s linear infinite; will-change: transform;
-}
-.mono-grid img { width: 112px; height: 112px; object-fit: contain; filter: var(--mono-filter); }
-@keyframes monoDrift {
-  0%   { transform: rotate(-8deg) translate3d(0, 0, 0); }
-  50%  { transform: rotate(-8deg) translate3d(34px, -8px, 0); }
-  100% { transform: rotate(-8deg) translate3d(0, 0, 0); }
-}
-/* doc pages: monogram field — top half of viewport, clipped on complete rows */
-.mono-bg.mono-bg--full {
-  inset: 0 auto auto 0;
-  width: 100%;
-  height: var(--mono-field-h, auto);
-  bottom: auto;
-  -webkit-mask-image: none;
-          mask-image: none;
-}
-.mono-bg--full .mono-grid {
-  top: 0; left: -4%; width: 108%;
-  grid-template-columns: repeat(var(--mono-cols, auto-fill), 84px);
-  grid-template-rows: repeat(var(--mono-rows, auto-fill), 84px);
-  gap: var(--mono-gap, 26px);
-  align-content: start;
-  opacity: var(--mono-full-op, .06);
-  transform: rotate(-8deg);
-  transform-origin: 50% 50%;
-  animation: monoDrift 28s linear infinite;
-  will-change: transform;
-}
-.mono-bg--full .mono-grid img {
-  display: block; width: 84px; height: 84px;
-  object-fit: contain; filter: var(--mono-filter);
-}
-.mono-bg--about {
-  -webkit-mask-image: linear-gradient(135deg, #000 0%, #000 30%, transparent 62%);
-          mask-image: linear-gradient(135deg, #000 0%, #000 30%, transparent 62%);
-}
-.mono-bg--docs {
-  -webkit-mask-image: radial-gradient(ellipse at 44% 40%, #000 0%, #000 26%, transparent 66%);
-          mask-image: radial-gradient(ellipse at 44% 40%, #000 0%, #000 26%, transparent 66%);
-}
 /* ---- metallic glass CTA ---- */
 .dmx-cta {
   position: relative; isolation: isolate;
@@ -249,11 +197,6 @@ strong, b { font-weight: var(--fb-w-strong); }
     radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 42%);
 }
 
-@media (max-width: 900px) {
-  .mono-grid { animation: none; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
-  .mono-grid { animation: none; }
 }
