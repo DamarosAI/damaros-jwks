@@ -34,12 +34,15 @@ const hx = (n, f) => { const v = css.getPropertyValue(n).trim(); return v ? new 
 const COL = { steel: hx('--steel', '#a9c0d6') };
 
 const canvas = document.getElementById('world');
-if (canvas) { try { boot(); } catch (e) { canvas.remove(); } }
+if (canvas) {
+  if (MOBILE && !REDUCED) document.body.classList.add('doc-intro');
+  try { boot(); } catch (e) { canvas.remove(); document.body.classList.remove('doc-intro'); document.body.classList.add('world-ready'); }
+}
 
 function boot() {
   /* ---------- renderer — identical config to space.js ---------- */
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: MOBILE, powerPreference: 'high-performance', alpha: false });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, MOBILE ? 1.25 : 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, MOBILE ? 1 : 2));   // mobile: native DPR only — smoother scroll + less fill
   renderer.setSize(innerWidth, innerHeight);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   let SOFT = false;
@@ -82,7 +85,8 @@ function boot() {
       vertexShader: 'varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} ',
       fragmentShader: 'precision highp float; varying vec3 vP; uniform vec3 uTop,uMid,uHoriz; void main(){ float h=clamp(vP.y/180.0*0.5+0.5,0.0,1.0); vec3 lower=mix(uHoriz,uMid,smoothstep(0.0,0.5,h)); vec3 col=mix(lower,uTop,smoothstep(0.46,1.0,h)); col*=1.0-0.06*smoothstep(0.6,1.0,h); gl_FragColor=vec4(col,1.0);} '
     });
-    const sky = new THREE.Mesh(new THREE.SphereGeometry(190, 32, 20), m); sky.renderOrder = -10; scene.add(sky);
+    const skySeg = MOBILE ? 24 : 32, skyRings = MOBILE ? 16 : 20;
+    const sky = new THREE.Mesh(new THREE.SphereGeometry(190, skySeg, skyRings), m); sky.renderOrder = -10; scene.add(sky);
   }
 
   /* ---------- simplex noise (verbatim) ---------- */
@@ -112,7 +116,7 @@ function boot() {
 
   /* ---------- DEEP: curved topology terrain (home vantage of space.js terrain) ---------- */
   {
-    const SEG_X = SOFT ? 70 : (MOBILE ? 88 : 176), SEG_Y = SOFT ? 74 : (MOBILE ? 100 : 184);
+    const SEG_X = SOFT ? 70 : (MOBILE ? 76 : 176), SEG_Y = SOFT ? 74 : (MOBILE ? 88 : 184);
     const PLANE_D = MOBILE ? 520 : 440;
     const g = new THREE.PlaneGeometry(420, PLANE_D, SEG_X, SEG_Y); g.rotateX(-Math.PI * 0.5);
     const vert = SNOISE + `
@@ -207,8 +211,9 @@ function boot() {
     });
     const pts = new THREE.Points(g, m); pts.renderOrder = -9; scene.add(pts);
   }
-  addStarShell(SOFT ? 320 : (MOBILE ? 760 : 1100), 150, 28, 0.82, 10, MOBILE ? '0.44 + aRnd*0.54' : '0.22 + aRnd*0.44', MOBILE ? '2.4' : '1.9', MOBILE ? '1.45' : '1.15');
-  addStarShell(SOFT ? 220 : (MOBILE ? 520 : 840), 205, 48, 0.94, 16, MOBILE ? '0.26 + aRnd*0.38' : '0.12 + aRnd*0.26', MOBILE ? '1.75' : '1.45', MOBILE ? '1.3' : '1.05');
+  /* doc backdrop: fewer stars on mobile than home — same look, less GPU work */
+  addStarShell(SOFT ? 320 : (MOBILE ? 520 : 1100), 150, 28, 0.82, 10, MOBILE ? '0.44 + aRnd*0.54' : '0.22 + aRnd*0.44', MOBILE ? '2.4' : '1.9', MOBILE ? '1.45' : '1.15');
+  addStarShell(SOFT ? 220 : (MOBILE ? 360 : 840), 205, 48, 0.94, 16, MOBILE ? '0.26 + aRnd*0.38' : '0.12 + aRnd*0.26', MOBILE ? '1.75' : '1.45', MOBILE ? '1.3' : '1.05');
 
   /* ---------- camera: the home framing, breathing, pointer-leaned ---------- */
   const camera = new THREE.PerspectiveCamera(MOBILE ? 56.5 : 52, innerWidth / innerHeight, 0.1, 400);
@@ -250,22 +255,33 @@ function boot() {
     addEventListener('pointerleave', () => { ptr.tx = 0; ptr.ty = 0; });
   }
 
+  /* warm GPU before first visible frame (same as home deck) */
+  try { renderer.compile(scene, camera); } catch (e) { /* older three builds */ }
+
   /* ---------- loop (home damp rates) ---------- */
   const _v = new THREE.Vector3();
-  let raf = 0, last = performance.now(), shown = false;
+  let raf = 0, last = performance.now(), frames = 0, shown = false;
+  function markReady() {
+    if (shown) return;
+    shown = true;
+    document.body.classList.remove('doc-intro');
+    document.body.classList.add('world-ready');
+    if (REDUCED) cancelAnimationFrame(raf);
+  }
   function frame(now) {
     raf = requestAnimationFrame(frame);
     const dt = Math.min((now - last) / 1000, 0.1); last = now;
     if (!REDUCED) {
       W.uTime.value += dt;
-      W.uReveal.value += (1 - W.uReveal.value) * (1 - Math.exp(-dt * 0.8));   // home reveal ease
+      W.uReveal.value += (1 - W.uReveal.value) * (1 - Math.exp(-dt * (MOBILE ? 0.65 : 0.8)));   // gentler reveal on mobile
       const lam = hover.t > hover.v ? 9 : 3.2;                                // home hover damp: fast in, slow out
       hover.v = hover.t + (hover.v - hover.t) * Math.exp(-lam * dt);
       W.uHover.value = hover.v;
       const t = W.uTime.value;
       camera.position.copy(basePos);
-      camera.position.x += Math.sin(t * 0.12) * 0.8;
-      camera.position.y += Math.sin(t * 0.16) * 0.5;
+      const breathe = MOBILE ? 0.55 : 1;
+      camera.position.x += Math.sin(t * 0.12) * 0.8 * breathe;
+      camera.position.y += Math.sin(t * 0.16) * 0.5 * breathe;
       // pointer parallax — same grammar as the deck: yaw/pitch the offset, aim stays glued
       const e = Math.exp(-3.5 * dt);
       ptr.x = ptr.tx + (ptr.x - ptr.tx) * e; ptr.y = ptr.ty + (ptr.y - ptr.ty) * e;
@@ -281,9 +297,11 @@ function boot() {
     }
     camera.lookAt(look);
     if (composer) composer.render(); else renderer.render(scene, camera);
-    if (!shown) { shown = true; if (REDUCED) cancelAnimationFrame(raf); }
+    frames++;
+    if (frames >= 2) markReady();
   }
   raf = requestAnimationFrame(frame);
+  setTimeout(markReady, MOBILE ? 480 : 400);   // safety net if rAF is throttled at load
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cancelAnimationFrame(raf); }
