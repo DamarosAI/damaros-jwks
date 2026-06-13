@@ -254,15 +254,16 @@ body[data-station="9"]:not(.end-hold) .brand-motif img{
 .cap--split.cap--mirror .cap-lead{ margin-left:auto; }
 
 /* scrubbed reveal unit */
-.cap-line{ opacity:0; transform:translateY(14px); transition:opacity .35s var(--ease), transform .35s var(--ease); will-change:opacity,transform; }
-.cap-line.on{ opacity:1; transform:none; }
+.cap-line{ opacity:0; transform:translateY(14px); transition:opacity .35s var(--ease), transform .35s var(--ease); }
+.cap--active .cap-line:not(.on){ will-change:opacity,transform; }
+.cap-line.on{ opacity:1; transform:none; will-change:auto; }
 /* scramble-resolve headline — each letter tumbles through random letters (same case, no symbols) and locks
    into place left to right. Letters hold a FIXED width (set inline by cap-intro.js) so nothing reflows / bounces. */
 .deck-caps [data-type]{ opacity:1 !important; transform:none !important; }
 .deck-caps [data-type] .rc{ display:inline-block; text-align:center; white-space:nowrap;
-  opacity:0; filter:blur(2px); transition:opacity .21s ease, filter .21s ease, color .21s ease; will-change:opacity, filter; }
-.deck-caps [data-type] .rc.scram{ opacity:.5; color:var(--steel); filter:blur(2px); }
-.deck-caps [data-type] .rc.in{ opacity:1; color:inherit; filter:blur(0); }
+  opacity:0; filter:blur(2px); transition:opacity .21s ease, filter .21s ease, color .21s ease; }
+.deck-caps [data-type] .rc.scram{ opacity:.5; color:var(--steel); filter:blur(2px); will-change:opacity,filter; }
+.deck-caps [data-type] .rc.in{ opacity:1; color:inherit; filter:blur(0); will-change:auto; }
 @media (prefers-reduced-motion: reduce){
   .deck-caps [data-type] .rc{ opacity:1; filter:none; color:inherit; transition:none; }
 }

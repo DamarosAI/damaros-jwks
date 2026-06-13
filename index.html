@@ -10,11 +10,13 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo/archivo-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/hanken-grotesk/hanken-grotesk-latin.woff2" crossorigin>
 <link rel="preload" as="image" href="assets/damaros-monogram.svg?v=reset34">
+<link rel="modulepreload" href="assets/vendor/three/three.module.js">
+<link rel="modulepreload" href="shared/space.js?v=reset61">
 <link rel="stylesheet" href="shared/archivo.css">
 <link rel="stylesheet" href="shared/hanken-grotesk.css">
-<link rel="stylesheet" href="shared/journey.css?v=reset54">
+<link rel="stylesheet" href="shared/journey.css?v=reset55">
 <link rel="stylesheet" href="shared/nav-chrome.css?v=1">
-<link rel="stylesheet" href="shared/terrain.css?v=reset48">
+<link rel="stylesheet" href="shared/terrain.css?v=reset49">
 <link rel="stylesheet" href="shared/sections.css?v=44">
 <style id="reposition-2026">
 /* ============================================================
@@ -385,7 +387,7 @@
   <canvas id="world" aria-hidden="true"></canvas>
 
   <!-- floating brand motif, a faint Damaros wordmark behind the landing + closing (subtle but powerful) -->
-  <div class="brand-motif" aria-hidden="true"><img src="assets/damaros-monogram.svg?v=reset34" alt=""></div>
+  <div class="brand-motif" aria-hidden="true"><img src="assets/damaros-monogram.svg?v=reset34" alt="" decoding="async" fetchpriority="high"></div>
 
   <div class="deck-caps" aria-live="polite">
     <!-- 00 HOME / HERO -->
@@ -680,14 +682,28 @@
 
     var wiredPanels = [];
 
-    var trident = document.querySelector('.ps-neural');
-    if (trident) buildNeural(trident);
-    var lunaHost = document.querySelector('.ps-rings');
-    if (lunaHost) buildLunaRings(lunaHost);
-    var forgeHost = document.querySelector('.ps-forge');
-    if (forgeHost) buildForge(forgeHost);
-    var routerHost = document.querySelector('.ps-router');
-    if (routerHost) buildRouter(routerHost);
+    function scheduleVizBuilds() {
+      var jobs = [
+        ['.ps-neural', buildNeural],
+        ['.ps-rings', buildLunaRings],
+        ['.ps-forge', buildForge],
+        ['.ps-router', buildRouter]
+      ];
+      function runNext(i) {
+        if (i >= jobs.length) return;
+        var host = document.querySelector(jobs[i][0]);
+        if (host && !host._vizBuilt) { host._vizBuilt = true; jobs[i][1](host); }
+        if (i + 1 < jobs.length) {
+          var next = function () { runNext(i + 1); };
+          if (typeof requestIdleCallback === 'function') requestIdleCallback(next, { timeout: 2000 });
+          else setTimeout(next, 16);
+        }
+      }
+      var kick = function () { runNext(0); };
+      if (typeof requestIdleCallback === 'function') requestIdleCallback(kick, { timeout: 1500 });
+      else setTimeout(kick, 120);
+    }
+    scheduleVizBuilds();
 
     var burst = function (v) { var ds = DS(); if (ds && ds.starBurst) ds.starBurst(v); };
     wire(document.querySelector('.ti-node'), '.ti-sq', 'is-firing', { enter: function () { burst(1); [].forEach.call(document.querySelectorAll('.ti-node .ti-sq'), function (s) { s.classList.toggle('ti-sq--steel', Math.random() < 0.4); }); }, leave: function () { burst(0); } });
@@ -723,19 +739,24 @@
     } });
 
     /* desktop: sync card animations to pointer position (no fresh hover required) */
+    var hoverRaf = 0;
     function syncPanelHover() {
       if (TOUCH) return;
-      var cap = document.querySelector('.cap.cap--active');
-      if (!cap) { wiredPanels.forEach(function (p) { if (p._hOff) p._hOff(); }); return; }
-      var panels = [].slice.call(cap.querySelectorAll('.ti-node, .ti-sponsor, .ps-half')).filter(function (p) { return p._hOn; });
-      var over = null;
-      panels.forEach(function (p) { if (p.matches(':hover')) over = p; });
-      if (!over && ptr.ok) {
-        var hit = document.elementFromPoint(ptr.x, ptr.y);
-        panels.forEach(function (p) { if (p === hit || (hit && p.contains(hit))) over = p; });
-      }
-      if (!over && !ptr.ok) { panels.forEach(function (p) { if (p._hOff) p._hOff(); }); return; }
-      panels.forEach(function (p) { if (p === over) p._hOn(); else if (p._hOff) p._hOff(); });
+      if (hoverRaf) return;
+      hoverRaf = requestAnimationFrame(function () {
+        hoverRaf = 0;
+        var cap = document.querySelector('.cap.cap--active');
+        if (!cap) { wiredPanels.forEach(function (p) { if (p._hOff) p._hOff(); }); return; }
+        var panels = [].slice.call(cap.querySelectorAll('.ti-node, .ti-sponsor, .ps-half')).filter(function (p) { return p._hOn; });
+        var over = null;
+        panels.forEach(function (p) { if (p.matches(':hover')) over = p; });
+        if (!over && ptr.ok) {
+          var hit = document.elementFromPoint(ptr.x, ptr.y);
+          panels.forEach(function (p) { if (p === hit || (hit && p.contains(hit))) over = p; });
+        }
+        if (!over && !ptr.ok) { panels.forEach(function (p) { if (p._hOff) p._hOff(); }); return; }
+        panels.forEach(function (p) { if (p === over) p._hOn(); else if (p._hOff) p._hOff(); });
+      });
     }
     var ptr = { x: 0, y: 0, ok: false };
     if (!TOUCH) {
@@ -910,6 +931,6 @@
 })();
 </script>
 <script src="shared/cap-intro.js?v=5"></script>
-<script type="module" src="shared/space.js?v=reset60"></script>
+<script type="module" src="shared/space.js?v=reset61"></script>
 </body>
 </html>

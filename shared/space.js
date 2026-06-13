@@ -58,7 +58,8 @@ let SOFT = false;
 try { const gl = renderer.getContext(); const dbg = gl.getExtension('WEBGL_debug_renderer_info'); const r = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : ''; SOFT = /swiftshader|llvmpipe|software|basic render|microsoft/i.test(r); } catch (e) { SOFT = false; }
 const HI = location.search.indexOf('hi') >= 0;          // QA: force full fidelity under headless software GL
 const BLOOM = HI || (!MOBILE && !SOFT);
-const N = HI ? 48000 : (SOFT ? 12000 : (MOBILE ? 18000 : 48000));
+const CLOUD_LIVE = false;   // particle cloud is off-scene; skip morph + cursor-field CPU when false
+const N = CLOUD_LIVE ? (HI ? 48000 : (SOFT ? 12000 : (MOBILE ? 18000 : 48000))) : 0;
 renderer.toneMappingExposure = (SOFT && !HI) ? 0.84 : (MOBILE ? 0.80 : 0.62);   // mobile: brighter — no bloom pass, smaller OLED panels need more lift
 try { renderer.outputColorSpace = THREE.SRGBColorSpace; } catch (e) { /* older builds */ }
 
@@ -304,7 +305,8 @@ scene.add(deepLayer, midLayer);
     vertexShader: 'varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);} ',
     fragmentShader: 'precision highp float; varying vec3 vP; uniform vec3 uTop,uMid,uHoriz; void main(){ float h=clamp(vP.y/180.0*0.5+0.5,0.0,1.0); vec3 lower=mix(uHoriz,uMid,smoothstep(0.0,0.5,h)); vec3 col=mix(lower,uTop,smoothstep(0.46,1.0,h)); col*=1.0-0.06*smoothstep(0.6,1.0,h); gl_FragColor=vec4(col,1.0);} '
   });
-  const sky = new THREE.Mesh(new THREE.SphereGeometry(190, 32, 20), m); sky.renderOrder = -10; scene.add(sky);
+  const skySeg = MOBILE ? 24 : 32, skyRings = MOBILE ? 16 : 20;
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(190, skySeg, skyRings), m); sky.renderOrder = -10; scene.add(sky);
 })();
 
 // DEEP — one curved topology terrain plane (grid + contour lines + grain)
@@ -546,12 +548,15 @@ function go(i) {
   morphMs = seqJump >= 3 ? 650 : (seqJump === 2 ? 750 : 850);
   armNavLock(morphMs + (REDUCED ? 120 : 320));
   flightAssemble = (fromS === 0 && i === 1) ? 2.1 : (1.0 + Math.min(Math.max(seqJump - 1, 0), 8) * 0.16);
-  // snapshot the CURRENT interpolated positions into the 'from' buffer (seamless continuation).
-  // MUST mirror the shader's per-particle stagger + smootherstep exactly.
-  const uM = uniforms.uMorph.value;
-  for (let p = 0; p < N; p++) { const stg = rndArr[p] * 0.26, mL = clamp((uM - stg) / (1 - stg), 0, 1), me = smoother(mL), k = p * 3; posArr[k] += (toArr[k] - posArr[k]) * me; posArr[k + 1] += (toArr[k + 1] - posArr[k + 1]) * me; posArr[k + 2] += (toArr[k + 2] - posArr[k + 2]) * me; }
-  toArr.set(SHAPES[i]); subArr.set(SUB[i]); geo.attributes.position.needsUpdate = true; geo.attributes.aTo.needsUpdate = true; geo.attributes.aSub.needsUpdate = true;
-  uniforms.uMorph.value = 0; morphStart = performance.now(); target = i; flying = true; camDist.set(DIST[i]);
+  if (CLOUD_LIVE) {
+    // snapshot the CURRENT interpolated positions into the 'from' buffer (seamless continuation).
+    // MUST mirror the shader's per-particle stagger + smootherstep exactly.
+    const uM = uniforms.uMorph.value;
+    for (let p = 0; p < N; p++) { const stg = rndArr[p] * 0.26, mL = clamp((uM - stg) / (1 - stg), 0, 1), me = smoother(mL), k = p * 3; posArr[k] += (toArr[k] - posArr[k]) * me; posArr[k + 1] += (toArr[k + 1] - posArr[k + 1]) * me; posArr[k + 2] += (toArr[k + 2] - posArr[k + 2]) * me; }
+    toArr.set(SHAPES[i]); subArr.set(SUB[i]); geo.attributes.position.needsUpdate = true; geo.attributes.aTo.needsUpdate = true; geo.attributes.aSub.needsUpdate = true;
+    uniforms.uMorph.value = 0;
+  }
+  morphStart = performance.now(); target = i; flying = true; camDist.set(DIST[i]);
   if (i === 9 && !REDUCED) document.body.classList.add('end-hold'); else clearEndHold();
   const tgtCap = capForVantage(i);
   if (tgtCap && tgtCap === activeCapEl) updateFacets(tgtCap, i);   // same combined section → swap facet in place (keep title, no re-scramble)
@@ -715,7 +720,7 @@ if (!MOBILE) document.querySelectorAll('.dmx-nav-cta, .j-btn').forEach((c) => c.
 /* ============================================================
  * Loop
  * ============================================================ */
-let t0 = performance.now(), last = t0, firstFrame = false, running = true, warmed = false;
+let t0 = performance.now(), last = t0, firstFrame = false, running = true, warmed = false, rafId = 0;
 const _v = new THREE.Vector3(), accentCur = ACCENT[0].clone(), baseFog = new THREE.Color('#0e151f'), tmpFog = new THREE.Color();
 const _camPar = new THREE.Vector2(0, 0), _wPar = new THREE.Vector2(0, 0);
 let _wReveal = 0, stateMixCur = 0, cursorMode = 0, cursorBlend = 0, _trailAcc = 0;
@@ -723,14 +728,23 @@ let hoverTarget = 0, hoverBoost = 0, finalGlow = 0;   // sub-block hover drives 
 
 function frame() {
   if (!running) return;
+  if (document.hidden) { rafId = 0; return; }
   const now = performance.now(), dt = Math.min((now - last) / 1000, 0.05); last = now; const t = (now - t0) / 1000; frames++;
-  uniforms.uTime.value = t; W.uTime.value = t;
+  W.uTime.value = t;
   W.uBurst.value = damp(W.uBurst.value, starBurstT, 4, dt);   // ease the star-twinkle burst in / out
 
   // morph (wall-clock) + settle taper
-  const mp = REDUCED ? 1 : clamp((now - morphStart) / morphMs, 0, 1); uniforms.uMorph.value = mp;
-  const settle = ss(mp); uniforms.uFlow.value = (REDUCED ? 0.4 : 0.9) * (0.6 + 0.4 * settle);
-  if (flying && mp >= 1) { posArr.set(SHAPES[target]); geo.attributes.position.needsUpdate = true; flying = false; cur = target; uniforms.uKind.value = target; arriveAt(cur); }
+  const mp = REDUCED ? 1 : clamp((now - morphStart) / morphMs, 0, 1);
+  const settle = ss(mp);
+  if (CLOUD_LIVE) {
+    uniforms.uTime.value = t;
+    uniforms.uMorph.value = mp;
+    uniforms.uFlow.value = (REDUCED ? 0.4 : 0.9) * (0.6 + 0.4 * settle);
+  }
+  if (flying && mp >= 1) {
+    if (CLOUD_LIVE) { posArr.set(SHAPES[target]); geo.attributes.position.needsUpdate = true; uniforms.uKind.value = target; }
+    flying = false; cur = target; arriveAt(cur);
+  }
   const shown = flying ? target : cur;
 
   // ---- camera: damped spherical pose (no chord-swim, no wrap-spin) + cursor shear ----
@@ -763,36 +777,36 @@ function frame() {
   _wPar.x = damp(_wPar.x, ptrHas && !REDUCED ? pointer.x : 0, 3.5, dt); _wPar.y = damp(_wPar.y, ptrHas && !REDUCED ? pointer.y : 0, 3.5, dt);
   deepLayer.position.x = -_wPar.x * 4.0; deepLayer.position.y = -_wPar.y * 1.6; midLayer.position.x = -_wPar.x * 8.5; midLayer.position.y = -_wPar.y * 5.0;   // trimmed deep-layer vertical parallax so it can't lift the terrain off the bottom
 
-  // ---- accent (slower than the camera = deliberate) + state mix + atmosphere agreement ----
-  accentCur.lerp(ACCENT[shown], 1 - Math.exp(-dt * 1.8)); uniforms.uAccent.value.copy(accentCur);
-  stateMixCur = damp(stateMixCur, STATEMIX[shown], 2.0, dt); uniforms.uStateMix.value = stateMixCur;
-  uniforms.uCloudDim.value = damp(uniforms.uCloudDim.value, CLOUD_DIM[shown], 2.5, dt);
-  tmpFog.copy(baseFog).lerp(accentCur, 0.10); uniforms.uFogCol.value.copy(tmpFog);
   if (bloomPass) bloomPass.strength = damp(bloomPass.strength, KINDS[shown] === 'luna' ? 0.15 : 0.14, 1.5, dt);
 
-  // ---- cursor field + PER-SECTION physics (the verb is selected per section, blended pop-free) ----
-  const havePtr = ptrHas && !REDUCED;
-  uniforms.uCursorAmt.value = damp(uniforms.uCursorAmt.value, havePtr ? 0.9 : 0, 5, dt);
-  if (havePtr) { _v.set(pointer.x, pointer.y, 0.5).unproject(camera).sub(camera.position).normalize(); const tt = Math.abs(_v.z) > 1e-3 ? -camera.position.z / _v.z : 30; uniforms.uCursor.value.copy(camera.position).addScaledVector(_v, clamp(tt, 5, 60)); }
-  else uniforms.uCursor.value.set(999, 999, 999);
-  // mode + cross-section blend: fade the old verb out, switch at the bottom, fade the new verb in
-  if (cursorMode !== shown) { cursorBlend = damp(cursorBlend, 0, 9, dt); if (cursorBlend < 0.04) cursorMode = shown; }
-  else cursorBlend = damp(cursorBlend, havePtr ? 1 : 0, 3.5, dt);
-  const cwRow = CURSOR_W[cursorMode], cwGate = (havePtr ? 1 : 0) * cursorBlend;
-  for (let w = 0; w < CW_KEYS.length; w++) { const u = uniforms[CW_KEYS[w]]; u.value = damp(u.value, cwRow[w] * cwGate, 4, dt); }
-  const cuw = uniforms.uCursor.value;
-  uniforms.uProbe.value.set(clamp(cuw.x / 8, -1, 1), clamp(cuw.y / 8, -1, 1));
-  // (per-section cursor drivers retired in the hard reset — the cursor only does a gentle ambient touch now)
-  uniforms.uAssemble.value = REDUCED ? 0 : flightAssemble;
-  // autonomous cycle gates in as the form settles, out during a flight — damped both ways so there is no morph-boundary pop
-  uniforms.uLive.value = damp(uniforms.uLive.value, flying ? 0 : 1, 2.6, dt);
-  // parallax + nav-arrow current (kept; global refraction lens removed)
-  uniforms.uParallax.value.x = damp(uniforms.uParallax.value.x, havePtr ? pointer.x : 0, 4, dt);
-  uniforms.uParallax.value.y = damp(uniforms.uParallax.value.y, havePtr ? pointer.y : 0, 4, dt);
-  const dirX = arrowHover === 0 ? uniforms.uArrowDir.value.x : (arrowHover > 0 ? -1 : 1);
-  uniforms.uArrowDir.value.x = damp(uniforms.uArrowDir.value.x, dirX, 8, dt);
-  uniforms.uArrowAmt.value = damp(uniforms.uArrowAmt.value, arrowHover && !REDUCED ? 0.5 : 0, 7, dt);
-  if (focusTween) focusTween(now);
+  if (CLOUD_LIVE) {
+    // ---- accent (slower than the camera = deliberate) + state mix + atmosphere agreement ----
+    accentCur.lerp(ACCENT[shown], 1 - Math.exp(-dt * 1.8)); uniforms.uAccent.value.copy(accentCur);
+    stateMixCur = damp(stateMixCur, STATEMIX[shown], 2.0, dt); uniforms.uStateMix.value = stateMixCur;
+    uniforms.uCloudDim.value = damp(uniforms.uCloudDim.value, CLOUD_DIM[shown], 2.5, dt);
+    tmpFog.copy(baseFog).lerp(accentCur, 0.10); uniforms.uFogCol.value.copy(tmpFog);
+
+    // ---- cursor field + PER-SECTION physics (the verb is selected per section, blended pop-free) ----
+    const havePtr = ptrHas && !REDUCED;
+    uniforms.uCursorAmt.value = damp(uniforms.uCursorAmt.value, havePtr ? 0.9 : 0, 5, dt);
+    if (havePtr) { _v.set(pointer.x, pointer.y, 0.5).unproject(camera).sub(camera.position).normalize(); const tt = Math.abs(_v.z) > 1e-3 ? -camera.position.z / _v.z : 30; uniforms.uCursor.value.copy(camera.position).addScaledVector(_v, clamp(tt, 5, 60)); }
+    else uniforms.uCursor.value.set(999, 999, 999);
+    // mode + cross-section blend: fade the old verb out, switch at the bottom, fade the new verb in
+    if (cursorMode !== shown) { cursorBlend = damp(cursorBlend, 0, 9, dt); if (cursorBlend < 0.04) cursorMode = shown; }
+    else cursorBlend = damp(cursorBlend, havePtr ? 1 : 0, 3.5, dt);
+    const cwRow = CURSOR_W[cursorMode], cwGate = (havePtr ? 1 : 0) * cursorBlend;
+    for (let w = 0; w < CW_KEYS.length; w++) { const u = uniforms[CW_KEYS[w]]; u.value = damp(u.value, cwRow[w] * cwGate, 4, dt); }
+    const cuw = uniforms.uCursor.value;
+    uniforms.uProbe.value.set(clamp(cuw.x / 8, -1, 1), clamp(cuw.y / 8, -1, 1));
+    uniforms.uAssemble.value = REDUCED ? 0 : flightAssemble;
+    uniforms.uLive.value = damp(uniforms.uLive.value, flying ? 0 : 1, 2.6, dt);
+    uniforms.uParallax.value.x = damp(uniforms.uParallax.value.x, havePtr ? pointer.x : 0, 4, dt);
+    uniforms.uParallax.value.y = damp(uniforms.uParallax.value.y, havePtr ? pointer.y : 0, 4, dt);
+    const dirX = arrowHover === 0 ? uniforms.uArrowDir.value.x : (arrowHover > 0 ? -1 : 1);
+    uniforms.uArrowDir.value.x = damp(uniforms.uArrowDir.value.x, dirX, 8, dt);
+    uniforms.uArrowAmt.value = damp(uniforms.uArrowAmt.value, arrowHover && !REDUCED ? 0.5 : 0, 7, dt);
+    if (focusTween) focusTween(now);
+  }
 
   // (evidence membrane + authored geometry rigs removed in the hard reset — nothing to drive here)
 
@@ -812,14 +826,26 @@ function frame() {
   if (composer) composer.render(); else renderer.render(scene, camera);
   syncUI(); firstFrame = true;
   if (frames === 2) document.body.classList.add('world-ready');   // fade the canvas in once a couple of clean frames have painted
-  requestAnimationFrame(frame);
+  rafId = requestAnimationFrame(frame);
 }
 
 /* ============================================================
  * Wiring
  * ============================================================ */
-addEventListener('resize', () => { syncViewport(); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); if (composer) composer.setSize(innerWidth, innerHeight); if (bloomPass) bloomPass.setSize(innerWidth, innerHeight); });
-document.addEventListener('visibilitychange', () => { if (!document.hidden && running) { last = performance.now(); requestAnimationFrame(frame); } });
+let resizeT;
+addEventListener('resize', () => {
+  clearTimeout(resizeT);
+  resizeT = setTimeout(() => {
+    syncViewport(); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+    if (composer) composer.setSize(innerWidth, innerHeight);
+    if (bloomPass) bloomPass.setSize(innerWidth, innerHeight);
+  }, 100);
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { cancelAnimationFrame(rafId); rafId = 0; }
+  else if (running && !rafId) { last = performance.now(); rafId = requestAnimationFrame(frame); }
+});
 if (!MOBILE) { addEventListener('pointermove', (e) => { if (e.pointerType === 'touch') { ptrHas = false; return; } pointer.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ptrHas = true; }, { passive: true }); addEventListener('blur', () => { ptrHas = false; }); }
 addEventListener('keydown', (e) => {
   if (navLocked()) return;
@@ -1018,7 +1044,7 @@ setCaps(-1);   // drum logo + topology only for the opening beat — hero copy l
 // warm the GPU before the first visible frame: precompile scene shaders so weaker devices don't stall on the reveal
 try { renderer.compile(scene, camera); } catch (e) { /* older three builds */ }
 warmed = true;
-requestAnimationFrame(frame);
+rafId = requestAnimationFrame(frame);
 setTimeout(function () { document.body.classList.add('world-ready'); }, 400);   // safety net: reveal the canvas even if rAF is throttled at load
 const INTRO_MS = REDUCED ? 250 : 450;
 setTimeout(() => {
