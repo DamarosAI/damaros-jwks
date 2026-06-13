@@ -308,25 +308,17 @@ body.world-ready #world { opacity: 1; }
   -webkit-backface-visibility: hidden; backface-visibility: hidden;
 }
 
-/* FORGE — one row of same-color dots flows along horizontal edges into one packet box. */
+/* FORGE — scattered fragments pulse and converge into one packet; edges stay hidden. */
 .fg-frag { fill: rgba(169, 192, 214, .26); }
-.fg-edge {
-  stroke: transparent; stroke-width: 1.1; stroke-linecap: round; stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
+.fg-edge { display: none; }
 .fg-box { fill: rgba(169, 192, 214, .06); stroke: rgba(169, 192, 214, .22); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .ps-half--forge.is-live .fg-frag { animation: fgFrag var(--dur, 3.2s) var(--ease) var(--d, 0s) infinite; }
-.ps-half--forge.is-live .fg-edge { animation: fgEdge var(--dur, 3.2s) var(--ease) var(--d, 0s) infinite; }
 .ps-half--forge.is-live .fg-box { animation: fgBox var(--dur, 3.4s) var(--ease) var(--d, 0s) infinite; }
 @keyframes fgFrag {
   0%, 100% { fill: rgba(169, 192, 214, .24); opacity: 1; }
   38% { fill: var(--steel); opacity: 1; }
   52% { fill: var(--steel); opacity: .25; }
   68% { fill: rgba(169, 192, 214, .24); opacity: 1; }
-}
-@keyframes fgEdge {
-  0%, 100% { stroke: transparent; stroke-opacity: 0; }
-  38%, 52% { stroke: var(--steel); stroke-opacity: .58; }
 }
 @keyframes fgBox {
   0%, 100% { fill: rgba(169, 192, 214, .06); stroke: rgba(169, 192, 214, .22); }
