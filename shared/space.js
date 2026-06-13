@@ -846,6 +846,27 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) { cancelAnimationFrame(rafId); rafId = 0; }
   else if (running && !rafId) { last = performance.now(); rafId = requestAnimationFrame(frame); }
 });
+function restoreDeckFromCache() {
+  document.body.classList.remove('page-leaving');
+  document.documentElement.classList.add('page-enter-ready');
+  document.body.classList.add('world-ready');
+  syncViewport();
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  if (composer) composer.setSize(innerWidth, innerHeight);
+  if (bloomPass) bloomPass.setSize(innerWidth, innerHeight);
+  last = performance.now();
+  if (!rafId) rafId = requestAnimationFrame(frame);
+  syncUI();
+  if (window.DamarosCapIntro) {
+    const capEl = document.querySelector('.cap.cap--active');
+    if (capEl) window.DamarosCapIntro.kick();
+  }
+  if (window.DamarosCapFit) requestAnimationFrame(window.DamarosCapFit);
+}
+window.addEventListener('pageshow', (e) => { if (e.persisted) restoreDeckFromCache(); });
+window.addEventListener('damaros:restore', restoreDeckFromCache);
 if (!MOBILE) { addEventListener('pointermove', (e) => { if (e.pointerType === 'touch') { ptrHas = false; return; } pointer.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ptrHas = true; }, { passive: true }); addEventListener('blur', () => { ptrHas = false; }); }
 addEventListener('keydown', (e) => {
   if (navLocked()) return;

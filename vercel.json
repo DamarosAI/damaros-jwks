@@ -17,6 +17,18 @@
   ],
   "headers": [
     {
+      "source": "/((?!assets/).*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/shared/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
       "source": "/.well-known/jwks-prod.json",
       "headers": [
         { "key": "Content-Type", "value": "application/json; charset=utf-8" },

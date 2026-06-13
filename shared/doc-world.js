@@ -314,6 +314,21 @@ function boot() {
     else if (!REDUCED || !shown) { last = performance.now(); raf = requestAnimationFrame(frame); }
   });
 
+  function restoreDocFromCache() {
+    document.body.classList.remove('page-leaving');
+    document.documentElement.classList.add('page-enter-ready');
+    markReady();
+    renderer.setSize(innerWidth, innerHeight);
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    W.uViewport.value.set(innerWidth / innerHeight, viewportFillBoost());
+    if (composer) composer.setSize(innerWidth, innerHeight);
+    last = performance.now();
+    if (!REDUCED && !raf) raf = requestAnimationFrame(frame);
+    if (composer) composer.render(); else renderer.render(scene, camera);
+  }
+  window.addEventListener('pageshow', (e) => { if (e.persisted) restoreDocFromCache(); });
+  window.addEventListener('damaros:restore', restoreDocFromCache);
+
   addEventListener('resize', () => {
     renderer.setSize(innerWidth, innerHeight);
     camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();

@@ -15,6 +15,15 @@ body.page-leaving {
   body.page-leaving { transition: none !important; opacity: 1 !important; }
 }
 
+/* Never stay invisible if enter hook stalls */
+html.page-enter:not(.page-enter-ready) body {
+  animation: page-enter-fallback .01s ease 1s forwards;
+}
+@keyframes page-enter-fallback { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  html.page-enter:not(.page-enter-ready) body { animation: none; opacity: 1 !important; }
+}
+
 /* Return visit: skip canvas + copy fade gates (WebGL still boots, UI shows immediately) */
 html.nav-warm #world { opacity: 1; transition: none; }
 html.nav-warm body.doc-intro .docs,

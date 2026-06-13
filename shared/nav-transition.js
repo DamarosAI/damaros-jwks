@@ -1,6 +1,7 @@
 /* Intercept same-origin navigations with a short exit fade; restore on bfcache. */
 (function () {
   var LEAVE_MS = 200;
+  var ENTER_FALLBACK_MS = 720;
   var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function markWarm() {
@@ -16,6 +17,15 @@
     });
   }
 
+  function restoreFromCache() {
+    document.body.classList.remove('page-leaving');
+    document.documentElement.classList.add('page-enter-ready');
+    document.body.classList.add('world-ready');
+    document.body.classList.remove('doc-intro', 'intro-hold');
+    document.documentElement.classList.remove('intro-hold');
+    try { window.dispatchEvent(new Event('damaros:restore')); } catch (e) { /* old browsers */ }
+  }
+
   function isInternalLink(a, e) {
     if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
     if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) return false;
@@ -28,7 +38,7 @@
   }
 
   function leaveThen(url) {
-    if (REDUCED) { location.href = url; return; }
+    if (REDUCED) { markWarm(); location.href = url; return; }
     document.body.classList.add('page-leaving');
     markWarm();
     setTimeout(function () { location.href = url; }, LEAVE_MS);
@@ -43,17 +53,15 @@
 
   window.addEventListener('pageshow', function (e) {
     document.body.classList.remove('page-leaving');
-    if (e.persisted) {
-      markWarm();
-      document.documentElement.classList.add('page-enter-ready');
-      document.body.classList.add('world-ready');
-      document.body.classList.remove('doc-intro', 'intro-hold');
-      document.documentElement.classList.remove('intro-hold');
-    }
+    if (e.persisted) restoreFromCache();
+    else document.documentElement.classList.add('page-enter-ready');
   });
 
-  markWarm();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', revealEnter);
   } else revealEnter();
+
+  setTimeout(function () {
+    document.documentElement.classList.add('page-enter-ready');
+  }, ENTER_FALLBACK_MS);
 })();

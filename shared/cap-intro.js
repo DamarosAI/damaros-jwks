@@ -256,4 +256,15 @@
   });
 
   window.DamarosCapIntro = { kick: kick, revealDuration: revealDuration, get revealUntil() { return revealUntil; } };
+
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted || RM) return;
+    var current = caps.filter(function (c) { return c.classList.contains('cap--active'); })[0];
+    if (current) activateFast(current);
+  });
+  window.addEventListener('damaros:restore', function () {
+    if (RM) return;
+    var current = caps.filter(function (c) { return c.classList.contains('cap--active'); })[0];
+    if (current) activateFast(current);
+  });
 })();
