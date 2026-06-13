@@ -5,8 +5,8 @@
 /* smooth WebGL fade-in — no glitchy first-frame pop */
 #world { opacity: 0; transition: opacity .55s ease; }
 body.world-ready #world { opacity: 1; }
- *   · Execution Spine  (Protocol · Evidence · Screening · Replay)
- *       a governed pipeline scrubbed through one stage-rail.
+ *   · Execution Spine  (Protocol · Evidence · Screening · Resolve · Replay)
+ *       five modules in a 2-1-2 grid; Resolve sits beside the pipeline.
  *   · Trial Intelligence (Node ↔ Sponsor)
  *       one verified signal, read from two halves.
  * Tokens, fonts, .cap / .cap-box / .chip come from journey.css.
