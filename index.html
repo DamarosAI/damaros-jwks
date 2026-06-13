@@ -71,7 +71,7 @@
   .gcard{ padding:min(1.7vh,1.2rem) clamp(.85rem,1.05vw,1.1rem); gap:min(.5rem,.9vh); }
 }
 
-/* EXECUTION SPINE — one-row pipeline connected by a glowing line, with trust chips */
+/* EXECUTION SPINE, one-row pipeline connected by a glowing line, with trust chips */
 .cap.es .es-flow{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(1.1rem,2.2vw,2.2rem);
   margin-top:clamp(1.8rem,4vh,2.6rem); padding-top:1.6rem; text-align:left; }
 .cap.es .es-flow::before{ content:""; position:absolute; top:5px; left:6px; right:6px; height:1px;
@@ -101,7 +101,7 @@
   .es-step::before{ position:static; display:block; margin-bottom:.5rem; }
 }
 
-/* SPINE — wide canvas so the 2x2 + solo Replay reads as square cards */
+/* SPINE, wide canvas so the 2x2 + solo Replay reads as square cards */
 .cap.es{ width:min(80rem, calc(100vw - 2*var(--page-gutter))); max-width:min(80rem, calc(100vw - 2*var(--page-gutter))); }
 .cap.es .es-title{ font-size:clamp(2.2rem,5vw,3.7rem); letter-spacing:-.04em; }
 @media (min-width:821px){
@@ -248,7 +248,7 @@
   .cap.ps.agents .ps-cards .cap-box-b{ font-size:min(.84rem,1.7vh); margin-top:.34rem; line-height:1.46; }
 }
 
-/* GOVERNED RUNTIME — five task-specific agent cards (agents are the mechanism; the runtime is the product) */
+/* GOVERNED RUNTIME, five task-specific agent cards (agents are the mechanism; the runtime is the product) */
 .cap.ps.agents .agent-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.9rem,1.5vw,1.3rem);
   margin-top:clamp(1.5rem,3.4vh,2.2rem); text-align:left; align-items:stretch; }
 .agent-card{ display:flex; flex-direction:column; padding:clamp(1rem,1.6vh,1.4rem) clamp(.85rem,1.05vw,1.1rem);
@@ -358,7 +358,7 @@
 
 /* ============================================================
  * MOBILE + SHORT VIEWPORT: swipe carousels, one-line subheads,
- * single-row chips — no sub-nav rails between panels
+ * single-row chips, no sub-nav rails between panels
  * ============================================================ */
 .hswipe-nav{ display:none !important; }
 @media (max-width:820px){
@@ -922,7 +922,7 @@
     host.appendChild(svg);
   }
 
-  /* ROUTER — one patient enters, the trunk pulses, then it fans across the portfolio:
+  /* ROUTER, one patient enters, the trunk pulses, then it fans across the portfolio:
      three candidate-trial lanes resolve by fit strength (strong / partial / not eligible).
      Deliberately the inverse of Forge: one → many (cross-trial matching), not many → one. */
   function buildRouter(host) {
