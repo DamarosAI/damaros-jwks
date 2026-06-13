@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
+<script src="../shared/nav-warm.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Damaros · Enterprise FHIR integration</title>
@@ -11,6 +12,7 @@
 <link rel="stylesheet" href="../shared/damaros.css">
 <link rel="stylesheet" href="../shared/nav-chrome.css">
 <link rel="stylesheet" href="../shared/journey-doc.css">
+<link rel="stylesheet" href="../shared/page-transition.css?v=1">
 <script type="importmap">
 { "imports": { "three": "../assets/vendor/three/three.module.js", "three/addons/": "../assets/vendor/three/addons/" } }
 </script>
@@ -19,6 +21,7 @@
 </style>
 </head>
 <body>
+<script>if(document.documentElement.classList.contains('nav-warm')){document.body.classList.remove('doc-intro');document.body.classList.add('world-ready');}</script>
 <nav class="dmx-nav">
   <div class="dmx-nav-start">
     <a class="dmx-brand" href="../index.html" aria-label="Damaros">Damaros<sup>™</sup></a>
@@ -327,7 +330,8 @@ grant_type=client_credentials
   <a href="../privacy.html">Privacy</a>
 </footer>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../shared/geo-footer.js"></script>
-<script type="module" src="../shared/doc-world.js"></script>
-<script src="../shared/doc-ui.js"></script>
+<script type="module" src="../shared/doc-world.js?v=2"></script>
+<script src="../shared/doc-ui.js?v=2"></script>
+<script src="../shared/nav-transition.js?v=1"></script>
 </body>
 </html>

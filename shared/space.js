@@ -1040,16 +1040,18 @@ if (!MOBILE && !REDUCED) {
 
 syncUI();
 syncNavLockClass();
-setCaps(-1);   // drum logo + topology only for the opening beat — hero copy lands after INTRO_MS
+const WARM = document.documentElement.classList.contains('nav-warm');
+if (WARM) setCaps(0);
+else setCaps(-1);   // drum logo + topology only for the opening beat — hero copy lands after INTRO_MS
 // warm the GPU before the first visible frame: precompile scene shaders so weaker devices don't stall on the reveal
 try { renderer.compile(scene, camera); } catch (e) { /* older three builds */ }
 warmed = true;
 rafId = requestAnimationFrame(frame);
-setTimeout(function () { document.body.classList.add('world-ready'); }, 400);   // safety net: reveal the canvas even if rAF is throttled at load
-const INTRO_MS = REDUCED ? 250 : 450;
+if (!WARM) setTimeout(function () { document.body.classList.add('world-ready'); }, 400);   // safety net: reveal the canvas even if rAF is throttled at load
+const INTRO_MS = WARM ? (REDUCED ? 0 : 60) : (REDUCED ? 250 : 450);
 setTimeout(() => {
   document.body.classList.remove('intro-hold');
   document.documentElement.classList.remove('intro-hold');
-  setCaps(0);
+  if (!WARM) setCaps(0);
 }, INTRO_MS);
 window.DamarosSpace = { go, next, prev, starBurst, state: () => ({ cur, target, flying, frames }) };

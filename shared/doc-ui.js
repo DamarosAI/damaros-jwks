@@ -14,6 +14,7 @@
   document.documentElement.classList.add('js');
   var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var MOBILE = matchMedia('(hover: none),(pointer: coarse)').matches || innerWidth <= 820;
+  var WARM = document.documentElement.classList.contains('nav-warm');
 
   function ready(fn) { if (document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
 
@@ -57,6 +58,12 @@
     }
 
     function startMotion() {
+      if (WARM) {
+        [].slice.call(main.querySelectorAll('section.doc, .a-prose > p')).forEach(function (el) {
+          el.classList.add('doc-reveal-in');
+        });
+        return;
+      }
       /* ---- hero entrance: stagger everything above the first section ---- */
       var heroEls = [].filter.call(main.children, function (el) {
         return el.tagName !== 'SECTION' && !el.classList.contains('divider');
@@ -86,7 +93,7 @@
       }
     }
 
-    if (MOBILE && !REDUCED) whenWorldReady(startMotion);
+    if (MOBILE && !REDUCED && !WARM) whenWorldReady(startMotion);
     else startMotion();
 
     /* ---- reading progress hairline ---- */

@@ -13,6 +13,7 @@
  * ============================================================ */
 (function () {
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var WARM = document.documentElement.classList.contains('nav-warm');
   var caps = [].slice.call(document.querySelectorAll('[data-cap]'));
 
   // prep: split each headline into per-letter spans (final letter inside, so
@@ -111,6 +112,7 @@
 
   function revealDuration(cap) {
     if (RM || !cap) return 0;
+    if (WARM) return 120;
     var t = cap.querySelector('[data-type]');
     var lines = [].slice.call(cap.querySelectorAll('.cap-line'));
     var others = lines.filter(function (el) { return el !== t && !(t && el.contains(t)); });
@@ -143,8 +145,24 @@
     if (scrambleTimer) { cancelAnimationFrame(scrambleTimer); scrambleTimer = null; }
   }
 
+  function activateFast(cap) {
+    active = cap;
+    clearTimers();
+    revealUntil = performance.now();
+    var t = cap.querySelector('[data-type]');
+    var lines = [].slice.call(cap.querySelectorAll('.cap-line'));
+    var others = lines.filter(function (el) { return el !== t && !(t && el.contains(t)); });
+    others.forEach(function (el) { el.classList.remove('on'); });
+    if (t) {
+      if (!t.querySelector('.rc[data-w]')) fit(cap);
+      setState(cap, 'shown');
+    }
+    lines.forEach(function (el) { el.classList.add('on'); });
+  }
+
   function activate(cap) {
     if (active === cap) return;
+    if (WARM && !RM) { activateFast(cap); return; }
     active = cap;
     clearTimers();
     armReveal(cap);
@@ -224,7 +242,10 @@
 
   // initial layout (fallback metrics), refit when fonts land, refit on resize
   layoutAll(false);
-  kick();
+  if (WARM && !RM) {
+    caps.forEach(function (cap) { fit(cap); setState(cap, 'shown'); });
+    revealUntil = performance.now();
+  } else kick();
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () { layoutAll(true); });
   }

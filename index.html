@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark" class="intro-hold">
 <head>
 <meta charset="utf-8">
+<script src="shared/nav-warm.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Damaros™</title>
@@ -11,13 +12,14 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/hanken-grotesk/hanken-grotesk-latin.woff2" crossorigin>
 <link rel="preload" as="image" href="assets/damaros-monogram.svg?v=reset34">
 <link rel="modulepreload" href="assets/vendor/three/three.module.js">
-<link rel="modulepreload" href="shared/space.js?v=reset61">
+<link rel="modulepreload" href="shared/space.js?v=reset62">
 <link rel="stylesheet" href="shared/archivo.css">
 <link rel="stylesheet" href="shared/hanken-grotesk.css">
 <link rel="stylesheet" href="shared/journey.css?v=reset55">
 <link rel="stylesheet" href="shared/nav-chrome.css?v=1">
 <link rel="stylesheet" href="shared/terrain.css?v=reset49">
 <link rel="stylesheet" href="shared/sections.css?v=45">
+<link rel="stylesheet" href="shared/page-transition.css?v=1">
 <style id="reposition-2026">
 /* ============================================================
  * 2026 repositioning, consolidated, info-dense stations.
@@ -394,6 +396,7 @@
 </script>
 </head>
 <body data-station="0" class="intro-hold">
+<script>if(document.documentElement.classList.contains('nav-warm')){document.body.classList.remove('intro-hold');document.documentElement.classList.remove('intro-hold');document.body.classList.add('world-ready');}</script>
 <a class="skip" href="#world">Skip to content</a>
 
 <nav class="dmx-nav j-top" aria-label="Primary">
@@ -957,7 +960,8 @@
   setTimeout(fitActive, 650);
 })();
 </script>
-<script src="shared/cap-intro.js?v=5"></script>
-<script type="module" src="shared/space.js?v=reset61"></script>
+<script src="shared/cap-intro.js?v=6"></script>
+<script type="module" src="shared/space.js?v=reset62"></script>
+<script src="shared/nav-transition.js?v=1"></script>
 </body>
 </html>

@@ -34,8 +34,13 @@ const hx = (n, f) => { const v = css.getPropertyValue(n).trim(); return v ? new 
 const COL = { steel: hx('--steel', '#a9c0d6') };
 
 const canvas = document.getElementById('world');
+const WARM = document.documentElement.classList.contains('nav-warm');
 if (canvas) {
-  if (MOBILE && !REDUCED) document.body.classList.add('doc-intro');
+  if (MOBILE && !REDUCED && !WARM) document.body.classList.add('doc-intro');
+  if (WARM) {
+    document.body.classList.remove('doc-intro');
+    document.body.classList.add('world-ready');
+  }
   try { boot(); } catch (e) { canvas.remove(); document.body.classList.remove('doc-intro'); document.body.classList.add('world-ready'); }
 }
 
@@ -63,7 +68,7 @@ function boot() {
   }
   const W = {
     uTime: { value: 0 },
-    uReveal: { value: REDUCED ? 1 : 0 },
+    uReveal: { value: REDUCED || WARM ? 1 : 0 },
     uSection: { value: 0 },                         // pinned: home look
     uHue: { value: COL.steel.clone() },
     uHover: { value: 0 },
@@ -301,7 +306,8 @@ function boot() {
     if (frames >= 2) markReady();
   }
   raf = requestAnimationFrame(frame);
-  setTimeout(markReady, MOBILE ? 480 : 400);   // safety net if rAF is throttled at load
+  if (WARM) markReady();
+  else setTimeout(markReady, MOBILE ? 480 : 400);   // safety net if rAF is throttled at load
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) { cancelAnimationFrame(raf); }
