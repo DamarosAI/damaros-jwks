@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="shared/journey.css?v=reset55">
 <link rel="stylesheet" href="shared/nav-chrome.css?v=1">
 <link rel="stylesheet" href="shared/terrain.css?v=reset49">
-<link rel="stylesheet" href="shared/sections.css?v=48">
+<link rel="stylesheet" href="shared/sections.css?v=49">
 <link rel="stylesheet" href="shared/page-transition.css?v=2">
 <style id="reposition-2026">
 /* ============================================================
@@ -928,12 +928,14 @@
     host.appendChild(svg);
   }
 
-  /* ROUTER — compact ATC radar: stone sweep spins, amber blips flash on contact. */
+  /* ROUTER — compact ATC radar: a center-anchored stone line spins at a constant
+     rate dragging a fading wake; amber contacts light as it passes, then trail off. */
   function buildRouter(host) {
     var NS = 'http://www.w3.org/2000/svg';
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'rt-svg'); svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.setAttribute('shape-rendering', 'geometricPrecision');
-    var CX = 50, CY = 50, RMAX = 36;
+    var CX = 50, CY = 50, RMAX = 36, RL = RMAX - 2;
+    function pt(deg, r) { var a = deg * Math.PI / 180; return (CX + Math.cos(a) * r).toFixed(2) + ' ' + (CY + Math.sin(a) * r).toFixed(2); }
     [12, 22, 32].forEach(function (r) {
       var ring = document.createElementNS(NS, 'circle');
       ring.setAttribute('cx', CX); ring.setAttribute('cy', CY); ring.setAttribute('r', r);
@@ -949,20 +951,27 @@
     for (var j = 0; j < dotCount; j++) {
       var bearing = rnd(0, 360);
       var rad = bearing * Math.PI / 180;
-      var dist = rnd(0.38, 0.92) * RMAX;
+      var dist = rnd(0.4, 0.92) * RMAX;
       var dot = document.createElementNS(NS, 'circle');
       dot.setAttribute('cx', (CX + Math.cos(rad) * dist).toFixed(2));
       dot.setAttribute('cy', (CY + Math.sin(rad) * dist).toFixed(2));
-      dot.setAttribute('r', rnd(1.8, 2.6).toFixed(2));
+      dot.setAttribute('r', rnd(1.7, 2.5).toFixed(2));
       dot.setAttribute('class', 'rt-dot');
       dot.setAttribute('data-bearing', bearing.toFixed(2));
       svg.appendChild(dot);
     }
     var sweepG = document.createElementNS(NS, 'g');
     sweepG.setAttribute('class', 'rt-sweep-g');
+    /* wake trails behind the leading edge (negative local angles) */
+    var w1 = document.createElementNS(NS, 'path');
+    w1.setAttribute('d', 'M' + CX + ' ' + CY + ' L' + pt(0, RL) + ' L' + pt(-22, RL) + ' Z');
+    w1.setAttribute('class', 'rt-wake rt-wake--1'); sweepG.appendChild(w1);
+    var w2 = document.createElementNS(NS, 'path');
+    w2.setAttribute('d', 'M' + CX + ' ' + CY + ' L' + pt(-22, RL) + ' L' + pt(-52, RL) + ' Z');
+    w2.setAttribute('class', 'rt-wake rt-wake--2'); sweepG.appendChild(w2);
     var sweep = document.createElementNS(NS, 'line');
     sweep.setAttribute('x1', CX); sweep.setAttribute('y1', CY);
-    sweep.setAttribute('x2', CX + RMAX - 2); sweep.setAttribute('y2', CY);
+    sweep.setAttribute('x2', CX + RL); sweep.setAttribute('y2', CY);
     sweep.setAttribute('class', 'rt-sweep'); sweepG.appendChild(sweep);
     svg.appendChild(sweepG);
     var core = document.createElementNS(NS, 'circle');
