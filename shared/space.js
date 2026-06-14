@@ -572,6 +572,7 @@ function syncSubsectionPanels(cap, idx) {
   else {
     panels.forEach((p) => { if (p._hOff) p._hOff(); });
     if (window.DamarosPanels?.syncHover) requestAnimationFrame(() => window.DamarosPanels.syncHover());
+    if (window.DamarosSpaceSyncCardHover) requestAnimationFrame(window.DamarosSpaceSyncCardHover);
   }
   const split = cap.querySelector('.ti-split');
   if (split && panels.length > 1) {
@@ -667,6 +668,7 @@ function setCaps(idx) {
     }
   }
   if (!MOBILE && window.DamarosPanels?.syncHover) requestAnimationFrame(() => window.DamarosPanels.syncHover());
+  if (!MOBILE && window.DamarosSpaceSyncCardHover) requestAnimationFrame(window.DamarosSpaceSyncCardHover);
 }
 function revealEndCap() { setCaps(9); }
 const END_HOLD_MS = REDUCED ? 250 : 450;
@@ -1035,14 +1037,35 @@ addEventListener('touchend', (e) => {
 document.querySelector('[data-prev]')?.addEventListener('click', prev);
 document.querySelector('[data-next]')?.addEventListener('click', next);
 dots.forEach((d) => d.addEventListener('click', () => go(+d.dataset.go)));   // 5-stop diamond nav → jump to a stop's first vantage
-/* ---------- typography micro-interactions → subtle topology response ----------
-   Key words / state chips / the Trident phrase nudge the topology hue + brightness
-   while hovered, then settle back. Background-level only; disabled for reduced-motion. */
+/* ---------- card hover → topology breathe (one verb for every card / subcard) ----------
+   Uses elementFromPoint + pointer tracking (same model as DamarosPanels.syncHover) so
+   WebGL motion stays in sync when scrolling between sections with a stationary cursor. */
 if (!MOBILE && !REDUCED) {
-  document.querySelectorAll('[data-topo]').forEach((el) => {
-    el.addEventListener('pointerenter', () => { hoverTarget = 1; });
-    el.addEventListener('pointerleave', () => { hoverTarget = 0; });
+  const CARD_HOVER = '.gstat, .gap-col, .es-spine-step, .ps-half, .ti-half, .cap-box[data-topo]';
+  let cardHot = 0;
+  const ptrCard = { x: 0, y: 0, ok: false };
+  function syncCardHover() {
+    let on = false;
+    if (ptrCard.ok) {
+      const hit = document.elementFromPoint(ptrCard.x, ptrCard.y);
+      on = !!(hit && hit.closest?.(CARD_HOVER));
+    }
+    if (on === cardHot) return;
+    cardHot = on;
+    hoverTarget = on ? 1 : 0;
+  }
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch') return;
+    ptrCard.x = e.clientX; ptrCard.y = e.clientY; ptrCard.ok = true;
+    syncCardHover();
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => { ptrCard.ok = false; syncCardHover(); });
+  window.addEventListener('blur', () => { ptrCard.ok = false; syncCardHover(); });
+  document.querySelectorAll('[data-cap]').forEach((cap) => {
+    new MutationObserver(() => requestAnimationFrame(syncCardHover)).observe(cap, { attributes: true, attributeFilter: ['class'] });
   });
+  window.DamarosSpaceSyncCardHover = syncCardHover;
+  requestAnimationFrame(syncCardHover);
 }
 
 /* ---------- brand motif: glows when the cursor is near it (desktop) or holds steady on hero/closer (mobile) ---------- */
