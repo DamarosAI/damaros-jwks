@@ -644,10 +644,15 @@ function setCaps(idx) {
   tgt.classList.add('cap--active');
   activeCapEl = tgt;
   updateFacets(tgt, idx);
-  // simple (non-faceted) caps keep the original cap-line reveal behaviour
+  // simple (non-faceted) caps keep the original cap-line reveal behaviour.
+  // cap-intro.js owns the animated reveal (scramble + staggered float-in); driving
+  // .on here too double-paints — the final copy flashes in, then cap-intro resets
+  // and re-animates it. So only drive .on directly when there is no animated intro
+  // (reduced motion, or the intro script failed to load).
   if (!tgt.querySelector('[data-facet]')) {
+    const capAnim = !REDUCED && !!window.DamarosCapIntro;
     if (tgt.classList.contains('cap--end') && !REDUCED) tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
-    else tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.add('on'));
+    else if (!capAnim) tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.add('on'));
   }
   if (!MOBILE && window.DamarosPanels?.syncHover) requestAnimationFrame(() => window.DamarosPanels.syncHover());
 }
