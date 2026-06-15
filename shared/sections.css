@@ -259,53 +259,36 @@ body.world-ready #world { opacity: 1; }
 /* layer fields — parallel to the Node cluster / Console matrix */
 .ps-field { display: flex; align-items: center; justify-content: center; height: clamp(136px, 18.7vh, 169px); margin: .2rem 0; }
 
-/* TRIDENT — grid of dots; on engage, random cross-row hops re-roll on a jittered clock */
+/* TRIDENT — stable lattice; engage sends a smooth left-to-right activation wave */
 .nn, .luna-svg {
   width: 100%; height: 100%; overflow: visible;
   shape-rendering: geometricPrecision;
   -webkit-backface-visibility: hidden; backface-visibility: hidden;
 }
 .nn-edge {
-  stroke: transparent; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
+  stroke: var(--ok); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round;
+  vector-effect: non-scaling-stroke; stroke-opacity: 0;
 }
-.nn-dot { fill: rgba(169, 192, 214, .34); }
-.ps-half.is-live .nn-edge { animation: nnEdge var(--dur, 1.4s) var(--ease) var(--d, 0s) infinite; }
-.ps-half.is-live .nn-edge.nn-edge--b { animation-name: nnEdgeB; }
-.ps-half.is-live .nn-edge.nn-edge--c { animation-name: nnEdgeC; }
-.ps-half.is-live .nn-dot.nn-dot--live { animation: nnDot var(--dur, 1.4s) var(--ease) var(--d, 0s) infinite; }
-.ps-half.is-live .nn-dot.nn-dot--live.nn-dot--b { animation-name: nnDotB; }
-.ps-half.is-live .nn-dot.nn-dot--live.nn-dot--c { animation-name: nnDotC; }
-@keyframes nnEdge {
-  0%, 100% { stroke: transparent; stroke-opacity: 0; }
-  32% { stroke: var(--ok); stroke-opacity: 1; }
-  58% { stroke: transparent; stroke-opacity: 0; }
+.nn-dot { fill: rgba(169, 192, 214, .32); }
+.ps-half.is-live .nn-edge {
+  animation: nnEdgeFlow var(--dur, 4.2s) ease-in-out var(--d, 0s) infinite;
 }
-@keyframes nnEdgeB {
-  0%, 100% { stroke: transparent; stroke-opacity: 0; }
-  18% { stroke: transparent; stroke-opacity: 0; }
-  46% { stroke: var(--ok); stroke-opacity: 1; }
-  72% { stroke: transparent; stroke-opacity: 0; }
+.ps-half.is-live .nn-dot.nn-dot--live {
+  animation: nnDotFlow var(--dur, 4.2s) ease-in-out var(--d, 0s) infinite;
 }
-@keyframes nnEdgeC {
-  0%, 100% { stroke: transparent; stroke-opacity: 0; }
-  24% { stroke: var(--ok); stroke-opacity: .85; }
-  38% { stroke: transparent; stroke-opacity: 0; }
-  61% { stroke: var(--ok); stroke-opacity: 1; }
+@keyframes nnEdgeFlow {
+  0%, 100% { stroke-opacity: 0; }
+  10% { stroke-opacity: 0; }
+  26% { stroke-opacity: .52; }
+  40% { stroke-opacity: .24; }
+  56% { stroke-opacity: 0; }
 }
-@keyframes nnDot {
-  0%, 100% { fill: rgba(169, 192, 214, .34); }
-  32% { fill: var(--ok); }
+@keyframes nnDotFlow {
+  0%, 100% { fill: rgba(169, 192, 214, .32); }
+  10% { fill: rgba(169, 192, 214, .32); }
+  28% { fill: rgba(91, 185, 140, .82); }
+  42% { fill: rgba(126, 200, 160, .48); }
   58% { fill: rgba(169, 192, 214, .34); }
-}
-@keyframes nnDotB {
-  0%, 100% { fill: rgba(169, 192, 214, .34); }
-  46% { fill: var(--ok); }
-}
-@keyframes nnDotC {
-  0%, 100% { fill: rgba(169, 192, 214, .34); }
-  24%, 61% { fill: var(--ok); }
-  38% { fill: rgba(169, 192, 214, .34); }
 }
 
 /* LUNA — three oblique governance rings built from cleanly-spaced dots; turn CW · CCW · CW on engage */

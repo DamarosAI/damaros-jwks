@@ -762,71 +762,46 @@
     wire(document.querySelector('.ti-node'), '.ti-sq', 'is-firing', { enter: function () { burst(1); [].forEach.call(document.querySelectorAll('.ti-node .ti-sq'), function (s) { s.classList.toggle('ti-sq--steel', Math.random() < 0.4); }); }, leave: function () { burst(0); } });
     wire(document.querySelector('.ti-sponsor'), '.ti-cell', 'is-reading', { flag: true });
     var tridentPanel = document.querySelector('.ps-half--trident');
-    function restartAnim(el) {
-      el.style.animation = 'none';
-      void el.offsetWidth;
-      el.style.animation = '';
-    }
+    var NN_WAVE = 4.4;
+    var NN_COL_STAGGER = 0.52;
     function applyNeuralTiming(panel) {
-      var edges = [].slice.call(panel.querySelectorAll('.nn-edge'));
       var dots = [].slice.call(panel.querySelectorAll('.nn-dot'));
       var live = {};
-      edges.forEach(function (e) {
-        var v = ['', ' nn-edge--b', ' nn-edge--c'][Math.random() * 3 | 0];
-        e.className = 'nn-edge' + v;
-        e.style.setProperty('--d', rnd(0, 1.35).toFixed(2) + 's');
-        e.style.setProperty('--dur', rnd(0.55, 2.05).toFixed(2) + 's');
+      [].forEach.call(panel.querySelectorAll('.nn-edge'), function (e) {
+        var a = dots[e.getAttribute('data-a')];
+        var col = a ? parseInt(a.getAttribute('data-col'), 10) : 0;
+        e.className = 'nn-edge';
+        e.style.setProperty('--d', (col * NN_COL_STAGGER + rnd(0, 0.22)).toFixed(2) + 's');
+        e.style.setProperty('--dur', (NN_WAVE + rnd(-0.15, 0.15)).toFixed(2) + 's');
         live[e.getAttribute('data-a')] = 1;
         live[e.getAttribute('data-b')] = 1;
-        restartAnim(e);
       });
       dots.forEach(function (d) {
         var ix = d.getAttribute('data-ix');
+        var col = parseInt(d.getAttribute('data-col'), 10);
         if (!live[ix]) {
           d.className = 'nn-dot';
           d.style.removeProperty('--d');
           d.style.removeProperty('--dur');
-          d.style.animation = 'none';
           return;
         }
-        var v = ['', ' nn-dot--b', ' nn-dot--c'][Math.random() * 3 | 0];
-        d.className = 'nn-dot nn-dot--live' + v;
-        d.style.setProperty('--d', rnd(0, 1.35).toFixed(2) + 's');
-        d.style.setProperty('--dur', rnd(0.55, 2.05).toFixed(2) + 's');
-        restartAnim(d);
+        d.className = 'nn-dot nn-dot--live';
+        d.style.setProperty('--d', (col * NN_COL_STAGGER + rnd(0, 0.18)).toFixed(2) + 's');
+        d.style.setProperty('--dur', (NN_WAVE + rnd(-0.15, 0.15)).toFixed(2) + 's');
       });
-    }
-    function onTridentCycle() {
-      rebuildNeuralEdges(tridentPanel);
-      applyNeuralTiming(tridentPanel);
-    }
-    function scheduleTridentCycle() {
-      if (!tridentPanel || !tridentPanel._hLive) return;
-      tridentPanel._nnCycleTimer = setTimeout(function () {
-        onTridentCycle();
-        scheduleTridentCycle();
-      }, rnd(850, 2150));
-    }
-    function stopTridentCycle() {
-      if (tridentPanel && tridentPanel._nnCycleTimer) {
-        clearTimeout(tridentPanel._nnCycleTimer);
-        tridentPanel._nnCycleTimer = null;
-      }
     }
     wire(tridentPanel, '.nn-edge, .nn-dot', 'is-live', {
       skipRandTiming: true,
       enter: function () {
-        onTridentCycle();
-        scheduleTridentCycle();
+        rebuildNeuralEdges(tridentPanel);
+        applyNeuralTiming(tridentPanel);
       },
       leave: function () {
-        stopTridentCycle();
         clearNeuralEdges(tridentPanel);
         [].forEach.call(tridentPanel.querySelectorAll('.nn-dot'), function (d) {
           d.className = 'nn-dot';
           d.style.removeProperty('--d');
           d.style.removeProperty('--dur');
-          d.style.animation = '';
         });
       }
     });
@@ -903,7 +878,7 @@
     host.appendChild(svg);
   }
 
-  /* TRIDENT — dots at rest; on engage, short hops (adjacent cols, different rows) */
+  /* TRIDENT — stable cross-row hops; activation sweeps column by column on engage */
   function clearNeuralEdges(panel) {
     var svg = panel && panel.querySelector('.nn');
     if (!svg) return;
@@ -917,8 +892,8 @@
     var dots = [].slice.call(svg.querySelectorAll('.nn-dot'));
     var n = dots.length;
     if (n < 2) return;
-    var want = 5 + (Math.random() * 9 | 0), used = {}, added = 0, tries = 0;
-    while (added < want && tries < want * 16) {
+    var want = 7 + (Math.random() * 2 | 0), used = {}, added = 0, tries = 0;
+    while (added < want && tries < want * 20) {
       tries++;
       var i = Math.random() * n | 0, j = Math.random() * n | 0;
       if (i === j) continue;
@@ -927,8 +902,7 @@
       var d1 = dots[lo], d2 = dots[hi];
       if (d1.getAttribute('data-row') === d2.getAttribute('data-row')) continue;
       var c1 = parseInt(d1.getAttribute('data-col'), 10), c2 = parseInt(d2.getAttribute('data-col'), 10);
-      var colGap = Math.abs(c1 - c2);
-      if (colGap !== 1 && !(colGap === 2 && Math.random() < 0.38)) continue;
+      if (Math.abs(c1 - c2) !== 1) continue;
       used[key] = 1;
       var l = document.createElementNS(NS, 'line');
       l.setAttribute('x1', d1.getAttribute('cx')); l.setAttribute('y1', d1.getAttribute('cy'));
