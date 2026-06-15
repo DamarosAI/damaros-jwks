@@ -639,32 +639,21 @@ function updateFacets(cap, idx) {
 }
 function setCaps(idx) {
   const tgt = capForVantage(idx);
-  if (activeCapEl && activeCapEl !== tgt) { activeCapEl.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on')); activeCapEl.classList.remove('cap--active'); activeCapEl = null; }
+  if (activeCapEl && activeCapEl !== tgt) {
+    activeCapEl.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
+    activeCapEl.classList.remove('cap--active');
+    activeCapEl = null;
+  }
   if (!tgt) return;
+  const intro = window.DamarosCapIntro;
+  const capAnim = !REDUCED && intro;
+  if (!tgt.querySelector('[data-facet]') && capAnim?.prepare) intro.prepare(tgt);
   tgt.classList.add('cap--active');
   activeCapEl = tgt;
   updateFacets(tgt, idx);
-  // simple (non-faceted) caps keep the original cap-line reveal behaviour.
-  // cap-intro.js owns the animated reveal (scramble + staggered float-in); driving
-  // .on here too double-paints — the final copy flashes in, then cap-intro resets
-  // and re-animates it. So only drive .on directly when there is no animated intro
-  // (reduced motion, or the intro script failed to load).
   if (!tgt.querySelector('[data-facet]')) {
-    const intro = window.DamarosCapIntro;
-    const capAnim = !REDUCED && !!intro;
-    if (tgt.classList.contains('cap--end') && !REDUCED) {
-      // closing cap reveals later, on the end-hold timer (via the observer)
-      tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.remove('on'));
-    } else if (capAnim && intro.reveal) {
-      // Drive the animated reveal SYNCHRONOUSLY here, in the same task that adds
-      // .cap--active, so the copy is already in its scramble/hidden state before the
-      // browser paints. Relying on the async MutationObserver instead let a frame
-      // slip through showing the final copy, which then "disappeared" and re-animated.
-      intro.reveal(tgt);
-    } else {
-      // reduced motion, or intro script missing: show immediately, no animation
-      tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.add('on'));
-    }
+    if (capAnim?.reveal) intro.reveal(tgt);
+    else tgt.querySelectorAll('.cap-line').forEach((l) => l.classList.add('on'));
   }
   if (!MOBILE && window.DamarosPanels?.syncHover) requestAnimationFrame(() => window.DamarosPanels.syncHover());
 }
@@ -878,7 +867,7 @@ function restoreDeckFromCache() {
   syncUI();
   if (window.DamarosCapIntro) {
     const capEl = document.querySelector('.cap.cap--active');
-    if (capEl) window.DamarosCapIntro.kick();
+    if (capEl) (window.DamarosCapIntro.revealFast || window.DamarosCapIntro.kick)(capEl);
   }
   if (window.DamarosCapFit) requestAnimationFrame(window.DamarosCapFit);
 }

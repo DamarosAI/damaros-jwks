@@ -21,8 +21,8 @@ body.deck-nav-locked .deck-nav { pointer-events: none; opacity: .55; }
 /* One block per station; only the active one is shown. Positioning + type are
    inherited from journey.css (.cap / .cap--center / .cap--right / .cap-title …). */
 .deck-caps { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
-.deck-caps .cap { opacity: 0; transition: opacity .25s var(--ease); content-visibility: hidden; }
-.deck-caps .cap.cap--active { opacity: 1; content-visibility: visible; }
+.deck-caps .cap { opacity: 0; visibility: hidden; transition: none; content-visibility: hidden; }
+.deck-caps .cap.cap--active { opacity: 1; visibility: visible; content-visibility: visible; }
 .deck-caps .cap.cap--active a, .deck-caps .cap.cap--active button,
 .deck-caps .cap.cap--active .kw, .deck-caps .cap.cap--active .chip,
 .deck-caps .cap.cap--active .gstat,

@@ -85,11 +85,11 @@
     });
   }
 
-  function layoutAll(keepActive) {
+  function layoutAll() {
     caps.forEach(function (cap) {
       if (!cap.querySelector('[data-type]')) return;
       fit(cap);
-      setState(cap, (keepActive && cap.classList.contains('cap--active')) ? 'shown' : 'hidden');
+      if (!cap.classList.contains('cap--active')) setState(cap, 'hidden');
     });
   }
 
@@ -160,8 +160,14 @@
     lines.forEach(function (el) { el.classList.add('on'); });
   }
 
+  function prepare(cap) {
+    if (!cap) return;
+    cap.querySelectorAll('.cap-line').forEach(function (el) { el.classList.remove('on'); });
+    setState(cap, 'hidden');
+    if (active === cap) { active = null; clearTimers(); }
+  }
+
   function activate(cap) {
-    if (active === cap) return;
     if (WARM && !RM) { activateFast(cap); return; }
     active = cap;
     clearTimers();
@@ -228,46 +234,52 @@
   }
 
   function deactivate(cap) {
+    cap.querySelectorAll('.cap-line').forEach(function (el) { el.classList.remove('on'); });
     setState(cap, 'hidden');
     if (active === cap) { active = null; clearTimers(); }
   }
 
+  /* Deactivate only — setCaps + reveal() own activation so copy never paints final state first. */
   var obs = new MutationObserver(function (muts) {
     for (var k = 0; k < muts.length; k++) {
       var cap = muts[k].target;
-      if (cap.classList.contains('cap--active')) activate(cap);
-      else deactivate(cap);
+      if (!cap.classList.contains('cap--active')) deactivate(cap);
     }
   });
   caps.forEach(function (cap) { obs.observe(cap, { attributes: true, attributeFilter: ['class'] }); });
 
   function kick() {
     var current = caps.filter(function (c) { return c.classList.contains('cap--active'); })[0];
-    if (current) { active = null; activate(current); }
+    if (current) activateFast(current);
   }
 
   // initial layout (fallback metrics), refit when fonts land, refit on resize
-  layoutAll(false);
+  layoutAll();
   if (WARM && !RM) {
     caps.forEach(function (cap) { fit(cap); setState(cap, 'shown'); });
     revealUntil = performance.now();
   } else kick();
   if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function () { layoutAll(true); });
+    document.fonts.ready.then(function () { layoutAll(); });
   }
   var rt;
   window.addEventListener('resize', function () {
     clearTimeout(rt);
-    rt = setTimeout(function () { layoutAll(true); }, 160);
+    rt = setTimeout(function () { layoutAll(); }, 160);
   });
 
-  // reveal(cap): synchronous entry point so the caller (space.js) can start the
-  // scramble/float-in in the SAME task that adds .cap--active — before any paint —
-  // instead of relying on the async MutationObserver, which can let one frame slip
-  // through with the copy in its final state (the "shows, disappears, animates" flash).
-  function reveal(cap) { if (cap && active !== cap) activate(cap); }
+  // prepare + activate in one synchronous call — space.js invokes this before paint.
+  function reveal(cap) {
+    if (!cap || RM) return;
+    if (WARM && !RM) { activateFast(cap); return; }
+    prepare(cap);
+    activate(cap);
+  }
 
-  window.DamarosCapIntro = { kick: kick, reveal: reveal, revealDuration: revealDuration, get revealUntil() { return revealUntil; } };
+  window.DamarosCapIntro = {
+    kick: kick, prepare: prepare, reveal: reveal, revealFast: activateFast,
+    revealDuration: revealDuration, get revealUntil() { return revealUntil; }
+  };
 
   window.addEventListener('pageshow', function (e) {
     if (!e.persisted || RM) return;
