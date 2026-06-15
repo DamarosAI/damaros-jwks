@@ -861,13 +861,13 @@
     for (c = 0; c < COLS; c++) for (r = 0; r < 3; r++) {
       var ci = document.createElementNS(NS, 'circle');
       ci.setAttribute('cx', 26 + c * 44); ci.setAttribute('cy', 24 + r * 36);
-      ci.setAttribute('r', '3.52'); ci.setAttribute('class', 'nn-dot'); ci.setAttribute('data-row', r);
+      ci.setAttribute('r', '3.52'); ci.setAttribute('class', 'nn-dot'); ci.setAttribute('data-row', r); ci.setAttribute('data-col', c);
       svg.appendChild(ci);
     }
     host.appendChild(svg);
   }
 
-  /* TRIDENT — dots at rest; on engage, random pairs light green in random order */
+  /* TRIDENT — dots at rest; on engage, short hops (adjacent cols, different rows) */
   function clearNeuralEdges(panel) {
     var svg = panel && panel.querySelector('.nn');
     if (!svg) return;
@@ -882,7 +882,7 @@
     var n = dots.length;
     if (n < 2) return;
     var want = 6 + (Math.random() * 7 | 0), used = {}, added = 0, tries = 0;
-    while (added < want && tries < want * 6) {
+    while (added < want && tries < want * 12) {
       tries++;
       var i = Math.random() * n | 0, j = Math.random() * n | 0;
       if (i === j) continue;
@@ -890,6 +890,8 @@
       if (used[key]) continue;
       var d1 = dots[lo], d2 = dots[hi];
       if (d1.getAttribute('data-row') === d2.getAttribute('data-row')) continue;
+      var c1 = parseInt(d1.getAttribute('data-col'), 10), c2 = parseInt(d2.getAttribute('data-col'), 10);
+      if (Math.abs(c1 - c2) !== 1) continue;
       used[key] = 1;
       var l = document.createElementNS(NS, 'line');
       l.setAttribute('x1', d1.getAttribute('cx')); l.setAttribute('y1', d1.getAttribute('cy'));
