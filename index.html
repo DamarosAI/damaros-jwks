@@ -858,12 +858,12 @@
     var svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'nn'); svg.setAttribute('viewBox', '0 0 272 120'); svg.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.setAttribute('shape-rendering', 'geometricPrecision');
     var pts = [], c, r, COLS = 6;
-    for (c = 0; c < COLS; c++) for (r = 0; r < 3; r++) pts.push({ x: 26 + c * 44, y: 24 + r * 36 });
-    pts.forEach(function (p) {
+    for (c = 0; c < COLS; c++) for (r = 0; r < 3; r++) {
       var ci = document.createElementNS(NS, 'circle');
-      ci.setAttribute('cx', p.x); ci.setAttribute('cy', p.y); ci.setAttribute('r', '3.52'); ci.setAttribute('class', 'nn-dot');
+      ci.setAttribute('cx', 26 + c * 44); ci.setAttribute('cy', 24 + r * 36);
+      ci.setAttribute('r', '3.52'); ci.setAttribute('class', 'nn-dot'); ci.setAttribute('data-row', r);
       svg.appendChild(ci);
-    });
+    }
     host.appendChild(svg);
   }
 
@@ -888,8 +888,9 @@
       if (i === j) continue;
       var lo = i < j ? i : j, hi = i < j ? j : i, key = lo + ',' + hi;
       if (used[key]) continue;
-      used[key] = 1;
       var d1 = dots[lo], d2 = dots[hi];
+      if (d1.getAttribute('data-row') === d2.getAttribute('data-row')) continue;
+      used[key] = 1;
       var l = document.createElementNS(NS, 'line');
       l.setAttribute('x1', d1.getAttribute('cx')); l.setAttribute('y1', d1.getAttribute('cy'));
       l.setAttribute('x2', d2.getAttribute('cx')); l.setAttribute('y2', d2.getAttribute('cy'));
@@ -992,7 +993,7 @@
     var svg = panel && panel.querySelector('.rt-svg');
     if (!svg) return;
     var NS = 'http://www.w3.org/2000/svg';
-    var CX = 50, CY = 50, RMIN = 9, RMAX = 35, MIN_SEP = 11;
+    var CX = 50, CY = 50, RADAR_R = 36, RMAX = RADAR_R * 0.85, RMIN = 9, MIN_SEP = 10;
     clearRouterDots(panel);
     var placed = [], want = 6 + (Math.random() * 4 | 0), added = 0, tries = 0;
     while (added < want && tries < want * 14) {
