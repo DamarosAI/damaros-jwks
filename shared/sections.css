@@ -369,19 +369,19 @@ body.world-ready #world { opacity: 1; }
 .ey-signal--steel { fill: var(--steel); }
 .ps-half--eye.is-live .ey-zone--node { animation: eyZoneGlowNode 3.2s var(--ease) infinite; }
 .ps-half--eye.is-live .ey-zone--sponsor { animation: eyZoneGlowSponsor 3.2s var(--ease) infinite .8s; }
-.ps-half--eye.is-live .ey-signal--lr { animation: eySignalLR var(--dur, 3s) linear infinite var(--d, 0s); }
-.ps-half--eye.is-live .ey-signal--rl { animation: eySignalRL var(--dur, 3s) linear infinite var(--d, 0s); }
+.ps-half--eye.is-live .ey-signal--lr { animation: eySignalLR var(--dur, 2.6s) cubic-bezier(0.42, 0, 0.58, 1) infinite var(--d, 0s); }
+.ps-half--eye.is-live .ey-signal--rl { animation: eySignalRL var(--dur, 2.6s) cubic-bezier(0.42, 0, 0.58, 1) infinite var(--d, 0s); }
 @keyframes eySignalLR {
   0% { transform: translate(0, 0); opacity: 0; }
-  10% { opacity: 1; filter: drop-shadow(0 0 3px rgba(126, 200, 233, .55)); }
-  88% { opacity: .88; filter: none; }
-  100% { transform: translate(84px, var(--ey-y, 0)); opacity: 0; filter: none; }
+  6% { opacity: 1; filter: drop-shadow(0 0 3px rgba(126, 200, 233, .55)); }
+  90% { opacity: .82; filter: none; }
+  100% { transform: translate(var(--ey-span, 84px), var(--ey-y, 0)); opacity: 0; filter: none; }
 }
 @keyframes eySignalRL {
   0% { transform: translate(0, 0); opacity: 0; }
-  10% { opacity: 1; filter: drop-shadow(0 0 3px rgba(169, 192, 214, .55)); }
-  88% { opacity: .88; filter: none; }
-  100% { transform: translate(-84px, var(--ey-y, 0)); opacity: 0; filter: none; }
+  6% { opacity: 1; filter: drop-shadow(0 0 3px rgba(169, 192, 214, .55)); }
+  90% { opacity: .82; filter: none; }
+  100% { transform: translate(calc(var(--ey-span, 84px) * -1), var(--ey-y, 0)); opacity: 0; filter: none; }
 }
 @keyframes eyZoneGlowNode {
   0%, 100% { stroke: rgba(126, 200, 233, .32); }

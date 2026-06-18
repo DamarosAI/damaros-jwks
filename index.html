@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="shared/journey.css?v=reset55">
 <link rel="stylesheet" href="shared/nav-chrome.css?v=1">
 <link rel="stylesheet" href="shared/terrain.css?v=reset50">
-<link rel="stylesheet" href="shared/sections.css?v=53">
+<link rel="stylesheet" href="shared/sections.css?v=54">
 <link rel="stylesheet" href="shared/page-transition.css?v=2">
 <style id="reposition-2026">
 /* ============================================================
@@ -833,10 +833,32 @@
     });
     wire(document.querySelector('.ps-half--luna'), '.luna-ring', 'is-live');
     var eyePanel = document.querySelector('.ps-half--eye');
+    function scheduleEyeReroll(panel) {
+      clearTimeout(panel._eyeRerollT);
+      if (!panel._hLive) return;
+      var maxEnd = 0;
+      [].forEach.call(panel.querySelectorAll('.ey-signal'), function (s) {
+        var d = parseFloat(s.style.getPropertyValue('--d')) || 0;
+        var dur = parseFloat(s.style.getPropertyValue('--dur')) || 3;
+        maxEnd = Math.max(maxEnd, d + dur);
+      });
+      panel._eyeRerollT = setTimeout(function () {
+        if (!panel._hLive) return;
+        rebuildEyeSignals(panel);
+        scheduleEyeReroll(panel);
+      }, Math.max(3200, (maxEnd + 0.2) * 1000));
+    }
     wire(eyePanel, '.ey-signal', 'is-live', {
       skipRandTiming: true,
-      enter: function () { rebuildEyeSignals(eyePanel); },
-      leave: function () { clearEyeSignals(eyePanel); }
+      enter: function () {
+        rebuildEyeSignals(eyePanel);
+        scheduleEyeReroll(eyePanel);
+      },
+      leave: function () {
+        clearTimeout(eyePanel._eyeRerollT);
+        eyePanel._eyeRerollT = null;
+        clearEyeSignals(eyePanel);
+      }
     });
     var sentinelPanel = document.querySelector('.ps-half--sentinel');
     var SENTINEL_SWEEP = 4.8;
@@ -1030,23 +1052,32 @@
     var layer = panel && panel.querySelector('.ey-signals');
     if (!layer) return;
     var NS = 'http://www.w3.org/2000/svg';
+    var EYE = { NODE_X: 38, SPON_X: 122, SPAN: 84, ROWS: [30, 42, 54, 66, 78, 90], STAGGER: 0.4 };
     clearEyeSignals(panel);
-    var want = 7 + (Math.random() * 5 | 0), i;
-    for (i = 0; i < want; i++) {
-      var fromLeft = Math.random() < 0.5;
-      var y = 28 + Math.random() * 64;
-      var x = fromLeft ? 38 : 122;
-      var sky = Math.random() < 0.52;
+    var want = 6 + (Math.random() * 4 | 0);
+    var rows = pick(EYE.ROWS.slice(), Math.min(want, EYE.ROWS.length));
+    while (rows.length < want) rows.push(EYE.ROWS[Math.random() * EYE.ROWS.length | 0]);
+    var dirs = [];
+    for (var d = 0; d < want; d++) dirs.push(Math.random() < 0.5 ? 'lr' : 'rl');
+    var order = [];
+    for (var oi = 0; oi < want; oi++) order.push(oi);
+    order = pick(order, want);
+    order.forEach(function (ix, rank) {
+      var fromLeft = dirs[ix] === 'lr';
+      var y = rows[ix] + rnd(-2.5, 2.5);
+      var x = fromLeft ? EYE.NODE_X : EYE.SPON_X;
+      var sky = Math.random() < 0.5;
       var dot = document.createElementNS(NS, 'circle');
       dot.setAttribute('cx', x.toFixed(1));
       dot.setAttribute('cy', y.toFixed(1));
-      dot.setAttribute('r', rnd(1.9, 2.9).toFixed(2));
+      dot.setAttribute('r', rnd(1.8, 2.8).toFixed(2));
       dot.setAttribute('class', 'ey-signal ' + (sky ? 'ey-signal--sky' : 'ey-signal--steel') + (fromLeft ? ' ey-signal--lr' : ' ey-signal--rl'));
-      dot.style.setProperty('--d', rnd(0, 2.4).toFixed(2) + 's');
-      dot.style.setProperty('--dur', rnd(2.1, 3.9).toFixed(2) + 's');
-      dot.style.setProperty('--ey-y', rnd(-5, 5).toFixed(1) + 'px');
+      dot.style.setProperty('--d', (rank * EYE.STAGGER + rnd(0, 0.14)).toFixed(2) + 's');
+      dot.style.setProperty('--dur', rnd(2.2, 3.0).toFixed(2) + 's');
+      dot.style.setProperty('--ey-y', rnd(-2, 2).toFixed(1) + 'px');
+      dot.style.setProperty('--ey-span', EYE.SPAN + 'px');
       layer.appendChild(dot);
-    }
+    });
   }
 
   /* SENTINEL — opportunity radar: amber sweep, contacts light as the beam passes */
