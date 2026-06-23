@@ -200,6 +200,18 @@ body[data-station="9"]:not(.end-hold) .brand-motif img{
 /* closer: a touch brighter at rest and a stronger peak when the cursor is near */
 @keyframes motifDrift{ 0%,100%{ transform:translateY(0) scale(1); } 50%{ transform:translateY(-1.2%) scale(1.018); } }
 @media (prefers-reduced-motion: reduce){ .brand-motif img{ animation:none; opacity:var(--mo); filter:none; } .j-top .dmx-brand,.brand-motif{ transition:none; } }
+/* mobile: drop the full-viewport drop-shadow on the monogram. Filtering a ~70vh SVG every
+   frame (it drifts + the filter transitions in at the closer) re-rasterizes the whole layer
+   and stutters the WebGL morph into the final section. Opacity alone carries the glow. */
+@media (max-width:820px){
+  .brand-motif img,
+  body.intro-hold .brand-motif img,
+  body.end-hold[data-station="9"] .brand-motif img,
+  body[data-station="0"]:not(.intro-hold) .brand-motif img,
+  body[data-station="9"]:not(.end-hold) .brand-motif img{
+    filter:none !important; transition:opacity .3s var(--ease); will-change:opacity;
+  }
+}
 
 /* micro-interactions — key words gain an underline trace + a small lock-in tick on hover */
 .kw{ position:relative; color:var(--cold); white-space:nowrap; cursor:default; transition:color .15s var(--ease); }

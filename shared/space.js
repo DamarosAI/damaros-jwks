@@ -601,7 +601,6 @@ function starBurst(v) { starBurstT = clamp(v, 0, 1.4); }   // Node hover → a f
 const caps = [...document.querySelectorAll('[data-cap]')];
 const counterEl = document.querySelector('[data-counter]');
 const progEl = document.querySelector('[data-deck-progress]');
-const swipeCountEl = document.querySelector('[data-swipe-count]');   // mobile X / Y card counter above the swipe hint
 const dots = [...document.querySelectorAll('[data-dot]')];   // 5-stop diamond nav (click to skip around)
 
 /* ---- station grouping: 10 engine vantages collapse into 5 navigable stops ----
@@ -693,7 +692,6 @@ function idlePageKey() {
   return cur + ':' + sub;
 }
 function syncFooterChrome() {
-  syncSwipeCount();
   document.body.classList.toggle('deck-on-home', !flying && cur === 0);
   const hideNavCta = !MOBILE && (document.body.classList.contains('end-hold') || cur === 9 || (flying && target === 9));
   document.body.classList.toggle('cta-nav-hidden', hideNavCta);
@@ -713,19 +711,6 @@ function syncFooterChrome() {
   if (!key) { _idleKey = ''; document.body.classList.remove('deck-swipe--pulse'); return; }
   if (key !== _idleKey) { _idleKey = key; _idleSince = performance.now(); document.body.classList.remove('deck-swipe--pulse'); }
   else if (performance.now() - _idleSince >= SWIPE_IDLE_MS) document.body.classList.add('deck-swipe--pulse');
-}
-/* mobile: live "current / total" card count for the active swipe carousel so a swipe never silently skips a card */
-function syncSwipeCount() {
-  if (!swipeCountEl) return;
-  let txt = '';
-  if (MOBILE && !flying && !document.body.classList.contains('intro-hold')) {
-    const hs = activeHSwipeEl();
-    if (hs && hs.children.length > 1) txt = (hswipeNearest(hs) + 1) + ' / ' + hs.children.length;
-  }
-  if (txt) {
-    if (swipeCountEl.textContent !== txt) swipeCountEl.textContent = txt;
-    document.body.classList.add('deck-swipe-count-on');
-  } else document.body.classList.remove('deck-swipe-count-on');
 }
 function syncUI() { const shown = flying ? target : cur; const g = groupOf(shown); if (document.body.dataset.station !== String(shown)) document.body.dataset.station = String(shown); if (counterEl) counterEl.textContent = ('0' + (g + 1)).slice(-2) + ' / ' + ('0' + GROUPS.length).slice(-2); if (progEl) progEl.style.transform = `scaleX(${(g / (GROUPS.length - 1)).toFixed(4)})`; for (let i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === g); const bp = document.querySelector('[data-prev]'), bn = document.querySelector('[data-next]'); if (bp) bp.disabled = navLocked() || (shown <= 0 && !flying); if (bn) bn.disabled = navLocked() || (shown >= NS - 1 && !flying); syncNavLockClass(); syncFooterChrome(); }
 
@@ -925,7 +910,15 @@ function hswipeNearest(el) {
   return idx;
 }
 function hswipeIdx(el) { return el._hswipeCommitted != null ? el._hswipeCommitted : hswipeNearest(el); }
+function updateHswipeCount(el) {
+  if (!el || !el._countEl) return;
+  const n = el.children.length;
+  if (n < 2) { el._countEl.style.display = 'none'; return; }
+  const txt = (hswipeNearest(el) + 1) + ' / ' + n;
+  if (el._countEl.textContent !== txt) el._countEl.textContent = txt;
+}
 function commitHSwipe(el, idx) {
+  updateHswipeCount(el);
   if (el._hswipeCommitted === idx) return;
   el._hswipeCommitted = idx;
   const nav = el.nextElementSibling;
@@ -989,10 +982,16 @@ function wireHSwipes() {
     if (split._hswipeWired || split.children.length < 2) return;
     split._hswipeWired = true;
     if (split._hswipeCommitted == null) split._hswipeCommitted = 0;
+    if (!split._countEl) {
+      const c = document.createElement('div');
+      c.className = 'hswipe-count'; c.setAttribute('aria-hidden', 'true');
+      split.insertAdjacentElement('afterend', c);
+      split._countEl = c;
+    }
     commitHSwipe(split, split._hswipeCommitted);
     const settle = () => settleHSwipe(split);
     split.addEventListener('scrollend', settle, { passive: true });
-    split.addEventListener('scroll', () => { clearTimeout(split._settleT); split._settleT = setTimeout(settle, MOBILE ? 90 : 140); }, { passive: true });
+    split.addEventListener('scroll', () => { updateHswipeCount(split); clearTimeout(split._settleT); split._settleT = setTimeout(settle, MOBILE ? 90 : 140); }, { passive: true });
   });
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireHSwipes);
