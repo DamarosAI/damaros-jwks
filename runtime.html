@@ -122,7 +122,7 @@
           <li>Model adjudication of patient status</li>
           <li>Model-generated source of truth</li>
           <li>Ungoverned PHI serialization</li>
-          <li>Sponsor-facing raw patient evidence by default</li>
+          <li>Network- or sponsor-facing raw patient evidence by default</li>
           <li>Autonomous referral or protocol deviation classification without human review</li>
         </ul>
       </div>
@@ -156,13 +156,13 @@
           <li>Site-approved evidence sources and local users/roles</li>
           <li>REVIEW adjudication and clinician confirmation</li>
           <li>Local evidence visibility and artifact release</li>
-          <li>Sponsor-safe signal emission</li>
+          <li>Network-safe signal emission</li>
         </ul>
       </div>
       <div class="dual-card deny">
         <h3>Node does not</h3>
         <ul class="bullets">
-          <li>Turn the site into a sponsor-controlled endpoint</li>
+          <li>Turn the site into a network-controlled endpoint</li>
           <li>Expose raw chart browsing by default</li>
           <li>Replace clinician judgment or auto-refer from engine output</li>
           <li>Send PHI to LLMs on the eligibility path</li>
@@ -174,17 +174,18 @@
 
   <section class="doc">
     <div class="sec-label"><span class="sl-n">07</span><span class="sl-k">CONSOLE</span></div>
-    <h2 class="sec-head">Console boundary, sponsor command without patient-data exposure</h2>
-    <div class="body"><p><strong>Console</strong> receives permissioned, de-identified execution signals, not raw PHI by default.</p></div>
+    <h2 class="sec-head">Console boundary, network command without patient-data exposure</h2>
+    <div class="body"><p><strong>Console</strong> gives a site network an operating picture across its clinics. It receives permissioned, de-identified execution signals, not raw PHI by default.</p></div>
     <ul class="bullets" style="margin-top:.6rem">
-      <li>Site readiness, protocol deployment state, evidence gaps, REVIEW burden</li>
+      <li>Clinic readiness, protocol deployment state, evidence gaps, REVIEW burden</li>
       <li>Criterion friction, screening throughput, Replay completeness, artifact status</li>
-      <li>Amendment pressure and cross-node execution patterns</li>
+      <li>Amendment pressure and cross-clinic execution patterns</li>
     </ul>
     <table class="kv" style="margin-top:1rem">
-      <tr><td>SPONSOR_VISIBILITY</td><td>Permissioned, de-identified by default, trial-scoped, site-governed where required, artifact-gated where required, contract-bound.</td></tr>
+      <tr><td>NETWORK_VISIBILITY</td><td>Permissioned, de-identified by default, trial-scoped, site-governed where required, artifact-gated where required, contract-bound. The same machinery later produces a sponsor-safe proof package, downstream.</td></tr>
     </table>
-    <div class="callout em"><strong>The line:</strong> Console gives sponsors command over execution, not ownership of the patient chart.</div>
+    <div class="callout em"><strong>The line:</strong> Console gives a site network command over execution across its clinics, not ownership of the patient chart.</div>
+    <div class="callout"><strong>Canon:</strong> Node runs the clinic. Console runs the network. Replay proves the work.</div>
   </section>
 
   <section class="doc">
@@ -195,12 +196,12 @@
       <article class="scard">
         <span class="sc-tag">Model A</span>
         <h3>Damaros Cloud tenant</h3>
-        <p>For early pilots, sponsor demos, retrospective validation, and deployments where Damaros-hosted execution is approved. Isolated tenant, tenant-scoped run store, Node and Console access, Trident compile runs, Luna task governance, Replay bundles, structured audit logs, integration configuration, environment separation.</p>
+        <p>For early pilots, network and sponsor demos, retrospective validation, and deployments where Damaros-hosted execution is approved. Isolated tenant, tenant-scoped run store, Node and Console access, Trident compile runs, Luna task governance, Replay bundles, structured audit logs, integration configuration, environment separation.</p>
       </article>
       <article class="scard">
         <span class="sc-tag">Model B</span>
         <h3>Dedicated customer cloud</h3>
-        <p>Damaros deployed into the customer’s AWS, Azure, or GCP account. Best for health systems, large sponsor networks, academic medical centers, strict infrastructure review, expanded validation, federal-adjacent posture. Customer controls VPC, identity provider, key management, logging, egress, backup, retention, and security monitoring.</p>
+        <p>Damaros deployed into the customer’s AWS, Azure, or GCP account. Best for health systems, large site and sponsor networks, academic medical centers, strict infrastructure review, expanded validation, federal-adjacent posture. Customer controls VPC, identity provider, key management, logging, egress, backup, retention, and security monitoring.</p>
       </article>
       <article class="scard">
         <span class="sc-tag">Model C</span>

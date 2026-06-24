@@ -41,7 +41,7 @@
 <main class="docs">
   <div class="d-eyebrow">Epic / FHIR / JWKS</div>
   <h1 class="d-title">Enterprise integration reference</h1>
-  <p class="d-lead"><b>Read-only FHIR for governed trial execution.</b> How Damaros clinic nodes connect to Epic through SMART Backend Services: JWT assertions, JWKS discovery, cohort-scoped evidence, deterministic screening, and replay lineage. For integration teams, security reviewers, and sponsor diligence.</p>
+  <p class="d-lead"><b>Read-only FHIR for governed trial execution.</b> How Damaros clinic nodes connect to Epic through SMART Backend Services: JWT assertions, JWKS discovery, cohort-scoped evidence, deterministic screening, and replay lineage. For integration teams, security reviewers, site-network operators, and sponsor diligence.</p>
 
   <a class="cross-link" href="../runtime.html">Damaros Runtime <span aria-hidden="true">&rarr;</span></a>
 
@@ -241,7 +241,7 @@ grant_type=client_credentials
       <li><strong>PHI never reaches an LLM.</strong> Criterion PASS / REVIEW / FAIL comes only from the deterministic engine on ingested FHIR. No patient identifiers or cohort-linked fields are serialized into any optional external request path.</li>
       <li>Helm deployments ship deny-by-default API egress <code>NetworkPolicy</code> with explicit CIDR allowlists for Epic FHIR, OIDC, in-cluster Postgres/Redis, and DNS.</li>
       <li>Screening outputs are criterion-level PASS, REVIEW, or FAIL with evidence references, never an ungrounded generative verdict.</li>
-      <li>Sponsor and CRO visibility stays permissioned and de-identified by default. See <a href="../runtime.html">Damaros Runtime</a> for the full visibility model.</li>
+      <li>Network, sponsor, and CRO visibility stays permissioned and de-identified by default. See <a href="../runtime.html">Damaros Runtime</a> for the full visibility model.</li>
     </ul>
   </section>
 
@@ -290,7 +290,7 @@ grant_type=client_credentials
     <div class="sec-label"><span class="sl-n">12</span><span class="sl-k">VALIDATION CUTOVER</span></div>
     <h2 class="sec-head">Validation to production cutover</h2>
     <div class="body">
-      <p>Validation and production share the same eligibility engine, protocol compiler, and replay model. Sandbox FHIR credentials, JWKS URLs, and signing keys stay isolated from production. Retrospective validation runs produce replay artifacts that carry the same structure sponsors expect in live operations.</p>
+      <p>Validation and production share the same eligibility engine, protocol compiler, and replay model. Sandbox FHIR credentials, JWKS URLs, and signing keys stay isolated from production. Retrospective validation runs produce replay artifacts that carry the same structure networks and sponsors expect in live operations.</p>
       <p>Cutover is a credential and environment swap, not a workflow rebuild. Integration teams verify token exchange, cohort resolution, scope coverage, and replay completeness in sandbox before production JWKS and client IDs are activated.</p>
     </div>
     <ul class="bullets">

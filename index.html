@@ -1015,7 +1015,11 @@
     host.appendChild(svg);
   }
 
-  /* EYE — map view: Node + Console vertical zones, sky/stone signals cross the field */
+  /* EYE — map view: Node + Console vertical zones, sky/stone signals cross the field.
+     TODO(persona-neutral): the right-hand zone is internally keyed `sponsor` (ey-zone--sponsor,
+     var sponsor, .ti-sponsor) but now represents the Network Console command surface. These are
+     non-visible internal identifiers; defer the rename to the persona-neutral pass tracked in
+     docs/ADR-0001-console-buyer-neutral.md to avoid CSS/JS churn. */
   function buildEye(host) {
     var NS = 'http://www.w3.org/2000/svg';
     var svg = document.createElementNS(NS, 'svg');
