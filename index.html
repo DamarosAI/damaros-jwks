@@ -167,7 +167,6 @@
   <section id="instrument" data-screen-label="Live instrument" style="position:relative;padding:0 clamp(12px,2.5vw,28px) clamp(40px,6vw,72px);background:#ffffff;">
     <p style="max-width:920px;margin:0 auto 10px;text-align:center;font-size:13px;line-height:1.55;color:var(--ink-dim);">A demonstration of the Damaros<sup style="font-size:0.55em;letter-spacing:0;">™</sup> runtime on synthetic FHIR data.</p>
     <div style="max-width:920px;margin:0 auto 16px;text-align:center;">
-      <div style="font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-steel);margin-bottom:10px;">Steps &middot; follow in order</div>
       <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px;align-items:center;">
         <sc-for list="{{ guide.steps }}" as="g" hint-placeholder-count="5"><span style="{{ g.style }}">{{ g.label }}</span></sc-for>
       </div>
