@@ -63,13 +63,68 @@
     @keyframes rpPulse{0%,100%{opacity:0.28;}45%{opacity:1;}}
     @keyframes rpSweep{0%{left:-32%;}100%{left:100%;}}
     @keyframes chevBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
-    #nodeStage:fullscreen{background:#0a0e13;display:flex;align-items:center;justify-content:center;overflow:auto;padding:24px;}
-    #nodeStage:-webkit-full-screen{background:#0a0e13;display:flex;align-items:center;justify-content:center;overflow:auto;padding:24px;}
+    body{overflow-x:clip;}
+    .dm-site{--dm-ref:1920px;}
+    @media (min-width:1024px) and (max-width:1919px){
+      .dm-site section[data-screen-label="Hero"]{
+        min-height:max(520px,calc(100vh - 62px)) !important;
+        padding-top:clamp(52px,calc(5vw + 24px),96px) !important;
+        padding-bottom:clamp(60px,calc(5.4vw + 24px),104px) !important;
+      }
+      .dm-site section[data-screen-label="Hero"] h1{
+        font-size:clamp(2.35rem,calc(4.6rem * 100vw / var(--dm-ref)),4.6rem) !important;
+      }
+      .dm-site #nodeStage > div{
+        min-width:0 !important;
+        width:min(1160px,100%) !important;
+      }
+      .dm-site #nodeStage [style*="height:692px"],
+      .dm-site #nodeStage div[style*="height:692px"]{
+        height:clamp(520px,calc(692px * 100vw / var(--dm-ref)),692px) !important;
+      }
+      .dm-site #nodeStage nav[style*="width:228px"]{
+        width:clamp(196px,calc(228px * 100vw / var(--dm-ref)),228px) !important;
+      }
+      .dm-site #spine [style*="grid-template-columns:repeat(5"]{
+        gap:clamp(8px,calc(12px * 100vw / var(--dm-ref)),12px) !important;
+      }
+      .dm-site #spine [style*="min-height:218px"]{
+        min-height:clamp(170px,calc(218px * 100vw / var(--dm-ref)),218px) !important;
+        padding:clamp(18px,calc(24px * 100vw / var(--dm-ref)),24px) clamp(16px,calc(22px * 100vw / var(--dm-ref)),22px) !important;
+      }
+      .dm-site #spine [style*="font-size:1.35rem"]{
+        font-size:clamp(1.15rem,calc(1.35rem * 100vw / var(--dm-ref)),1.35rem) !important;
+      }
+      .dm-site #pilot [style*="grid-template-columns:repeat(5"]{
+        gap:clamp(10px,calc(14px * 100vw / var(--dm-ref)),14px) !important;
+      }
+      .dm-site #spine > div > div:first-child p[style*="white-space:nowrap"]{
+        white-space:normal !important;
+      }
+      .dm-site section[id]:not(#instrument){
+        padding-left:clamp(20px,calc(40px * 100vw / var(--dm-ref)),40px) !important;
+        padding-right:clamp(20px,calc(40px * 100vw / var(--dm-ref)),40px) !important;
+      }
+      .dm-site #instrument{
+        padding-left:clamp(12px,calc(28px * 100vw / var(--dm-ref)),28px) !important;
+        padding-right:clamp(12px,calc(28px * 100vw / var(--dm-ref)),28px) !important;
+      }
+      .dm-site #problem [style*="minmax(330px"]{
+        grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)) !important;
+        gap:clamp(24px,calc(68px * 100vw / var(--dm-ref)),68px) !important;
+      }
+      .dm-site #output [style*="grid-template-columns:minmax(0,0.6fr)"]{
+        gap:clamp(14px,calc(32px * 100vw / var(--dm-ref)),32px) !important;
+      }
+      .dm-site h2[style*="clamp(2rem"]{
+        font-size:clamp(1.85rem,calc(3.1rem * 100vw / var(--dm-ref)),3.1rem) !important;
+      }
+    }
     @media (prefers-reduced-motion:reduce){[data-anim]{animation:none !important;}}
   </style>
 </helmet>
 
-<div style="min-height:100vh;background:#ffffff;overflow-x:hidden;">
+<div class="dm-site" style="min-height:100vh;background:#ffffff;overflow-x:hidden;">
 
   <!-- ============ NAV ============ -->
   <header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:18px;height:62px;padding:0 clamp(18px,5vw,40px);background:rgba(255,255,255,0.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);border-bottom:1px solid rgba(31,45,61,0.10);">
@@ -96,7 +151,7 @@
       <div style="display:flex;justify-content:center;margin-top:30px;">
         <a href="mailto:anirudh@damaros.ai" style="display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-family:var(--font-display);font-weight:500;letter-spacing:0.03em;text-transform:uppercase;color:#ffffff;background:linear-gradient(180deg,#3d72a8,#2f6193);border:1px solid color-mix(in srgb,#2f6193 50%,rgba(255,255,255,0.22));box-shadow:inset 0 1px 0 rgba(255,255,255,0.2), 0 8px 20px rgba(20,46,82,0.16);white-space:nowrap;height:48px;padding:0 22px;font-size:13px;">Start a pilot</a>
       </div>
-      <button onClick="{{ onFull }}" aria-label="Open the live demo full screen" style="margin:46px auto 0;display:flex;flex-direction:column;align-items:center;gap:7px;background:transparent;border:none;cursor:pointer;color:var(--ink-dim);">
+      <button onClick="{{ onDemo }}" aria-label="Scroll to the live demo" style="margin:46px auto 0;display:flex;flex-direction:column;align-items:center;gap:7px;background:transparent;border:none;cursor:pointer;color:var(--ink-dim);">
         <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;">See the live demo</span>
         <svg data-anim="" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="animation:chevBounce 2s ease-in-out infinite;"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
@@ -105,13 +160,9 @@
 
   <!-- ============ INSTRUMENT · clean Node UI ============ -->
   <section id="instrument" data-screen-label="Live instrument" style="position:relative;padding:0 clamp(12px,2.5vw,28px) clamp(40px,6vw,72px);background:#ffffff;">
-    <button onClick="{{ onFull }}" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 18px;color:var(--ink-dim);background:transparent;border:none;cursor:pointer;">
-      
-      
-    </button>
 
     <div id="nodeStage" class="dmScrollX" style="overflow-x:auto;overflow-y:hidden;padding-bottom:8px;">
-      <div style="width:min(1160px,100%);min-width:940px;margin:0 auto;border-radius:12px;border:1px solid rgba(31,45,61,0.14);background:linear-gradient(180deg,#ffffff,#f3f6f9);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 100px rgba(20,40,70,0.13);overflow:hidden;">
+      <div style="width:min(1160px,100%);min-width:0;margin:0 auto;border-radius:12px;border:1px solid rgba(31,45,61,0.14);background:linear-gradient(180deg,#ffffff,#f3f6f9);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 100px rgba(20,40,70,0.13);overflow:hidden;">
         <!-- macOS title bar -->
         <div style="position:relative;display:flex;align-items:center;height:46px;padding:0 18px;border-bottom:1px solid rgba(31,45,61,0.07);background:linear-gradient(180deg,rgba(31,45,61,0.05),rgba(31,45,61,0.015));">
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
@@ -127,7 +178,7 @@
           <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(31,45,61,0.05);flex-shrink:0;"><span style="width:6px;height:6px;border-radius:50%;background:#2e9e6b;box-shadow:0 0 8px #2e9e6b;"></span><span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-quiet);">Live · synthetic FHIR</span></span>
         </div>
         <!-- body -->
-        <div style="display:flex;height:692px;">
+        <div style="display:flex;height:clamp(520px,36.04vw,692px);">
           <!-- LEFT RAIL -->
           <nav style="width:228px;flex-shrink:0;border-right:1px solid rgba(31,45,61,0.07);padding:16px 12px;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(31,45,61,0.035),rgba(31,45,61,0.01));">
             <div style="font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-dim);padding:4px 10px 10px;">Execution spine</div>
@@ -145,7 +196,7 @@
           </nav>
 
           <!-- CONTENT -->
-          <div style="flex:1;min-width:0;height:692px;overflow:hidden;">
+          <div style="flex:1;min-width:0;height:clamp(520px,36.04vw,692px);overflow:hidden;">
 
             <!-- PROTOCOL -->
             <sc-if value="{{ isProtocol }}" hint-placeholder-val="{{ true }}">
@@ -203,7 +254,7 @@
 
             <!-- EVIDENCE · workbench -->
             <sc-if value="{{ isEvidence }}">
-              <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
+              <div style="height:clamp(520px,36.04vw,692px);overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
                 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
                   <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Evidence</span>
                   <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">how the sponsor packet maps onto site evidence · PHI-bounded · 09:43</span>
@@ -259,7 +310,7 @@
 
             <!-- SCREENING · cohort board -->
             <sc-if value="{{ isScreening }}">
-              <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
+              <div style="height:clamp(520px,36.04vw,692px);overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
                 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px;">
                   <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Screening</span>
                   <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">deterministic screening · Protocol v2.1</span>
@@ -383,7 +434,7 @@
 
             <!-- REPLAY -->
             <sc-if value="{{ isReplay }}">
-              <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:20px 26px 22px;">
+              <div style="height:clamp(520px,36.04vw,692px);overflow:hidden;display:flex;flex-direction:column;padding:20px 26px 22px;">
                 <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
                   <div style="min-width:0;">
                     <div style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);margin-bottom:4px;">Replay · Audit reconstruction</div>
@@ -986,7 +1037,7 @@ class Component extends DCLogic {
       segFailStyle: { width: Math.round(scSeg.fail / scSeg.evaluated * 100) + "%", height: "100%", background: "rgba(124,138,153,0.5)" },
       rp: rp,
       goResolve: () => this.setStep(3),
-      onFull: () => { const el = document.getElementById("nodeStage"); if (!el) return; const req = el.requestFullscreen || el.webkitRequestFullscreen; const fb = () => { const r = el.getBoundingClientRect(); const top = r.top + window.pageYOffset - Math.max(8, (window.innerHeight - r.height) / 2); window.scrollTo({ top: top, behavior: "smooth" }); }; if (req) { try { const pr = req.call(el); if (pr && pr.catch) pr.catch(fb); } catch (e) { fb(); } } else { fb(); } },
+      onDemo: () => this.scrollTo("instrument"),
       onPilot: () => this.scrollTo("pilot"),
       onRunModel: () => this.scrollTo("spine"),
       showMarquee: this.props.showMarquee !== false
