@@ -63,6 +63,9 @@
     @keyframes rpPulse{0%,100%{opacity:0.28;}45%{opacity:1;}}
     @keyframes rpSweep{0%{left:-32%;}100%{left:100%;}}
     @keyframes chevBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+    #instrument{position:relative;}
+    #instrument::after{content:"";position:absolute;left:0;right:0;bottom:0;height:72px;background:linear-gradient(180deg,rgba(255,255,255,0),#ffffff 88%);pointer-events:none;}
+    .dm-scroll-more{position:relative;z-index:1;}
     body{overflow-x:clip;}
     .dm-site{--dm-ref:1920px;}
     @media (min-width:1024px) and (max-width:1919px){
@@ -489,11 +492,18 @@
       </div>
     </div>
     <p style="max-width:920px;margin:18px auto 0;text-align:center;font-size:13px;line-height:1.55;color:var(--ink-dim);">A demonstration of the Damaros<sup style="font-size:0.55em;letter-spacing:0;">™</sup> runtime on synthetic FHIR data. Walk the spine, then pick a case and sign the decision in Resolve.</p>
+    <div class="dm-scroll-more" style="margin:36px auto 0;display:flex;flex-direction:column;align-items:center;gap:8px;padding-bottom:4px;">
+      <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-dim);">Demo is interactive · the page continues below</span>
+      <button onClick="{{ onMore }}" aria-label="Scroll to learn more about Damaros" style="display:flex;flex-direction:column;align-items:center;gap:7px;background:transparent;border:none;cursor:pointer;color:var(--ink-steel);padding:6px 10px;">
+        <span style="font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">Keep scrolling</span>
+        <svg data-anim="" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="animation:chevBounce 2s ease-in-out infinite;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+    </div>
   </section>
 
   <!-- ============ INTEGRATIONS · logo wall ============ -->
   <sc-if value="{{ showMarquee }}" hint-placeholder-val="{{ true }}">
-  <section data-screen-label="Integrations" style="position:relative;padding:clamp(40px,5vw,56px) clamp(20px,5vw,40px);border-top:1px solid rgba(31,45,61,0.08);border-bottom:1px solid rgba(31,45,61,0.08);background:#f3f6f9;">
+  <section id="integrations" data-screen-label="Integrations" style="position:relative;padding:clamp(40px,5vw,56px) clamp(20px,5vw,40px);border-top:1px solid rgba(31,45,61,0.08);border-bottom:1px solid rgba(31,45,61,0.08);background:#f3f6f9;">
     <div style="max-width:1000px;margin:0 auto;text-align:center;">
       <div style="font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-steel);margin-bottom:14px;">Works with your existing systems</div>
       <h2 style="margin:0 0 38px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,2.8vw,2.1rem);line-height:1.08;letter-spacing:-0.02em;">Not a replacement. <span style="color:var(--ink-steel);">The platform above the stack you already run.</span></h2>
@@ -1038,6 +1048,7 @@ class Component extends DCLogic {
       rp: rp,
       goResolve: () => this.setStep(3),
       onDemo: () => this.scrollTo("instrument"),
+      onMore: () => this.scrollTo("integrations"),
       onPilot: () => this.scrollTo("pilot"),
       onRunModel: () => this.scrollTo("spine"),
       showMarquee: this.props.showMarquee !== false
