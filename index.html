@@ -52,7 +52,11 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
       --surface-highlight:rgba(20,33,48,0.06);
       --glass-ring:inset 0 0 0 1px rgba(20,33,48,0.12);
     }
-    html{scroll-behavior:smooth;}
+    html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:62px;}
+    .dm-site section[data-screen-label]{scroll-snap-align:start;scroll-snap-stop:always;}
+    /* integrations + problem read as one continuous stop: anchor on integrations, let problem flow */
+    .dm-site section#problem{scroll-snap-align:none;scroll-snap-stop:normal;}
+    @media (max-width:760px),(pointer:coarse){html{scroll-snap-type:none;}}
     body{margin:0;background:#ffffff;color:var(--ink-cold);font-family:var(--font-body);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
     .eyeScroll{scrollbar-width:thin;scrollbar-color:rgba(31,45,61,0.28) transparent;}
     .eyeScroll::-webkit-scrollbar{width:8px;height:8px;}
@@ -627,7 +631,6 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
         </div>
       </div>
     </div>
-    <div style="text-align:center;margin:clamp(26px,3.5vw,40px) 0 0;"><button onClick="{{ onToProblem }}" aria-label="Scroll to the next section" style="display:inline-flex;justify-content:center;align-items:center;background:transparent;border:none;cursor:pointer;color:var(--ink-steel);padding:4px 12px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="animation:chevBounce 1.6s ease-in-out infinite;"><polyline points="6 9 12 15 18 9"></polyline></svg></button></div>
   </section>
   </sc-if>
 
@@ -1309,7 +1312,6 @@ class Component extends DCLogic {
       onMore: () => this.scrollTo("integrations", -10),
       onPilot: () => this.scrollTo("pilot"),
       onRunModel: () => this.scrollTo("spine"),
-      onToProblem: () => this.scrollCenter("problem"),
       onToSpine: () => this.scrollCenter("spine"),
       onToOutput: () => this.scrollCenter("output"),
       onToNode: () => this.scrollCenter("node"),
