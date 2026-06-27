@@ -74,7 +74,6 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
     @keyframes chevBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
     #instrument{position:relative;}
     #instrument::after{content:"";position:absolute;left:0;right:0;bottom:0;height:72px;background:linear-gradient(180deg,rgba(255,255,255,0),#ffffff 88%);pointer-events:none;}
-    .dm-site #nodeStage [style*="36.04vw"]{height:clamp(480px,min(36.04vw,82vh),692px) !important;}
     .dm-scroll-more{position:relative;z-index:1;}
     body{overflow-x:clip;}
     .dm-site{--dm-ref:1920px;}
@@ -87,10 +86,6 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
       .dm-site section[data-screen-label="Hero"] h1{
         font-size:clamp(2.35rem,calc(4.6rem * 100vw / var(--dm-ref)),4.6rem) !important;
       }
-      .dm-site #nodeStage > div{
-        min-width:0 !important;
-        width:min(clamp(880px,calc(1160px * 100vw / var(--dm-ref)),1160px),100%) !important;
-      }
       .dm-site #instrument > div[style*="max-width:920px"]{
         max-width:clamp(700px,calc(920px * 100vw / var(--dm-ref)),920px) !important;
       }
@@ -102,13 +97,6 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
       }
       .dm-site #replay [style*="max-width:860px"]{
         max-width:clamp(645px,calc(860px * 100vw / var(--dm-ref)),860px) !important;
-      }
-      .dm-site #nodeStage [style*="height:692px"],
-      .dm-site #nodeStage div[style*="height:692px"]{
-        height:clamp(520px,calc(692px * 100vw / var(--dm-ref)),692px) !important;
-      }
-      .dm-site #nodeStage nav[style*="width:228px"]{
-        width:clamp(196px,calc(228px * 100vw / var(--dm-ref)),228px) !important;
       }
       .dm-site #spine [style*="grid-template-columns:repeat(5"]{
         gap:clamp(8px,calc(12px * 100vw / var(--dm-ref)),12px) !important;
@@ -170,9 +158,6 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
         padding-left:10px !important;
         padding-right:10px !important;
       }
-      .dm-site #nodeStage nav[style*="width:228px"]{
-        width:168px !important;
-      }
       .dm-site #problem [style*="minmax(330px"],
       .dm-site #node [style*="minmax(300px"]{
         grid-template-columns:1fr !important;
@@ -220,8 +205,9 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
   <section id="instrument" data-screen-label="Live instrument" style="position:relative;padding:0 clamp(12px,2.5vw,28px) clamp(40px,6vw,72px);background:#ffffff;">
     <p style="max-width:920px;margin:0 auto 16px;text-align:center;font-size:13px;line-height:1.55;color:var(--ink-dim);">A demonstration of the Damaros<sup style="font-size:0.55em;letter-spacing:0;">™</sup> runtime on synthetic FHIR data. Click on the pulsing box to walk through it.</p>
 
-    <div id="nodeStage" class="dmScrollX" style="overflow-x:auto;overflow-y:hidden;padding-bottom:8px;">
-      <div style="width:min(1160px,100%);min-width:0;margin:0 auto;border-radius:12px;border:1px solid rgba(31,45,61,0.14);background:linear-gradient(180deg,#ffffff,#f3f6f9);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 100px rgba(20,40,70,0.13);overflow:hidden;">
+    <div id="nodeStage" style="display:flex;justify-content:center;align-items:flex-start;overflow:hidden;">
+      <div id="nodeScaleWrap" style="width:1160px;flex:0 0 1160px;transform-origin:top center;">
+      <div style="width:1160px;margin:0;border-radius:12px;border:1px solid rgba(31,45,61,0.14);background:linear-gradient(180deg,#ffffff,#f3f6f9);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 100px rgba(20,40,70,0.13);overflow:hidden;">
         <!-- macOS title bar -->
         <div style="position:relative;display:flex;align-items:center;height:46px;padding:0 18px;border-bottom:1px solid rgba(31,45,61,0.07);background:linear-gradient(180deg,rgba(31,45,61,0.05),rgba(31,45,61,0.015));">
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
@@ -237,7 +223,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
           <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(31,45,61,0.05);flex-shrink:0;"><span style="width:6px;height:6px;border-radius:50%;background:#2e9e6b;box-shadow:0 0 8px #2e9e6b;"></span><span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-quiet);">Live · synthetic FHIR</span></span>
         </div>
         <!-- body -->
-        <div style="display:flex;height:clamp(520px,36.04vw,692px);">
+        <div style="display:flex;height:692px;">
           <!-- LEFT RAIL -->
           <nav style="width:228px;flex-shrink:0;border-right:1px solid rgba(31,45,61,0.07);padding:16px 12px;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(31,45,61,0.035),rgba(31,45,61,0.01));">
             <div style="font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-dim);padding:4px 10px 10px;">Execution spine</div>
@@ -255,7 +241,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
           </nav>
 
           <!-- CONTENT -->
-          <div style="flex:1;min-width:0;height:clamp(520px,36.04vw,692px);overflow:hidden;">
+          <div style="flex:1;min-width:0;height:692px;overflow:hidden;">
 
             <!-- PROTOCOL -->
             <sc-if value="{{ isProtocol }}" hint-placeholder-val="{{ true }}">
@@ -313,7 +299,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
 
             <!-- EVIDENCE · workbench -->
             <sc-if value="{{ isEvidence }}">
-              <div style="height:clamp(520px,36.04vw,692px);overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
+              <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
                 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
                   <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Evidence</span>
                   <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">how the sponsor packet maps onto site evidence · PHI-bounded · 09:43</span>
@@ -378,7 +364,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
 
             <!-- SCREENING · cohort board -->
             <sc-if value="{{ isScreening }}">
-              <div style="height:clamp(520px,36.04vw,692px);overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
+              <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
                 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px;">
                   <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Screening</span>
                   <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">deterministic screening · Protocol v2.1</span>
@@ -502,7 +488,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
 
             <!-- REPLAY -->
             <sc-if value="{{ isReplay }}">
-              <div style="height:clamp(520px,36.04vw,692px);overflow:hidden;display:flex;flex-direction:column;padding:20px 26px 22px;">
+              <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:20px 26px 22px;">
                 <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;">
                   <div style="min-width:0;">
                     <div style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);margin-bottom:4px;">Replay · Audit reconstruction</div>
@@ -553,6 +539,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
 
           </div>
         </div>
+      </div>
       </div>
     </div>
     <button onClick="{{ onMore }}" aria-label="Scroll to learn more about Damaros" class="dm-scroll-more" style="margin:4px auto 0;display:flex;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--ink-steel);padding:2px 8px;position:relative;z-index:3;">
@@ -878,6 +865,20 @@ class Component extends DCLogic {
   };
   stopAuto = () => { this.__autoRunning = false; if (this.__autoT) { clearTimeout(this.__autoT); this.__autoT = null; } };
 
+  layoutNode = () => {
+    const stage = document.getElementById("nodeStage");
+    const wrap = document.getElementById("nodeScaleWrap");
+    if (!stage || !wrap) return;
+    const REFW = 1160, REFH = 740;
+    const availW = stage.clientWidth;
+    const availH = window.innerHeight - 200;
+    let s = Math.min(availW / REFW, availH / REFH, 1);
+    if (!isFinite(s) || s <= 0) s = 1;
+    s = Math.max(s, 0.34);
+    wrap.style.transform = "scale(" + s + ")";
+    stage.style.height = Math.ceil(REFH * s) + "px";
+  };
+
   componentDidMount() {
     window.scrollTo(0, 0);
     this.__onPageShow = (e) => {
@@ -885,6 +886,12 @@ class Component extends DCLogic {
       if (e.persisted) this.resetDemo();
     };
     window.addEventListener("pageshow", this.__onPageShow);
+
+    this.layoutNode();
+    [60, 200, 600].forEach((d) => setTimeout(this.layoutNode, d));
+    this.__onResize = () => this.layoutNode();
+    window.addEventListener("resize", this.__onResize);
+    window.addEventListener("orientationchange", this.__onResize);
 
     if (this.isSmallViewport()) {
       const el = document.getElementById("instrument");
@@ -900,6 +907,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() {
     if (this.__onPageShow) window.removeEventListener("pageshow", this.__onPageShow);
+    if (this.__onResize) { window.removeEventListener("resize", this.__onResize); window.removeEventListener("orientationchange", this.__onResize); }
     this.stopAuto();
     if (this.__io) { this.__io.disconnect(); this.__io = null; }
   }
