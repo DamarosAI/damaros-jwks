@@ -166,7 +166,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
 
     /* ---- integration logo carousel + input-card baseline ---- */
     .dm-logo-track{display:contents;}
-    .dm-logo-dupe{display:none;}
+    .dm-logo-dupe{display:none !important;}
     .dm-input-cards{display:flex;flex-direction:column;gap:12px;}
     .dm-spine-indicator{display:none;}
     .dm-pilot-indicator{display:none;}
@@ -214,6 +214,10 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
       .dm-site #pilot .dm-pilot-note{white-space:nowrap;font-size:clamp(8px,2.7vw,12.5px) !important;}
       .dm-site .dm-demo-caption{white-space:nowrap !important;font-size:clamp(8px,2.7vw,15px) !important;max-width:none !important;}
       .dm-site #security .dm-security-note{white-space:nowrap !important;font-size:clamp(7px,2.6vw,13.5px) !important;}
+      .dm-site #problem [style*="font-variant-numeric:tabular-nums"]{width:74px !important;font-size:clamp(1.6rem,8vw,2.5rem) !important;}
+      .dm-site #problem [style*="padding:20px 24px"]{padding:14px 14px !important;}
+      .dm-site #problem [style*="margin:1px 22px"]{margin:1px 12px !important;}
+      .dm-site #problem p{font-size:12px !important;}
     }
     @media (prefers-reduced-motion:reduce){[data-anim]{animation:none !important;} .dm-logo-track{animation:none !important;}}
   </style>
@@ -655,6 +659,14 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
           <div style="min-width:0;">
             <p style="margin:0;font-size:13px;line-height:1.45;color:var(--ink-quiet);">disconnected systems the average site runs daily, with nothing unifying them.</p>
             <div style="font-family:var(--font-display);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-dim);margin-top:7px;">SCRS · WCG</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;padding:20px 24px;border-radius:14px;border:1px solid rgba(31,45,61,0.14);background:linear-gradient(180deg, rgba(31,45,61,0.05), rgba(31,45,61,0.015)), rgba(255,255,255,0.5);">
+          <div style="flex-shrink:0;width:120px;text-align:center;font-family:var(--font-display);font-size:clamp(2.6rem,3.7vw,3.3rem);font-weight:700;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink-cold);">~30<span style="font-size:0.44em;color:var(--ink-steel);vertical-align:0.6em;font-weight:600;margin-left:1px;">%</span></div>
+          <div style="width:1px;align-self:stretch;background:rgba(31,45,61,0.12);margin:1px 22px;"></div>
+          <div style="min-width:0;">
+            <p style="margin:0;font-size:13px;line-height:1.45;color:var(--ink-quiet);">annual turnover among research coordinators, as protocol complexity and execution workload outpace capacity.</p>
+            <div style="font-family:var(--font-display);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-dim);margin-top:7px;">ACRP Workforce</div>
           </div>
         </div>
       </div>
