@@ -195,7 +195,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
       .dm-site #spine .dm-spine-indicator{display:block;text-align:center;margin-top:14px;font-family:var(--font-display);font-size:12px;letter-spacing:0.08em;color:var(--ink-dim);font-variant-numeric:tabular-nums;}
       .dm-site #spine h2{font-size:clamp(1.65rem,7vw,2.2rem) !important;}
       .dm-site #spine [style*="justify-content:space-between"]{flex-direction:column !important;align-items:flex-start !important;gap:10px !important;}
-      .dm-site #spine p[style*="white-space:nowrap"]{white-space:normal !important;font-size:clamp(0.95rem,4vw,1.15rem) !important;line-height:1.3 !important;max-width:100% !important;}
+      .dm-site #spine p[style*="white-space:nowrap"]{white-space:nowrap !important;font-size:clamp(8px,3.4vw,1.1rem) !important;line-height:1.3 !important;max-width:100% !important;}
 
       .dm-site #output .dm-output-grid{grid-template-columns:1fr !important;}
       .dm-site #output .dm-input-cards{display:grid !important;grid-template-columns:repeat(3,1fr);gap:8px;}
@@ -212,6 +212,8 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
       .dm-site #pilot [style*="border-top:1px solid rgba(31,45,61,0.12)"]{flex-direction:column !important;align-items:stretch !important;text-align:center;gap:16px !important;}
       .dm-site #pilot [style*="border-top:1px solid rgba(31,45,61,0.12)"] > span[style*="margin-left:auto"]{margin-left:0 !important;display:flex;justify-content:center;}
       .dm-site #pilot .dm-pilot-note{white-space:nowrap;font-size:clamp(8px,2.7vw,12.5px) !important;}
+      .dm-site .dm-demo-caption{white-space:nowrap !important;font-size:clamp(8px,2.7vw,15px) !important;max-width:none !important;}
+      .dm-site #security .dm-security-note{white-space:nowrap !important;font-size:clamp(7px,2.6vw,13.5px) !important;}
     }
     @media (prefers-reduced-motion:reduce){[data-anim]{animation:none !important;} .dm-logo-track{animation:none !important;}}
   </style>
@@ -253,7 +255,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
 
   <!-- ============ INSTRUMENT · clean Node UI ============ -->
   <section id="instrument" data-screen-label="Live instrument" style="position:relative;padding:0 clamp(12px,2.5vw,28px) clamp(40px,6vw,72px);background:#ffffff;">
-    <p style="max-width:920px;margin:0 auto 16px;text-align:center;font-size:15px;font-weight:600;line-height:1.55;color:var(--ink-cold);">A demonstration of the Damaros<sup style="font-size:0.55em;letter-spacing:0;">™</sup> runtime on synthetic FHIR data.<span class="dm-caption-hint"> Click on the pulsing box to walk through it.</span></p>
+    <p class="dm-demo-caption" style="max-width:920px;margin:0 auto 16px;text-align:center;font-size:15px;font-weight:600;line-height:1.55;color:var(--ink-cold);">A demonstration of the Damaros<sup style="font-size:0.55em;letter-spacing:0;">™</sup> runtime on synthetic FHIR data.<span class="dm-caption-hint"> Click on the pulsing box to walk through it.</span></p>
 
     <div id="nodeStage" style="display:flex;justify-content:center;align-items:flex-start;overflow:hidden;">
       <div id="nodeScaleWrap" style="width:1160px;flex:0 0 1160px;transform-origin:top center;">
@@ -852,7 +854,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
         <div style="display:flex;align-items:center;gap:11px;padding:15px 18px;border-radius:11px;border:1px solid rgba(31,45,61,0.12);background:rgba(255,255,255,0.5);"><span style="width:6px;height:6px;border-radius:50%;background:var(--ink-steel);flex-shrink:0;"></span><span style="font-size:13px;color:var(--ink-quiet);"><strong style="color:var(--ink-cold);font-weight:600;">Encryption</strong> in transit &amp; at rest · key rotation</span></div>
         <div style="display:flex;align-items:center;gap:11px;padding:15px 18px;border-radius:11px;border:1px solid rgba(31,45,61,0.12);background:rgba(255,255,255,0.5);"><span style="width:6px;height:6px;border-radius:50%;background:var(--ink-steel);flex-shrink:0;"></span><span style="font-size:13px;color:var(--ink-quiet);"><strong style="color:var(--ink-cold);font-weight:600;">RBAC</strong> · tenant isolation · OIDC / SAML</span></div>
       </div>
-      <p style="margin:26px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-dim);">We validate the execution chain. We do not claim clinical efficacy.</p>
+      <p class="dm-security-note" style="margin:26px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-dim);">We validate the execution chain. We do not claim clinical efficacy.</p>
     </div>
   </section>
 
