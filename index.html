@@ -309,7 +309,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
             <sc-if value="{{ isProtocol }}" hint-placeholder-val="{{ true }}">
               <div style="padding:30px 34px 34px;">
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:7px;flex-wrap:wrap;">
-                  <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Protocol</span>
+                  <span style="width:100%;font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Protocol</span>
                   <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;border:1px solid color-mix(in srgb,#2e9e6b 30%,transparent);"><span style="width:5px;height:5px;border-radius:50%;background:#2e9e6b;"></span><span style="font-family:var(--font-display);font-size:9.5px;letter-spacing:0.06em;text-transform:uppercase;color:#2e9e6b;">Ingested · locked v2.1</span></span>
                   <span style="font-family:var(--font-display);font-size:10px;color:var(--ink-dim);margin-left:auto;"><span style="color:var(--ink-steel);font-weight:600;">LLM</span> fetched NCT03032484 · parsed sponsor packet · 06-21 14:02Z</span>
                 </div>
@@ -363,7 +363,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
             <sc-if value="{{ isEvidence }}">
               <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
                 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
-                  <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Evidence</span>
+                  <span style="width:100%;font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Evidence</span>
                   <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">how <span style="color:var(--ink-steel);font-weight:600;">Trident</span> maps the sponsor packet onto site evidence · PHI-bounded · 09:43</span>
                 </div>
                 <div style="margin-bottom:16px;padding:13px 16px;border-radius:12px;border:1px solid rgba(31,45,61,0.1);background:rgba(31,45,61,0.02);">
@@ -428,8 +428,8 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
             <sc-if value="{{ isScreening }}">
               <div style="height:692px;overflow:hidden;display:flex;flex-direction:column;padding:22px 28px 24px;">
                 <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px;">
-                  <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Screening</span>
-                  <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">deterministic screening · Protocol v2.1</span>
+                  <span style="width:100%;font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Screening</span>
+                  <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">Protocol v2.1</span>
                 </div>
                 <div style="display:flex;gap:8px;margin-bottom:14px;">
                   <sc-for list="{{ sc.summary }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.onClick }}" style="{{ s.style }}"><span style="{{ s.nStyle }}">{{ s.n }}</span><span style="font-family:var(--font-display);font-size:10px;color:var(--ink-dim);margin-top:3px;line-height:1.2;">{{ s.label }}</span></button></sc-for>
@@ -467,7 +467,7 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
             <sc-if value="{{ isResolve }}" hint-placeholder-val="{{ true }}">
               <div style="padding:26px 34px 34px;">
                 <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px;">
-                  <span style="font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Resolve</span>
+                  <span style="width:100%;font-family:var(--font-display);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-steel);">Resolve</span>
                   <span style="font-family:var(--font-display);font-size:11px;color:var(--ink-dim);">{{ awaiting }} awaiting judgment · {{ committedCount }} committed</span>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;">
