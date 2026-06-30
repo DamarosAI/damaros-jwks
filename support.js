@@ -661,14 +661,20 @@
     const kids = walkChildren(el, host);
     return (vals, ctx, key) => {
       const props = { key, "data-dc-tpl": tplId };
+      let mergedStyle = null;
       for (const [k, g] of propGetters) {
         let v = g(vals);
-        if (k === "style" && typeof v === "string") v = cssToObj(v);
+        if (k === "style" || k === "data-dc-style") {
+          if (typeof v === "string") v = cssToObj(v);
+          if (v && typeof v === "object") mergedStyle = mergedStyle ? { ...mergedStyle, ...v } : v;
+          continue;
+        }
         if ((k === "value" || k === "checked") && v === void 0) {
           v = k === "checked" ? false : "";
         }
         props[k] = v;
       }
+      if (mergedStyle && Object.keys(mergedStyle).length) props.style = mergedStyle;
       if (pseudoClasses.length) {
         props.className = [props.className, ...pseudoClasses].filter(Boolean).join(" ");
       }
