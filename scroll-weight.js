@@ -1,28 +1,22 @@
 /*
- * Weighted section scrolling.
- * Each wheel gesture advances one "stop" — either to the next labeled
- * section, or one weighted step within a section taller than the viewport.
- * A continuous trackpad fling is collapsed into a single advance, so the
- * page cannot be sped through in one motion. Honors reduced-motion, leaves
- * touch / coarse-pointer / narrow viewports on native scrolling, and never
- * hijacks gestures that belong to an inner scrollable panel.
+ * Section-by-section wheel scrolling on desktop.
+ * One wheel gesture (including a long trackpad fling) advances exactly one
+ * labeled section up or down. Touch / coarse-pointer / narrow viewports keep
+ * native scrolling. Inner scrollable panels keep their own gesture.
  */
 (function () {
   var coarse = window.matchMedia("(max-width:760px),(pointer:coarse)");
   if (coarse.matches) return;
 
   var reduced = window.matchMedia("(prefers-reduced-motion:reduce)");
-  var HEADER = 62; // sticky header height (also CSS scroll-padding-top)
-  var DURATION = 760; // luxury weight: slow, eased glide between stops
-  var STEP_RATIO = 0.88; // viewport fraction per in-section step
-  var REMAIN_MIN = 130; // ignore leftover smaller than this -> jump to neighbor
+  var HEADER = 62;
+  var DURATION = 420;
+  var LOCK_MS = 60;
 
   var sections = [];
   var animating = false;
   var lockUntil = 0;
-  var pendingDir = 0;
 
-  // JS owns scrolling now; drop CSS snap so it can't fight intra-section steps.
   document.documentElement.style.scrollSnapType = "none";
 
   function collect() {
@@ -33,10 +27,6 @@
       s.style.scrollSnapAlign = "none";
       s.style.scrollSnapStop = "normal";
     });
-  }
-
-  function absTop(el) {
-    return el.getBoundingClientRect().top + window.scrollY;
   }
 
   function maxScroll() {
@@ -50,39 +40,11 @@
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  // Resting scroll position when entering a section from above. Mirrors scrollCenter().
   function centerTarget(el) {
     var r = el.getBoundingClientRect();
     var elTop = r.top + window.scrollY;
     var top = elTop - Math.max(HEADER, (window.innerHeight - r.height) / 2);
     return Math.max(0, Math.min(top, maxScroll()));
-  }
-
-  // Resting scroll position when re-entering a section from below (scroll up).
-  // Tall sections land at their bottom stop; short sections stay centered.
-  function enterFromBelow(el) {
-    var r = el.getBoundingClientRect();
-    var top = absTop(el);
-    var bottom = top + r.height;
-    var vh = window.innerHeight;
-    if (r.height + HEADER <= vh) return centerTarget(el);
-    return Math.max(top - HEADER, Math.min(bottom - vh, maxScroll()));
-  }
-
-  function drainPending() {
-    if (!pendingDir) return;
-    var dir = pendingDir;
-    pendingDir = 0;
-    requestAnimationFrame(function () {
-      advance(dir, null);
-    });
-  }
-
-  function finishGlide(now, html, prevBehavior) {
-    animating = false;
-    lockUntil = now + 220;
-    html.style.scrollBehavior = prevBehavior;
-    drainPending();
   }
 
   function glideTo(target) {
@@ -94,8 +56,7 @@
     if (reduced.matches || DURATION === 0) {
       window.scrollTo(0, target);
       html.style.scrollBehavior = prevBehavior;
-      lockUntil = performance.now() + 160;
-      drainPending();
+      lockUntil = performance.now() + LOCK_MS;
       return;
     }
 
@@ -110,7 +71,9 @@
       if (p < 1) {
         requestAnimationFrame(frame);
       } else {
-        finishGlide(now, html, prevBehavior);
+        animating = false;
+        lockUntil = now + LOCK_MS;
+        html.style.scrollBehavior = prevBehavior;
       }
     }
     requestAnimationFrame(frame);
@@ -153,38 +116,12 @@
     if (sections.length < 2) return false;
 
     var idx = currentIndex();
-    var sec = sections[idx];
-    var top = absTop(sec);
-    var bottom = top + sec.getBoundingClientRect().height;
-    var viewTop = window.scrollY;
-    var viewBottom = viewTop + window.innerHeight;
-    var stepPx = (window.innerHeight - HEADER) * STEP_RATIO;
-    var rest = centerTarget(sec);
+    var next = dir > 0 ? idx + 1 : idx - 1;
+    if (next < 0 || next >= sections.length) return false;
 
-    if (dir > 0) {
-      if (bottom - viewBottom > REMAIN_MIN) {
-        if (e) e.preventDefault();
-        glideTo(Math.min(viewTop + stepPx, bottom - window.innerHeight));
-        return true;
-      }
-      if (idx < sections.length - 1) {
-        if (e) e.preventDefault();
-        glideTo(centerTarget(sections[idx + 1]));
-        return true;
-      }
-    } else {
-      if (viewTop - rest > REMAIN_MIN) {
-        if (e) e.preventDefault();
-        glideTo(Math.max(viewTop - stepPx, rest));
-        return true;
-      }
-      if (idx > 0) {
-        if (e) e.preventDefault();
-        glideTo(enterFromBelow(sections[idx - 1]));
-        return true;
-      }
-    }
-    return false;
+    if (e) e.preventDefault();
+    glideTo(centerTarget(sections[next]));
+    return true;
   }
 
   function onWheel(e) {
@@ -195,8 +132,6 @@
     var now = performance.now();
     if (animating || now < lockUntil) {
       e.preventDefault();
-      pendingDir = dir;
-      lockUntil = Math.max(lockUntil, now + 120);
       return;
     }
 
