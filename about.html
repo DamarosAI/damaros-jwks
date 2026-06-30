@@ -103,10 +103,16 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
   <!-- ============ HERO ============ -->
   <section data-screen-label="About hero" style="position:relative;padding:clamp(72px,9vw,124px) clamp(20px,5vw,40px) clamp(44px,5vw,68px);background:radial-gradient(120% 80% at 50% -8%, #f6fafc 0%, #eef3f8 44%, #ffffff 80%);overflow:hidden;">
     <div aria-hidden="true" data-anim="" style="position:absolute;top:46%;left:50%;width:min(560px,92%);height:min(560px,92%);transform:translate(-50%,-50%);color:rgba(31,45,61,0.11);pointer-events:none;animation:dmDrift 30s ease-in-out infinite;"><svg viewBox="0 0 476 520" fill="none" stroke="currentColor" stroke-width="30" stroke-linejoin="round" stroke-linecap="round" style="width:100%;height:100%;"><path d="M 104.82 74.50 L 366.46 74.50 A 40.50 40.50 0 0 1 402.59 133.29 L 368.99 199.68 A 63.50 63.50 0 0 1 312.33 234.50 L 158.12 234.50 A 63.50 63.50 0 0 1 101.18 199.11 L 68.50 132.93 A 40.50 40.50 0 0 1 104.82 74.50 Z"></path><path d="M 158.62 284.50 L 312.06 284.50 A 63.50 63.50 0 0 1 368.75 319.39 L 403.25 387.75 A 40.50 40.50 0 0 1 367.09 446.50 L 104.32 446.50 A 40.50 40.50 0 0 1 68.01 388.07 L 101.68 319.88 A 63.50 63.50 0 0 1 158.62 284.50 Z"></path></svg></div>
-    <div style="position:relative;max-width:880px;margin:0 auto;text-align:center;">
-      <div style="font-family:var(--font-body);font-size:11.5px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:24px;">Our Mission</div>
-      <h1 class="dm-mission" style="margin:0;margin-left:auto;margin-right:auto;font-family:var(--font-display);font-weight:700;font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.04;letter-spacing:-0.03em;white-space:nowrap;color:var(--ink-cold);">Make trials executable<br><span style="color:var(--ink-steel);">no matter the site.</span></h1>
-      <p class="dm-mission-sub" style="margin:16px auto 0;max-width:54ch;font-size:clamp(1rem,1.4vw,1.16rem);line-height:1.55;color:var(--ink-faint);">The patient may already be there. What&rsquo;s missing is the system to screen, resolve, and prove the path from protocol to action.</p>
+    <div style="position:relative;max-width:760px;margin:0 auto;text-align:center;">
+      <div style="font-family:var(--font-body);font-size:11.5px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:24px;">From the founder</div>
+      <p style="margin:0;font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;line-height:1.28;letter-spacing:-0.025em;color:var(--ink-cold);text-wrap:balance;">I started Damaros<sup style="font-size:0.46em;font-weight:500;letter-spacing:0;color:var(--ink-dim);margin-left:1.5px;vertical-align:super;">&trade;</sup> to make the distance between patient and trial smaller. Whether a site runs two protocols or two hundred, the right therapeutic option should be <span style="color:var(--ink-steel);">within reach.</span></p>
+      <div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:16px;margin-top:32px;padding-top:26px;border-top:1px solid rgba(31,45,61,0.12);">
+        <div style="text-align:left;">
+          <div style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--ink-cold);">Anirudh C. Nimmagadda</div>
+          <div style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink-dim);margin-top:3px;">Founder · MD, MSAI candidate</div>
+        </div>
+        <a href="mailto:anirudh@damaros.ai" style="display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 20px;border-radius:999px;font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;color:var(--ink-steel);background:rgba(47,97,147,0.06);border:1px solid color-mix(in srgb,#2f6193 38%,transparent);">Get in touch</a>
+      </div>
     </div>
   </section>
 
@@ -133,30 +139,8 @@ window.addEventListener("load", () => window.scrollTo(0, 0));
           </div>
         </div>
       </div>
-      <a href="#founder" aria-label="Read a message from the founder" style="margin:clamp(34px,5vw,52px) auto 0;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--ink-steel);cursor:pointer;">
-        <span style="font-family:var(--font-body);font-size:10.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;">A message from the founder</span>
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="animation:chevBounce 1.6s ease-in-out infinite;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </a>
     </div>
   </section>
-
-  <!-- ============ FOUNDER ============ -->
-  <section id="founder" data-screen-label="Founder" style="position:relative;padding:clamp(60px,8vw,104px) clamp(20px,5vw,40px);background:#ffffff;border-top:1px solid rgba(31,45,61,0.08);">
-    <div style="max-width:720px;margin:0 auto;">
-      <div style="font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-steel);margin-bottom:24px;">From the founder</div>
-      <p style="margin:0;font-family:var(--font-display);font-size:clamp(1.3rem,2.4vw,1.8rem);font-weight:700;line-height:1.32;letter-spacing:-0.02em;color:var(--ink-cold);text-wrap:balance;">I started Damaros<sup style="font-size:0.46em;font-weight:500;letter-spacing:0;color:var(--ink-dim);margin-left:1.5px;vertical-align:super;">&trade;</sup> to make the distance between patient and trial smaller. Whether a site runs two protocols or two hundred, the right therapeutic option should be <span style="color:var(--ink-steel);">within reach.</span></p>
-      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin-top:32px;padding-top:26px;border-top:1px solid rgba(31,45,61,0.12);">
-        <div>
-          <div style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--ink-cold);">Anirudh C. Nimmagadda</div>
-          <div style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink-dim);margin-top:3px;">Founder · MD, MSAI candidate</div>
-        </div>
-        <a href="mailto:anirudh@damaros.ai" style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;height:42px;padding:0 20px;border-radius:999px;font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;color:var(--ink-steel);background:rgba(47,97,147,0.06);border:1px solid color-mix(in srgb,#2f6193 38%,transparent);">Get in touch</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CLOSE ============ -->
-  
 
   <!-- ============ FOOTER ============ -->
   <footer style="margin-top:auto;background:#eef1f4;border-top:1px solid rgba(31,45,61,0.08);padding:clamp(40px,6vw,64px) clamp(20px,5vw,40px);">
